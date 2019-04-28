@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final record = Record.fromSnapshot(data);
 
     return Padding(
-      key: ValueKey(record.name),
+      key: ValueKey(record.Name),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
@@ -95,8 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: ListTile(
             leading: const Icon(Icons.video_library),
-            title: Text(record.name),
-            subtitle: Text(record.votes.toString() + ' votes'),
+            title: Text(record.Name),
+            subtitle: Text(record.Votes.toString() + ' votes'),
             trailing:
                 // child: Text(record.votes.toString()),
                 IconButton(
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           final fresh = Record.fromSnapshot(freshSnapshot);
                           print('test');
                           await transaction.update(
-                              record.reference, {'votes': fresh.votes + 1});
+                              record.reference, {'Votes': fresh.Votes + 1});
                         }))
             /*
           trailing: Text(record.votes.toString()),
@@ -134,31 +134,31 @@ class _MyHomePageState extends State<MyHomePage> {
 } // _myHomePageState
 
 class Record {
-  final String name;
-  final String liveUrl;
-  final String savedUrl;
-  final Timestamp createdAt;
-  final String desc;
-  final int votes;
+  final String Name;
+  final String LiveURL;
+  final String SavedURL;
+  final Timestamp CreatedAt;
+  final String Desc;
+  final int Votes;
   final DocumentReference reference;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        assert(map['createdAt'] != null),
-        assert(map['liveUrl'] != null),
-        assert(map['savedUrl'] != null),
-        assert(map['votes'] != null),
-        assert(map['desc'] != null),
-        name = map['name'],
-        createdAt = map['createdAt'],
-        liveUrl = map['liveUrl'],
-        savedUrl = map['savedUrl'],
-        votes = map['votes'],
-        desc = map['desc'];
+      : assert(map['Name'] != null),
+        assert(map['CreatedAt'] != null),
+        assert(map['LiveURL'] != null),
+        // assert(map['SavedURL'] != null),
+        assert(map['Votes'] != null),
+        assert(map['Desc'] != null),
+        Name = map['Name'],
+        CreatedAt = map['CreatedAt'],
+        LiveURL = map['LiveURL'],
+        SavedURL = map['SavedURL'],
+        Votes = map['Votes'],
+        Desc = map['Desc'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   @override
-  String toString() => "Record<$name:$votes>";
+  String toString() => "Record<$Name:$Votes>";
 }
