@@ -6,7 +6,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,6 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ChaseApp.IO',
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: Colors.black,
+          primaryIconTheme: IconThemeData(color: Colors.black),
+          primaryTextTheme: TextTheme(
+              title: TextStyle(color: Colors.black, fontFamily: "Aveny")),
+          textTheme: TextTheme(title: TextStyle(color: Colors.black))),
       home: MyHomePage(),
     );
   }
@@ -26,28 +34,90 @@ class ShowChase extends StatelessWidget {
   ShowChase({Key key, @required this.record}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final topBar = new AppBar(
+      backgroundColor: new Color(0xfff8faf8),
+      centerTitle: true,
+      elevation: 1.0,
+      // leading: new Icon(Icons.arrow_back_ios),
+      leading: new IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          }),
+      title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(right: 12.0),
+          child: Icon(Icons.share),
+        )
+      ],
+    );
+
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Chase Details'),
-        ),
-        body: new SizedBox(
-            height: 210,
-            child: Card(
-                child: Column(
-              children: <Widget>[
-                ListTile(
+      //appBar: new AppBar( title: new Text('Chase Details'),),
+      appBar: topBar,
+      body: new SizedBox(
+          height: 250,
+          child: Card(
+              child: Column(
+            children: <Widget>[
+              ListTile(
                   title: Text(record.Name,
                       style: TextStyle(fontWeight: FontWeight.w500)),
                   subtitle: Text(record.Desc),
-                  leading: Icon(Icons.access_alarm, color: Colors.blue[500]),
-                  trailing: Text(record.Votes.toString() + ' donuts'),
-                ),
-                Divider(),
-                Center(
-                    // children: <Widget>[RaisedButton(child: Text(record.LiveURL))],
-                    child: Linkify(onOpen: _onOpen, text: record.LiveURL)),
-              ],
-            ))));
+                  trailing: Text(record.Votes.toString() + ' donuts')),
+              Divider(),
+              Padding(
+                  padding: EdgeInsets.all(0.3),
+                  child: Linkify(onOpen: _onOpen, text: record.LiveURL)),
+              Container(
+                  padding: EdgeInsets.all(30),
+                  child: Align(
+                      alignment: FractionalOffset(1.0, 0.2),
+                      child: ClapFAB.image(
+                        clapFabCallback: (int counter) => Firestore.instance
+                                .runTransaction((transaction) async {
+                              final freshSnapshot =
+                                  await transaction.get(record.reference);
+                              final fresh = Record.fromSnapshot(freshSnapshot);
+                              await transaction.update(
+                                  record.reference, {'Votes': fresh.Votes + 1});
+                              counter = fresh.Votes;
+                            }),
+                        defaultImage: "images/donut.png",
+                        filledImage: "images/donut.png",
+                        countCircleColor: Colors.pink,
+                        hasShadow: true,
+                        sparkleColor: Colors.red,
+                        shadowColor: Colors.black,
+                        defaultImageColor: Colors.pink,
+                        filledImageColor: Colors.pink,
+                      ))),
+            ],
+          ))),
+      /*
+      floatingActionButton: FloatingActionButton(
+        child: ClapFAB.image(
+          clapFabCallback: (int counter) =>
+              Firestore.instance.runTransaction((transaction) async {
+                final freshSnapshot = await transaction.get(record.reference);
+                final fresh = Record.fromSnapshot(freshSnapshot);
+                await transaction
+                    .update(record.reference, {'Votes': fresh.Votes + 1});
+                counter = fresh.Votes;
+              }),
+          defaultImage: "images/donut.png",
+          filledImage: "images/donut.png",
+          countCircleColor: Colors.pink,
+          hasShadow: true,
+          sparkleColor: Colors.red,
+          shadowColor: Colors.black,
+          defaultImageColor: Colors.pink,
+          filledImageColor: Colors.pink,
+        ),
+      ),
+      */
+    );
   }
 
   Future<void> _onOpen(LinkableElement link) async {
@@ -68,6 +138,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  final topBar = new AppBar(
+    backgroundColor: new Color(0xfff8faf8),
+    centerTitle: true,
+    elevation: 1.0,
+    // leading: new Icon(Icons.camera_alt),
+    title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
+    actions: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        // child: Icon(Icons.send),
+      )
+    ],
+  );
 
   void firebaseCloudMessaging_Listeners() {
     print('in fbCM_listeners');
@@ -103,7 +187,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('ChaseApp.IO')),
+      // appBar: AppBar(title: Text('ChaseApp.IO')),
+      appBar: topBar,
       body: _buildBody(context),
     );
   }
@@ -141,9 +226,13 @@ class _MyHomePageState extends State<MyHomePage> {
             leading: const Icon(Icons.video_library),
             title: Text(record.Name),
             subtitle: Text(record.Votes.toString() + ' donuts'),
-            // trailing: ClapFAB.icon(
-            trailing: ClapFAB.image(
-              // clapFabCallback: (int counter) => print(counter),
+            trailing: new CircleAvatar(
+                backgroundColor: Colors.pink,
+                child: new Image(
+                  image: new AssetImage("images/donut.jpg"),
+                )),
+            /*
+            ClapFAB.image(
               clapFabCallback: (int counter) =>
                   Firestore.instance.runTransaction((transaction) async {
                     final freshSnapshot =
@@ -162,17 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
               defaultImageColor: Colors.pink,
               filledImageColor: Colors.pink,
             ),
-            /*
-                    onPressed: () =>
-                        Firestore.instance.runTransaction((transaction) async {
-                          final freshSnapshot =
-                              await transaction.get(record.reference);
-                          final fresh = Record.fromSnapshot(freshSnapshot);
-                          print('test');
-                          await transaction.update(
-                              record.reference, {'Votes': fresh.Votes + 1});
-                        })),
-                        */
+            */
             onTap: () => {
                   Navigator.push(
                       context,
