@@ -67,3 +67,6 @@ post_install do |installer|
     end
   end
 end
+
+pod 'FBSDKLoginKit', '4.39.1'
+pod 'FBSDKCoreKit', '4.39.1'

@@ -26,6 +26,9 @@ dependencies:
   url_launcher: ^5.0.2
   medium_clap_flutter: ^0.0.1
   font_awesome_flutter: ^8.4.0
+  share: ^0.6.1
+  flutter_facebook_login: ^2.0.0
+  http: ^0.12.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -53,6 +56,8 @@ flutter:
     - images/donut.jpg
     - images/sparkles.png
     - images/chaseapp.png
+    - images/broadcast.png
+    - images/video.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

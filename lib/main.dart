@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:async';
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
+import 'package:share/share.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
@@ -47,9 +52,17 @@ class ShowChase extends StatelessWidget {
       title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
       actions: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(right: 12.0),
-          child: Icon(Icons.share),
-        )
+            padding: const EdgeInsets.only(right: 12.0),
+            // child: Icon(Icons.share),
+            child: IconButton(
+                icon: new Icon(Icons.share),
+                onPressed: () {
+                  final RenderBox box = context.findRenderObject();
+                  // Share.share("ChaseApp - record.LiveURL");
+                  Share.share(record.LiveURL,
+                      sharePositionOrigin:
+                          box.localToGlobal(Offset.zero) & box.size);
+                }))
       ],
     );
 
@@ -96,6 +109,7 @@ class ShowChase extends StatelessWidget {
             ],
           ))),
       /*
+      // broken
       floatingActionButton: FloatingActionButton(
         child: ClapFAB.image(
           clapFabCallback: (int counter) =>
@@ -223,7 +237,10 @@ class _MyHomePageState extends State<MyHomePage> {
           borderRadius: BorderRadius.circular(5.0),
         ),
         child: ListTile(
-            leading: const Icon(Icons.video_library),
+            leading: new CircleAvatar(
+              backgroundColor: Colors.white,
+              child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
+            ),
             title: Text(record.Name),
             subtitle: Text(record.Votes.toString() + ' donuts'),
             trailing: new CircleAvatar(
@@ -231,27 +248,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: new Image(
                   image: new AssetImage("images/donut.jpg"),
                 )),
-            /*
-            ClapFAB.image(
-              clapFabCallback: (int counter) =>
-                  Firestore.instance.runTransaction((transaction) async {
-                    final freshSnapshot =
-                        await transaction.get(record.reference);
-                    final fresh = Record.fromSnapshot(freshSnapshot);
-                    await transaction
-                        .update(record.reference, {'Votes': fresh.Votes + 1});
-                    counter = fresh.Votes;
-                  }),
-              defaultImage: "images/donut.png",
-              filledImage: "images/donut.png",
-              countCircleColor: Colors.pink,
-              hasShadow: true,
-              sparkleColor: Colors.red,
-              shadowColor: Colors.black,
-              defaultImageColor: Colors.pink,
-              filledImageColor: Colors.pink,
-            ),
-            */
             onTap: () => {
                   Navigator.push(
                       context,
@@ -270,10 +266,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 } // _myHomePageState
 
+_displayLiveIcon() {
+  return new Image(image: new AssetImage("images/broadcast.png"));
+}
+
+_displayVideoIcon() {
+  return new Image(image: new AssetImage("images/video.png"));
+}
+
 class Record {
   final String Name;
   final String LiveURL;
   final String SavedURL;
+  final bool Live;
   final Timestamp CreatedAt;
   final String Desc;
   final int Votes;
@@ -283,12 +288,14 @@ class Record {
       : assert(map['Name'] != null),
         assert(map['CreatedAt'] != null),
         assert(map['LiveURL'] != null),
+        assert(map['Live'] != null),
         // assert(map['SavedURL'] != null),
         assert(map['Votes'] != null),
         assert(map['Desc'] != null),
         Name = map['Name'],
         CreatedAt = map['CreatedAt'],
         LiveURL = map['LiveURL'],
+        Live = map['Live'],
         SavedURL = map['SavedURL'],
         Votes = map['Votes'],
         Desc = map['Desc'];
