@@ -81,6 +81,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.4.0"
   linkify:
     dependency: transitive
     description:
@@ -95,6 +102,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.3+1"
+  medium_clap_flutter:
+    dependency: "direct main"
+    description:
+      name: medium_clap_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   meta:
     dependency: transitive
     description:

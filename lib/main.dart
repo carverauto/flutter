@@ -6,6 +6,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,7 +40,7 @@ class ShowChase extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.w500)),
                   subtitle: Text(record.Desc),
                   leading: Icon(Icons.access_alarm, color: Colors.blue[500]),
-                  trailing: Text(record.Votes.toString() + ' votes'),
+                  trailing: Text(record.Votes.toString() + ' donuts'),
                 ),
                 Divider(),
                 Center(
@@ -139,11 +140,29 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListTile(
             leading: const Icon(Icons.video_library),
             title: Text(record.Name),
-            subtitle: Text(record.Votes.toString() + ' votes'),
-            trailing:
-                // child: Text(record.votes.toString()),
-                IconButton(
-                    icon: Icon(Icons.thumb_up),
+            subtitle: Text(record.Votes.toString() + ' donuts'),
+            // trailing: ClapFAB.icon(
+            trailing: ClapFAB.image(
+              // clapFabCallback: (int counter) => print(counter),
+              clapFabCallback: (int counter) =>
+                  Firestore.instance.runTransaction((transaction) async {
+                    final freshSnapshot =
+                        await transaction.get(record.reference);
+                    final fresh = Record.fromSnapshot(freshSnapshot);
+                    await transaction
+                        .update(record.reference, {'Votes': fresh.Votes + 1});
+                    counter = fresh.Votes;
+                  }),
+              defaultImage: "images/donut.png",
+              filledImage: "images/donut.png",
+              countCircleColor: Colors.pink,
+              hasShadow: true,
+              sparkleColor: Colors.red,
+              shadowColor: Colors.black,
+              defaultImageColor: Colors.pink,
+              filledImageColor: Colors.pink,
+            ),
+            /*
                     onPressed: () =>
                         Firestore.instance.runTransaction((transaction) async {
                           final freshSnapshot =
@@ -153,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await transaction.update(
                               record.reference, {'Votes': fresh.Votes + 1});
                         })),
+                        */
             onTap: () => {
                   Navigator.push(
                       context,
