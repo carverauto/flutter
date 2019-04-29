@@ -2,6 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:medium_clap_flutter/medium_clap_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +16,45 @@ class MyApp extends StatelessWidget {
       title: 'ChaseApp.IO',
       home: MyHomePage(),
     );
+  }
+}
+
+class ShowChase extends StatelessWidget {
+  final Record record;
+
+  ShowChase({Key key, @required this.record}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text('Chase Details'),
+        ),
+        body: new SizedBox(
+            height: 210,
+            child: Card(
+                child: Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(record.Name,
+                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  subtitle: Text(record.Desc),
+                  leading: Icon(Icons.access_alarm, color: Colors.blue[500]),
+                  trailing: Text(record.Votes.toString() + ' votes'),
+                ),
+                Divider(),
+                Center(
+                    // children: <Widget>[RaisedButton(child: Text(record.LiveURL))],
+                    child: Linkify(onOpen: _onOpen, text: record.LiveURL)),
+              ],
+            ))));
+  }
+
+  Future<void> _onOpen(LinkableElement link) async {
+    if (await canLaunch(link.url)) {
+      await launch(link.url);
+    } else {
+      throw 'Could not launch $link';
+    }
   }
 }
 
@@ -109,18 +152,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           print('test');
                           await transaction.update(
                               record.reference, {'Votes': fresh.Votes + 1});
-                        }))
-            /*
-          trailing: Text(record.votes.toString()),
-          onTap: () => Firestore.instance.runTransaction((transaction) async {
-                final freshSnapshot = await transaction.get(record.reference);
-                final fresh = Record.fromSnapshot(freshSnapshot);
-                print('test');
-                await transaction
-                    .update(record.reference, {'votes': fresh.votes + 1});
-              }),
-              */
-            ),
+                        })),
+            onTap: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShowChase(record: record)))
+                }),
       ),
     );
   }
