@@ -32,7 +32,8 @@ void firebaseCloudMessaging_Listeners() {
 
 void _flutterToast({message}) {
   Fluttertoast.showToast(
-      msg: message.toString(),
+      // msg: message.toString(),
+      msg: 'We have a chase!',
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
       timeInSecForIos: 1,

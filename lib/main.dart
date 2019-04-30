@@ -101,6 +101,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record.fromSnapshot(data);
 
+    // var chaseDate = DateTime.parse(record.CreatedAt.toString());
+    // record.CreatedAt.toDate().toIso8601String()
+    var chaseDate = DateTime.parse(record.CreatedAt.toDate().toIso8601String());
+    var today = new DateTime.now();
+    var diff = chaseDate.difference(today);
+
+    print('Start - ' + record.Name);
+    print('ChaseDate ' + chaseDate.toIso8601String());
+    print('Diff + abs ' + diff.inDays.abs().toString());
+
+    print('inDays ' + diff.inDays.abs().toString());
+
+    var dateMsg = '';
+    if (diff.inDays.abs() == 0) {
+      print('Chase was today');
+      dateMsg = chaseDate.hour.toString() + ' hours ago';
+    } else if (diff.inDays.abs() >= 1) {
+      // dateMsg = chaseDate.hour.toString() + ' hours ago';
+      dateMsg = chaseDate.toIso8601String().substring(0, 10);
+      print('Chase was older or equal to 1 day ' + dateMsg);
+    } else {
+      dateMsg = chaseDate.toIso8601String().substring(0, 10);
+      print('Chase older than one day ' + dateMsg);
+    }
+
     return Padding(
       key: ValueKey(record.Name),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -115,12 +140,26 @@ class _MyHomePageState extends State<MyHomePage> {
               child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
             ),
             title: Text(record.Name),
-            subtitle: Text(record.Votes.toString() + ' donuts'),
+            // subtitle: Text(record.Votes.toString() + ' donuts'),
+            subtitle: Text(
+                // record.CreatedAt.toDate().toLocal().toString().trimRight()),
+                dateMsg),
+            trailing: new Chip(
+              avatar: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: new Image(
+                  image: new AssetImage("images/donut.png"),
+                ),
+              ),
+              label: Text(record.Votes.toString()),
+            ),
+            /*
             trailing: new CircleAvatar(
                 backgroundColor: Colors.pink,
                 child: new Image(
                   image: new AssetImage("images/donut.jpg"),
                 )),
+                */
             onTap: () => {
                   Navigator.push(
                       context,
