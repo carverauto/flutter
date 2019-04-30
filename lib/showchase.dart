@@ -7,7 +7,7 @@ import 'package:medium_clap_flutter/medium_clap_flutter.dart';
 import 'package:share/share.dart';
 import 'package:chaseapp/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/observer.dart';
 
 // import 'package:chaseapp/topbar.dart';
 
@@ -20,6 +20,7 @@ class ShowChase extends StatelessWidget {
   ShowChase({Key key, @required this.record}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var deviceSize = MediaQuery.of(context).size;
     final topBar = new AppBar(
       backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
@@ -49,10 +50,10 @@ class ShowChase extends StatelessWidget {
     );
 
     return new Scaffold(
-      //appBar: new AppBar( title: new Text('Chase Details'),),
       appBar: topBar,
       body: new SizedBox(
-          height: 300,
+          // height: 300,
+          height: deviceSize.height,
           child: Card(
               child: Column(
             children: <Widget>[
@@ -88,6 +89,40 @@ class ShowChase extends StatelessWidget {
                         defaultImageColor: Colors.pink,
                         filledImageColor: Colors.pink,
                       ))),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new Container(
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: new DecorationImage(
+                            fit: BoxFit.fill,
+                            image: new NetworkImage(
+                                "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
+                      ),
+                    ),
+                    new SizedBox(
+                      width: 10.0,
+                    ),
+                    Expanded(
+                      child: new TextField(
+                        decoration: new InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Add a comment...",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text("1 Day Ago", style: TextStyle(color: Colors.grey)),
+              ),
             ],
           ))),
       /*

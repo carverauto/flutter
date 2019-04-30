@@ -7,7 +7,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:chaseapp/showchase.dart';
 import 'package:chaseapp/record.dart';
 import 'package:chaseapp/topbar.dart';
-import 'package:chaseapp/fcm.dart';
+import 'package:chaseapp/fbcm.dart';
 
 void main() => runApp(MyApp());
 
@@ -76,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('ChaseApp.IO')),
       appBar: TopBar(context),
       body: _buildBody(context),
     );
