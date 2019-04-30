@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
-import 'package:chaseapp/topbar.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:chaseapp/topbar.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,36 +25,36 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        // appBar: TopBar(context),
-        appBar: AppBar(
-          backgroundColor: new Color(0xfff8faf8),
-          centerTitle: true,
-          elevation: 1.0,
-          // leading: new Icon(Icons.camera_alt),
-          title:
-              SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-          leading: new IconButton(
-              icon: new Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Colors.black,
-              ),
-              onPressed: () => facebookLogin.isLoggedIn
-                  .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
+    // return MaterialApp(
+    return Scaffold(
+      // appBar: TopBar(context),
+      appBar: AppBar(
+        backgroundColor: new Color(0xfff8faf8),
+        centerTitle: true,
+        elevation: 1.0,
+        // leading: new Icon(Icons.camera_alt),
+        title:
+            SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
+        leading: new IconButton(
+            icon: new Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
             ),
-          ],
-        ),
-        /* AppBar(
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.black,
+            ),
+            onPressed: () => facebookLogin.isLoggedIn
+                .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
+          ),
+        ],
+      ),
+      /* AppBar(
           title: Text("Facebook Login"),
           actions: <Widget>[
             IconButton(
@@ -67,18 +68,19 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         */
-        body: Container(
-          child: Center(
-            child: isLoggedIn
-                ? _displayUserData(profileData)
-                : _displayLoginButton(),
-          ),
+      body: Container(
+        child: Center(
+          child: isLoggedIn
+              ? _displayUserData(profileData)
+              : _displayLoginButton(),
         ),
       ),
     );
   }
 
   void initiateFacebookLogin() async {
+    final FirebaseAnalytics analytics = FirebaseAnalytics();
+
     var facebookLoginResult =
         await facebookLogin.logInWithReadPermissions(['email']);
 
@@ -90,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
         onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
+        await analytics.logLogin();
         var graphResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture.height(200)&access_token=${facebookLoginResult.accessToken.token}');
 

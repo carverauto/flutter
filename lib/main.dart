@@ -1,15 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:chaseapp/facebook.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:chaseapp/showchase.dart';
 import 'package:chaseapp/record.dart';
 import 'package:chaseapp/topbar.dart';
+import 'package:chaseapp/fcm.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,97 +28,49 @@ class MyApp extends StatelessWidget {
           primaryTextTheme: TextTheme(
               title: TextStyle(color: Colors.black, fontFamily: "Aveny")),
           textTheme: TextTheme(title: TextStyle(color: Colors.black))),
+      navigatorObservers: <NavigatorObserver>[observer],
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title, this.analytics, this.observer})
+      : super(key: key);
+
+  final String title;
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
   @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
-  }
+  _MyHomePageState createState() => _MyHomePageState(analytics, observer);
 }
-/*
-Widget TopBar(BuildContext context) {
-  return new AppBar(
-    backgroundColor: new Color(0xfff8faf8),
-    centerTitle: true,
-    elevation: 1.0,
-    // leading: new Icon(Icons.camera_alt),
-    title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-    leading: new IconButton(
-        icon: new Icon(Icons.face),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
-        }),
-    actions: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(right: 12.0),
-        // child: Icon(Icons.send),
-      )
-    ],
-  );
-}
-*/
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _MyHomePageState(this.analytics, this.observer);
 
-/*
-  final topBar = new AppBar(
-    backgroundColor: new Color(0xfff8faf8),
-    centerTitle: true,
-    elevation: 1.0,
-    // leading: new Icon(Icons.camera_alt),
-    title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-    leading: new IconButton(
-        icon: new Icon(Icons.face),
-        onPressed: () {
-          Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginPage() ))
-                }),
-    actions: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(right: 12.0),
-        // child: Icon(Icons.send),
-      )
-    ],
-  );
-  */
+  final FirebaseAnalyticsObserver observer;
+  final FirebaseAnalytics analytics;
+  String _message = '';
 
-  void firebaseCloudMessaging_Listeners() {
-    print('in fbCM_listeners');
-
-    if (Platform.isIOS) iOS_Permission();
-
-    _firebaseMessaging.getToken().then((token) {
-      print(token);
+  void setMessage(String message) {
+    setState(() {
+      _message = message;
     });
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-      },
-    );
   }
 
-  void iOS_Permission() {
-    _firebaseMessaging.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
+  Future<void> _sendAnalyticsEvent() async {
+    await analytics.logEvent(
+      name: 'test_event',
+      parameters: <String, dynamic>{
+        'string': 'string',
+        'int': 42,
+        'long': 12345678910,
+        'double': 42.0,
+        'bool': true,
+      },
+    );
+    setMessage('logEvent succeeded');
   }
 
   @override
@@ -129,7 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
       stream: Firestore.instance.collection('chases').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-
         return _buildList(context, snapshot.data.documents);
       },
     );

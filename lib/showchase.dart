@@ -6,9 +6,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
 import 'package:share/share.dart';
 import 'package:chaseapp/record.dart';
-import 'package:chaseapp/topbar.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
+// import 'package:chaseapp/topbar.dart';
 
 class ShowChase extends StatelessWidget {
+  // ShowChase(this.observer);
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
   final Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);
@@ -32,6 +38,7 @@ class ShowChase extends StatelessWidget {
             child: IconButton(
                 icon: new Icon(Icons.share),
                 onPressed: () {
+                  analytics.logViewItem();
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
                   Share.share(record.LiveURL,
