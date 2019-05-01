@@ -83,7 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('chases').snapshots(),
+      // stream: Firestore.instance.collection('chases').snapshots(),
+      stream: Firestore.instance
+          .collection('chases')
+          .orderBy('CreatedAt', descending: true)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildList(context, snapshot.data.documents);
@@ -104,26 +108,41 @@ class _MyHomePageState extends State<MyHomePage> {
     // var chaseDate = DateTime.parse(record.CreatedAt.toString());
     // record.CreatedAt.toDate().toIso8601String()
     var chaseDate = DateTime.parse(record.CreatedAt.toDate().toIso8601String());
-    var today = new DateTime.now();
+    var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
 
     print('Start - ' + record.Name);
+    print('Now - ' + today.toString());
     print('ChaseDate ' + chaseDate.toIso8601String());
-    print('Diff + abs ' + diff.inDays.abs().toString());
-
-    print('inDays ' + diff.inDays.abs().toString());
+    print('Diff days + abs ' + diff.inDays.abs().toString());
+    print('Diff hours + abs ' + diff.inHours.abs().toString());
+    print('Diff minutes + abs ' + diff.inMinutes.abs().toString());
 
     var dateMsg = '';
-    if (diff.inDays.abs() == 0) {
-      print('Chase was today');
-      dateMsg = chaseDate.hour.toString() + ' hours ago';
-    } else if (diff.inDays.abs() >= 1) {
-      // dateMsg = chaseDate.hour.toString() + ' hours ago';
-      dateMsg = chaseDate.toIso8601String().substring(0, 10);
-      print('Chase was older or equal to 1 day ' + dateMsg);
+
+    if (record.Live) {
+      dateMsg = 'LIVE!';
+    } else if (diff.inDays.abs() == 0) {
+      // Was the chase today?
+      if (diff.inHours.abs() == 0) {
+        // Chase in last hour?
+        if (diff.inMinutes == 0) {
+          // In the last minute? show seconds
+          dateMsg = diff.inSeconds.abs().toString() + ' seconds ago';
+        } else {
+          // Otherwise show how many minutes
+          dateMsg = diff.inMinutes.abs().toString() + ' minutes ago';
+        }
+      } else if (diff.inHours.abs() == 1) {
+        // One hour ago
+        dateMsg = diff.inHours.abs().toString() + ' hour ago';
+      } else if (diff.inHours.abs() > 1) {
+        // Hours ago
+        dateMsg = diff.inHours.abs().toString() + ' hours ago';
+      }
     } else {
+      // More than a day ago, just print the date
       dateMsg = chaseDate.toIso8601String().substring(0, 10);
-      print('Chase older than one day ' + dateMsg);
     }
 
     return Padding(
@@ -146,7 +165,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 dateMsg),
             trailing: new Chip(
               avatar: CircleAvatar(
-                backgroundColor: Colors.white,
+                // backgroundColor: Colors.white,
+                // backgroundColor: Colors.lightBlueAccent,
+                // backgroundColor: Colors.limeAccent,
+                backgroundColor: Colors.pink[50],
                 child: new Image(
                   image: new AssetImage("images/donut.png"),
                 ),
