@@ -85,7 +85,7 @@ class ShowChase extends StatelessWidget {
                         countCircleColor: Colors.pink,
                         hasShadow: true,
                         sparkleColor: Colors.red,
-                        shadowColor: Colors.black,
+                        shadowColor: Colors.pink,
                         defaultImageColor: Colors.pink,
                         filledImageColor: Colors.pink,
                       ))),

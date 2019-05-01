@@ -111,12 +111,14 @@ class _MyHomePageState extends State<MyHomePage> {
     var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
 
+    /*
     print('Start - ' + record.Name);
     print('Now - ' + today.toString());
     print('ChaseDate ' + chaseDate.toIso8601String());
     print('Diff days + abs ' + diff.inDays.abs().toString());
     print('Diff hours + abs ' + diff.inHours.abs().toString());
     print('Diff minutes + abs ' + diff.inMinutes.abs().toString());
+    */
 
     var dateMsg = '';
 

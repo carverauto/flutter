@@ -11,6 +11,7 @@ void firebaseCloudMessaging_Listeners() {
   if (Platform.isIOS) iOS_Permission();
 
   _firebaseMessaging.getToken().then((token) {
+    _firebaseMessaging.subscribeToTopic('chases');
     print(token);
   });
 

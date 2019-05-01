@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chaseapp/facebook.dart';
+import 'package:chaseapp/settings.dart';
 
 Widget TopBar(BuildContext context) {
   return new AppBar(
@@ -17,7 +18,13 @@ Widget TopBar(BuildContext context) {
     actions: <Widget>[
       Padding(
         padding: const EdgeInsets.only(right: 12.0),
-        // child: Icon(Icons.send),
+        child: IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Settings()))),
       )
     ],
   );
