@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Record {
   final String Name;
   final String LiveURL;
-  final String SavedURL;
   final bool Live;
   final Timestamp CreatedAt;
   final String Desc;
   final int Votes;
+  final List<String> URLs;
   final DocumentReference reference;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
@@ -22,9 +22,11 @@ class Record {
         CreatedAt = map['CreatedAt'],
         LiveURL = map['LiveURL'],
         Live = map['Live'],
-        SavedURL = map['SavedURL'],
         Votes = map['Votes'],
-        Desc = map['Desc'];
+        Desc = map['Desc'],
+        //URLs = new List<String>.from(map['URLs']);
+        URLs = map['URLs'] != null ? new List<String>.from(map['URLs']) : [];
+  // OtherURLs = map['OtherURLs'];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

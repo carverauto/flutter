@@ -83,11 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
+      stream: chaseStream,
       // stream: Firestore.instance.collection('chases').snapshots(),
+      /*
       stream: Firestore.instance
           .collection('chases')
           .orderBy('CreatedAt', descending: true)
           .snapshots(),
+          */
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildList(context, snapshot.data.documents);
@@ -111,14 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
     var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
 
-    /*
     print('Start - ' + record.Name);
     print('Now - ' + today.toString());
     print('ChaseDate ' + chaseDate.toIso8601String());
     print('Diff days + abs ' + diff.inDays.abs().toString());
     print('Diff hours + abs ' + diff.inHours.abs().toString());
     print('Diff minutes + abs ' + diff.inMinutes.abs().toString());
-    */
+    print("URLs " + record.URLs.toString());
 
     var dateMsg = '';
 
@@ -194,9 +196,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+//  Stream<Snapshot> chaseStream;
+  Stream<QuerySnapshot> chaseStream;
   @override
   void initState() {
     super.initState();
+    chaseStream = Firestore.instance
+        .collection('chases')
+        .orderBy('CreatedAt', descending: true)
+        .snapshots();
     print('in initState');
     firebaseCloudMessaging_Listeners();
   }

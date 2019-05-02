@@ -7,6 +7,7 @@ import 'package:medium_clap_flutter/medium_clap_flutter.dart';
 import 'package:share/share.dart';
 import 'package:chaseapp/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:chaseapp/showurls.dart';
 // import 'package:firebase_analytics/observer.dart';
 
 // import 'package:chaseapp/topbar.dart';
@@ -18,6 +19,13 @@ class ShowChase extends StatelessWidget {
   final Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);
+
+/*
+  Widget _buildUrlItem(BuildContext context, DocumentSnapshot data) {
+    // final OtherURL = Record.fromSnapshot(data);
+    final foo = Record.fromSnapshot(record.OtherURL.getDocuments())
+  }
+  */
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -45,7 +53,9 @@ class ShowChase extends StatelessWidget {
                   Share.share(record.LiveURL,
                       sharePositionOrigin:
                           box.localToGlobal(Offset.zero) & box.size);
-                }))
+                })),
+        /*
+        */
       ],
     );
 
@@ -64,8 +74,16 @@ class ShowChase extends StatelessWidget {
                   trailing: Text(record.Votes.toString() + ' donuts')),
               Divider(),
               Padding(
-                  padding: EdgeInsets.all(0.3),
+                  // padding: EdgeInsets.all(0.3),
+                  padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
                   child: Linkify(onOpen: _onOpen, text: record.LiveURL)),
+              Padding(
+                padding: EdgeInsets.all(0.3),
+                // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),
+                // child: Text(record.URLs.toString())
+                child: URLView(record.URLs),
+                // child: <Widget>[URLView(record.URLs)]),
+              ),
               Container(
                   padding: EdgeInsets.all(30),
                   child: Align(
