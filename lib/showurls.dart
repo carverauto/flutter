@@ -4,7 +4,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class URLView extends StatelessWidget {
-  final List<String> urls;
+  final List<Map> urls;
 
   URLView(this.urls);
 
@@ -17,7 +17,8 @@ class URLView extends StatelessWidget {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.all(0.3),
-                child: Linkify(onOpen: _onOpen, text: item)),
+                // child: Linkify(onOpen: _onOpen, text: item.toString())),
+                child: Linkify(onOpen: _onOpen, text: item["URL"]))
           ],
         ),
       );
