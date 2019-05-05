@@ -50,7 +50,7 @@ class ShowChase extends StatelessWidget {
                   analytics.logViewItem();
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
-                  Share.share(record.LiveURL,
+                  Share.share(record.url,
                       sharePositionOrigin:
                           box.localToGlobal(Offset.zero) & box.size);
                 })),
@@ -68,20 +68,20 @@ class ShowChase extends StatelessWidget {
               child: Column(
             children: <Widget>[
               ListTile(
-                  title: Text(record.Name,
+                  title: Text(record.name,
                       style: TextStyle(fontWeight: FontWeight.w500)),
-                  subtitle: Text(record.Desc),
-                  trailing: Text(record.Votes.toString() + ' donuts')),
+                  subtitle: Text(record.desc),
+                  trailing: Text(record.votes.toString() + ' donuts')),
               Divider(),
               Padding(
                   // padding: EdgeInsets.all(0.3),
                   padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
-                  child: Linkify(onOpen: _onOpen, text: record.LiveURL)),
+                  child: Linkify(onOpen: _onOpen, text: record.url)),
               Padding(
                 padding: EdgeInsets.all(0.3),
                 // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),
                 // child: Text(record.URLs.toString())
-                child: URLView(record.URLs),
+                child: URLView(record.urls),
                 // child: <Widget>[URLView(record.URLs)]),
               ),
               Container(
@@ -95,8 +95,8 @@ class ShowChase extends StatelessWidget {
                                   await transaction.get(record.reference);
                               final fresh = Record.fromSnapshot(freshSnapshot);
                               await transaction.update(
-                                  record.reference, {'Votes': fresh.Votes + 1});
-                              counter = fresh.Votes;
+                                  record.reference, {'votes': fresh.votes + 1});
+                              counter = fresh.votes;
                             }),
                         defaultImage: "images/donut.png",
                         filledImage: "images/donut.png",

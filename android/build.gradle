@@ -5,8 +5,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+         classpath 'com.android.tools.build:gradle:3.4.0'
+        // classpath 'com.android.tools.build:gradle:5.4.1'
         classpath 'com.google.gms:google-services:3.2.1'
+        //classpath 'com.google.gms:google-services:4.2.0'
+        // classpath 'com.google.firebase:firebase-core:16.0.8'
+        // classpath 'com.google.firebase:firebase-firestore:18.2.0'
+        // classpath 'com.google.firebase:firebase-messaging:17.6.0'
+        // compile 'com.google.firebase:firebase-core:12.0.0'
     }
 }
 
@@ -29,4 +35,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+// apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

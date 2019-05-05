@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+// import 'package:chaseapp/datetime.dart';
 import 'package:chaseapp/showchase.dart';
 import 'package:chaseapp/record.dart';
 import 'package:chaseapp/topbar.dart';
@@ -110,21 +110,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // var chaseDate = DateTime.parse(record.CreatedAt.toString());
     // record.CreatedAt.toDate().toIso8601String()
-    var chaseDate = DateTime.parse(record.CreatedAt.toDate().toIso8601String());
+    // var chaseDate = DateTime.parse(record.createdAt.toDate().toIso8601String());
+    var chaseDate = DateTime.parse(record.createdAt.toIso8601String());
     var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
 
-    print('Start - ' + record.Name);
+    print('Start - ' + record.name);
     print('Now - ' + today.toString());
     print('ChaseDate ' + chaseDate.toIso8601String());
     print('Diff days + abs ' + diff.inDays.abs().toString());
     print('Diff hours + abs ' + diff.inHours.abs().toString());
     print('Diff minutes + abs ' + diff.inMinutes.abs().toString());
-    print("URLs " + record.URLs.toString());
+    print("URLs " + record.urls.toString());
 
     var dateMsg = '';
 
-    if (record.Live) {
+    if (record.live) {
       dateMsg = 'LIVE!';
     } else if (diff.inDays.abs() == 0) {
       // Was the chase today?
@@ -150,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Padding(
-      key: ValueKey(record.Name),
+      key: ValueKey(record.name),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
@@ -160,13 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListTile(
             leading: new CircleAvatar(
               backgroundColor: Colors.white,
-              child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
+              child: record.live ? _displayLiveIcon() : _displayVideoIcon(),
             ),
-            title: Text(record.Name),
+            title: Text(record.name),
             // subtitle: Text(record.Votes.toString() + ' donuts'),
-            subtitle: Text(
-                // record.CreatedAt.toDate().toLocal().toString().trimRight()),
-                dateMsg),
+            subtitle: Text(dateMsg),
             trailing: new Chip(
               avatar: CircleAvatar(
                 // backgroundColor: Colors.white,
@@ -177,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   image: new AssetImage("images/donut.png"),
                 ),
               ),
-              label: Text(record.Votes.toString()),
+              label: Text(record.votes.toString()),
             ),
             /*
             trailing: new CircleAvatar(
@@ -203,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     chaseStream = Firestore.instance
         .collection('chases')
-        .orderBy('CreatedAt', descending: true)
+        .orderBy('createdAt', descending: true)
         .snapshots();
     print('in initState');
     firebaseCloudMessaging_Listeners();
