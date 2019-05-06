@@ -111,11 +111,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // var chaseDate = DateTime.parse(record.CreatedAt.toString());
     // record.CreatedAt.toDate().toIso8601String()
     // var chaseDate = DateTime.parse(record.createdAt.toDate().toIso8601String());
-    var chaseDate = DateTime.parse(record.createdAt.toIso8601String());
+    var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
     var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
 
-    print('Start - ' + record.name);
+    print('Start - ' + record.Name);
     print('Now - ' + today.toString());
     print('ChaseDate ' + chaseDate.toIso8601String());
     print('Diff days + abs ' + diff.inDays.abs().toString());
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var dateMsg = '';
 
-    if (record.live) {
+    if (record.Live) {
       dateMsg = 'LIVE!';
     } else if (diff.inDays.abs() == 0) {
       // Was the chase today?
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Padding(
-      key: ValueKey(record.name),
+      key: ValueKey(record.Name),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
@@ -161,9 +161,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListTile(
             leading: new CircleAvatar(
               backgroundColor: Colors.white,
-              child: record.live ? _displayLiveIcon() : _displayVideoIcon(),
+              child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
             ),
-            title: Text(record.name),
+            title: Text(record.Name),
             // subtitle: Text(record.Votes.toString() + ' donuts'),
             subtitle: Text(dateMsg),
             trailing: new Chip(
@@ -176,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   image: new AssetImage("images/donut.png"),
                 ),
               ),
-              label: Text(record.votes.toString()),
+              label: Text(record.Votes.toString()),
             ),
             /*
             trailing: new CircleAvatar(
@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     chaseStream = Firestore.instance
         .collection('chases')
-        .orderBy('createdAt', descending: true)
+        .orderBy('CreatedAt', descending: true)
         .snapshots();
     print('in initState');
     firebaseCloudMessaging_Listeners();
