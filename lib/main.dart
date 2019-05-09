@@ -108,20 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record.fromSnapshot(data);
 
-    // var chaseDate = DateTime.parse(record.CreatedAt.toString());
-    // record.CreatedAt.toDate().toIso8601String()
-    // var chaseDate = DateTime.parse(record.createdAt.toDate().toIso8601String());
     var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
     var today = new DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
-
-    print('Chase - ' + record.Name);
-    // print('Now - ' + today.toString());
-    print('ChaseDate ' + chaseDate.toIso8601String());
-    // print('Diff days + abs ' + diff.inDays.abs().toString());
-    // print('Diff hours + abs ' + diff.inHours.abs().toString());
-    // print('Diff minutes + abs ' + diff.inMinutes.abs().toString());
-    print("URLs " + record.urls.toString());
+    // print("URLs " + record.urls.toString());
 
     var dateMsg = '';
 
@@ -168,9 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
             subtitle: Text(dateMsg),
             trailing: new Chip(
               avatar: CircleAvatar(
-                // backgroundColor: Colors.white,
-                // backgroundColor: Colors.lightBlueAccent,
-                // backgroundColor: Colors.limeAccent,
                 backgroundColor: Colors.pink[50],
                 child: new Image(
                   image: new AssetImage("images/donut.png"),

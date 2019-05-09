@@ -55,7 +55,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - images/donut.png
-    - images/donut.jpg
+    #  - images/donut.jpg
     - images/sparkles.png
     - images/chaseapp.png
     - images/broadcast.png

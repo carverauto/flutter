@@ -107,6 +107,7 @@ class ShowChase extends StatelessWidget {
                         defaultImageColor: Colors.pink,
                         filledImageColor: Colors.pink,
                       ))),
+              /*
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 8.0),
                 child: Row(
@@ -119,8 +120,7 @@ class ShowChase extends StatelessWidget {
                         shape: BoxShape.circle,
                         image: new DecorationImage(
                             fit: BoxFit.fill,
-                            image: new NetworkImage(
-                                "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
+                            image: new NetworkImage( "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
                       ),
                     ),
                     new SizedBox(
@@ -141,6 +141,7 @@ class ShowChase extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text("1 Day Ago", style: TextStyle(color: Colors.grey)),
               ),
+              */
             ],
           ))),
       /*
