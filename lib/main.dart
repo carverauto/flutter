@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -9,7 +10,13 @@ import 'package:chaseapp/record.dart';
 import 'package:chaseapp/topbar.dart';
 import 'package:chaseapp/fbcm.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
@@ -93,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           */
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _buildList(context, snapshot.data.documents);
+        return _buildList(context, snapshot.data.docs);
       },
     );
   }
@@ -142,7 +149,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Padding(
-      key: ValueKey(record.Name),
+      // key: ValueKey(record.Name),
+      key: ValueKey(record.ID),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
@@ -188,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    chaseStream = Firestore.instance
+    chaseStream = FirebaseFirestore.instance
         .collection('chases')
         .orderBy('CreatedAt', descending: true)
         .snapshots();
