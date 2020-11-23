@@ -16,7 +16,7 @@ class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
 
   final FirebaseAnalytics analytics = FirebaseAnalytics();
-  final Record record;
+  Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);
 

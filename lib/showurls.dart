@@ -16,7 +16,7 @@ class URLView extends StatelessWidget {
         new Row(
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.all(0.3),
+                padding: EdgeInsets.all(0.4),
                 // child: Linkify(onOpen: _onOpen, text: item.toString())),
                 child: Linkify(onOpen: _onOpen, text: item["URL"]))
           ],

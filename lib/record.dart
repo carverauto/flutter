@@ -12,7 +12,7 @@ class Record {
   // final Timestamp _createdAt;
   final DateTime _createdAt;
   final String _desc;
-  final int _votes;
+  int _votes;
   final List _urls;
 
   DocumentReference reference;

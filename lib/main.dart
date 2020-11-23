@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final record = Record.fromSnapshot(data);
+    // var record = Record.fromSnapshot(data);
 
     var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
     var today = new DateTime.now().toLocal();

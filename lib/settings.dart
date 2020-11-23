@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:chaseapp/facebook.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 // import 'package:firebase_analytics/observer.dart';
 
 // import 'package:chaseapp/topbar.dart';
@@ -25,29 +28,53 @@ class Settings extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           }),
-      title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-      /*
       actions: <Widget>[
-        Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            // child: Icon(Icons.share),
-            child: IconButton(
-                icon: new Icon(Icons.share),
-                onPressed: () {
-                  analytics.logViewItem();
-                  final RenderBox box = context.findRenderObject();
-                  // Share.share("ChaseApp - record.LiveURL");
-                  Share.share(record.LiveURL,
-                      sharePositionOrigin:
-                          box.localToGlobal(Offset.zero) & box.size);
-                }))
+        IconButton(
+          icon: Icon(
+            Icons.exit_to_app,
+            color: Colors.black,
+          ),
+          // onPressed: () => facebookLogin.isLoggedIn
+          // onPressed: () => LoginPage.isLoggedIn .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
+        ),
       ],
-      */
+      title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
     );
 
     return new Scaffold(
       appBar: topBar,
-      body: new SizedBox(),
+      body: new SizedBox(
+          height: deviceSize.height,
+          child: Card(
+              child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text(
+                  'Settings',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+              Divider(),
+              Padding(
+                // padding: EdgeInsets.all(0.2), child: Text('Notifications')),
+                padding: EdgeInsets.all(0.2),
+                child: RaisedButton(
+                  onPressed: _launchURL,
+                  child: Text('Show Privacy Policy'),
+                ),
+                // child: LoginPage())
+              )
+            ],
+          ))),
     );
+  }
+}
+
+_launchURL() async {
+  const url = 'https://chaseapp.tv/privacy';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

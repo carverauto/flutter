@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+
 // import 'package:chaseapp/topbar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +13,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  /*
+  @override 
+  void initState() {
+    super.initState();
+  }
+  */
+
   bool isLoggedIn = false;
   var profileData;
 
@@ -25,55 +34,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    return Scaffold(
-      // appBar: TopBar(context),
-      appBar: AppBar(
-        backgroundColor: new Color(0xfff8faf8),
-        centerTitle: true,
-        elevation: 1.0,
-        // leading: new Icon(Icons.camera_alt),
-        title:
-            SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-        leading: new IconButton(
-            icon: new Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.black,
-            ),
-            onPressed: () => facebookLogin.isLoggedIn
-                .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
-          ),
-        ],
-      ),
-      /* AppBar(
-          title: Text("Facebook Login"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Colors.white,
-              ),
-              onPressed: () => facebookLogin.isLoggedIn
-                  .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
-            ),
-          ],
-        ),
-        */
-      body: Container(
-        child: Center(
-          child: isLoggedIn
-              ? _displayUserData(profileData)
-              : _displayLoginButton(),
-        ),
+    return Container(
+      child: Center(
+        child:
+            isLoggedIn ? _displayUserData(profileData) : _displayLoginButton(),
       ),
     );
   }
@@ -81,8 +45,11 @@ class _LoginPageState extends State<LoginPage> {
   void initiateFacebookLogin() async {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
 
+    final fbLogin = FacebookLogin();
+
     var facebookLoginResult =
-        await facebookLogin.logInWithReadPermissions(['email']);
+         await fbLogin.logIn(['email']);
+        
 
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
@@ -133,10 +100,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _displayLoginButton() {
-    return RaisedButton(
-      child: Text("Login with Facebook"),
-      onPressed: () => initiateFacebookLogin(),
-    );
+    return FacebookSignInButton(onPressed: () => initiateFacebookLogin());
   }
 
   _logout() async {
