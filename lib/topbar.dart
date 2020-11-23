@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:chaseapp/facebook.dart';
+// import 'package:chaseapp/facebookOLD.dart';
 import 'package:chaseapp/settings.dart';
 
 Widget TopBar(BuildContext context) {
@@ -9,12 +9,6 @@ Widget TopBar(BuildContext context) {
     elevation: 1.0,
     // leading: new Icon(Icons.camera_alt),
     title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-    leading: new IconButton(
-        icon: new Icon(Icons.face),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
-        }),
     actions: <Widget>[
       Padding(
         padding: const EdgeInsets.only(right: 12.0),

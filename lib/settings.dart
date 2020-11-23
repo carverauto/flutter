@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+// import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:chaseapp/facebook.dart';
+// import 'package:chaseapp/facebook.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // import 'package:firebase_analytics/observer.dart';
@@ -34,6 +34,9 @@ class Settings extends StatelessWidget {
             Icons.exit_to_app,
             color: Colors.black,
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
           // onPressed: () => facebookLogin.isLoggedIn
           // onPressed: () => LoginPage.isLoggedIn .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
         ),

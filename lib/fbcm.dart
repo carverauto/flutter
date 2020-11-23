@@ -38,7 +38,6 @@ void _flutterToast({message}) {
       msg: 'We have a chase!',
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
-      timeInSecForIos: 1,
       backgroundColor: Colors.red,
       textColor: Colors.white,
       fontSize: 16.0);

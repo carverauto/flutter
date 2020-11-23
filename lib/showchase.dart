@@ -16,7 +16,7 @@ class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
 
   final FirebaseAnalytics analytics = FirebaseAnalytics();
-  Record record;
+  final Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);
 
@@ -47,7 +47,7 @@ class ShowChase extends StatelessWidget {
             child: IconButton(
                 icon: new Icon(Icons.share),
                 onPressed: () {
-                  analytics.logViewItem();
+                  // analytics.logViewItem(); // #TODO: need to update this
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
                   Share.share(record.URL,
@@ -89,12 +89,12 @@ class ShowChase extends StatelessWidget {
                   child: Align(
                       alignment: FractionalOffset(1.0, 0.2),
                       child: ClapFAB.image(
-                        clapFabCallback: (int counter) => Firestore.instance
+                        clapFabCallback: (int counter) => FirebaseFirestore.instance
                                 .runTransaction((transaction) async {
                               final freshSnapshot =
                                   await transaction.get(record.reference);
                               final fresh = Record.fromSnapshot(freshSnapshot);
-                              await transaction.update(
+                              transaction.update(
                                   record.reference, {'Votes': fresh.Votes + 1});
                               counter = fresh.Votes;
                             }),
