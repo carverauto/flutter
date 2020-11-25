@@ -90,14 +90,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: chaseStream,
-      // stream: Firestore.instance.collection('chases').snapshots(),
-      /*
-      stream: Firestore.instance
-          .collection('chases')
-          .orderBy('CreatedAt', descending: true)
-          .snapshots(),
-          */
+      stream: FirebaseFirestore.instance
+        .collection('chases')
+        .orderBy('CreatedAt', descending: true)
+        .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildList(context, snapshot.data.docs);
@@ -191,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//  Stream<Snapshot> chaseStream;
+/*  Stream<Snapshot> chaseStream;
   Stream<QuerySnapshot> chaseStream;
   @override
   void initState() {
@@ -202,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .snapshots();
     print('in initState');
     firebaseCloudMessaging_Listeners();
-  }
+  }*/
 } // _myHomePageState
 
 _displayLiveIcon() {
