@@ -6,8 +6,8 @@ class URLs {
 }
 
 class Record {
+  final String _id;
   final String _name;
-  int _ID;
   final String _url;
   final bool _live;
   // final Timestamp _createdAt;
@@ -18,19 +18,18 @@ class Record {
 
   DocumentReference reference;
 
-  Record(this._name, this._ID, this._url, this._live, this._createdAt, this._desc,
-      this._votes, this._urls, this.reference);
+  Record(this._name, this._id, this._url, this._live, this._createdAt,
+      this._desc, this._votes, this._urls, this.reference);
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['Name'] != null),
-        assert(map['ID'] != null),
         assert(map['CreatedAt'] != null),
         assert(map['URL'] != null),
         assert(map['Live'] != null),
         assert(map['Votes'] != null),
         assert(map['Desc'] != null),
+        _id = reference.id,
         _name = map['Name'],
-        _ID = map['ID'],
         // _createdAt = map['createdAt'] as DateTime,
         _createdAt = (map['CreatedAt'] as Timestamp).toDate(),
         _url = map['URL'],
@@ -44,6 +43,7 @@ class Record {
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);
 
+  String get ID => _id;
   String get Name => _name;
   DateTime get CreatedAt => _createdAt;
   // Timestamp get createdAt => _createdAt;
