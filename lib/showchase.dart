@@ -8,7 +8,7 @@ import 'package:share/share.dart';
 import 'package:chaseapp/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/showurls.dart';
-import 'dart:developer';
+// import 'dart:developer';
 // import 'package:firebase_analytics/observer.dart';
 
 // import 'package:chaseapp/topbar.dart';
