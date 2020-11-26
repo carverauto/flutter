@@ -45,3 +45,12 @@ post_install do |installer|
   end
 end
 
+# added 11/26/2020 - mfreeman
+# https://developers.facebook.com/docs/app-events/upgrade-guide
+# TODO: run pod update
+pod 'FacebookSDK'
+pod 'FacebookSDK/LoginKit'
+pod 'FacebookSDK/ShareKit'
+pod 'FacebookSDK/PlacesKit'
+
+pod 'FBSDKMessengerShareKit'

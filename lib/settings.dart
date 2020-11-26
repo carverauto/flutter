@@ -1,4 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chaseapp/login_page.dart';
+import 'package:chaseapp/sign_in.dart';
 import 'package:flutter/material.dart';
 // import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -39,6 +41,16 @@ class Settings extends StatelessWidget {
           },
           // onPressed: () => facebookLogin.isLoggedIn
           // onPressed: () => LoginPage.isLoggedIn .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.logout,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            signOutGoogle();
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) { return LoginPage();}), ModalRoute.withName('/'));
+          },
         ),
       ],
       title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),

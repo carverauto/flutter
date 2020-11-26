@@ -8,6 +8,7 @@ import 'package:share/share.dart';
 import 'package:chaseapp/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/showurls.dart';
+// import 'dart:developer';
 // import 'package:firebase_analytics/observer.dart';
 
 // import 'package:chaseapp/topbar.dart';
@@ -28,7 +29,6 @@ class ShowChase extends StatelessWidget {
   */
   @override
   Widget build(BuildContext context) {
-    var deviceSize = MediaQuery.of(context).size;
     final topBar = new AppBar(
       backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
@@ -54,120 +54,77 @@ class ShowChase extends StatelessWidget {
                       sharePositionOrigin:
                           box.localToGlobal(Offset.zero) & box.size);
                 })),
-        /*
-        */
       ],
     );
 
-    return new Scaffold(
-      appBar: topBar,
-      body: new SizedBox(
-          // height: 300,
-          height: deviceSize.height,
-          child: Card(
-              child: Column(
-            children: <Widget>[
-              ListTile(
-                  title: Text(record.Name,
-                      style: TextStyle(fontWeight: FontWeight.w500)),
-                  subtitle: Text(record.Desc),
-                  trailing: Text(record.Votes.toString() + ' donuts')),
-              Divider(),
-              Padding(
-                  // padding: EdgeInsets.all(0.3),
-                  padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
-                  child: Linkify(onOpen: _onOpen, text: record.URL)),
-              Padding(
-                padding: EdgeInsets.all(0.3),
-                // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),
-                // child: Text(record.URLs.toString())
-                child: URLView(record.urls),
-                // child: <Widget>[URLView(record.URLs)]),
-              ),
-              Container(
-                  padding: EdgeInsets.all(30),
-                  child: Align(
-                      alignment: FractionalOffset(1.0, 0.2),
-                      child: ClapFAB.image(
-                        clapFabCallback: (int counter) => FirebaseFirestore.instance
-                                .runTransaction((transaction) async {
-                              final freshSnapshot =
-                                  await transaction.get(record.reference);
-                              final fresh = Record.fromSnapshot(freshSnapshot);
-                              transaction.update(
-                                  record.reference, {'Votes': fresh.Votes + 1});
-                              counter = fresh.Votes;
-                            }),
-                        defaultImage: "images/donut.png",
-                        filledImage: "images/donut.png",
-                        countCircleColor: Colors.pink,
-                        hasShadow: true,
-                        sparkleColor: Colors.red,
-                        shadowColor: Colors.pink,
-                        defaultImageColor: Colors.pink,
-                        filledImageColor: Colors.pink,
-                      ))),
-              /*
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    new Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: new DecorationImage(
-                            fit: BoxFit.fill,
-                            image: new NetworkImage( "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
-                      ),
-                    ),
-                    new SizedBox(
-                      width: 10.0,
-                    ),
-                    Expanded(
-                      child: new TextField(
-                        decoration: new InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Add a comment...",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text("1 Day Ago", style: TextStyle(color: Colors.grey)),
-              ),
-              */
-            ],
-          ))),
-      /*
-      // broken
-      floatingActionButton: FloatingActionButton(
-        child: ClapFAB.image(
-          clapFabCallback: (int counter) =>
-              Firestore.instance.runTransaction((transaction) async {
-                final freshSnapshot = await transaction.get(record.reference);
-                final fresh = Record.fromSnapshot(freshSnapshot);
-                await transaction
-                    .update(record.reference, {'Votes': fresh.Votes + 1});
-                counter = fresh.Votes;
-              }),
-          defaultImage: "images/donut.png",
-          filledImage: "images/donut.png",
-          countCircleColor: Colors.pink,
-          hasShadow: true,
-          sparkleColor: Colors.red,
-          shadowColor: Colors.black,
-          defaultImageColor: Colors.pink,
-          filledImageColor: Colors.pink,
-        ),
-      ),
-      */
+    return new Scaffold(appBar: topBar, body: _stream(record, context));
+  }
+
+  StreamBuilder _stream(Record record, BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('chases')
+          .doc(record.ID)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _sizedBox(context, snapshot.data);
+      },
     );
+  }
+
+  Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
+    var deviceSize = MediaQuery.of(context).size;
+    Record record = Record.fromSnapshot(snapshot);
+    return SizedBox(
+        // height: 300,
+        height: deviceSize.height,
+        child: Card(
+            child: Column(
+          children: <Widget>[
+            ListTile(
+                title: Text(record.Name,
+                    style: TextStyle(fontWeight: FontWeight.w500)),
+                subtitle: Text(record.Desc),
+                trailing: Text(record.Votes.toString() + ' donuts')),
+            Divider(),
+            Padding(
+                // padding: EdgeInsets.all(0.3),
+                padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
+                child: Linkify(onOpen: _onOpen, text: record.URL)),
+            Padding(
+              padding: EdgeInsets.all(0.3),
+              // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),
+              // child: Text(record.URLs.toString())
+              child: URLView(record.urls),
+              // child: <Widget>[URLView(record.URLs)]),
+            ),
+            Container(
+                padding: EdgeInsets.all(30),
+                child: Align(
+                    alignment: FractionalOffset(1.0, 0.2),
+                    child: ClapFAB.image(
+                      clapFabCallback: (int counter) => FirebaseFirestore
+                          .instance
+                          .runTransaction((transaction) async {
+                        final freshSnapshot =
+                            await transaction.get(record.reference);
+                        final fresh = Record.fromSnapshot(freshSnapshot);
+                        transaction.update(
+                            record.reference, {'Votes': fresh.Votes + 1});
+                        counter = fresh.Votes;
+                      }),
+                      defaultImage: "images/donut.png",
+                      filledImage: "images/donut.png",
+                      countCircleColor: Colors.pink,
+                      hasShadow: true,
+                      sparkleColor: Colors.red,
+                      shadowColor: Colors.pink,
+                      defaultImageColor: Colors.pink,
+                      filledImageColor: Colors.pink,
+                    ))),
+          ],
+        )));
   }
 
   Future<void> _onOpen(LinkableElement link) async {
