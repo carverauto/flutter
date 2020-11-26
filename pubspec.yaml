@@ -19,22 +19,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # cloud_firestore: ^0.8.2 # new
-  #cloud_firestore: ^0.13.0+1
   cloud_firestore: ^0.14.3
   firebase_messaging: ^7.0.3
   firebase_analytics: ^6.2.0
+  firebase_auth: ^0.18.3
   flutter_linkify: ^4.0.2
   url_launcher: ^5.7.10
+  # flutter_twitter_login: ^1.1.0
   medium_clap_flutter: ^0.0.1
   font_awesome_flutter: ^8.10.0
   share: ^0.6.5+4
-  # flutter_facebook_login: ^3.0.0
   http: ^0.12.2
   fluttertoast: ^7.1.4
   flutter_launcher_icons: "^0.8.1"
-  # flutter_auth_buttons: ^0.6.0
   launch_review: ^2.0.0
+  google_sign_in: "^4.5.1"
+  flutter_facebook_auth: "^1.0.0"
+  #sign_in_with_apple: ^2.5.2
+  #crypto: ^2.1.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,6 +66,8 @@ flutter:
     - images/chaseapp.png
     - images/broadcast.png
     - images/video.png
+    - images/google_logo.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
