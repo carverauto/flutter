@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:chaseapp/facebookOLD.dart';
 import 'package:chaseapp/settings.dart';
+// import 'package:chaseapp/login_page.dart';
+import 'package:chaseapp/sign_in.dart';
 
 Widget TopBar(BuildContext context) {
   return new AppBar(
@@ -12,14 +14,14 @@ Widget TopBar(BuildContext context) {
     actions: <Widget>[
       Padding(
         padding: const EdgeInsets.only(right: 12.0),
-        child: IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.black,
-            ),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Settings()))),
-      )
+        child:
+         CircleAvatar(
+            radius: 20,
+            backgroundImage: NetworkImage(imageUrl),
+            backgroundColor: Colors.transparent
+            // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+          ),
+      ),
     ],
   );
 }
