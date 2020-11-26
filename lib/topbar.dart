@@ -15,13 +15,9 @@ Widget TopBar(BuildContext context) {
       Padding(
         padding: const EdgeInsets.only(right: 12.0),
         child:
-         CircleAvatar(
-            radius: 20,
-            backgroundImage: NetworkImage(imageUrl),
-            backgroundColor: Colors.transparent
+            IconButton(icon: CircleAvatar(radius: 20, backgroundImage: NetworkImage(imageUrl),), onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings())))
             // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
           ),
-      ),
     ],
   );
 }
