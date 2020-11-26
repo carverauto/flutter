@@ -35,7 +35,7 @@ class ShowChase extends StatelessWidget {
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
       leading: new IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
           onPressed: () {
             Navigator.pop(context);
           }),
@@ -45,9 +45,9 @@ class ShowChase extends StatelessWidget {
             padding: const EdgeInsets.only(right: 12.0),
             // child: Icon(Icons.share),
             child: IconButton(
-                icon: new Icon(Icons.share),
+                icon: new Icon(Icons.share, color: Colors.black),
                 onPressed: () {
-                  // analytics.logViewItem(); // #TODO: need to update this
+                  // analytics.logViewItem(); // #TODO: need tk update this
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
                   Share.share(record.URL,
