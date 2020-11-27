@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     // added by mfreeman 11/26/2020
     implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
-    // implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-core:17.0.0'
     // implementation 'androidx.annotation:annotation:1.1.0-beta01'
 }
 

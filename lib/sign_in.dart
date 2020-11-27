@@ -9,10 +9,18 @@ String name;
 String email;
 String imageUrl;
 
+enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
+
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
 
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
   final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
 

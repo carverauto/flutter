@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1020122644146-7hrbbg1s622dv724bqichebna7696b00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carverauto.chaseapp",
+            "certificate_hash": "457bc8c7dfb5baf63beaea7b27c6aaa0971c681b"
+          }
+        },
+        {
           "client_id": "1020122644146-o4b56sp1abe0g232ua03kpkl85g7iakc.apps.googleusercontent.com",
           "client_type": 3
         }

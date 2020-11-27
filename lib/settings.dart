@@ -26,22 +26,11 @@ class Settings extends StatelessWidget {
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
       leading: new IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
           onPressed: () {
             Navigator.pop(context);
           }),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.exit_to_app,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          // onPressed: () => facebookLogin.isLoggedIn
-          // onPressed: () => LoginPage.isLoggedIn .then((isLoggedIn) => isLoggedIn ? _logout() : {}),
-        ),
         IconButton(
           icon: Icon(
             Icons.logout,
