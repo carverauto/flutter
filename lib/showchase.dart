@@ -5,7 +5,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
 import 'package:share/share.dart';
-import 'package:chaseapp/record.dart';
+import 'package:chaseapp/utils/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/showurls.dart';
 // import 'dart:developer';
@@ -35,7 +35,10 @@ class ShowChase extends StatelessWidget {
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
       leading: new IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pop(context);
           }),

@@ -1,18 +1,17 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chaseapp/login_page.dart';
-import 'package:chaseapp/sign_in.dart';
+import 'package:chaseapp/login_screen.dart';
 import 'package:flutter/material.dart';
-// import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
-// import 'package:chaseapp/facebook.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-// import 'package:firebase_analytics/observer.dart';
-
-// import 'package:chaseapp/topbar.dart';
 
 class Settings extends StatelessWidget {
-  // ShowChase(this.observer);
+
+final GoogleSignIn _googleSignIn = GoogleSignIn();
+void signOutGoogle() async {
+    await _googleSignIn.signOut();
+    print("User Sign Out");
+  }
 
   final FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -26,7 +25,10 @@ class Settings extends StatelessWidget {
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
       leading: new IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pop(context);
           }),
@@ -38,7 +40,10 @@ class Settings extends StatelessWidget {
           ),
           onPressed: () {
             signOutGoogle();
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) { return LoginPage();}), ModalRoute.withName('/'));
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) {
+              return LoginScreen();
+            }), ModalRoute.withName('/'));
           },
         ),
       ],
