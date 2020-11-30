@@ -6,21 +6,37 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 // import 'package:chaseapp/datetime.dart';
 import 'package:chaseapp/showchase.dart';
-import 'package:chaseapp/record.dart';
+import 'package:chaseapp/utils/record.dart';
 import 'package:chaseapp/topbar.dart';
+import 'package:chaseapp/login_screen.dart';
+import 'package:flutter/rendering.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:chaseapp/fbcm.dart';
 // import 'login_page.dart';
 
-
 // void main() => runApp(MyApp());
+/*
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
+*/
 
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
 
-class MyApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
+class _HomeScreenState extends State<HomeScreen> {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  void signOutGoogle() async {
+    await _googleSignIn.signOut();
+    print("User Sign Out");
+  }
+
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
@@ -94,9 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-        .collection('chases')
-        .orderBy('CreatedAt', descending: true)
-        .snapshots(),
+          .collection('chases')
+          .orderBy('CreatedAt', descending: true)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildList(context, snapshot.data.docs);
