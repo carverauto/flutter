@@ -18,8 +18,8 @@ Widget TopBar(BuildContext context) {
           child: IconButton(
               icon: CircleAvatar(
                 radius: 20,
-                // backgroundImage: NetworkImage(imageUrl),
-                backgroundColor: Colors.black,
+                backgroundImage: NetworkImage(imageUrl),
+                // backgroundColor: Colors.black,
               ),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Settings())))

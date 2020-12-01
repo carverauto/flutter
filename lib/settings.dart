@@ -1,14 +1,14 @@
-import 'package:chaseapp/login_screen.dart';
+// import 'package:chaseapp/utils/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:chaseapp/login_screen.dart';
+import 'package:chaseapp/utils/deviceSize.dart';
 
 class Settings extends StatelessWidget {
-
-final GoogleSignIn _googleSignIn = GoogleSignIn();
-void signOutGoogle() async {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  void signOutGoogle() async {
     await _googleSignIn.signOut();
     print("User Sign Out");
   }
@@ -19,6 +19,7 @@ void signOutGoogle() async {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
+
     final topBar = new AppBar(
       backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
@@ -40,10 +41,9 @@ void signOutGoogle() async {
           ),
           onPressed: () {
             signOutGoogle();
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) {
-              return LoginScreen();
-            }), ModalRoute.withName('/'));
+            //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new LoginScreen()));
           },
         ),
       ],

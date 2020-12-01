@@ -267,6 +267,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     model.state = ViewState.Idle;
 
+    name = user.displayName;
+    email = user.email;
+    imageUrl = user.photoURL;
+
     print("User Name: ${user.displayName}");
     print("User Email ${user.email}");
 
