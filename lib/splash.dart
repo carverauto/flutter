@@ -25,20 +25,21 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   }
 
   void navigationPage() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   @override
   void initState() {
     super.initState();
 
-    animationController = new AnimationController(
-        vsync: this, duration: new Duration(seconds: 5));
-    animation =
-        new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
+    animationController = new AnimationController(vsync: this, duration: new Duration(seconds: 5));
+    animation = new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 
-    animation.addListener(() => this.setState(() {}));
+    // animation.addListener(() => this.setState(() {}));
+    animation.addListener(() {
+      if (mounted) this.setState(() {});
+    });
+
     animationController.forward();
 
     setState(() {
@@ -49,11 +50,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    deviceSize = DeviceSize(
-        size: MediaQuery.of(context).size,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        aspectRatio: MediaQuery.of(context).size.aspectRatio);
+    deviceSize =
+        DeviceSize(size: MediaQuery.of(context).size, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height, aspectRatio: MediaQuery.of(context).size.aspectRatio);
     return ChangeNotifierProvider<SignInViewModel>(
         builder: (_) => SignInViewModel(),
         child: Scaffold(

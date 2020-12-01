@@ -10,6 +10,7 @@ import 'package:chaseapp/utils/routeNames.dart';
 import 'package:chaseapp/utils/util.dart';
 import 'package:chaseapp/utils/view_state.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import "package:velocity_x/velocity_x.dart";
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -38,7 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
           return WillPopScope(
             child: SafeArea(
               child: Scaffold(
-                backgroundColor: Color(0xFFE6E6E6),
+                // backgroundColor: Color(0xFFE6E6E6),
+                backgroundColor: Vx.gray200,
                 body: Stack(
                   children: <Widget>[
                     Container(
@@ -78,12 +80,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(15.0),
-                                        child: Text(
-                                          "Login",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 25),
-                                        ),
+                                        // Old way
+                                        // child: Text( "Login", style: TextStyle( fontWeight: FontWeight.w800, fontSize: 25),),
+                                        // new VX way
+                                        child: "Login"
+                                            .text
+                                            .blue400
+                                            .bold
+                                            .size(25)
+                                            .makeCentered(), 
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -276,5 +281,4 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return '$user';
   }
-
 }
