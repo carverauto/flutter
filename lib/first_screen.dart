@@ -1,27 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-// import 'package:chaseapp/datetime.dart';
 import 'package:chaseapp/showchase.dart';
 import 'package:chaseapp/utils/record.dart';
 import 'package:chaseapp/topbar.dart';
-import 'package:chaseapp/login_screen.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:chaseapp/fbcm.dart';
-// import 'login_page.dart';
-
-// void main() => runApp(MyApp());
-/*
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-*/
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -43,20 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ChaseApp.IO',
-      debugShowCheckedModeBanner: false,
-      theme: new ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.black,
-          primaryIconTheme: IconThemeData(color: Colors.black),
-          primaryTextTheme: TextTheme(
-              title: TextStyle(color: Colors.black, fontFamily: "Aveny")),
-          textTheme: TextTheme(title: TextStyle(color: Colors.black))),
-      navigatorObservers: <NavigatorObserver>[observer],
-      home: MyHomePage(),
-      // home: LoginPage(),
-    );
+    return SafeArea(child: MyHomePage());
   }
 }
 
