@@ -4,7 +4,6 @@ import 'package:chaseapp/View_Model/sign_in_view_model.dart';
 import 'package:chaseapp/utils/deviceSize.dart';
 import 'package:chaseapp/login_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   @override
