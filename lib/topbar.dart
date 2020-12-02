@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:chaseapp/facebookOLD.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/settings.dart';
-// import 'package:chaseapp/login_page.dart';
-// import 'package:chaseapp/sign_in.dart';
 import 'package:chaseapp/login_screen.dart';
 
 Widget TopBar(BuildContext context) {
@@ -18,8 +16,9 @@ Widget TopBar(BuildContext context) {
           child: IconButton(
               icon: CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(imageUrl),
-                // backgroundColor: Colors.black,
+                // backgroundImage: NetworkImage(imageUrl),
+                // backgroundImage: CachedNetworkImage( placeholder: (context, url) => CircularProgressIndicator(), imageUrl: imageUrl),
+                backgroundImage: CachedNetworkImageProvider(imageUrl),
               ),
               onPressed: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Settings())))

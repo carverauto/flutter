@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show BuildContext, EdgeInsets, ListView, NeverScrollableScrollPhysics, Padding, Row, SizedBox, StatelessWidget, Widget;
 import 'dart:async';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
