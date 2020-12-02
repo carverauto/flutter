@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import "package:velocity_x/velocity_x.dart";
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -55,9 +56,7 @@ class ShowChase extends StatelessWidget {
                   // analytics.logViewItem(); // #TODO: need tk update this
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
-                  Share.share(record.URL,
-                      sharePositionOrigin:
-                          box.localToGlobal(Offset.zero) & box.size);
+                  Share.share(record.URL, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
                 })),
       ],
     );
@@ -67,10 +66,7 @@ class ShowChase extends StatelessWidget {
 
   StreamBuilder _stream(Record record, BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('chases')
-          .doc(record.ID)
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection('chases').doc(record.ID).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _sizedBox(context, snapshot.data);
@@ -87,11 +83,7 @@ class ShowChase extends StatelessWidget {
         child: Card(
             child: Column(
           children: <Widget>[
-            ListTile(
-                title: Text(record.Name,
-                    style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text(record.Desc),
-                trailing: Text(record.Votes.toString() + ' donuts')),
+            ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
             Divider(),
             Padding(
                 // padding: EdgeInsets.all(0.3),
@@ -109,14 +101,10 @@ class ShowChase extends StatelessWidget {
                 child: Align(
                     alignment: FractionalOffset(1.0, 0.2),
                     child: ClapFAB.image(
-                      clapFabCallback: (int counter) => FirebaseFirestore
-                          .instance
-                          .runTransaction((transaction) async {
-                        final freshSnapshot =
-                            await transaction.get(record.reference);
+                      clapFabCallback: (int counter) => FirebaseFirestore.instance.runTransaction((transaction) async {
+                        final freshSnapshot = await transaction.get(record.reference);
                         final fresh = Record.fromSnapshot(freshSnapshot);
-                        transaction.update(
-                            record.reference, {'Votes': fresh.Votes + 1});
+                        transaction.update(record.reference, {'Votes': fresh.Votes + 1});
                         counter = fresh.Votes;
                       }),
                       defaultImage: "images/donut.png",
@@ -128,6 +116,7 @@ class ShowChase extends StatelessWidget {
                       defaultImageColor: Colors.pink,
                       filledImageColor: Colors.pink,
                     ))),
+            VxBox().square(350).gray300.make()
           ],
         )));
   }
