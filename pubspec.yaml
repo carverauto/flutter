@@ -27,6 +27,8 @@ dependencies:
   firebase_messaging: ^7.0.3
   firebase_analytics: ^6.2.0
   firebase_auth: ^0.18.3
+  firebase_database: ^4.3.0
+  firebase_core: ^0.5.2+1
   flutter_linkify: ^4.0.2
   url_launcher: ^5.7.1
   http: ^0.12.2
