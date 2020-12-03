@@ -179,18 +179,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-/*  Stream<Snapshot> chaseStream;
-  Stream<QuerySnapshot> chaseStream;
-  @override
-  void initState() {
-    super.initState();
-    chaseStream = FirebaseFirestore.instance
-        .collection('chases')
-        .orderBy('CreatedAt', descending: true)
-        .snapshots();
-    print('in initState');
-    firebaseCloudMessaging_Listeners();
-  }*/
 } // _myHomePageState
 
 _displayLiveIcon() {
