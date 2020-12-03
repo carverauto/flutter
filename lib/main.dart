@@ -14,14 +14,24 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(name: 'chaseapp', 
-    options: FirebaseOptions(
-      databaseURL: 'https://chaseapp-8459b.firebaseio.com/',
-      apiKey: 'AIzaSyDZVvCuh81AYFsNqNhdI5GUzwQC91na580',
-      appId: 'chaseapp-8459b',
-      messagingSenderId: '1020122644146',
-      projectId: 'chaseapp-8459b'
-    ));
+  // if (!Firebase.apps.length) { }
+  print("Firebase.apps.length ${Firebase.apps.length}");
+
+  if (Firebase.apps.length == 0) {
+    print("No firebase instance, lets create one..");
+    try {
+      await Firebase.initializeApp(
+          name: 'chaseapp',
+          options: FirebaseOptions(
+              databaseURL: 'https://chaseapp-8459b.firebaseio.com/',
+              apiKey: 'AIzaSyDZVvCuh81AYFsNqNhdI5GUzwQC91na580',
+              appId: 'chaseapp-8459b',
+              messagingSenderId: '1020122644146',
+              projectId: 'chaseapp-8459b'));
+    } catch (err) {
+      print('Firebase init error raised ${err.toString()}');
+    }
+  }
 
   Prefs.init();
   setLocator();

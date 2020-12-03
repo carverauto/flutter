@@ -28,6 +28,12 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   }
 
   @override
+  dispose() {
+    animationController.dispose(); // you need this
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
