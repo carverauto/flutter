@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 class Splash extends StatefulWidget {
   @override
   VideoState createState() => VideoState();
+
+  void dispose() {}
 }
 
 DeviceSize deviceSize;
