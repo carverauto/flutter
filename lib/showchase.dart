@@ -1,8 +1,8 @@
-import 'package:chaseapp/service/authentication.dart';
+// import 'package:chaseapp/service/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import "package:velocity_x/velocity_x.dart";
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+// import "package:velocity_x/velocity_x.dart";
+// import 'package:firebase_database/firebase_database.dart';
+// import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -13,8 +13,7 @@ import 'package:chaseapp/utils/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/showurls.dart';
 import 'package:chaseapp/model/chat_screen.dart';
-import 'package:chaseapp/service/authentication.dart';
-
+// import 'package:chaseapp/service/authentication.dart';
 
 // import 'dart:developer';
 // import 'package:firebase_analytics/observer.dart';
@@ -85,9 +84,11 @@ class ShowChase extends StatelessWidget {
     return SizedBox(
         // height: 300,
         height: deviceSize.height,
-        child: Card(
-            child: Column(
-          children: <Widget>[
+        // child: Card(
+        child: SingleChildScrollView(
+             child: Column(
+            // child: SingleChildScrollView(
+            children: <Widget>[
             ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
             Divider(),
             Padding(
@@ -123,9 +124,10 @@ class ShowChase extends StatelessWidget {
                     ))),
             // VxBox(  ).square(350).gray300.make()
             SizedBox(
-              width: 200,
-              height: 300,
-              child: ChatScreen('Foo'),
+              width: 400,
+              height: 350,
+              child: ChatScreen(record.ID),
+              // child: SingleChildScrollView( child: ChatScreen(record.ID))
             )
             //ChatScreen('Foo'),
           ],

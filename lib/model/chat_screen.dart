@@ -1,4 +1,5 @@
 // import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,23 +13,24 @@ import 'package:chaseapp/service/authentication.dart';
 const String _name = "Chase App";
 
 class ChatScreen extends StatefulWidget {
-  ChatScreen(String title, {Key key, this.auth, this.userId, this.onSignedOut})
-      : _title = title,
+  // ChatScreen(String title, {Key key, this.auth, this.userId, this.onSignedOut})
+  ChatScreen(String chaseId, {Key key, this.auth, this.userId, this.onSignedOut})
+      : _chaseId = chaseId,
         super(key: key);
 
-  final _title;
+  final _chaseId;
   final BaseAuth auth;
   final VoidCallback onSignedOut;
   final String userId;
 
   @override
-  State createState() => ChatScreenState(_title);
+  State createState() => ChatScreenState(_chaseId);
 }
 
-const List<Choice> choices = const <Choice>[const Choice('Sign out'), const Choice('Settings')];
+// const List<Choice> choices = const <Choice>[const Choice('Sign out'), const Choice('Settings')];
 
 class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
-  final _title;
+  final _chaseId;
   final List<ChatMessage> _messages;
   final TextEditingController _textController;
   final DatabaseReference _messageDatabaseReference;
@@ -36,12 +38,12 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   bool _isComposing = false;
 
-  ChatScreenState(String title)
-      : _title = title,
+  ChatScreenState(String chaseId)
+      : _chaseId = chaseId,
         _isComposing = false,
         _messages = <ChatMessage>[],
         _textController = TextEditingController(),
-        _messageDatabaseReference = FirebaseDatabase.instance.reference().child("messages") {
+        _messageDatabaseReference = FirebaseDatabase.instance.reference().child(chaseId).child("messages") {
     _messageDatabaseReference.onChildAdded.listen(_onMessageAdded);
   }
 /*
@@ -61,29 +63,29 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     return SafeArea(
         // data: IconThemeData(color: Theme.of(context).accentColor),
         child: Container(
-          //child: SizedBox(
-          // width: 200.0,
-          // height: 300,
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                child: TextField(
-                  controller: _textController,
-                  onChanged: (String text) {
-                    setState(() {
-                      _isComposing = text.length > 0;
-                    });
-                  },
-                  onSubmitted: _handleSubmitted,
-                  decoration: InputDecoration.collapsed(hintText: "Send a message"),
-                ),
-              ),
-              Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Row(
-                    children: <Widget>[
-                      /*
+      //child: SizedBox(
+      // width: 200.0,
+      // height: 300,
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: TextField(
+              controller: _textController,
+              onChanged: (String text) {
+                setState(() {
+                  _isComposing = text.length > 0;
+                });
+              },
+              onSubmitted: _handleSubmitted,
+              decoration: InputDecoration.collapsed(hintText: "Send a message"),
+            ),
+          ),
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Row(
+                children: <Widget>[
+                  /*
                       IconButton(
                         icon: Icon(Icons.camera_alt),
                         onPressed: _sendImageFromCamera,
@@ -93,20 +95,20 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         onPressed: _sendImageFromGallery,
                       ),
                       */
-                      Theme.of(context).platform == TargetPlatform.iOS
-                          ? CupertinoButton(
-                              child: Text("Send"),
-                              onPressed: _isComposing ? () => _handleSubmitted(_textController.text) : null,
-                            )
-                          : IconButton(
-                              icon: Icon(Icons.send),
-                              onPressed: _isComposing ? () => _handleSubmitted(_textController.text) : null,
-                            ),
-                    ],
-                  ))
-            ],
-          ),
-        ));
+                  Theme.of(context).platform == TargetPlatform.iOS
+                      ? CupertinoButton(
+                          child: Text("Send"),
+                          onPressed: _isComposing ? () => _handleSubmitted(_textController.text) : null,
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: _isComposing ? () => _handleSubmitted(_textController.text) : null,
+                        ),
+                ],
+              ))
+        ],
+      ),
+    ));
   }
 
   void _onMessageAdded(Event event) {
@@ -115,6 +117,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
     ChatMessage message = imageUrl == null ? _createMessageFromText(text) : _createMessageFromImage(imageUrl);
 
+    // #TODO: Fix problem here
     setState(() {
       _messages.insert(0, message);
     });
@@ -156,7 +159,8 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   ChatMessage _createMessageFromText(String text) => ChatMessage(
         text: text,
-        username: _name,
+        // username: _name,
+        username: FirebaseAuth.instance.currentUser.displayName,
         animationController: AnimationController(
           duration: Duration(milliseconds: 180),
           vsync: this,
@@ -175,6 +179,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       /*
       appBar: AppBar(
         title: Text(_title),
@@ -228,6 +233,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  /*
   void _select(Choice choice) {
     switch (choice.title) {
       case 'Sign out':
@@ -244,6 +250,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       print(e);
     }
   }
+  */
 }
 
 class Choice {
