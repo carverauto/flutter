@@ -10,7 +10,7 @@ import 'package:chaseapp/service/authentication.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:uuid/uuid.dart';
 
-const String _name = "Chase App";
+// const String _name = "Chase App";
 
 class ChatScreen extends StatefulWidget {
   // ChatScreen(String title, {Key key, this.auth, this.userId, this.onSignedOut})
@@ -59,7 +59,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   */
 
   Widget _buildTextComposer() {
-    // return IconTheme(
     return SafeArea(
         // data: IconThemeData(color: Theme.of(context).accentColor),
         child: Container(
@@ -114,13 +113,16 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   void _onMessageAdded(Event event) {
     final text = event.snapshot.value["text"];
     final imageUrl = event.snapshot.value["imageUrl"];
+    final name = event.snapshot.value["username"];
 
-    ChatMessage message = imageUrl == null ? _createMessageFromText(text) : _createMessageFromImage(imageUrl);
+    ChatMessage message = imageUrl == null ? _createMessageFromText(text,name) : _createMessageFromImage(imageUrl);
 
     // #TODO: Fix problem here
-    setState(() {
-      _messages.insert(0, message);
-    });
+    if (mounted) {
+      setState(() {
+        _messages.insert(0, message);
+      });
+    }
 
     message.animationController.forward();
   }
@@ -131,7 +133,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       _isComposing = false;
     });
 
-    final ChatMessage message = _createMessageFromText(text);
+    final ChatMessage message = _createMessageFromText(text,FirebaseAuth.instance.currentUser.displayName);
     _messageDatabaseReference.push().set(message.toMap());
   }
 
@@ -157,10 +159,11 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
   */
 
-  ChatMessage _createMessageFromText(String text) => ChatMessage(
+  ChatMessage _createMessageFromText(String text, String name) => ChatMessage(
         text: text,
         // username: _name,
-        username: FirebaseAuth.instance.currentUser.displayName,
+        // username: FirebaseAuth.instance.currentUser.displayName,
+        username: name,
         animationController: AnimationController(
           duration: Duration(milliseconds: 180),
           vsync: this,
@@ -169,7 +172,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   ChatMessage _createMessageFromImage(String imageUrl) => ChatMessage(
         imageUrl: imageUrl,
-        username: _name,
+        username: 'foo',
         animationController: AnimationController(
           duration: Duration(milliseconds: 90),
           vsync: this,
