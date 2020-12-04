@@ -9,7 +9,7 @@ class Splash extends StatefulWidget {
   @override
   VideoState createState() => VideoState();
 
-  void dispose() {}
+  void dispose() { }
 }
 
 DeviceSize deviceSize;

@@ -1,6 +1,8 @@
 // import 'package:chaseapp/utils/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:chaseapp/login_screen.dart';
@@ -42,8 +44,7 @@ class Settings extends StatelessWidget {
           onPressed: () {
             signOutGoogle();
             //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new LoginScreen()));
+            Navigator.push(context, new MaterialPageRoute(builder: (context) => new LoginScreen()));
           },
         ),
       ],
@@ -69,6 +70,7 @@ class Settings extends StatelessWidget {
                 padding: EdgeInsets.all(0.2),
                 child: RaisedButton(
                   onPressed: _launchURL,
+                  // child: Text('Show Privacy Policy ${FirebaseAuth.instance.currentUser.displayName}'),
                   child: Text('Show Privacy Policy'),
                 ),
                 // child: LoginPage())

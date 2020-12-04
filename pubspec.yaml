@@ -29,7 +29,9 @@ dependencies:
   firebase_auth: ^0.18.3
   firebase_database: ^4.3.0
   firebase_core: ^0.5.2+1
+  firebase_storage: ^5.2.0
   cached_network_image: ^2.4.1
+  image_picker: ^0.6.7
   flutter_linkify: ^4.0.2
   url_launcher: ^5.7.1
   http: ^0.12.2
