@@ -1,3 +1,4 @@
+import 'package:chaseapp/service/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:velocity_x/velocity_x.dart";
 import 'package:firebase_database/firebase_database.dart';
@@ -11,6 +12,10 @@ import 'package:share/share.dart';
 import 'package:chaseapp/utils/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/showurls.dart';
+import 'package:chaseapp/model/chat_screen.dart';
+import 'package:chaseapp/service/authentication.dart';
+
+
 // import 'dart:developer';
 // import 'package:firebase_analytics/observer.dart';
 
@@ -116,7 +121,13 @@ class ShowChase extends StatelessWidget {
                       defaultImageColor: Colors.pink,
                       filledImageColor: Colors.pink,
                     ))),
-            VxBox().square(350).gray300.make()
+            // VxBox(  ).square(350).gray300.make()
+            SizedBox(
+              width: 200,
+              height: 300,
+              child: ChatScreen('Foo'),
+            )
+            //ChatScreen('Foo'),
           ],
         )));
   }
