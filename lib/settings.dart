@@ -1,12 +1,14 @@
 // import 'package:chaseapp/utils/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:chaseapp/login_screen.dart';
-import 'package:chaseapp/utils/deviceSize.dart';
+// import 'package:chaseapp/utils/deviceSize.dart';
+// import 'package:purchases_flutter/purchases_flutter.dart';
+
 
 class Settings extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn();

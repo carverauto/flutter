@@ -1,7 +1,6 @@
-// import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +9,7 @@ import 'package:chaseapp/service/authentication.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:uuid/uuid.dart';
 
-// const String _name = "Chase App";
-
 class ChatScreen extends StatefulWidget {
-  // ChatScreen(String title, {Key key, this.auth, this.userId, this.onSignedOut})
   ChatScreen(String chaseId, {Key key, this.auth, this.userId, this.onSignedOut})
       : _chaseId = chaseId,
         super(key: key);
@@ -37,6 +33,8 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   // final Reference _photoStorageReference;
 
   bool _isComposing = false;
+
+  int timestamp;
 
   ChatScreenState(String chaseId)
       : _chaseId = chaseId,
@@ -114,8 +112,18 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     final text = event.snapshot.value["text"];
     final imageUrl = event.snapshot.value["imageUrl"];
     final name = event.snapshot.value["username"];
+    timestamp = event.snapshot.value["timestamp"];
 
-    ChatMessage message = imageUrl == null ? _createMessageFromText(text,name) : _createMessageFromImage(imageUrl);
+    // final Timestamp = FirebaseDatabase
+    // var serverTimestamp = FieldValue.serverTimestamp();
+    // final timestamp = serverTimestamp;
+
+    ChatMessage message;
+    if (imageUrl == null) {
+      message = _createMessageFromText(text, name, timestamp);
+    } else {
+      message = _createMessageFromImage(imageUrl);
+    }
 
     // #TODO: Fix problem here
     if (mounted) {
@@ -133,7 +141,10 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       _isComposing = false;
     });
 
-    final ChatMessage message = _createMessageFromText(text,FirebaseAuth.instance.currentUser.displayName);
+    final ChatMessage message = _createMessageFromText(text, FirebaseAuth.instance.currentUser.displayName, timestamp);
+    // _messageDatabaseReference.push().set(message.toMap());
+    // _messageDatabaseReference.push().set({"message": message.toMap(), "timestamp": DateTime.now().millisecondsSinceEpoch});
+    message.timestamp = DateTime.now().millisecondsSinceEpoch;
     _messageDatabaseReference.push().set(message.toMap());
   }
 
@@ -159,11 +170,12 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
   */
 
-  ChatMessage _createMessageFromText(String text, String name) => ChatMessage(
+  ChatMessage _createMessageFromText(String text, String name, int timestamp) => ChatMessage(
         text: text,
         // username: _name,
         // username: FirebaseAuth.instance.currentUser.displayName,
         username: name,
+        timestamp: timestamp,
         animationController: AnimationController(
           duration: Duration(milliseconds: 180),
           vsync: this,

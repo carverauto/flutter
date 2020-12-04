@@ -1,23 +1,27 @@
 // import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
   final String imageUrl;
   final String username;
+  int timestamp;
   final AnimationController animationController;
 
   ChatMessage({
     String text,
     String imageUrl,
     String username,
+    int timestamp,
     AnimationController animationController,
   })  : text = text,
         imageUrl = imageUrl,
         username = username,
+        timestamp = timestamp,
         animationController = animationController;
 
-  Map<String, dynamic> toMap() => imageUrl == null ? {'text': text, 'username': username} : {'imageUrl': imageUrl, 'username': username};
+  Map<String, dynamic> toMap() => imageUrl == null ? {'text': text, 'username': username, 'timestamp': timestamp} : {'imageUrl': imageUrl, 'username': username};
 
   @override
   Widget build(BuildContext context) {
