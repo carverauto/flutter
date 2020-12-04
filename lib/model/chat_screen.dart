@@ -125,7 +125,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       message = _createMessageFromImage(imageUrl);
     }
 
-    // #TODO: Fix problem here
     if (mounted) {
       setState(() {
         _messages.insert(0, message);
