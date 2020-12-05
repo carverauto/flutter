@@ -48,11 +48,10 @@ class ChatMessage extends StatelessWidget {
                     // Text(DateFormat("hh:mm:ss").format(DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000)).toString()),
                     Container(
                       // child: Text(username, style: Theme.of(context).textTheme.subhead),
-                      child: Text(DateFormat("hh:mm:ss")
-                        .format(DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000)).toString()),
+                      child: Text(DateFormat("hh:m").format(DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000)).toString()),
                       alignment: Alignment.topRight,
                     ),
-                    
+
                     Container(
                       margin: const EdgeInsets.only(top: 5.0),
                       child: imageUrl == null ? Text(text) : Image.network(imageUrl),
