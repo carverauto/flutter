@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:chaseapp/model/chat_message.dart';
 import 'package:chaseapp/service/authentication.dart';
 // import 'package:image_picker/image_picker.dart';
-// import 'package:uuid/uuid.dart';
+// import 'package:uuid/uuid.darto';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen(String chaseId, {Key key, this.auth, this.userId, this.onSignedOut})
@@ -32,6 +32,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final _chaseId;
   final List<ChatMessage> _messages;
   final TextEditingController _textController;
+  ScrollController _controller;
   final DatabaseReference _messageDatabaseReference;
   // final Reference _photoStorageReference;
 
@@ -39,18 +40,20 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   int timestamp;
 
-
   ChatScreenState(String chaseId)
       : _chaseId = chaseId,
         _isComposing = false,
         _messages = <ChatMessage>[],
         _textController = TextEditingController(),
+        _controller = ScrollController(),
         _messageDatabaseReference = FirebaseDatabase.instance.reference().child(chaseId).child("messages") {
-    // _messageDatabaseReference.limitToLast(2).onChildAdded.listen(_onMessageAdded);
-    _messageDatabaseReference.onChildAdded.listen(_onMessageAdded);
+     _messageDatabaseReference.limitToLast(10).onChildAdded.listen(_onMessageAdded);
+     // _messageDatabaseReference.orderByChild('timestamp').startAt(1607487685607).endAt(1607490303293).onChildAdded.listen(_onMessageAdded);
+     //_messageDatabaseReference.orderByChild('timestamp').startAt(1607487685607).endAt(DateTime.now().millisecondsSinceEpoch).onChildAdded.listen(_onMessageAdded);
+    //  _messageDatabaseReference.startAt(_startAt).endAt(_endAt).onChildAdded.listen(_onMessageAdded);
 
-    print (">> Message count: ");
-    print ( _messages.length );
+    // print (">> Message count: ");
+    // print ( _messages.length );
   }
 
 /*
@@ -119,8 +122,8 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   void _onMessageAdded(Event event) {
-    // final _list = List<Event>();
-    // final _listController = StreamController<List<Event>>.broadcast();
+    final _list = List<Event>();
+    final _listController = StreamController<List<Event>>.broadcast();
 
     final text = event.snapshot.value["text"];
     final imageUrl = event.snapshot.value["imageUrl"];
@@ -144,8 +147,9 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       });
     }
 
+    // #TODO: FixMe
     // _list.addAll(_messages.toList());
-    // _listController.sink.add(_list);
+    _listController.sink.add(_list);
 
     message.animationController.forward();
   }
@@ -162,28 +166,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     message.timestamp = DateTime.now().millisecondsSinceEpoch;
     _messageDatabaseReference.push().set(message.toMap());
   }
-
-/*
-  void _sendImage(ImageSource imageSource) async {
-    File image = await ImagePicker.pickImage(source: imageSource);
-    final String fileName = Uuid().v4();
-    Reference photoRef = _photoStorageReference.child(fileName);
-    final StorageUploadTask uploadTask = photoRef.putFile(image);
-    final StorageTaskSnapshot downloadUrl = await uploadTask.onComplete;
-    final ChatMessage message = _createMessageFromImage(
-      await downloadUrl.ref.getDownloadURL(),
-    );
-    _messageDatabaseReference.push().set(message.toMap());
-  }
-
-  void _sendImageFromCamera() async {
-    _sendImage(ImageSource.camera);
-  }
-
-  void _sendImageFromGallery() async {
-    _sendImage(ImageSource.gallery);
-  }
-  */
 
   ChatMessage _createMessageFromText(String text, String name, int timestamp) => ChatMessage(
         text: text,
@@ -208,16 +190,34 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-
     String title = 'test';
     String prevTitle = '';
 
-    ScrollController _controller;
 
-    @override
-    void initState() {
-      _controller = ScrollController();
-      super.initState();
+    if (_controller != null) {
+      print("Controller is not null");
+      _controller.addListener(() {
+        if (_controller.offset >= _controller.position.maxScrollExtent &&
+            !_controller.position.outOfRange) {
+          print("Reached Bottom");
+          setState(() {
+            title = "reached bottom";
+          });
+        } else if (_controller.offset <= _controller.position.minScrollExtent &&
+            !_controller.position.outOfRange) {
+          print("Reached top");
+          setState(() {
+            title = "reached top";
+          });
+        } else {
+          print("Something else");
+          setState(() {
+            title = prevTitle;
+          });
+        }
+      });
+    } else {
+      print("Controller is null");
     }
 
     @override
@@ -225,22 +225,6 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       _controller.dispose();
       super.dispose();
     }
-
-    _controller.addListener(() {
-      if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
-        setState(() {
-          title = "reached bottom";
-        });
-      } else if (_controller.offset <= _controller.position.minScrollExtent && !_controller.position.outOfRange) {
-        setState(() {
-          title = "reached top";
-        });
-      } else {
-        setState(() {
-          title = prevTitle;
-        });
-      }
-    });
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -258,20 +242,31 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             ),
             Divider(height: 1.0),
             Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor),
+              decoration: BoxDecoration(color: Theme
+                  .of(context)
+                  .cardColor),
               child: _buildTextComposer(),
             ),
           ],
         ),
-        decoration: Theme.of(context).platform == TargetPlatform.iOS
+        decoration: Theme
+            .of(context)
+            .platform == TargetPlatform.iOS
             ? BoxDecoration(
-                border: Border(
-                top: BorderSide(color: Colors.grey[200]),
-              ))
+            border: Border(
+              top: BorderSide(color: Colors.grey[200]),
+            ))
             : null,
       ),
     );
 
+    @override
+    void initState() {
+      _controller = ScrollController();
+      super.initState();
+      print("Calling initState w/ ScrollController");
+    }
+  }
     /*
     _scrollListener() {
       if (_controller.offset >= _controller.position.maxScrollExtent &&
@@ -287,9 +282,8 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         });
       }
     }
-     */
-  }
 
+     */
 
   @override
   void dispose() {
