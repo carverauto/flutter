@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -36,14 +39,20 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   int timestamp;
 
+
   ChatScreenState(String chaseId)
       : _chaseId = chaseId,
         _isComposing = false,
         _messages = <ChatMessage>[],
         _textController = TextEditingController(),
         _messageDatabaseReference = FirebaseDatabase.instance.reference().child(chaseId).child("messages") {
+    // _messageDatabaseReference.limitToLast(2).onChildAdded.listen(_onMessageAdded);
     _messageDatabaseReference.onChildAdded.listen(_onMessageAdded);
+
+    print (">> Message count: ");
+    print ( _messages.length );
   }
+
 /*
   ChatScreenState(String title) : _title = title,
         _isComposing = false,
@@ -57,6 +66,7 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   */
 
   Widget _buildTextComposer() {
+
     return SafeArea(
         // data: IconThemeData(color: Theme.of(context).accentColor),
         child: Container(
@@ -109,6 +119,9 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   void _onMessageAdded(Event event) {
+    // final _list = List<Event>();
+    // final _listController = StreamController<List<Event>>.broadcast();
+
     final text = event.snapshot.value["text"];
     final imageUrl = event.snapshot.value["imageUrl"];
     final name = event.snapshot.value["username"];
@@ -130,6 +143,9 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
         _messages.insert(0, message);
       });
     }
+
+    // _list.addAll(_messages.toList());
+    // _listController.sink.add(_list);
 
     message.animationController.forward();
   }
@@ -192,32 +208,48 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    String title = 'test';
+    String prevTitle = '';
+
+    ScrollController _controller;
+
+    @override
+    void initState() {
+      _controller = ScrollController();
+      super.initState();
+    }
+
+    @override
+    void dispose() {
+      _controller.dispose();
+      super.dispose();
+    }
+
+    _controller.addListener(() {
+      if (_controller.offset >= _controller.position.maxScrollExtent && !_controller.position.outOfRange) {
+        setState(() {
+          title = "reached bottom";
+        });
+      } else if (_controller.offset <= _controller.position.minScrollExtent && !_controller.position.outOfRange) {
+        setState(() {
+          title = "reached top";
+        });
+      } else {
+        setState(() {
+          title = prevTitle;
+        });
+      }
+    });
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      /*
-      appBar: AppBar(
-        title: Text(_title),
-        actions: <Widget>[
-          PopupMenuButton<Choice>(
-            onSelected: _select,
-            itemBuilder: (BuildContext context) {
-              return choices.map((Choice choice) {
-                return PopupMenuItem<Choice>(
-                  value: choice,
-                  child: Text(choice.title),
-                );
-              }).toList();
-            },
-          ),
-        ],
-        elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
-      ),
-      */
       body: Container(
         child: Column(
           children: <Widget>[
             Flexible(
               child: ListView.builder(
+                controller: _controller,
                 padding: EdgeInsets.all(8.0),
                 reverse: true,
                 itemBuilder: (_, int index) => _messages[index],
@@ -239,7 +271,25 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             : null,
       ),
     );
+
+    /*
+    _scrollListener() {
+      if (_controller.offset >= _controller.position.maxScrollExtent &&
+          !_controller.position.outOfRange) {
+        setState(() {
+          message = "reach the bottom";
+        });
+      }
+      if (_controller.offset <= _controller.position.minScrollExtent &&
+          !_controller.position.outOfRange) {
+        setState(() {jj
+          message = "reach the top";
+        });
+      }
+    }
+     */
   }
+
 
   @override
   void dispose() {
