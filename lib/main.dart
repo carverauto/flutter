@@ -1,21 +1,15 @@
-// import 'package:firebase_core/firebase_core.dart'
-import 'dart:async';
-import 'dart:io' show Platform;
+import 'package:flutter/material.dart';
+import 'package:chaseapp/helper/helper_functions.dart';
+import 'package:chaseapp/pages/authenticate_page.dart';
+import 'package:chaseapp/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:chaseapp/View_Model/home_view_model.dart';
-import 'package:chaseapp/View_Model/sign_in_view_model.dart';
-import 'package:chaseapp/utils/locator.dart';
-import 'package:chaseapp/utils/prefer.dart';
-import 'package:chaseapp/utils/routes.dart';
-import 'package:provider/provider.dart';
+import 'dart:async';
+import 'dart:io' show Platform;
 
+// void main() => runApp(MyApp());
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // if (!Firebase.apps.length) { }
-  print("Firebase.apps.length ${Firebase.apps.length}");
 
   if (Firebase.apps.length == 0) {
     print("No firebase instance, lets create one..");
@@ -33,16 +27,7 @@ Future<void> main() async {
     }
   }
 
-  Prefs.init();
-  setLocator();
-  runApp(MultiProvider(
-    child: MyApp(),
-    providers: [
-      ChangeNotifierProvider<HomeViewModel>(
-        builder: (_) => HomeViewModel(),
-      ),
-    ],
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -55,41 +40,35 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale locale;
-  bool localeLoaded = false;
+
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
     super.initState();
-    print('initState()');
+    _getUserLoggedInStatus();
+  }
 
-    //MyApp.setLocale(context, locale);
+  _getUserLoggedInStatus() async {
+    await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
+      if(value != null) {
+        setState(() {
+          _isLoggedIn = value;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.grey[400],
-//        statusBarColor: Styles.blueColor,
-        statusBarIconBrightness: Brightness.light //or set color with: Color(0xFF0000FF)
-        ));
-    return ChangeNotifierProvider<SignInViewModel>(
-      builder: (_) => SignInViewModel(),
-      child: Center(
-        child: MaterialApp(
-          initialRoute: '/',
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: Routes.onGenerateRoute,
-          theme: ThemeData(
-            primaryColor: Colors.black,
-            fontFamily: 'FA',
-          ),
-        ),
-      ),
+    return MaterialApp(
+      title: 'ChaseApp',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      //home: _isLoggedIn != null ? _isLoggedIn ? HomePage() : AuthenticatePage() : Center(child: CircularProgressIndicator()),
+      home: _isLoggedIn ? HomePage() : AuthenticatePage(),
+      //home: HomePage(),
     );
   }
 }

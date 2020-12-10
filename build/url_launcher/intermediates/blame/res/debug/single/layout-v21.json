@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/mfreeman/src/chaseapp/build/url_launcher/intermediates/res/merged/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/mfreeman/.gradle/caches/transforms-2/files-2.1/e6856c7cff7219f18cbbcc5d8d7cecec/core-1.1.0/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/mfreeman/src/chaseapp/build/url_launcher/intermediates/res/merged/debug/layout-v21/notification_action.xml",
+        "source": "/home/mfreeman/.gradle/caches/transforms-2/files-2.1/e6856c7cff7219f18cbbcc5d8d7cecec/core-1.1.0/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/home/mfreeman/src/chaseapp/build/url_launcher/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/mfreeman/.gradle/caches/transforms-2/files-2.1/e6856c7cff7219f18cbbcc5d8d7cecec/core-1.1.0/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/mfreeman/src/chaseapp/build/url_launcher/intermediates/res/merged/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/mfreeman/.gradle/caches/transforms-2/files-2.1/e6856c7cff7219f18cbbcc5d8d7cecec/core-1.1.0/res/layout-v21/notification_template_custom_big.xml"
+    }
+]

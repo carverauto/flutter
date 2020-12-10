@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "1020122644146",
+    "firebase_url": "https://chaseapp-8459b.firebaseio.com",
+    "project_id": "chaseapp-8459b",
+    "storage_bucket": "chaseapp-8459b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020122644146:android:a47350134259d189",
+        "android_client_info": {
+          "package_name": "com.carverauto.chaseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020122644146-5gi5ku2i0gn393ttkgavqgjtpl9ut5ee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carverauto.chaseapp",
+            "certificate_hash": "ad7df6af5fd74b05e801c4ba9b683cabc970be82"
+          }
+        },
+        {
+          "client_id": "1020122644146-qhomqgb9ko9rqga83aoqi0bqa5sc3nr8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carverauto.chaseapp",
+            "certificate_hash": "a1b85d6d78c118de7e992cd2c6c624d87df10e5e"
+          }
+        },
+        {
+          "client_id": "1020122644146-r20dn8eq1irniegdvefi9r42v8s5crb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carverauto.chaseapp",
+            "certificate_hash": "5a4d66aa0b74600d296d12d8bf430c34877583e1"
+          }
+        },
+        {
+          "client_id": "1020122644146-o4b56sp1abe0g232ua03kpkl85g7iakc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWaNlpwRap3EJRfpLi2hK30ITsmJSXje4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020122644146-o4b56sp1abe0g232ua03kpkl85g7iakc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carverauto.chaseapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
