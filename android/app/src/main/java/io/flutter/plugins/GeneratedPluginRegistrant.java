@@ -27,9 +27,11 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new io.flutter.plugins.googlesignin.GoogleSignInPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.imagepicker.ImagePickerPlugin());
       com.iyaffle.launchreview.LaunchReviewPlugin.registerWith(shimPluginRegistry.registrarFor("com.iyaffle.launchreview.LaunchReviewPlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.packageinfo.PackageInfoPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
     flutterEngine.getPlugins().add(new com.baseflow.permissionhandler.PermissionHandlerPlugin());
     flutterEngine.getPlugins().add(new com.revenuecat.purchases_flutter.PurchasesFlutterPlugin());
+    flutterEngine.getPlugins().add(new io.sentry.flutter.SentryFlutterPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.share.SharePlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());

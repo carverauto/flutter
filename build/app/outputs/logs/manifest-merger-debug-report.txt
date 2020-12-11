@@ -13,6 +13,8 @@ MERGED from [:purchases_flutter] /home/mfreeman/src/chaseapp/build/purchases_flu
 MERGED from [:firebase_auth] /home/mfreeman/src/chaseapp/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_database] /home/mfreeman/src/chaseapp/build/firebase_database/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
+MERGED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-18:12
+MERGED from [:package_info] /home/mfreeman/src/chaseapp/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:permission_handler] /home/mfreeman/src/chaseapp/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:shared_preferences] /home/mfreeman/src/chaseapp/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:firebase_messaging] /home/mfreeman/src/chaseapp/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-20:12
@@ -28,6 +30,9 @@ MERGED from [com.revenuecat.purchases:purchases-hybrid-common:1.4.4] /home/mfree
 MERGED from [com.revenuecat.purchases:purchases:3.5.2] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/be6ed9caa42cfc21e516b807f13a6e71/purchases-3.5.2/AndroidManifest.xml:2:1-14:12
 MERGED from [com.google.firebase:firebase-core:17.5.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/e0468c07826c340759c02bacd9cc1006/firebase-core-17.5.1/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-analytics:17.6.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/991809c6041a34edccaa30017e240bca/firebase-analytics-17.6.0/AndroidManifest.xml:2:1-9:12
+MERGED from [io.sentry:sentry-android:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/2410572d3956f5fb12d3630b7eae29d6/sentry-android-3.2.0/AndroidManifest.xml:2:1-13:12
+MERGED from [io.sentry:sentry-android-ndk:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/1672e801cb83c5ba8fcbcfd5f4641255/sentry-android-ndk-3.2.0/AndroidManifest.xml:2:1-11:12
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:2:1-22:12
 MERGED from [com.google.firebase:firebase-auth:19.4.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8c6089a0de7f9851f85bc03c083d64c7/firebase-auth-19.4.0/AndroidManifest.xml:17:1-42:12
 MERGED from [com.google.android.gms:play-services-auth:16.0.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/0d06de863f5b0e7e656b4f9d2135caef/jetified-play-services-auth-16.0.1/AndroidManifest.xml:17:1-39:12
 MERGED from [com.google.firebase:firebase-messaging:20.3.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/14306c0252692e125e11650e7058678d/jetified-firebase-messaging-20.3.0/AndroidManifest.xml:17:1-45:12
@@ -76,7 +81,7 @@ MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/mfreeman/.gradl
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/247f46dc3ca0ad2fec5b7940dd60760f/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/319c0dedf57696684d73dd2fa266ca2e/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.core:core:1.3.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/60785bed9b4e74382d2c6210ed8c6cce/core-1.3.1/AndroidManifest.xml:17:1-26:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:17:1-32:12
 MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/7caa242eea5696b2754985d94a9983a4/lifecycle-service-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/462b4186e71e4e9b66f60d1399e2e72b/lifecycle-runtime-2.2.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.savedstate:savedstate:1.0.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/508304cfcf060b1f70d98273a7bd5f6f/savedstate-1.0.0/AndroidManifest.xml:17:1-24:12
@@ -151,6 +156,8 @@ MERGED from [:firebase_database] /home/mfreeman/src/chaseapp/build/firebase_data
 MERGED from [:firebase_database] /home/mfreeman/src/chaseapp/build/firebase_database/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
 MERGED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-13:19
+MERGED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-16:19
+MERGED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:10:5-16:19
 MERGED from [:firebase_messaging] /home/mfreeman/src/chaseapp/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-18:19
 MERGED from [:firebase_messaging] /home/mfreeman/src/chaseapp/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-18:19
 MERGED from [:firebase_analytics] /home/mfreeman/src/chaseapp/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:11:5-17:19
@@ -165,6 +172,8 @@ MERGED from [com.google.firebase:firebase-core:17.5.1] /home/mfreeman/.gradle/ca
 MERGED from [com.google.firebase:firebase-core:17.5.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/e0468c07826c340759c02bacd9cc1006/firebase-core-17.5.1/AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-analytics:17.6.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/991809c6041a34edccaa30017e240bca/firebase-analytics-17.6.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-analytics:17.6.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/991809c6041a34edccaa30017e240bca/firebase-analytics-17.6.0/AndroidManifest.xml:7:5-20
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:13:5-20:19
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:13:5-20:19
 MERGED from [com.google.firebase:firebase-auth:19.4.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8c6089a0de7f9851f85bc03c083d64c7/firebase-auth-19.4.0/AndroidManifest.xml:23:5-40:19
 MERGED from [com.google.firebase:firebase-auth:19.4.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8c6089a0de7f9851f85bc03c083d64c7/firebase-auth-19.4.0/AndroidManifest.xml:23:5-40:19
 MERGED from [com.google.android.gms:play-services-auth:16.0.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/0d06de863f5b0e7e656b4f9d2135caef/jetified-play-services-auth-16.0.1/AndroidManifest.xml:22:5-37:19
@@ -215,8 +224,8 @@ MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] /home/mfreeman/.grad
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/e9be029906b9e8c70ee1c68a40a2a07b/lifecycle-extensions-2.1.0/AndroidManifest.xml:22:5-23:19
 MERGED from [androidx.core:core:1.3.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/60785bed9b4e74382d2c6210ed8c6cce/core-1.3.1/AndroidManifest.xml:24:5-89
 MERGED from [androidx.core:core:1.3.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/60785bed9b4e74382d2c6210ed8c6cce/core-1.3.1/AndroidManifest.xml:24:5-89
-MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:22:5-28:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:22:5-28:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:24:5-30:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:24:5-30:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8cd2c573267a119eda8b971e359c98f6/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8cd2c573267a119eda8b971e359c98f6/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 MERGED from [com.google.android.datatransport:transport-backend-cct:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/69a343fae04c290ebcd4420f4533827c/transport-backend-cct-2.2.0/AndroidManifest.xml:28:5-36:19
@@ -283,6 +292,10 @@ MERGED from [:firebase_database] /home/mfreeman/src/chaseapp/build/firebase_data
 MERGED from [:firebase_database] /home/mfreeman/src/chaseapp/build/firebase_database/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-8:41
+MERGED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:6:5-8:41
+MERGED from [:package_info] /home/mfreeman/src/chaseapp/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:package_info] /home/mfreeman/src/chaseapp/build/package_info/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] /home/mfreeman/src/chaseapp/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:permission_handler] /home/mfreeman/src/chaseapp/build/permission_handler/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:shared_preferences] /home/mfreeman/src/chaseapp/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -313,6 +326,12 @@ MERGED from [com.google.firebase:firebase-core:17.5.1] /home/mfreeman/.gradle/ca
 MERGED from [com.google.firebase:firebase-core:17.5.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/e0468c07826c340759c02bacd9cc1006/firebase-core-17.5.1/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-analytics:17.6.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/991809c6041a34edccaa30017e240bca/firebase-analytics-17.6.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-analytics:17.6.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/991809c6041a34edccaa30017e240bca/firebase-analytics-17.6.0/AndroidManifest.xml:5:5-44
+MERGED from [io.sentry:sentry-android:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/2410572d3956f5fb12d3630b7eae29d6/sentry-android-3.2.0/AndroidManifest.xml:8:5-11:57
+MERGED from [io.sentry:sentry-android:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/2410572d3956f5fb12d3630b7eae29d6/sentry-android-3.2.0/AndroidManifest.xml:8:5-11:57
+MERGED from [io.sentry:sentry-android-ndk:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/1672e801cb83c5ba8fcbcfd5f4641255/sentry-android-ndk-3.2.0/AndroidManifest.xml:7:5-9:41
+MERGED from [io.sentry:sentry-android-ndk:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/1672e801cb83c5ba8fcbcfd5f4641255/sentry-android-ndk-3.2.0/AndroidManifest.xml:7:5-9:41
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:7:5-9:41
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-auth:19.4.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8c6089a0de7f9851f85bc03c083d64c7/firebase-auth-19.4.0/AndroidManifest.xml:21:5-44
 MERGED from [com.google.firebase:firebase-auth:19.4.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/8c6089a0de7f9851f85bc03c083d64c7/firebase-auth-19.4.0/AndroidManifest.xml:21:5-44
 MERGED from [com.google.android.gms:play-services-auth:16.0.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/0d06de863f5b0e7e656b4f9d2135caef/jetified-play-services-auth-16.0.1/AndroidManifest.xml:20:5-44
@@ -409,8 +428,8 @@ MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/mfreeman/.gradl
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/319c0dedf57696684d73dd2fa266ca2e/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.3.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/60785bed9b4e74382d2c6210ed8c6cce/core-1.3.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.3.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/60785bed9b4e74382d2c6210ed8c6cce/core-1.3.1/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/7caa242eea5696b2754985d94a9983a4/lifecycle-service-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/7caa242eea5696b2754985d94a9983a4/lifecycle-service-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/462b4186e71e4e9b66f60d1399e2e72b/lifecycle-runtime-2.2.0/AndroidManifest.xml:20:5-22:41
@@ -459,6 +478,8 @@ MERGED from [com.android.billingclient:billing:3.0.1] /home/mfreeman/.gradle/cac
 MERGED from [com.android.billingclient:billing:3.0.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/aec100a4559e212ccbf1110a3c344c67/billing-3.0.1/AndroidManifest.xml:6:5-8:41
 INJECTED from /home/mfreeman/src/chaseapp/android/app/src/debug/AndroidManifest.xml
 INJECTED from /home/mfreeman/src/chaseapp/android/app/src/debug/AndroidManifest.xml
+	tools:overrideLibrary
+		ADDED from [io.sentry:sentry-android:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/2410572d3956f5fb12d3630b7eae29d6/sentry-android-3.2.0/AndroidManifest.xml:11:9-54
 	android:targetSdkVersion
 		INJECTED from /home/mfreeman/src/chaseapp/android/app/src/main/AndroidManifest.xml
 		INJECTED from /home/mfreeman/src/chaseapp/android/app/src/debug/AndroidManifest.xml
@@ -473,6 +494,8 @@ MERGED from [:firebase_analytics] /home/mfreeman/src/chaseapp/build/firebase_ana
 MERGED from [:firebase_analytics] /home/mfreeman/src/chaseapp/build/firebase_analytics/intermediates/library_manifest/debug/AndroidManifest.xml:8:5-67
 MERGED from [com.revenuecat.purchases:purchases:3.5.2] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/be6ed9caa42cfc21e516b807f13a6e71/purchases-3.5.2/AndroidManifest.xml:11:5-67
 MERGED from [com.revenuecat.purchases:purchases:3.5.2] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/be6ed9caa42cfc21e516b807f13a6e71/purchases-3.5.2/AndroidManifest.xml:11:5-67
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:11:5-67
+MERGED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:11:5-67
 MERGED from [com.google.firebase:firebase-firestore:21.7.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/72bf201ce21b6d6281bce99a2aa7177f/jetified-firebase-firestore-21.7.1/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-firestore:21.7.1] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/72bf201ce21b6d6281bce99a2aa7177f/jetified-firebase-firestore-21.7.1/AndroidManifest.xml:14:5-67
 MERGED from [com.google.firebase:firebase-database:19.5.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/1825b3f97bc3ece48000f264daba777f/firebase-database-19.5.0/AndroidManifest.xml:26:5-67
@@ -579,6 +602,17 @@ ADDED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storag
 		ADDED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:11:17-82
 	android:name
 		ADDED from [:firebase_storage] /home/mfreeman/src/chaseapp/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:10:17-126
+provider#io.sentry.android.core.SentryInitProvider
+ADDED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:11:9-15:35
+REJECTED from [io.sentry:sentry-android-core:3.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/73e52289d006d32cd630bd5f5e317b6a/jetified-sentry-android-core-3.2.0/AndroidManifest.xml:16:9-19:40
+	tools:node
+		ADDED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:15:13-32
+	android:authorities
+		ADDED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:13:13-70
+	android:exported
+		ADDED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:14:13-37
+	android:name
+		ADDED from [:sentry_flutter] /home/mfreeman/src/chaseapp/build/sentry_flutter/intermediates/library_manifest/debug/AndroidManifest.xml:12:13-69
 service#io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService
 ADDED from [:firebase_messaging] /home/mfreeman/src/chaseapp/build/firebase_messaging/intermediates/library_manifest/debug/AndroidManifest.xml:8:9-12:19
 	android:name
@@ -852,15 +886,15 @@ ADDED from [com.google.android.gms:play-services-basement:17.0.0] /home/mfreeman
 	android:name
 		ADDED from [com.google.android.gms:play-services-basement:17.0.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/5327428b9f13bbd4158f2a9ed635df41/jetified-play-services-basement-17.0.0/AndroidManifest.xml:24:13-58
 provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:23:9-27:43
+ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:25:9-29:43
 	android:authorities
-		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:25:13-69
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:27:13-69
 	android:multiprocess
-		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:27:13-40
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:29:13-40
 	android:exported
-		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:26:13-37
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:28:13-37
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:24:13-79
+		ADDED from [androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:26:13-79
 service#com.google.android.datatransport.runtime.backends.TransportBackendDiscovery
 ADDED from [com.google.android.datatransport:transport-backend-cct:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/69a343fae04c290ebcd4420f4533827c/transport-backend-cct-2.2.0/AndroidManifest.xml:29:9-35:19
 MERGED from [com.google.android.datatransport:transport-runtime:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/91efd35553d6d129ba776e62362b4536/transport-runtime-2.2.0/AndroidManifest.xml:36:9-38:40

@@ -5,7 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 // import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:chaseapp/login_screen.dart';
+import 'package:chaseapp/pages/signin_page.dart';
 // import 'package:chaseapp/utils/deviceSize.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -46,7 +46,7 @@ class Settings extends StatelessWidget {
           onPressed: () {
             signOutGoogle();
             //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => new LoginScreen()));
+            Navigator.push(context, new MaterialPageRoute(builder: (context) => new SignInPage()));
           },
         ),
       ],

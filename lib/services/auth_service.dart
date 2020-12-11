@@ -23,7 +23,7 @@ class AuthService implements BaseAuth {
 
   // Future<User> signInWithGoogle(SignInViewModel model) async {
   // Future<String> signInWithGoogle(SignInViewModel model) async {
-  Future<String> signInWithGoogle() async {
+  Future signInWithGoogle() async {
     // model.state = ViewState.Busy;
 
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -58,7 +58,8 @@ class AuthService implements BaseAuth {
     print("User Name: ${user.displayName}");
     print("User Email ${user.email}");
 
-    return '$user';
+    // return '$user';
+    return _userFromFirebaseUser(user);
   }
     // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {

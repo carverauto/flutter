@@ -1,11 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:chaseapp/helper/helper_functions.dart';
-import 'package:chaseapp/pages/authenticate_page.dart';
-import 'package:chaseapp/pages/home_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'package:chaseapp/helper/locator.dart';
+import 'package:chaseapp/viewModels/home_view_model.dart';
+import 'package:chaseapp/viewModels/sign_in_view_model.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:chaseapp/helper/helper_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
+import 'package:chaseapp/helper/prefer.dart';
+import 'package:chaseapp/helper/routes.dart';
+import 'package:provider/provider.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
+
 
 // void main() => runApp(MyApp());
 Future<void> main() async {
@@ -27,7 +34,17 @@ Future<void> main() async {
     }
   }
 
-  runApp(MyApp());
+  //runApp(MyApp());
+  Prefs.init();
+  setLocator();
+  runApp(MultiProvider(
+    child: MyApp(),
+    providers: [
+      ChangeNotifierProvider<HomeViewModel>(
+        builder: (_) => HomeViewModel(),
+      ),
+    ],
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -40,7 +57,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+  Locale locale;
+  bool localeLoaded = false;
   bool _isLoggedIn = false;
 
   @override
@@ -61,14 +79,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ChaseApp',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      //home: _isLoggedIn != null ? _isLoggedIn ? HomePage() : AuthenticatePage() : Center(child: CircularProgressIndicator()),
-      home: _isLoggedIn ? HomePage() : AuthenticatePage(),
-      //home: HomePage(),
-    );
+    SystemChrome.setPreferredOrientations([ DeviceOrientation.portraitUp, DeviceOrientation.portraitDown ]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey[400], statusBarIconBrightness: Brightness.light )); // #TODO: update to support themes
+
+    return ChangeNotifierProvider<SignInViewModel>(
+      builder: (_) => SignInViewModel(),
+      child: Center(
+        child: MaterialApp(
+          title: 'ChaseApp',
+          initialRoute: '/',
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: Routes.onGenerateRoute,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          )
+        )
+      );
   }
 }

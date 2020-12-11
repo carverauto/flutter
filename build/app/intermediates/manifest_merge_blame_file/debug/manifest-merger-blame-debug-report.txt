@@ -383,15 +383,15 @@
 212-->[com.google.android.gms:play-services-basement:17.0.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/5327428b9f13bbd4158f2a9ed635df41/jetified-play-services-basement-17.0.0/AndroidManifest.xml:25:13-66
 213
 214        <provider
-214-->[androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:23:9-27:43
+214-->[androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:25:9-29:43
 215            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-215-->[androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:24:13-79
+215-->[androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:26:13-79
 216            android:authorities="com.carverauto.chaseapp.lifecycle-process"
-216-->[androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:25:13-69
+216-->[androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:27:13-69
 217            android:exported="false"
-217-->[androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:26:13-37
+217-->[androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:28:13-37
 218            android:multiprocess="true" />
-218-->[androidx.lifecycle:lifecycle-process:2.1.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/9efdb8de2fbb324eba57eedb811f6250/lifecycle-process-2.1.0/AndroidManifest.xml:27:13-40
+218-->[androidx.lifecycle:lifecycle-process:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/245370d5da7f40710f3d964b687ac5fd/lifecycle-process-2.2.0/AndroidManifest.xml:29:13-40
 219
 220        <service
 220-->[com.google.android.datatransport:transport-backend-cct:2.2.0] /home/mfreeman/.gradle/caches/transforms-2/files-2.1/69a343fae04c290ebcd4420f4533827c/transport-backend-cct-2.2.0/AndroidManifest.xml:29:9-35:19
