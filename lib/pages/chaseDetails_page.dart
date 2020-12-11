@@ -127,7 +127,7 @@ class ShowChase extends StatelessWidget {
                   width: 400,
                   height: 350,
                   // child: ChatScreen(record.ID),
-                  child: ChatView(record.ID), // #TODO: fix this
+                   child: ChatView(record.ID), // #TODO: fix this
                   // child: SingleChildScrollView( child: ChatScreen(record.ID))
                 )
                 //ChatScreen('Foo'),
