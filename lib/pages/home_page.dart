@@ -159,6 +159,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /*
       appBar: AppBar(
         title: Text('Chases', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black87,
@@ -173,6 +174,8 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+       */
+      /*
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 50.0),
@@ -208,6 +211,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+       */
       body: ChasesScreen(),
     );
   }
