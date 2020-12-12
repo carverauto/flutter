@@ -1,10 +1,8 @@
 import 'package:chaseapp/pages/home_page.dart';
+import 'package:chaseapp/pages/profile_page.dart';
 import 'package:flutter/material.dart';
-// import 'package:chaseapp/login_screen.dart';
 import 'package:chaseapp/pages/splash_page.dart';
 import 'package:chaseapp/helper/routeNames.dart';
-
-// import '../first_screen.dart';
 import 'package:chaseapp/pages/signin_page.dart';
 
 class Routes {
@@ -16,6 +14,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => SignInPage());
       case RouteName.Home:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case RouteName.Profile:
+        return MaterialPageRoute(builder: (_) => ProfilePage());
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:chaseapp/models/user.dart';
 import 'package:chaseapp/services/database_service.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 
@@ -21,11 +22,13 @@ class AuthService implements BaseAuth {
     return (user != null) ? MyUser(uid: user.uid) : null;
   }
 
+
   // Future<User> signInWithGoogle(SignInViewModel model) async {
   // Future<String> signInWithGoogle(SignInViewModel model) async {
-  Future signInWithGoogle() async {
+  signInWithGoogle() async {
     // model.state = ViewState.Busy;
 
+    print('AuthService: signInWithGoogle');
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
 
     final GoogleSignInAuthentication googleSignInAuthentication =
@@ -44,6 +47,10 @@ class AuthService implements BaseAuth {
 
     assert(!user.isAnonymous);
 
+    // add to the firestore 'users' collection so we can easily generate reports for the CCP overlords
+    // await DatabaseService(uid: user.uid).getUserData(user.email).then((value) => DatabaseService(uid: user.uid).updateUserData(user.displayName, user.email, null));
+    // await DatabaseService(uid: user.uid).getUserData(user.email).then((value) => DatabaseService(uid: user.uid).updateUserData(user.displayName, user.email, "foobar"));
+
     assert(await user.getIdToken() != null);
 
     assert(!user.isAnonymous);
@@ -55,18 +62,20 @@ class AuthService implements BaseAuth {
 
     // model.state = ViewState.Idle;
 
-    print("User Name: ${user.displayName}");
-    print("User Email ${user.email}");
+    print("Google-User Name: ${user.displayName}");
+    print("Google-User Email ${user.email}");
 
-    // return '$user';
-    return _userFromFirebaseUser(user);
+    // await DatabaseService(uid: user.uid).updateUserData(fullName, email, password);
+
+    // return _userFromFirebaseUser(currentUser);
+    return user;
   }
     // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
-      return _userFromFirebaseUser(user);
+        UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+        User user = result.user;
+        return _userFromFirebaseUser(user);
     } catch(e) {
       print(e.toString());
       return null;
@@ -91,9 +100,9 @@ class AuthService implements BaseAuth {
   // register with email and password
   Future registerWithEmailAndPassword(String fullName, String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      User user = result.user;
-
+        UserCredential result = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        User user = result.user;
       // Create a new document for the user with uid
       await DatabaseService(uid: user.uid).updateUserData(fullName, email, password);
       return _userFromFirebaseUser(user);

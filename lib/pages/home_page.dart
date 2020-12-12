@@ -175,7 +175,6 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
        */
-      /*
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 50.0),
@@ -211,7 +210,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-       */
       body: ChasesScreen(),
     );
   }

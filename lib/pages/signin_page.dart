@@ -5,6 +5,7 @@ import 'package:chaseapp/helper/routeNames.dart';
 import 'package:chaseapp/helper/deviceSize.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:chaseapp/shared/view_state.dart';
+import 'package:chaseapp/models/user.dart';
 import 'package:chaseapp/viewModels/sign_in_view_model.dart';
 import 'package:chaseapp/services/auth_service.dart';
 import 'package:chaseapp/services/database_service.dart';
@@ -17,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
+final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
@@ -31,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  bool isSignIn = false;
+  bool isSignedIn = false;
   bool google = false;
 
 
@@ -42,56 +43,67 @@ class _SignInPageState extends State<SignInPage> {
   String password = '';
   String error = '';
 
-  _onSignIn(SignInViewModel model, String service) async {
+  _onSignInWithGoogle(SignInViewModel model) async {
+
+    print("Singing in with google");
+    User user;
+
+    bool isSignedIn = await _googleSignIn.isSignedIn();
+
+    //setState(() {
+    //  isUserSignedIn = userSignedIn;
+    //});
+
+    if (isSignedIn) {
+      user = FirebaseAuth.instance.currentUser;
+    }
+
+    await _auth.signInWithGoogle().then((result) async {
+      model.state = ViewState.Busy;
+      if (result != null) {
+        QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(result.email);
+
+        await HelperFunctions.saveUserLoggedInSharedPreference(true);
+        await HelperFunctions.saveUserEmailSharedPreference(email);
+        await HelperFunctions.saveUserNameSharedPreference(
+            userInfoSnapshot.docs[0].data()['fullName']
+        );
+
+        print("Signed In");
+        await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
+          print("Logged in: $value");
+        });
+        await HelperFunctions.getUserEmailSharedPreference().then((value) {
+          print("Email: $value");
+        });
+        await HelperFunctions.getUserNameSharedPreference().then((value) {
+          print("Full Name: $value");
+        });
+
+        // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
+
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(
+            RouteName.Home,
+                (Route<dynamic> route) =>
+            false);
+      }
+      else {
+        setState(() {
+          error = 'Error signing in!';
+          _isLoading = false;
+        });
+      }
+    });
+  } // google
+
+  _onSignIn(SignInViewModel model) async {
     model.state = ViewState.Busy;
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      if (service == 'google') {
-        // await _auth.signInWithEmailAndPassword(email, password).then((
-        await _auth.signInWithGoogle().then((
-            result) async {
-          if (result != null) {
-            QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(result);
-
-            await HelperFunctions.saveUserLoggedInSharedPreference(true);
-            await HelperFunctions.saveUserEmailSharedPreference(email);
-            await HelperFunctions.saveUserNameSharedPreference(
-                userInfoSnapshot.docs[0].data()['fullName']
-            );
-
-            print("Signed In");
-            await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-              print("Logged in: $value");
-            });
-            await HelperFunctions.getUserEmailSharedPreference().then((value) {
-              print("Email: $value");
-            });
-            await HelperFunctions.getUserNameSharedPreference().then((value) {
-              print("Full Name: $value");
-            });
-
-            // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
-
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(
-                RouteName.Home,
-                    (Route<dynamic> route) =>
-                false);
-          }
-          else {
-            setState(() {
-              error = 'Error signing in!';
-              _isLoading = false;
-            });
-          }
-        });
-      } // google
-
-      // Sign-in with e-mail
-      if (service == 'email') {
         await _auth.signInWithEmailAndPassword(email, password).then((
             result) async {
           if (result != null) {
@@ -130,7 +142,6 @@ class _SignInPageState extends State<SignInPage> {
             });
           }
         });
-      }
     } // email
 
   }
@@ -266,7 +277,7 @@ class _SignInPageState extends State<SignInPage> {
                                                 onPressed: () {
                                                   model.passwordVisible =
                                                   !model.passwordVisible;
-                                                  _onSignIn(model,"email");
+                                                  _onSignIn(model);
                                                 }),
                                           ),
                                           cursorColor: Colors.black,
@@ -337,7 +348,7 @@ class _SignInPageState extends State<SignInPage> {
                                                   ],
                                                 ))),
                                         onTap: () async {
-                                          _onSignIn(model,"google")
+                                          _onSignInWithGoogle(model)
                                               .then((result) {
                                             model.clearAllModels();
                                             Navigator.of(context)
