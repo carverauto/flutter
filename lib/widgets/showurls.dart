@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show BuildContext, EdgeInsets, ListView, NeverScrollableScrollPhysics, Padding, Row, SizedBox, StatelessWidget, Widget;
+import 'package:flutter/material.dart' show BuildContext, EdgeInsets, Flexible, ListView, NeverScrollableScrollPhysics, Padding, Row, SizedBox, StatelessWidget, Widget;
 import 'dart:async';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,10 +15,12 @@ class URLView extends StatelessWidget {
       children.add(
         new Row(
           children: <Widget>[
-            Padding(
+            Flexible(
+             child: Padding(
                 padding: EdgeInsets.all(0.4),
                 // child: Linkify(onOpen: _onOpen, text: item.toString())),
                 child: Linkify(onOpen: _onOpen, text: item["URL"]))
+            ),
           ],
         ),
       );

@@ -82,7 +82,8 @@ class _HomePageState extends State<HomePage> {
       });
     });
 
-    /* #TODO: this should be updated for chats, when we get to it - need to use google realtime db
+    /*
+    //#TODO: this should be updated for chats, when we get to it - need to use google realtime db
     DatabaseService(uid: _user.uid).getChases().then((snapshots) { // #TODO: wtf is this
       // print(snapshots);
       setState(() {
@@ -95,6 +96,7 @@ class _HomePageState extends State<HomePage> {
         _email = value;
       });
     });
+     */
   }
 
 
