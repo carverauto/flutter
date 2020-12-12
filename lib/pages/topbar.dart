@@ -33,13 +33,12 @@ Widget TopBar(BuildContext context) {
             child: IconButton(
                 icon: CircleAvatar(
                   radius: 20,
-                  // backgroundImage: NetworkImage(imageUrl),
-                  // backgroundImage: CachedNetworkImage( placeholder: (context, url) => CircularProgressIndicator(), imageUrl: imageUrl),
                   backgroundImage: CachedNetworkImageProvider(auth.currentUser.photoURL),
                 ),
                 onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Settings()))),
-            // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                    // context, MaterialPageRoute(builder: (context) => Settings()))),
+                    context, MaterialPageRoute(builder: (context) => ProfilePage(userName: FirebaseAuth.instance.currentUser.displayName, email: FirebaseAuth.instance.currentUser.email,)))),
+  // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
             ),
        /* Scaffold(
          drawer: Drawer(
