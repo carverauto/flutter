@@ -81,7 +81,9 @@ class _HomePageState extends State<HomePage> {
         _userName = value;
       });
     });
-    DatabaseService(uid: _user.uid).getChases().then((snapshots) {
+
+    /* #TODO: this should be updated for chats, when we get to it - need to use google realtime db
+    DatabaseService(uid: _user.uid).getChases().then((snapshots) { // #TODO: wtf is this
       // print(snapshots);
       setState(() {
         // _groups = snapshots;
@@ -158,59 +160,7 @@ class _HomePageState extends State<HomePage> {
   // Building the HomePage widget
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /*
-      appBar: AppBar(
-        title: Text('Chases', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.black87,
-        elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            icon: Icon(Icons.search, color: Colors.white, size: 25.0), 
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SearchPage()));
-            }
-          )
-        ],
-      ),
-       */
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
-          children: <Widget>[
-            Icon(Icons.account_circle, size: 150.0, color: Colors.grey[700]),
-            SizedBox(height: 15.0),
-            Text(_userName, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 7.0),
-            ListTile(
-              onTap: () {},
-              selected: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              leading: Icon(Icons.group),
-              title: Text('Chases'),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ProfilePage(userName: _userName, email: _email)));
-              },
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
-            ),
-            ListTile(
-              onTap: () async {
-                await _auth.signOut();
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AuthenticatePage()), (Route<dynamic> route) => false);
-              },
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-              leading: Icon(Icons.exit_to_app, color: Colors.red),
-              title: Text('Log Out', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        ),
-      ),
-      body: ChasesScreen(),
-    );
+    //return ChasesScreen();
+    return Scaffold( body: ChasesScreen(), );
   }
 }

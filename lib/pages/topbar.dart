@@ -35,20 +35,20 @@ Widget TopBar(BuildContext context) {
                   radius: 20,
                   // backgroundImage: NetworkImage(imageUrl),
                   // backgroundImage: CachedNetworkImage( placeholder: (context, url) => CircularProgressIndicator(), imageUrl: imageUrl),
-                  // backgroundImage: CachedNetworkImageProvider(imageUrl),
+                  backgroundImage: CachedNetworkImageProvider(auth.currentUser.photoURL),
                 ),
                 onPressed: () => Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Settings()))),
             // onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
             ),
-       Scaffold(
+       /* Scaffold(
          drawer: Drawer(
            child: ListView(
              padding: EdgeInsets.symmetric(vertical: 50.0),
              children: <Widget>[
                Icon(Icons.account_circle, size: 150.0, color: Colors.grey[700]),
-               // SizedBox(height: 15.0),
-               //Text(auth.currentUser.displayName, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+               SizedBox(height: 15.0),
+               Text(auth.currentUser.displayName, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
                SizedBox(height: 7.0),
                ListTile(
                  onTap: () {},
@@ -77,7 +77,7 @@ Widget TopBar(BuildContext context) {
              ],
            ),
          ),
-       )
+       ) */
       ],
     );
   }

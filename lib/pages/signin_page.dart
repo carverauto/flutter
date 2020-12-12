@@ -44,7 +44,6 @@ class _SignInPageState extends State<SignInPage> {
   String error = '';
 
   _onSignInWithGoogle(SignInViewModel model) async {
-
     print("Singing in with google");
     User user;
 
@@ -54,48 +53,60 @@ class _SignInPageState extends State<SignInPage> {
     //  isUserSignedIn = userSignedIn;
     //});
 
+    // Check to see if we're signed in already
     if (isSignedIn) {
-      user = FirebaseAuth.instance.currentUser;
-    }
+      print("Already signed in");
 
-    await _auth.signInWithGoogle().then((result) async {
       model.state = ViewState.Busy;
-      if (result != null) {
-        QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(result.email);
+      user = FirebaseAuth.instance.currentUser;
 
-        await HelperFunctions.saveUserLoggedInSharedPreference(true);
-        await HelperFunctions.saveUserEmailSharedPreference(email);
-        await HelperFunctions.saveUserNameSharedPreference(
-            userInfoSnapshot.docs[0].data()['fullName']
-        );
+      // go to the home page
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(
+          RouteName.Home,
+              (Route<dynamic> route) =>
+          false);
+    } else {
+      await _auth.signInWithGoogle().then((result) async {
+        model.state = ViewState.Busy;
+        if (result != null) {
+          QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(
+              result.email);
 
-        print("Signed In");
-        await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-          print("Logged in: $value");
-        });
-        await HelperFunctions.getUserEmailSharedPreference().then((value) {
-          print("Email: $value");
-        });
-        await HelperFunctions.getUserNameSharedPreference().then((value) {
-          print("Full Name: $value");
-        });
+          await HelperFunctions.saveUserLoggedInSharedPreference(true);
+          await HelperFunctions.saveUserEmailSharedPreference(email);
+          await HelperFunctions.saveUserNameSharedPreference( // #TODO: debug this, see if it is working
+              userInfoSnapshot.docs[0].data()['fullName']
+          );
 
-        // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
+          print("Signed In");
+          await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
+            print("Logged in: $value");
+          });
+          await HelperFunctions.getUserEmailSharedPreference().then((value) {
+            print("Email: $value");
+          });
+          await HelperFunctions.getUserNameSharedPreference().then((value) {
+            print("Full Name: $value");
+          });
 
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(
-            RouteName.Home,
-                (Route<dynamic> route) =>
-            false);
-      }
-      else {
-        setState(() {
-          error = 'Error signing in!';
-          _isLoading = false;
-        });
-      }
-    });
-  } // google
+          // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
+
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(
+              RouteName.Home,
+                  (Route<dynamic> route) =>
+              false);
+        }
+        else {
+          setState(() {
+            error = 'Error signing in!';
+            _isLoading = false;
+          });
+        }
+      });
+    }
+  }
 
   _onSignIn(SignInViewModel model) async {
     model.state = ViewState.Busy;
