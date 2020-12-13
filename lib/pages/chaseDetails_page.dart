@@ -26,7 +26,7 @@ class ShowChase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final topBar = new AppBar(
-      backgroundColor: new Color(0xfff8faf8),
+      // backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),

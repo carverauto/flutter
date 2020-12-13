@@ -10,6 +10,7 @@
 .svn/
 .flutter-plugins-dependencies
 google-services.json
+pubspec.lock
 
 # IntelliJ related
 *.iml

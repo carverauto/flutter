@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
           initialRoute: '/',
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Routes.onGenerateRoute,
-          theme: ThemeData.light(),
+          theme: ThemeData.dark(),
           darkTheme: ThemeData.dark(),
           )
         )

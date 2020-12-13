@@ -165,7 +165,7 @@ class _SignInPageState extends State<SignInPage> {
           return WillPopScope(
             child: SafeArea(
               child: Scaffold(
-                backgroundColor: Color(0xFFE6E6E6),
+                // backgroundColor: Color(0xFFE6E6E6),
                 // backgroundColor: Vx.gray200,
                 body: Stack(
                   children: <Widget>[
@@ -179,7 +179,7 @@ class _SignInPageState extends State<SignInPage> {
                         children: <Widget>[
                           Container(
                             height: deviceSize.height / 5.4,
-                            width: deviceSize.width / 1,
+                            // width: deviceSize.width / 1,
                             decoration: BoxDecoration(
                               //border: Border.all( color: Colors.black, width: 8),
                               image: DecorationImage(

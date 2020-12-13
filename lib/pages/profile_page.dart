@@ -10,7 +10,9 @@ class ProfilePage extends StatelessWidget {
 
   final String userName;
   final String email;
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
 
   ProfilePage({this.userName, this.email});
 
@@ -18,7 +20,20 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar( title: Text('Profile', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)), backgroundColor: Colors.black87, elevation: 0.0,),
-      appBar: TopBar(context), // #TODO: Replace or update this, we don't need to display the photoURL twice
+      // appBar: TopBar(context), // #TODO: Replace or update this, we don't need to display the photoURL twice
+      appBar: AppBar(
+            // backgroundColor: new Color(0xfff8faf8),
+            centerTitle: true,
+            elevation: 1.0,
+            // leading: new Icon(Icons.camera_alt),
+            title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
+            actions: <Widget>[
+              Padding(
+                 padding: const EdgeInsets.only(right: 12.0),
+              // child: IconButton( icon: CircleAvatar( radius: 20, backgroundImage: CachedNetworkImageProvider(auth.currentUser.photoURL), ), onPressed: () => Navigator.push( context, MaterialPageRoute( builder: (context) => ProfilePage( userName: FirebaseAuth.instance.currentUser.displayName, email: FirebaseAuth.instance.currentUser.email, ) ) ) ),
+              ),],
+
+      ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
         child: Container(
