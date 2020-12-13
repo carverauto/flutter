@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io' show Platform;
 import 'package:chaseapp/helper/locator.dart';
 import 'package:chaseapp/viewModels/home_view_model.dart';
 import 'package:chaseapp/viewModels/sign_in_view_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/helper/routes.dart';
@@ -21,14 +19,7 @@ Future<void> main() async {
   if (Firebase.apps.length == 0) {
     print("No firebase instance, lets create one..");
     try {
-      await Firebase.initializeApp(
-          name: 'chaseapp',
-          options: FirebaseOptions(
-              databaseURL: 'https://chaseapp-8459b.firebaseio.com/',
-              apiKey: 'AIzaSyDZVvCuh81AYFsNqNhdI5GUzwQC91na580',
-              appId: 'chaseapp-8459b',
-              messagingSenderId: '1020122644146',
-              projectId: 'chaseapp-8459b'));
+      await Firebase.initializeApp();
     } catch (err) {
       print('Firebase init error raised ${err.toString()}');
     }
@@ -48,9 +39,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  Future<FirebaseApp> get _initialization => Firebase.initializeApp();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -90,7 +78,7 @@ class _MyAppState extends State<MyApp> {
           initialRoute: '/',
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Routes.onGenerateRoute,
-          theme: ThemeData.light(),
+          theme: ThemeData.dark(),
           darkTheme: ThemeData.dark(),
           )
         )

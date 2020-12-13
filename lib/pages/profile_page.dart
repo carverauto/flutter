@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar( title: Text('Profile', style: TextStyle(color: Colors.white, fontSize: 27.0, fontWeight: FontWeight.bold)), backgroundColor: Colors.black87, elevation: 0.0,),
-      appBar: TopBar(context),
+      appBar: TopBar(context), // #TODO: Replace or update this, we don't need to display the photoURL twice
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
         child: Container(

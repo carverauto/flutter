@@ -49,6 +49,7 @@ dependencies:
   progress_hud: ^1.1.0
   medium_clap_flutter: ^0.0.1
   font_awesome_flutter: ^8.10.0
+  google_fonts: ^1.1.1
   permission_handler: ^5.0.1+1
   velocity_x: ^1.0.1
   sentry_flutter: ^4.0.0

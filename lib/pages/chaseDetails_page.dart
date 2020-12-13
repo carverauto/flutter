@@ -1,8 +1,5 @@
-// import 'package:chaseapp/service/authentication.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import "package:velocity_x/velocity_x.dart";
-// import 'package:firebase_database/firebase_database.dart';
-// import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -12,13 +9,7 @@ import 'package:share/share.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/widgets/showurls.dart';
-import 'package:chaseapp/pages/chat_page.dart';
-// import 'package:chaseapp/service/authentication.dart';
-
-// import 'dart:developer';
-// import 'package:firebase_analytics/observer.dart';
-
-// import 'package:chaseapp/topbar.dart';
+// import 'package:chaseapp/pages/chat_page.dart';
 
 class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
@@ -28,12 +19,6 @@ class ShowChase extends StatelessWidget {
 
   ShowChase({Key key, @required this.record}) : super(key: key);
 
-/*
-  Widget _buildUrlItem(BuildContext context, DocumentSnapshot data) {
-    // final OtherURL = Record.fromSnapshot(data);
-    final foo = Record.fromSnapshot(record.OtherURL.getDocuments())
-  }
-  */
   @override
   Widget build(BuildContext context) {
     final topBar = new AppBar(
@@ -91,10 +76,22 @@ class ShowChase extends StatelessWidget {
               children: <Widget>[
                 ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 Divider(),
-                Padding(
-                  // padding: EdgeInsets.all(0.3),
-                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
-                    child: Linkify(onOpen: _onOpen, text: record.URL)),
+                //Padding( padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0), child: Linkify(onOpen: _onOpen, text: record.URL)),
+                Container(
+                  //padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
+                  child: ListTile(
+                    // leading: FlutterLogo(), // #TODO: make this support passing the network
+                    leading: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.black38,
+                      child: CachedNetworkImage(
+                        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b') ,
+                        // imageUrl: record.Network.URL)
+                      ),
+                    // https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b
+                    title: Linkify(onOpen: _onOpen, text: record.URL),
+                  )
+                ),
                 Padding(
                   padding: EdgeInsets.all(0.3),
                   // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),

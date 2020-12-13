@@ -8,6 +8,8 @@ import 'package:chaseapp/pages/chaseDetails_page.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:chaseapp/pages/topbar.dart';
 import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChasesScreen extends StatefulWidget {
   @override
@@ -129,7 +131,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
             backgroundColor: Colors.white,
             child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
           ),
-          title: Text(record.Name),
+          title: Text(record.Name, style: GoogleFonts.roboto()),
           // subtitle: Text(record.Votes.toString() + ' donuts'),
           subtitle: Text(dateMsg),
           trailing: new Chip(
