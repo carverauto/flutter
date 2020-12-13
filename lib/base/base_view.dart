@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chaseapp/base/base_model.dart';
-import 'package:chaseapp/utils/locator.dart';
+import 'package:chaseapp/helper/locator.dart';
 import 'package:provider/provider.dart';
 
 

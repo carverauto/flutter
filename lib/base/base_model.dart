@@ -1,6 +1,5 @@
-
 import 'package:flutter/foundation.dart';
-import 'package:chaseapp/utils/view_state.dart';
+import 'package:chaseapp/shared/view_state.dart';
 
 class BaseModel with ChangeNotifier {
   ViewState _state = ViewState.Idle;
