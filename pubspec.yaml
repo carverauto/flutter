@@ -53,6 +53,7 @@ dependencies:
   permission_handler: ^5.0.1+1
   velocity_x: ^1.0.1
   sentry_flutter: ^4.0.0
+  shimmer: ^1.1.1
 
 
 dev_dependencies:

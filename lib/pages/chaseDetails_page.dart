@@ -10,6 +10,8 @@ import 'package:share/share.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/widgets/showurls.dart';
+import 'package:shimmer/shimmer.dart';
+
 // import 'package:chaseapp/pages/chat_page.dart';
 
 
@@ -91,16 +93,30 @@ class ShowChase extends StatelessWidget {
                 ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 Divider(),
                 Container(
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.black38,
-                      child: CachedNetworkImage(
-                        imageUrl: _networkURL),
+                  child:
+                      ListTile(
+                        leading: // Shimmer.fromColors(
+                            // child:
+                          CircleAvatar(
+                              radius: 25,
+                              // backgroundColor: Colors.black38,
+                              backgroundColor: Colors.transparent,
+                              child: Material(
+                                clipBehavior: Clip.hardEdge,
+                                shape: CircleBorder(),
+                                color: Colors.transparent,
+                                child:
+                              CachedNetworkImage(
+                                  imageUrl: _networkURL
+                                ),
+                              ),
+                            ),
+                            // baseColor: Colors.transparent,
+                            // highlightColor: Colors.redAccent,
+                        title: Linkify(onOpen: _onOpen, text: record.URL),
                       ),
-                    title: Linkify(onOpen: _onOpen, text: record.URL),
-                  )
                 ),
+                  //),
                 Padding(
                   padding: EdgeInsets.all(0.3),
                   child: URLView(record.urls),
