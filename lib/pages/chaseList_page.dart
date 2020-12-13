@@ -131,7 +131,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
             backgroundColor: Colors.white,
             child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
           ),
-          title: Text(record.Name, style: GoogleFonts.roboto()),
+          title: Text(record.Name, style: GoogleFonts.getFont('Poppins')),
           // subtitle: Text(record.Votes.toString() + ' donuts'),
           subtitle: Text(dateMsg),
           trailing: new Chip(

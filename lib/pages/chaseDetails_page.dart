@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:core';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
@@ -11,13 +12,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/widgets/showurls.dart';
 // import 'package:chaseapp/pages/chat_page.dart';
 
+
 class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
-
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   final Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,15 @@ class ShowChase extends StatelessWidget {
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
     Record record = Record.fromSnapshot(snapshot);
+    final Network _networkURL = record.Network;
+
+    final _ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
+    var _newNetworkURL;
+
+    _newNetworkURL = _networkURL.URL != null ? _networkURL.URL : _ChaseLogo;
+
+    // _networkURL = record. ? record.getNetworkURL() : "https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b";
+
     return SizedBox(
       // height: 300,
         height: deviceSize.height,
@@ -85,7 +96,8 @@ class ShowChase extends StatelessWidget {
                       radius: 20,
                       backgroundColor: Colors.black38,
                       child: CachedNetworkImage(
-                        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b') ,
+                        // imageUrl: 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b') ,
+                        imageUrl: _newNetworkURL),
                         // imageUrl: record.Network.URL)
                       ),
                     // https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b
@@ -139,4 +151,11 @@ class ShowChase extends StatelessWidget {
       throw 'Could not launch $link';
     }
   }
+
 }
+
+class Network {
+  String URL;
+  String name;
+}
+

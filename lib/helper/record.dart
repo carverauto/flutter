@@ -16,7 +16,6 @@ class Record {
   final String _url;
   final Object _network;
   final bool _live;
-  // final Timestamp _createdAt;
   final DateTime _createdAt;
   final String _desc;
   int _votes;
@@ -40,7 +39,7 @@ class Record {
         // _createdAt = map['createdAt'] as DateTime,
         _createdAt = (map['CreatedAt'] as Timestamp).toDate(),
         _url = map['URL'],
-        _network = map['Network'], // #TODO: might need to make this more robust
+        _network = map['Network'],
         _live = map['Live'],
         _votes = map['Votes'],
         _desc = map['Desc'],
