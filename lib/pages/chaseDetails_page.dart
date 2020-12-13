@@ -68,48 +68,42 @@ class ShowChase extends StatelessWidget {
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
     Record record = Record.fromSnapshot(snapshot);
-    final Network _networkURL = record.Network;
 
+    // Support showing the network URL/icon in the chase Details screen
     final _ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
-    var _newNetworkURL;
+    var _networkURL, _network;
 
-    _newNetworkURL = _networkURL.URL != null ? _networkURL.URL : _ChaseLogo;
-
-    // _networkURL = record. ? record.getNetworkURL() : "https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b";
+    if (record.Network != null) {
+      var myMap = Map<String, dynamic>.from(record.Network);
+      _networkURL = myMap['URL'];
+      _network = myMap['name'];
+    } else {
+      _networkURL = _ChaseLogo;
+      _network = "";
+    }
 
     return SizedBox(
-      // height: 300,
         height: deviceSize.height,
-        // child: Card(
         child: SingleChildScrollView(
             child: Column(
               // child: SingleChildScrollView(
               children: <Widget>[
                 ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 Divider(),
-                //Padding( padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0), child: Linkify(onOpen: _onOpen, text: record.URL)),
                 Container(
-                  //padding: EdgeInsets.fromLTRB(30.0, 10.0, 25.0, 5.0),
                   child: ListTile(
-                    // leading: FlutterLogo(), // #TODO: make this support passing the network
                     leading: CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.black38,
                       child: CachedNetworkImage(
-                        // imageUrl: 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b') ,
-                        imageUrl: _newNetworkURL),
-                        // imageUrl: record.Network.URL)
+                        imageUrl: _networkURL),
                       ),
-                    // https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/nbcla.png?alt=media&token=6c2c35f9-b2e3-4cfb-95a5-e70610c64f9b
                     title: Linkify(onOpen: _onOpen, text: record.URL),
                   )
                 ),
                 Padding(
                   padding: EdgeInsets.all(0.3),
-                  // Linkify(onOpen: _onOpen, text: Text(record.URLs.toList())),
-                  // child: Text(record.URLs.toString())
                   child: URLView(record.urls),
-                  // child: <Widget>[URLView(record.URLs)]),
                 ),
                 Container(
                     padding: EdgeInsets.all(30),
@@ -136,7 +130,7 @@ class ShowChase extends StatelessWidget {
                   width: 400,
                   height: 350,
                   // child: ChatScreen(record.ID),
-                   // child: ChatView(record.ID), // #TODO: fix this
+                   // child: ChatView(record.ID), // #TODO: bring chat stuff back in
                   // child: SingleChildScrollView( child: ChatScreen(record.ID))
                 )
                 //ChatScreen('Foo'),
