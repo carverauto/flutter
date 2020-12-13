@@ -172,23 +172,19 @@ class _SignInPageState extends State<SignInPage> {
                     Container(
                       height: 410,
                       width: 430,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/background.png'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                      // decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/background.png'), fit: BoxFit.contain, ), ),
                     ),
                     SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
                           Container(
-                            height: deviceSize.height / 2.4,
-                            width: deviceSize.width / 3,
+                            height: deviceSize.height / 5.4,
+                            width: deviceSize.width / 1,
                             decoration: BoxDecoration(
+                              //border: Border.all( color: Colors.black, width: 8),
                               image: DecorationImage(
                                 image:
-                                AssetImage('assets/chaseapplogo-512.png'),
+                                AssetImage('assets/chaseapp.png'),
                               ),
                             ),
                           ),
@@ -304,12 +300,11 @@ class _SignInPageState extends State<SignInPage> {
                                       Text.rich(
                                         TextSpan(
                                           text: "Don't have an account? ",
-                                          style: TextStyle(color: Colors.white, fontSize: 14.0),
+                                          style: TextStyle(fontSize: 14.0),
                                           children: <TextSpan>[
                                             TextSpan(
                                               text: 'Register here',
                                               style: TextStyle(
-                                                  color: Colors.white,
                                                   decoration: TextDecoration.underline
                                               ),
                                               recognizer: TapGestureRecognizer()..onTap = () {

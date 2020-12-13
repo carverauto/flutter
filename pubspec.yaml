@@ -34,7 +34,6 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   google_sign_in: ^4.5.6
   launch_review: ^2.0.0
-  flutter_launcher_icons: ^0.8.1
   fluttertoast: ^7.1.4
   share: ^0.6.5+4
   cached_network_image: ^2.4.1
@@ -57,9 +56,14 @@ dependencies:
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.8.1
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
