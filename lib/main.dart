@@ -32,7 +32,7 @@ Future<void> main() async {
     child: MyApp(),
     providers: [
       ChangeNotifierProvider<HomeViewModel>(
-        builder: (_) => HomeViewModel(),
+        create: (_) => HomeViewModel(),
       ),
     ],
   ));
@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey[400], statusBarIconBrightness: Brightness.light )); // #TODO: update to support themes
 
     return ChangeNotifierProvider<SignInViewModel>(
-      builder: (_) => SignInViewModel(),
+      create: (_) => SignInViewModel(),
       child: Center(
         child: MaterialApp(
           title: 'ChaseApp',
