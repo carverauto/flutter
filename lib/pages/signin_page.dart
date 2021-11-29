@@ -75,8 +75,9 @@ class _SignInPageState extends State<SignInPage> {
 
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
+          // https://stackoverflow.com/questions/67447001/firebase-firestore-error-the-operator-isnt-defined-for-the-class-object
           await HelperFunctions.saveUserNameSharedPreference( // #TODO: debug this, see if it is working
-              userInfoSnapshot.docs[0].data()['fullName']
+              (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
           );
 
           print("Signed In");
@@ -124,7 +125,7 @@ class _SignInPageState extends State<SignInPage> {
             await HelperFunctions.saveUserLoggedInSharedPreference(true);
             await HelperFunctions.saveUserEmailSharedPreference(email);
             await HelperFunctions.saveUserNameSharedPreference(
-                userInfoSnapshot.docs[0].data()['fullName']
+                (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
             );
 
             print("Signed In");
