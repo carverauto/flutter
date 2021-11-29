@@ -35,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await _auth.registerWithEmailAndPassword(fullName, email, password).then((result) async {
         if (result != null) {
 
+          /*
           var status = await Permission.storage.status;
           if (status.isUndetermined) {
             Map<Permission, PermissionStatus> statuses = await [
@@ -42,6 +43,26 @@ class _RegisterPageState extends State<RegisterPage> {
             ].request();
             print(statuses[Permission.storage]); // it should print PermissionStatus.granted
           }
+          if (status.isGranted) {
+            await HelperFunctions.saveUserLoggedInSharedPreference(true);
+            await HelperFunctions.saveUserEmailSharedPreference(email);
+            await HelperFunctions.saveUserNameSharedPreference(fullName);
+          } else {
+            setState(() {
+              error = 'Must grant permissions to application!';
+              _isLoading = false;
+            });
+          }
+           */
+
+          var status = await Permission.storage.status;
+          if (status.isDenied) {
+            Map<Permission, PermissionStatus> statuses = await [
+              Permission.storage,
+            ].request();
+            print(statuses[Permission.storage]);
+          }
+
           if (status.isGranted) {
             await HelperFunctions.saveUserLoggedInSharedPreference(true);
             await HelperFunctions.saveUserEmailSharedPreference(email);

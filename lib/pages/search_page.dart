@@ -80,6 +80,22 @@ class _SearchPageState extends State<SearchPage> {
   // widgets
   Widget chaseList() {
     return hasUserSearched ? ListView.builder(
+        shrinkWrap: true,
+        itemCount: searchResultSnapshot.docs.length,
+        itemBuilder: (context, index) {
+          return chaseTile(
+            _userName,
+            (searchResultSnapshot.docs[index].data() as Map<String,dynamic>)["chaseId"],
+            (searchResultSnapshot.docs[index].data() as Map<String,dynamic>)["chaseName"],
+          );
+        }
+    )
+        :
+    Container();
+  }
+  /*
+  Widget chaseList() {
+    return hasUserSearched ? ListView.builder(
       shrinkWrap: true,
       itemCount: searchResultSnapshot.docs.length,
       itemBuilder: (context, index) {
@@ -93,6 +109,7 @@ class _SearchPageState extends State<SearchPage> {
     :
     Container();
   }
+   */
 
 
   Widget chaseTile(String userName, String chaseId, String chaseName) {
