@@ -22,20 +22,13 @@ class _BaseViewState<T extends BaseModel> extends State<BaseView<T>> {
     if (widget.onModelReady != null) {
       widget.onModelReady(model);
     }
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    /*return ChangeNotifierProvider<T>(
-      builder: (context) => model,
-      child: Consumer<T>(builder: widget.builder),
-
-    );*/
-    return ChangeNotifierProvider<T>.value(
-      //builder: (context) => model,
-      child: Consumer<T>(builder: widget.builder), notifier: model,
-    );
+    return ChangeNotifierProvider<T>(
+      create: (context) => model,
+      child: Consumer<T>(builder: widget.builder));
   }
 }

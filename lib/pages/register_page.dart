@@ -7,8 +7,6 @@ import 'package:chaseapp/shared/constants.dart';
 import 'package:chaseapp/shared/loading.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
-
 class RegisterPage extends StatefulWidget {
   final Function toggleView;
   RegisterPage({this.toggleView});
