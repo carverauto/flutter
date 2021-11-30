@@ -49,7 +49,8 @@ class ShowChase extends StatelessWidget {
                   // analytics.logViewItem(); // #TODO: need tk update this
                   final RenderBox box = context.findRenderObject();
                   // Share.share("ChaseApp - record.LiveURL");
-                  Share.share(record.URL, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+                  // TODO: fix, this is broken...
+                  // Share.share(record.Networks, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
                 })),
       ],
     );
@@ -71,18 +72,22 @@ class ShowChase extends StatelessWidget {
     var deviceSize = MediaQuery.of(context).size;
     Record record = Record.fromSnapshot(snapshot);
 
+
+    // TODO: FIX - BROKEN
     // Support showing the network URL/icon in the chase Details screen
     final _ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
-    var _networkURL, _network;
+    /*
+    var _networkURL, _networks;
 
-    if (record.Network != null) {
-      var myMap = Map<String, dynamic>.from(record.Network);
+    if (record.Networks != null) {
+      var myMap = Map<String, dynamic>.from(record.Networks);
       _networkURL = myMap['URL'];
       _network = myMap['name'];
     } else {
       _networkURL = _ChaseLogo;
       _network = "";
     }
+     */
 
     return SizedBox(
         height: deviceSize.height,
@@ -92,6 +97,7 @@ class ShowChase extends StatelessWidget {
               children: <Widget>[
                 ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 Divider(),
+                /*
                 Container(
                   child:
                       ListTile(
@@ -113,13 +119,15 @@ class ShowChase extends StatelessWidget {
                             ),
                             // baseColor: Colors.transparent,
                             // highlightColor: Colors.redAccent,
-                        title: Linkify(onOpen: _onOpen, text: record.URL),
+                        title: Linkify(onOpen: _onOpen, text: record.Networks),
                       ),
                 ),
+
+                 */
                   //),
                 Padding(
                   padding: EdgeInsets.all(0.3),
-                  child: URLView(record.urls),
+                  child: URLView(record.Networks),
                 ),
                 Container(
                     padding: EdgeInsets.all(30),
