@@ -5,7 +5,7 @@ import 'package:chaseapp/viewModels/sign_in_view_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
-import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
+import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/helper/routes.dart';
 import 'package:provider/provider.dart';
