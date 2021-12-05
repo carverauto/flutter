@@ -51,6 +51,24 @@ class _MyAppState extends State<MyApp> {
   bool _initialized = false;
   bool _error = false;
 
+  static const nodle = const MethodChannel('io.nodle.sdk.android.Nodle')
+  static const Nodle = MethodChannel('io.nodle.sdk.android.Nodle');
+
+  Future<void> _init() async {
+    try {
+      final result = await Nodle.invokeMethod('init(this)');
+    } on PlatformException catch (e) {
+      print('Failed to init nodle $e');
+    }
+  }
+
+  Future<void> _start() async {
+    try {
+      final result = await Nodle.invokeMethod('start("24696fd1-fe33-4533-8acc-0233eecf07b5")');
+    } on PlatformException catch (e) {
+      print('Failed to starat nodle $e');
+    }
+  }
 
   // Define an async function to initialize FlutterFire
   void initializeFlutterFire() async {
@@ -72,7 +90,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     initializeFlutterFire();
     super.initState();
+    _init().then((value) => print('Init Nodle'));
     _getUserLoggedInStatus();
+    _start().then((value) => print('Startd nodle'));
   }
 
   _getUserLoggedInStatus() async {
