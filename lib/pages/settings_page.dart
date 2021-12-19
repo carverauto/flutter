@@ -17,7 +17,7 @@ class Settings extends StatelessWidget {
     print("User Sign Out");
   }
 
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   // ShowChase({Key key, @required this.record}) : super(key: key);
   @override

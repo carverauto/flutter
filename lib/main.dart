@@ -51,23 +51,17 @@ class _MyAppState extends State<MyApp> {
   bool _initialized = false;
   bool _error = false;
 
-  static const nodle = const MethodChannel('io.nodle.sdk.android.Nodle')
-  static const Nodle = MethodChannel('io.nodle.sdk.android.Nodle');
+  static const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
 
-  Future<void> _init() async {
+  // Define an async function to initialize Nodle SDK
+  void initializeNodle() async {
+    String value;
     try {
-      final result = await Nodle.invokeMethod('init(this)');
-    } on PlatformException catch (e) {
-      print('Failed to init nodle $e');
+      value = await platform.invokeMethod("init");
+    } catch (e) {
+      print(e);
     }
-  }
-
-  Future<void> _start() async {
-    try {
-      final result = await Nodle.invokeMethod('start("24696fd1-fe33-4533-8acc-0233eecf07b5")');
-    } on PlatformException catch (e) {
-      print('Failed to starat nodle $e');
-    }
+    print(value);
   }
 
   // Define an async function to initialize FlutterFire
@@ -89,10 +83,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     initializeFlutterFire();
+    initializeNodle();
     super.initState();
-    _init().then((value) => print('Init Nodle'));
     _getUserLoggedInStatus();
-    _start().then((value) => print('Startd nodle'));
+
+
   }
 
   _getUserLoggedInStatus() async {

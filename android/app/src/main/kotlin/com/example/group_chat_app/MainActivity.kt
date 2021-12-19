@@ -1,3 +1,4 @@
+/*
 package com.carverauto.chaseapp
 
 import androidx.annotation.NonNull;
@@ -12,3 +13,4 @@ class MainActivity: FlutterActivity() {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
     }
 }
+ */

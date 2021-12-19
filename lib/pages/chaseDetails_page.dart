@@ -17,7 +17,7 @@ import 'package:shimmer/shimmer.dart';
 
 class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final Record record;
 
   ShowChase({Key key, @required this.record}) : super(key: key);

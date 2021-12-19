@@ -1,14 +1,11 @@
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:chaseapp/pages/chaseDetails_page.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:chaseapp/pages/topbar.dart';
 import 'package:flutter/rendering.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChasesScreen extends StatefulWidget {
@@ -18,7 +15,7 @@ class ChasesScreen extends StatefulWidget {
 
 class _ChasesScreenState extends State<ChasesScreen> {
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
    FirebaseAnalyticsObserver(analytics: analytics);
 

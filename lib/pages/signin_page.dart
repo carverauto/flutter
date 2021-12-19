@@ -1,21 +1,18 @@
-import 'dart:ui';
 import 'package:chaseapp/base/base_view.dart';
 import 'package:chaseapp/helper/progressBar.dart';
 import 'package:chaseapp/helper/routeNames.dart';
 import 'package:chaseapp/helper/deviceSize.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:chaseapp/shared/view_state.dart';
-import 'package:chaseapp/models/user.dart';
 import 'package:chaseapp/viewModels/sign_in_view_model.dart';
 import 'package:chaseapp/services/auth_service.dart';
 import 'package:chaseapp/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -241,10 +238,12 @@ class _SignInPageState extends State<SignInPage> {
                                           cursorColor: Colors.black,
                                           keyboardType:
                                           TextInputType.emailAddress,
+                                          /*
                                           inputFormatters: [
                                             BlacklistingTextInputFormatter
                                                 .singleLineFormatter,
                                           ],
+                                           */
                                         ),
                                       ),
                                       Padding(
@@ -289,10 +288,11 @@ class _SignInPageState extends State<SignInPage> {
                                                 }),
                                           ),
                                           cursorColor: Colors.black,
-                                          inputFormatters: [
-                                            BlacklistingTextInputFormatter
-                                                .singleLineFormatter,
+                                          /*
+                                          inputFormatters: <TextInputFormatter>[
+                                            BlacklistingTextInputFormatter.singleLineFormatter,
                                           ],
+                                           */
                                         ),
                                       ),
 

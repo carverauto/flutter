@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs {
@@ -234,7 +231,7 @@ class Prefs {
   }
 
   static Future<bool> setLoggedIn(bool value) async {
-    print('LOGGED_IN_STATUS: ${value}');
+    print('LOGGED_IN_STATUS: $value');
     var instance = await _prefs;
     return instance?.setBool(KEY_IS_LOGGED_IN, value) ?? Future.value(false);
   }
