@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -40,8 +41,91 @@ class _SignInPageState extends State<SignInPage> {
   String password = '';
   String error = '';
 
+  Future<void> requestPermissions() async {
+    print("in requestPermissions");
+    final btServiceStatus = await Permission.bluetooth;
+    final btScanStatus = await Permission.bluetoothScan;
+    final btConnectStatus = await Permission.bluetoothConnect;
+    final locationStatus = await Permission.locationAlways;
+    final notifyStatus = await Permission.notification;
+
+    bool isBtOn = btServiceStatus == btServiceStatus.isGranted;
+    bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
+    bool isBtConnectOn = btConnectStatus == btConnectStatus.isGranted;
+    bool isLocationOn = locationStatus == locationStatus.isGranted;
+    bool isNotifyOn = notifyStatus == notifyStatus.isGranted;
+
+    final permBtServiceStatus = await Permission.bluetooth.request();
+    final permBtScanStatus = await Permission.bluetoothScan.request();
+    final permBtConnectStatus = await Permission.bluetoothConnect.request();
+    final permLocationStatus = await Permission.locationAlways.request();
+    final permNotifyStatus = await Permission.notification.request();
+
+    if (permBtServiceStatus == PermissionStatus.granted) {
+      print('BTServiceStatus - Permission Granted');
+    } else if (permBtServiceStatus == PermissionStatus.denied) {
+      print('BTServiceStatus - Permission Denied');
+    } else if (permBtServiceStatus == PermissionStatus.permanentlyDenied) {
+      print('BTServiceStatus - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    if (permBtScanStatus == PermissionStatus.granted) {
+      print('BTScanStatus - Permission Granted');
+    } else if (permBtScanStatus == PermissionStatus.denied) {
+      print('BTScanStatus - Permission Denied');
+    } else if (permBtScanStatus == PermissionStatus.permanentlyDenied) {
+      print('BTScanStatus - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    if (permBtConnectStatus == PermissionStatus.granted) {
+      print('BTConnectStatus - Permission Granted');
+    } else if (permBtConnectStatus == PermissionStatus.denied) {
+      print('BTConnectStatus - Permission Denied');
+    } else if (permBtConnectStatus == PermissionStatus.permanentlyDenied) {
+      print('BTConnectStatus - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    if (permLocationStatus == PermissionStatus.granted) {
+      print('Location - Permission Granted');
+    } else if (permLocationStatus == PermissionStatus.denied) {
+      print('Location - Permission Denied');
+    } else if (permLocationStatus == PermissionStatus.permanentlyDenied) {
+      print('Location - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    if (permNotifyStatus == PermissionStatus.granted) {
+      print('Notifications - Permission Granted');
+    } else if (permNotifyStatus == PermissionStatus.denied) {
+      print('Notifications - Permission Denied');
+    } else if (permNotifyStatus == PermissionStatus.permanentlyDenied) {
+      print('Notifications - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    startNodle();
+  }
+
+  // Nodle
+  static const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+
+  // Define an async function to start Nodle SDK
+  void startNodle() async {
+    String value;
+    try {
+      value = await platform.invokeMethod("start");
+    } catch (e) {
+      print(e);
+    }
+    print(value);
+  }
+
   _onSignInWithGoogle(SignInViewModel model) async {
     print("Singing in with google");
+    await requestPermissions();
     User user;
 
     bool isSignedIn = await _googleSignIn.isSignedIn();
@@ -107,6 +191,8 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _onSignIn(SignInViewModel model) async {
+    print("_onSignIn");
+    await requestPermissions();
     model.state = ViewState.Busy;
     if (_formKey.currentState.validate()) {
       setState(() {
@@ -154,6 +240,7 @@ class _SignInPageState extends State<SignInPage> {
     } // email
 
   }
+
 
   @override
   Widget build(BuildContext context) {

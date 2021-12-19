@@ -19,13 +19,21 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                     (call, result) -> {
-                        Nodle.init(this);
-                        Nodle().start("5CYDxNUNrRJU3s6fb1VPhNpNPwyTcFLQuTzmJg5mioBe2eN1");
-                        if (Nodle().isStarted()) {
-                            // result.success("Nodled");
-                            result.success(Nodle().showConfig());
-                        } else {
-                            result.error("Error", "No noddles", Nodle().showConfig());
+                        if (call.method.equals("init")) {
+                            Nodle.init(this);
+                            result.success("Nodle - init");
+                        }
+                        if (call.method.equals("start")) {
+                            Nodle().start("ss58:5CYDxNUNrRJU3s6fb1VPhNpNPwyTcFLQuTzmJg5mioBe2eN1");
+                            if (Nodle().isStarted()) {
+                                if (Nodle().isScanning()) {
+                                    result.success("Nodle started, scanning..");
+                                } else {
+                                    result.error("Error", "Nodle started, No scanning", Nodle().showConfig());
+                                }
+                            } else {
+                                result.error("Error", "Nodle not started", Nodle().showConfig());
+                            }
                         }
                 }
         );
