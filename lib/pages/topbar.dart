@@ -5,9 +5,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/pages/settings_page.dart';
 import 'package:chaseapp/services/auth_service.dart';
 import 'package:chaseapp/pages/authenticate_page.dart';
+import 'package:flutter/services.dart';
 import 'authenticate_page.dart';
 
 Widget TopBar(BuildContext context) {
+
 
   FirebaseAuth auth = FirebaseAuth.instance;
 

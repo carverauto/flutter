@@ -35,6 +35,13 @@ public class MainActivity extends FlutterActivity {
                                 result.error("Error", "Nodle not started", Nodle().showConfig());
                             }
                         }
+                        if (call.method.equals("isScanning")) {
+                            result.success(String.valueOf(Nodle().isScanning()));
+                        }
+
+                        if (call.method.equals("showConfig")) {
+                            result.success(Nodle().showConfig());
+                        }
                 }
         );
     }

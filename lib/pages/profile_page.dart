@@ -5,16 +5,38 @@ import 'package:chaseapp/pages/authenticate_page.dart';
 import 'package:chaseapp/pages/home_page.dart';
 import 'package:chaseapp/services/auth_service.dart';
 import 'package:chaseapp/pages/topbar.dart';
+import 'package:flutter/services.dart';
 
-class ProfilePage extends StatelessWidget {
 
+class ProfilePage extends StatefulWidget{
+  final String userName;
+  final String email;
+
+  const ProfilePage({Key key, this.userName, this.email}) : super(key: key);
+  ProfPage createState() => ProfPage(userName: userName, email: email);
+}
+
+class ProfPage extends State<ProfilePage> {
+  static const isScanning = const MethodChannel('com.carverauto.chaseap/nodle');
+  String scanningMessage = 'Waiting..';
   final String userName;
   final String email;
   // final AuthService _auth = AuthService();
   FirebaseAuth auth = FirebaseAuth.instance;
 
+  ProfPage({this.userName, this.email});
 
-  ProfilePage({this.userName, this.email});
+  Future getNodleStatus() async {
+    const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+    String value;
+    try {
+      value = await platform.invokeMethod("isScanning");
+    } catch (e) {
+      print(e);
+    }
+    print(value);
+    setState(() => scanningMessage = '$value');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +68,14 @@ class ProfilePage extends StatelessWidget {
                 backgroundImage: CachedNetworkImageProvider(FirebaseAuth.instance.currentUser.photoURL),
               ),
               SizedBox(height: 15.0),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(scanningMessage),
+                    ElevatedButton(onPressed: getNodleStatus, child: Text('Nodle Scanning Status'))
+                  ],
+              ),
+              Divider(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

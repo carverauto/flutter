@@ -43,22 +43,25 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> requestPermissions() async {
     print("in requestPermissions");
-    final btServiceStatus = await Permission.bluetooth;
     final btScanStatus = await Permission.bluetoothScan;
     final btConnectStatus = await Permission.bluetoothConnect;
-    final locationStatus = await Permission.locationAlways;
+    final btServiceStatus = await Permission.bluetooth;
+    final locationAlwaysStatus = await Permission.locationAlways;
+    final locationStatus = await Permission.location;
     final notifyStatus = await Permission.notification;
 
     bool isBtOn = btServiceStatus == btServiceStatus.isGranted;
     bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
     bool isBtConnectOn = btConnectStatus == btConnectStatus.isGranted;
     bool isLocationOn = locationStatus == locationStatus.isGranted;
+    bool isLocationAlwaysOn = locationAlwaysStatus == locationAlwaysStatus.isGranted;
     bool isNotifyOn = notifyStatus == notifyStatus.isGranted;
 
     final permBtServiceStatus = await Permission.bluetooth.request();
     final permBtScanStatus = await Permission.bluetoothScan.request();
     final permBtConnectStatus = await Permission.bluetoothConnect.request();
-    final permLocationStatus = await Permission.locationAlways.request();
+    final permLocationStatus = await Permission.location.request();
+    final permLocationAlwaysStatus = await Permission.locationAlways.request();
     final permNotifyStatus = await Permission.notification.request();
 
     if (permBtServiceStatus == PermissionStatus.granted) {
@@ -85,6 +88,15 @@ class _SignInPageState extends State<SignInPage> {
       print('BTConnectStatus - Permission Denied');
     } else if (permBtConnectStatus == PermissionStatus.permanentlyDenied) {
       print('BTConnectStatus - Permission Permanently Denied');
+      await openAppSettings();
+    }
+
+    if (permLocationAlwaysStatus == PermissionStatus.granted) {
+      print('LocationAlways - Permission Granted');
+    } else if (permLocationAlwaysStatus == PermissionStatus.denied) {
+      print('LocationAlways - Permission Denied');
+    } else if (permLocationAlwaysStatus == PermissionStatus.permanentlyDenied) {
+      print('LocationAlways - Permission Permanently Denied');
       await openAppSettings();
     }
 
