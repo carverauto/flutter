@@ -1,5 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+class Wheels {
+  String W1;
+  String W2;
+  String W3;
+  String W4;
+}
+
+class Sentiment {
+  double magnitude;
+  double score;
+}
+
 class Networks {
   String name;
   String URL;
@@ -16,11 +28,13 @@ class Record {
   final String _imageURL;
   int _votes;
   final List _networks;
+  final Map _sentiment;
+  final Map _wheels;
 
   DocumentReference reference;
 
   Record(this._name, this._id, this._networks, this._live, this._createdAt,
-      this._desc, this._imageURL, this._votes, this.reference);
+      this._desc, this._imageURL, this._votes, this._wheels, this._sentiment, this.reference);
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['Name'] != null),
@@ -37,6 +51,8 @@ class Record {
         _votes = map['Votes'],
         _desc = map['Desc'],
         _imageURL = map['ImageURL'],
+        _sentiment = map['sentiment'],
+        _wheels = map['Wheels'],
         _networks = map['Networks'] != null ? new List<Map>.from(map['Networks']) : [];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
@@ -52,6 +68,8 @@ class Record {
   String get Desc => _desc;
   String get ImageURL => _imageURL;
   List get Networks => _networks;
+  Map get Wheels => _wheels;
+  Map get Sentiment => _sentiment;
 
   @override
   String toString() => "Record<$_name:$_votes>";
