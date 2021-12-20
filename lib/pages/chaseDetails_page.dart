@@ -72,16 +72,17 @@ class ShowChase extends StatelessWidget {
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
     Record record = Record.fromSnapshot(snapshot);
+    var imageURL = 'https://chaseapp.tv/police.gif';
 
 
     if (record.ImageURL.isNotEmpty) {
       // TODO: finish feature that will modify ImageURL to display our thumbnails instead of the full image
-      // RegExp regExp = RegExp(r"(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:jpg|gif|png))(?:\?([^#]*))?(?:#(.*))?",
-      RegExp regExp = RegExp(r"\.(jpg|jpeg|png|gif)",
-        caseSensitive: false,
-        multiLine: false,
-      );
-      print("Matches: " + regExp.stringMatch(record.ImageURL));
+      imageURL = record.ImageURL.replaceAll(
+          RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
+            caseSensitive: false,
+            multiLine: false,
+      ), '_1200x600.webp?');
+
     }
 
     // TODO: FIX - BROKEN
@@ -110,7 +111,7 @@ class ShowChase extends StatelessWidget {
                   children: <Widget>[
                     const Center(child: CircularProgressIndicator()),
                     Center(
-                        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: record.ImageURL)
+                        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageURL)
                     ),
                   ]
                 ),
