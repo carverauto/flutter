@@ -38,3 +38,11 @@ This installs all the required dependencies like cloud_firestore, shared_prefere
 3. Download the updated google-services.json and install into the chaseapp/android/app/ directory
 
 >>>>>>> 541940540c6753d5466d265a241133366a95e97e
+
+5. Configure ~/.gradle/gradle.properties for Mapbox Secret Token
+
+https://docs.mapbox.com/android/maps/guides/install/
+
+Add
+
+`MAPBOX_DOWNLOAD_TOKEN=<token>`

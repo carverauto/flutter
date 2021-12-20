@@ -7,6 +7,7 @@ import 'package:chaseapp/pages/topbar.dart';
 import 'package:flutter/rendering.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChasesScreen extends StatefulWidget {
   @override
@@ -82,6 +83,8 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
   final record = Record.fromSnapshot(data);
   // var record = Record.fromSnapshot(data);
 
+  final String assetName = 'assets/donut2.svg';
+
   var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
   var today = new DateTime.now().toLocal();
   var diff = chaseDate.difference(today);
@@ -134,8 +137,8 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
           trailing: new Chip(
             avatar: CircleAvatar(
               backgroundColor: Colors.pink[50],
-              child: new Image(
-                image: new AssetImage("images/donut.png"),
+              child: SvgPicture.asset(
+                assetName
               ),
             ),
             label: Text(record.Votes.toString()),

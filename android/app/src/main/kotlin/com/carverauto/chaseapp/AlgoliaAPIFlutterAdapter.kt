@@ -1,3 +1,11 @@
+/*
+package com.carverauto.chaseapp
+
+import android.app.DownloadManager
+import io.flutter.Log
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
+
 class AlgoliaAPIFlutterAdapter(applicationID: ApplicationID, apiKey: APIKey) {
 
     val client = ClientSearch(applicationID, apiKey)
@@ -12,12 +20,12 @@ class AlgoliaAPIFlutterAdapter(applicationID: ApplicationID, apiKey: APIKey) {
         }
 
         when (call.method) {
-            "search" -> search(indexName = args[0].toIndexName(), query = Query(args[1]), result = result)
+            "search" -> search(indexName = args[0].toIndexName(), query = DownloadManager.Query(args[1]), result = result)
             else -> result.notImplemented()
         }
     }
 
-    suspend fun search(indexName: IndexName, query: Query, result: MethodChannel.Result) {
+    suspend fun search(indexName: IndexName, query: DownloadManager.Query, result: MethodChannel.Result) {
         val index = client.initIndex(indexName)
         try {
             val search = index.search(query = query)
@@ -27,3 +35,4 @@ class AlgoliaAPIFlutterAdapter(applicationID: ApplicationID, apiKey: APIKey) {
         }
     }
 }
+ */
