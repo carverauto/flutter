@@ -74,6 +74,16 @@ class ShowChase extends StatelessWidget {
     Record record = Record.fromSnapshot(snapshot);
 
 
+    if (record.ImageURL.isNotEmpty) {
+      // TODO: finish feature that will modify ImageURL to display our thumbnails instead of the full image
+      // RegExp regExp = RegExp(r"(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*\.(?:jpg|gif|png))(?:\?([^#]*))?(?:#(.*))?",
+      RegExp regExp = RegExp(r"\.(jpg|jpeg|png|gif)",
+        caseSensitive: false,
+        multiLine: false,
+      );
+      print("Matches: " + regExp.stringMatch(record.ImageURL));
+    }
+
     // TODO: FIX - BROKEN
     // Support showing the network URL/icon in the chase Details screen
     final _ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
