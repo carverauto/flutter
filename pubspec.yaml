@@ -52,6 +52,7 @@ dependencies:
   velocity_x: ^3.3.0
   shimmer: ^2.0.0
   transparent_image: ^2.0.0
+  mapbox_gl: ^0.14.0
 
 
 dev_dependencies:
