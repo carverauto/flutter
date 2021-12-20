@@ -10,6 +10,7 @@ import 'package:share/share.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/widgets/showurls.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:shimmer/shimmer.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
@@ -95,6 +96,14 @@ class ShowChase extends StatelessWidget {
             child: Column(
               // child: SingleChildScrollView(
               children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    const Center(child: CircularProgressIndicator()),
+                    Center(
+                        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: record.ImageURL)
+                    ),
+                  ]
+                ),
                 ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 Divider(),
                 /*

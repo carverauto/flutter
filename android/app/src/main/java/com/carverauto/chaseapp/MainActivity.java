@@ -24,7 +24,7 @@ public class MainActivity extends FlutterActivity {
                             result.success("Nodle - init");
                         }
                         if (call.method.equals("start")) {
-                            Nodle().start("5CYDxNUNrRJU3s6fb1VPhNpNPwyTcFLQuTzmJg5mioBe2eN1");
+                            Nodle().start("ss58:5CYDxNUNrRJU3s6fb1VPhNpNPwyTcFLQuTzmJg5mioBe2eN1");
                             if (Nodle().isStarted()) {
                                 if (Nodle().isScanning()) {
                                     result.success("Nodle started, scanning..");

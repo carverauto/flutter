@@ -51,6 +51,7 @@ dependencies:
   permission_handler: ^8.3.0
   velocity_x: ^3.3.0
   shimmer: ^2.0.0
+  transparent_image: ^2.0.0
 
 
 dev_dependencies:
