@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/pages/authenticate_page.dart';
-import 'package:chaseapp/pages/home_page.dart';
-import 'package:chaseapp/services/auth_service.dart';
-import 'package:chaseapp/pages/topbar.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget{
   final String userName;
@@ -22,6 +19,8 @@ class ProfPage extends State<ProfilePage> {
   String showConfigMessage = 'Waiting..';
   final String userName;
   final String email;
+  final String privacyPolicy = 'https://chaseapp.tv/privacy';
+  final String tosPolicy = 'https://chaseapp.tv/tos';
   // final AuthService _auth = AuthService();
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -50,6 +49,7 @@ class ProfPage extends State<ProfilePage> {
     print(value);
     setState(() => showConfigMessage = '$value');
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +81,6 @@ class ProfPage extends State<ProfilePage> {
                 backgroundImage: CachedNetworkImageProvider(FirebaseAuth.instance.currentUser.photoURL),
               ),
               SizedBox(height: 15.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(scanningMessage),
-                    ElevatedButton(onPressed: getNodleStatus, child: Text('Nodle Scanning Status'))
-                  ],
-              ),
               Divider(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,10 +99,33 @@ class ProfPage extends State<ProfilePage> {
                   Text(email, style: TextStyle(fontSize: 17.0)),
                 ],
               ),
+
+              Divider(height: 50.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ElevatedButton(onPressed: _openPrivacyURL, child: Text('Privacy')),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  ElevatedButton(onPressed: _openTosURL, child: Text('Terms of Service')),
+                ],
+              ),
             ],
           ),
         )
       ),
     );
   }
+
+  void _openPrivacyURL() async {
+    if (!await launch(privacyPolicy)) throw 'Could not launch $privacyPolicy URL';
+  }
+
+  void _openTosURL() async {
+    if (!await launch(tosPolicy)) throw 'Could not launch $tosPolicy URL';
+  }
+
 }
