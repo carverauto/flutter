@@ -29,7 +29,6 @@ class Record {
         assert(map['Live'] != null),
         assert(map['Votes'] != null),
         assert(map['Desc'] != null),
-        assert(map['ImageURL'] != null),
         _id = reference.id,
         _name = map['Name'],
         // _createdAt = map['createdAt'] as DateTime,

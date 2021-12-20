@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
       print(e);
     }
     print(value);
+    print(this.runtimeType);
   }
 
   // Define an async function to initialize FlutterFire

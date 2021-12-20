@@ -33,7 +33,6 @@ class _SignInPageState extends State<SignInPage> {
   bool isSignedIn = false;
   bool google = false;
 
-
   // text field state
   String email = '';
   String name;

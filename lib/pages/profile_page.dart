@@ -19,6 +19,7 @@ class ProfilePage extends StatefulWidget{
 class ProfPage extends State<ProfilePage> {
   static const isScanning = const MethodChannel('com.carverauto.chaseap/nodle');
   String scanningMessage = 'Waiting..';
+  String showConfigMessage = 'Waiting..';
   final String userName;
   final String email;
   // final AuthService _auth = AuthService();
@@ -36,6 +37,18 @@ class ProfPage extends State<ProfilePage> {
     }
     print(value);
     setState(() => scanningMessage = '$value');
+  }
+
+  Future getNodleConfig() async {
+    const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+    String value;
+    try {
+      value = await platform.invokeMethod("showConfig");
+    } catch (e) {
+      print(e);
+    }
+    print(value);
+    setState(() => showConfigMessage = '$value');
   }
 
   @override
