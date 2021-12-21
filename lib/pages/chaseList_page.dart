@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/pages/chaseDetails_page.dart';
 import 'package:chaseapp/helper/record.dart';
+
 import 'package:chaseapp/pages/topbar.dart';
 import 'package:flutter/rendering.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ChasesScreen extends StatefulWidget {
   @override
@@ -82,8 +84,18 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
 Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
   final record = Record.fromSnapshot(data);
   // var record = Record.fromSnapshot(data);
+  var imageURL = '';
 
   final String assetName = 'assets/donut2.svg';
+
+  if (record.ImageURL != null) {
+    // TODO: finish feature that will modify ImageURL to display our thumbnails instead of the full image
+    imageURL = record.ImageURL.replaceAll(
+        RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
+          caseSensitive: false,
+          multiLine: false,
+        ), '_200x200.webp?');
+  }
 
   var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
   var today = new DateTime.now().toLocal();
@@ -129,7 +141,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
       child: ListTile(
           leading: new CircleAvatar(
             backgroundColor: Colors.white,
-            child: record.Live ? _displayLiveIcon() : _displayVideoIcon(),
+            child: imageURL.isNotEmpty ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
           ),
           title: Text(record.Name, style: GoogleFonts.getFont('Poppins')),
           // subtitle: Text(record.Votes.toString() + ' donuts'),
@@ -143,6 +155,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
             ),
             label: Text(record.Votes.toString()),
           ),
+
           /*
             trailing: new CircleAvatar(
                 backgroundColor: Colors.pink,
@@ -162,11 +175,11 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
 
 }
 
-_displayLiveIcon() {
-  return new Image(image: new AssetImage("images/broadcast.png"));
+_displayPlaceholderIcon() {
+  return new Image(image: new AssetImage("images/video.png"));
 }
 
-_displayVideoIcon() {
-  return new Image(image: new AssetImage("images/video.png"));
+_displayImageURL(String imageURL) {
+  return new FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageURL);
 }
 

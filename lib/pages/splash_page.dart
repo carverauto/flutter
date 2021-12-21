@@ -4,6 +4,8 @@ import 'package:chaseapp/viewModels/sign_in_view_model.dart';
 import 'package:chaseapp/helper/deviceSize.dart';
 import 'package:chaseapp/pages/signin_page.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
+
 
 class Splash extends StatefulWidget {
   @override
@@ -82,11 +84,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Image.asset(
-                    'assets/police.gif',
-                    width: animation.value * 250,
-                    height: animation.value * 250,
-                  ),
+                  Lottie.asset('assets/foo.json')
                 ],
               ),
             ],
