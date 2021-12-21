@@ -2,7 +2,7 @@ class MyUser {
   final String uid;
 
   MyUser({
-    this.uid
+    required this.uid
   });
 
   // void sendEmailVerification() {}

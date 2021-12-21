@@ -26,36 +26,35 @@ class Record {
   final DateTime _createdAt;
   final String _desc;
   final String _imageURL;
-  int _votes;
+  final int _votes;
   final List _networks;
   final Map _sentiment;
   final Map _wheels;
 
   final DocumentReference reference;
 
-  Record(this._name, this._id, this._networks, this._live, this._createdAt,
-      this._desc, this._imageURL, this._votes, this._wheels, this._sentiment, this.reference);
+  Record(this._name, this._id, this._networks, this._live, this._createdAt, this._desc, this._imageURL, this._votes, this._wheels, this._sentiment, this.reference);
 
-  Record.fromMap(Map<String, dynamic> map, {required this.reference})
-      : assert(map['Name'] != null),
-        assert(map['CreatedAt'] != null),
+  Record.fromMap(Map<String, dynamic>? map, {required this.reference})
+      : assert(map?['Name'] != null),
+        assert(map?['CreatedAt'] != null),
         // assert(map['Network'] != null),
-        assert(map['Live'] != null),
-        assert(map['Votes'] != null),
-        assert(map['Desc'] != null),
+        assert(map?['Live'] != null),
+        assert(map?['Votes'] != null),
+        assert(map?['Desc'] != null),
         _id = reference.id,
-        _name = map['Name'],
+        _name = map?['Name'],
         // _createdAt = map['createdAt'] as DateTime,
-        _createdAt = (map['CreatedAt'] as Timestamp).toDate(),
-        _live = map['Live'],
-        _votes = map['Votes'],
-        _desc = map['Desc'],
-        _imageURL = map['ImageURL'],
-        _sentiment = map['sentiment'],
-        _wheels = map['Wheels'],
-        _networks = map['Networks'] != null ? List<Map>.from(map['Networks']) : [];
+        _createdAt = (map?['CreatedAt'] as Timestamp).toDate(),
+        _live = map?['Live'],
+        _votes = map?['Votes'],
+        _desc = map?['Desc'],
+        _imageURL = map?['ImageURL'],
+        _sentiment = map?['sentiment'],
+        _wheels = map?['Wheels'],
+        _networks = map?['Networks'] != null ? List<Map>.from(map?['Networks']) : [];
 
-  Record.fromSnapshot(DocumentSnapshot snapshot)
+  Record.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);
 
   String get ID => _id;
@@ -74,3 +73,4 @@ class Record {
   @override
   String toString() => "Record<$_name:$_votes>";
 }
+
