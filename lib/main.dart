@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chaseapp/helper/locator.dart';
 import 'package:chaseapp/viewModels/home_view_model.dart';
 import 'package:chaseapp/viewModels/sign_in_view_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
@@ -56,10 +57,10 @@ class _MyAppState extends State<MyApp> {
     try {
       value = await platform.invokeMethod("init");
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    print(value);
-    print(this.runtimeType);
   }
 
   // Define an async function to initialize FlutterFire

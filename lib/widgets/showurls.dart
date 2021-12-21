@@ -10,10 +10,10 @@ class URLView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = new List<Widget>();
+    List<Widget> children = List<Widget>.empty();
     urls.forEach((item) {
       children.add(
-        new Row(
+        Row(
           children: <Widget>[
             Flexible(
              child: Padding(
@@ -26,7 +26,7 @@ class URLView extends StatelessWidget {
       );
       // Add spacing between the lines:
       children.add(
-        new SizedBox(
+        const SizedBox(
           height: 10.0,
         ),
       );
