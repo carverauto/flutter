@@ -14,12 +14,12 @@ class _SearchPageState extends State<SearchPage> {
 
   // data
   TextEditingController searchEditingController = new TextEditingController();
-  QuerySnapshot searchResultSnapshot;
+  late QuerySnapshot searchResultSnapshot;
   bool isLoading = false;
   bool hasUserSearched = false;
-  bool _isJoined = false;
+  // bool _isJoined = false;
   String _userName = '';
-  User _user;
+  late User _user;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 

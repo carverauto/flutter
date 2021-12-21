@@ -10,9 +10,9 @@ class ChatPage extends StatefulWidget {
   final String chaseName;
 
   ChatPage({
-    this.chaseId,
-    this.userName,
-    this.chaseName
+    required this.chaseId,
+    required this.userName,
+    required this.chaseName
   });
 
   @override
@@ -21,13 +21,13 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   
-  Stream<QuerySnapshot> _chats;
+  late Stream<QuerySnapshot> _chats;
   TextEditingController messageEditingController = new TextEditingController();
 
   Widget _chatMessages(){
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot>(
       stream: _chats,
-      builder: (context, snapshot){
+      builder: (context, AsyncSnapshot snapshot){
         return snapshot.hasData ?  ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index){

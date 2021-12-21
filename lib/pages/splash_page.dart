@@ -84,7 +84,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Lottie.asset('assets/foo.json')
+                  Lottie.asset('assets/41812-christmas-tree.json')
                 ],
               ),
             ],

@@ -13,7 +13,7 @@ Widget TopBar(BuildContext context) {
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  return new AppBar(
+  return AppBar(
       // backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
       elevation: 1.0,
@@ -29,7 +29,15 @@ Widget TopBar(BuildContext context) {
                 ),
                 onPressed: () => Navigator.push(
                     // context, MaterialPageRoute(builder: (context) => Settings()))),
-                  context, MaterialPageRoute(builder: (context) => ProfilePage(userName: FirebaseAuth.instance.currentUser.displayName, email: FirebaseAuth.instance.currentUser.email,)))),
+                  context,
+                    MaterialPageRoute(builder: (context) =>
+                        ProfilePage(
+                          userName: FirebaseAuth.instance.currentUser.displayName,
+                          email: FirebaseAuth.instance.currentUser.email,
+                        )
+                    )
+                )
+            ),
         ),
       ],
     );

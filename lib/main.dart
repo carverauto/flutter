@@ -42,7 +42,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale locale;
+  Locale? locale;
   bool localeLoaded = false;
   bool _isLoggedIn = false;
   bool _initialized = false;

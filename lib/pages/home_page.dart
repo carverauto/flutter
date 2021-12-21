@@ -22,10 +22,10 @@ class _HomePageState extends State<HomePage> {
   // data
   final AuthService _auth = AuthService();
   // final Record record;
-  User _user;
+  late User _user;
   String _userName = '';
   String _email = '';
-  Stream _chases;
+  Stream ?_chases;
 
 
   // initState

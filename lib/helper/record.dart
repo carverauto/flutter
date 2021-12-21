@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Wheels {
-  String W1;
-  String W2;
-  String W3;
-  String W4;
+  String? W1;
+  String? W2;
+  String? W3;
+  String? W4;
 }
 
 class Sentiment {
-  double magnitude;
-  double score;
+  double? magnitude;
+  double? score;
 }
 
 class Networks {
   String name;
   String URL;
 
-  Networks({ this.name, this.URL});
+  Networks({ required this.name, required this.URL});
 }
 
 class Record {
@@ -31,12 +31,12 @@ class Record {
   final Map _sentiment;
   final Map _wheels;
 
-  DocumentReference reference;
+  final DocumentReference reference;
 
   Record(this._name, this._id, this._networks, this._live, this._createdAt,
       this._desc, this._imageURL, this._votes, this._wheels, this._sentiment, this.reference);
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
+  Record.fromMap(Map<String, dynamic> map, {required this.reference})
       : assert(map['Name'] != null),
         assert(map['CreatedAt'] != null),
         // assert(map['Network'] != null),
@@ -53,7 +53,7 @@ class Record {
         _imageURL = map['ImageURL'],
         _sentiment = map['sentiment'],
         _wheels = map['Wheels'],
-        _networks = map['Networks'] != null ? new List<Map>.from(map['Networks']) : [];
+        _networks = map['Networks'] != null ? List<Map>.from(map['Networks']) : [];
 
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);

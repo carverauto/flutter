@@ -49,5 +49,15 @@
     <string>Need for our location request</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Need for our location request</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+            <string>itms-beta</string>
+            <string>itms</string>
+    </array>
 </dict>
 </plist>

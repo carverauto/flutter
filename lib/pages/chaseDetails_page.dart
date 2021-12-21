@@ -6,8 +6,8 @@ import 'dart:core';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:medium_clap_flutter/medium_clap_flutter.dart';
-import 'package:share/share.dart';
 import 'package:chaseapp/helper/record.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/widgets/showurls.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -46,17 +46,17 @@ class ShowChase extends StatelessWidget {
             // child: Icon(Icons.share),
             child: IconButton(
                 icon: new Icon(Icons.share, color: Colors.black),
-                onPressed: () {
-                  // analytics.logViewItem(); // #TODO: need tk update this
-                  final RenderBox box = context.findRenderObject();
-                  // Share.share("ChaseApp - record.LiveURL");
-                  // TODO: fix, this is broken...
-                  // Share.share(record.Networks, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-                })),
+                onPressed: () => _onShare(context)
+            )),
       ],
     );
 
     return new Scaffold(appBar: topBar, body: _stream(record, context));
+  }
+
+  void _onShare(BuildContext context) async {
+    final box = context.findRenderObject() as RenderBox?;
+    await Share.share(record.Desc, subject: record.Name);
   }
 
   StreamBuilder _stream(Record record, BuildContext context) {
@@ -170,7 +170,7 @@ class ShowChase extends StatelessWidget {
                           filledImageColor: Colors.pink,
                         ))),
                 // VxBox(  ).square(350).gray300.make()
-                SizedBox(
+                const SizedBox(
                   width: 400,
                   height: 350,
                   // child: ChatScreen(record.ID),
@@ -193,7 +193,7 @@ class ShowChase extends StatelessWidget {
 }
 
 class Network {
-  String URL;
-  String name;
+  late String URL;
+  late String name;
 }
 

@@ -3,10 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/pages/chaseDetails_page.dart';
 import 'package:chaseapp/helper/record.dart';
-
 import 'package:chaseapp/pages/topbar.dart';
-import 'package:flutter/rendering.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -24,12 +21,12 @@ class _ChasesScreenState extends State<ChasesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: ChasesPage());
+    return SafeArea(child: ChasesPage(title: 'Loading..', analytics: analytics, observer: observer));
   }
 }
 
 class ChasesPage extends StatefulWidget {
-  ChasesPage({Key key, this.title, this.analytics, this.observer})
+  ChasesPage({Key? key, required this.title, required this.analytics, required this.observer})
     : super(key: key);
 
   final String title;
@@ -56,7 +53,14 @@ class _ChasesPageState extends State<ChasesPage> {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: TopBar(context),
+    appBar: PreferredSize(
+      preferredSize: Size.fromHeight(100.0),
+      child: Column(
+        children: <Widget>[
+          TopBar(context)
+        ],
+      )
+    ),
     body: _buildBody(context),
   );
 }
@@ -67,7 +71,7 @@ Widget _buildBody(BuildContext context) {
         .collection('chases')
         .orderBy('CreatedAt', descending: true)
         .snapshots(),
-    builder: (context, snapshot) {
+    builder: (context, AsyncSnapshot snapshot) {
       if (!snapshot.hasData) return LinearProgressIndicator();
       return _buildList(context, snapshot.data.docs);
     },
@@ -139,16 +143,15 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: ListTile(
-          leading: new CircleAvatar(
-            backgroundColor: Colors.white,
+          leading: CircleAvatar(
             child: imageURL.isNotEmpty ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
           ),
           title: Text(record.Name, style: GoogleFonts.getFont('Poppins')),
           // subtitle: Text(record.Votes.toString() + ' donuts'),
           subtitle: Text(dateMsg),
-          trailing: new Chip(
+          trailing: Chip(
             avatar: CircleAvatar(
-              backgroundColor: Colors.pink[50],
+              backgroundColor: Colors.black12,
               child: SvgPicture.asset(
                 assetName
               ),
@@ -176,10 +179,10 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
 }
 
 _displayPlaceholderIcon() {
-  return new Image(image: new AssetImage("images/video.png"));
+  return const Image(image: AssetImage("images/video.png"));
 }
 
 _displayImageURL(String imageURL) {
-  return new FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageURL);
+  return FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageURL);
 }
 
