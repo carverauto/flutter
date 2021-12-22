@@ -105,19 +105,19 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           color: Colors.black,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 80.0),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 80.0),
             children: <Widget>[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("Create or Join Groups", style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold)),
+                  const Text("Create or Join Groups", style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold)),
                     
-                  SizedBox(height: 30.0),
+                  const SizedBox(height: 30.0),
                     
-                  Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.0)),
+                  const Text("Register", style: TextStyle(color: Colors.white, fontSize: 25.0)),
                     
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                     
                   TextFormField(
                     style: TextStyle(color: Colors.white),
@@ -129,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                     
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 15.0),
                     
                   TextFormField(
                     style: const TextStyle(color: Colors.white),
@@ -144,7 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                     
-                  SizedBox(height: 15.0),
+                  const SizedBox(height: 15.0),
                     
                   TextFormField(
                     style: const TextStyle(color: Colors.white),
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
 
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                     
                   SizedBox(
                     width: double.infinity,

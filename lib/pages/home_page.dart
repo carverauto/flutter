@@ -75,10 +75,10 @@ class _HomePageState extends State<HomePage> {
 */
   // functions
   _getUserAuth() async {
-    _user = FirebaseAuth.instance.currentUser;
+    _user = FirebaseAuth.instance.currentUser!;
     await HelperFunctions.getUserNameSharedPreference().then((value) {
       setState(() {
-        _userName = value;
+        _userName = value!;
       });
     });
 

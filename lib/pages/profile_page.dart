@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
@@ -9,12 +10,13 @@ class ProfilePage extends StatefulWidget{
   final String userName;
   final String email;
 
-  const ProfilePage({Key key, this.userName, this.email}) : super(key: key);
+  const ProfilePage({required Key key, required this.userName, required this.email}) : super(key: key);
+  @override
   ProfPage createState() => ProfPage(userName: userName, email: email);
 }
 
 class ProfPage extends State<ProfilePage> {
-  static const isScanning = const MethodChannel('com.carverauto.chaseap/nodle');
+  static const isScanning = MethodChannel('com.carverauto.chaseap/nodle');
   String scanningMessage = 'Waiting..';
   String showConfigMessage = 'Waiting..';
   final String userName;
@@ -24,30 +26,34 @@ class ProfPage extends State<ProfilePage> {
   // final AuthService _auth = AuthService();
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  ProfPage({this.userName, this.email});
+  var defaultPhotoURL = 'https://chaseapp.tv/icon.png';
+
+  ProfPage({required this.userName, required this.email});
 
   Future getNodleStatus() async {
-    const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+    const platform = MethodChannel('com.carverauto.chaseapp/nodle');
     String value;
     try {
       value = await platform.invokeMethod("isScanning");
+      setState(() => scanningMessage = value);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    print(value);
-    setState(() => scanningMessage = '$value');
   }
 
   Future getNodleConfig() async {
-    const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+    const platform = MethodChannel('com.carverauto.chaseapp/nodle');
     String value;
     try {
       value = await platform.invokeMethod("showConfig");
+      setState(() => showConfigMessage = value);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    print(value);
-    setState(() => showConfigMessage = '$value');
   }
 
 
@@ -62,59 +68,58 @@ class ProfPage extends State<ProfilePage> {
             elevation: 1.0,
             // leading: new Icon(Icons.camera_alt),
             title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
-            actions: <Widget>[
+            actions: const <Widget>[
               Padding(
-                 padding: const EdgeInsets.only(right: 12.0),
+                 padding: EdgeInsets.only(right: 12.0),
               // child: IconButton( icon: CircleAvatar( radius: 20, backgroundImage: CachedNetworkImageProvider(auth.currentUser.photoURL), ), onPressed: () => Navigator.push( context, MaterialPageRoute( builder: (context) => ProfilePage( userName: FirebaseAuth.instance.currentUser.displayName, email: FirebaseAuth.instance.currentUser.email, ) ) ) ),
               ),],
 
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              // Icon(Icons.account_circle, size: 200.0, color: Colors.grey[700]),
-              CircleAvatar(
-                radius: 75,
-                backgroundImage: CachedNetworkImageProvider(FirebaseAuth.instance.currentUser.photoURL),
-              ),
-              SizedBox(height: 15.0),
-              Divider(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Full Name', style: TextStyle(fontSize: 17.0)),
-                  Text(userName, style: TextStyle(fontSize: 17.0)),
-                ],
-              ),
+        padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            // Icon(Icons.account_circle, size: 200.0, color: Colors.grey[700]),
+            CircleAvatar(
+              radius: 75,
+              backgroundImage: CachedNetworkImageProvider(FirebaseAuth.instance.currentUser?.photoURL ?? defaultPhotoURL ),
+              // backgroundImage: CachedNetworkImageProvider(auth.currentUser?.photoURL ?? defaultPhotoURL),
+            ),
+            const SizedBox(height: 15.0),
+            const Divider(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const Text('Full Name', style: TextStyle(fontSize: 17.0)),
+                Text(userName, style: const TextStyle(fontSize: 17.0)),
+              ],
+            ),
 
-              Divider(height: 10.0),
+            const Divider(height: 10.0),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Email', style: TextStyle(fontSize: 17.0)),
-                  Text(email, style: TextStyle(fontSize: 17.0)),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const Text('Email', style: TextStyle(fontSize: 17.0)),
+                Text(email, style: const TextStyle(fontSize: 17.0)),
+              ],
+            ),
 
-              Divider(height: 50.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ElevatedButton(onPressed: _openPrivacyURL, child: Text('Privacy')),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ElevatedButton(onPressed: _openTosURL, child: Text('Terms of Service')),
-                ],
-              ),
-            ],
-          ),
+            const Divider(height: 50.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ElevatedButton(onPressed: _openPrivacyURL, child: const Text('Privacy')),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ElevatedButton(onPressed: _openTosURL, child: const Text('Terms of Service')),
+              ],
+            ),
+          ],
         )
       ),
     );
