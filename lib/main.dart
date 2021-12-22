@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Firebase.apps.length == 0) {
+  if (Firebase.apps.isEmpty) {
     print("No firebase instance, lets create one..");
     try {
       await Firebase.initializeApp();
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   bool _initialized = false;
   bool _error = false;
 
-  static const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+  static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
 
   // Define an async function to initialize Nodle SDK
   void initializeNodle() async {

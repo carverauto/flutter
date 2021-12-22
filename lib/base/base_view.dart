@@ -8,7 +8,7 @@ class BaseView<T extends BaseModel> extends StatefulWidget {
   final Widget Function(BuildContext context, T model, Widget child) builder;
   final Function(T) onModelReady;
 
-  BaseView({@required this.builder, this.onModelReady});
+  const BaseView({required this.builder, required this.onModelReady});
 
   @override
   _BaseViewState<T> createState() => _BaseViewState<T>();
@@ -19,9 +19,7 @@ class _BaseViewState<T extends BaseModel> extends State<BaseView<T>> {
 
   @override
   void initState() {
-    if (widget.onModelReady != null) {
-      widget.onModelReady(model);
-    }
+    widget.onModelReady(model);
     super.initState();
   }
 
@@ -29,6 +27,6 @@ class _BaseViewState<T extends BaseModel> extends State<BaseView<T>> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>(
       create: (context) => model,
-      child: Consumer<T>(builder: widget.builder));
+      child: Consumer<T>(builder: widget.builder as Widget Function(BuildContext, T, Widget?)));
   }
 }
