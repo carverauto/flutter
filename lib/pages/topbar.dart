@@ -10,8 +10,9 @@ import 'authenticate_page.dart';
 
 Widget TopBar(BuildContext context) {
 
-
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  var defaultPhotoURL = 'https://chaseapp.tv/icon.png';
 
   return AppBar(
       // backgroundColor: new Color(0xfff8faf8),
@@ -25,15 +26,15 @@ Widget TopBar(BuildContext context) {
             child: IconButton(
                 icon: CircleAvatar(
                   radius: 20,
-                  backgroundImage: CachedNetworkImageProvider(auth.currentUser.photoURL),
+                  backgroundImage: CachedNetworkImageProvider(auth.currentUser?.photoURL ?? defaultPhotoURL),
                 ),
                 onPressed: () => Navigator.push(
                     // context, MaterialPageRoute(builder: (context) => Settings()))),
                   context,
                     MaterialPageRoute(builder: (context) =>
                         ProfilePage(
-                          userName: FirebaseAuth.instance.currentUser.displayName,
-                          email: FirebaseAuth.instance.currentUser.email,
+                          userName: FirebaseAuth.instance.currentUser?.displayName ?? 'John Doe',
+                          email: FirebaseAuth.instance.currentUser?.email ?? 'your@email.com',
                         )
                     )
                 )
