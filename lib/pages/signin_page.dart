@@ -21,7 +21,7 @@ final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
-  SignInPage({required this.toggleView});
+  const SignInPage({Key? key, required this.toggleView}) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();

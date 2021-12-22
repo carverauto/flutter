@@ -8,6 +8,8 @@ import 'package:lottie/lottie.dart';
 
 
 class Splash extends StatefulWidget {
+  const Splash({Key? key}) : super(key: key);
+
   @override
   VideoState createState() => VideoState();
 
@@ -23,12 +25,21 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   late Animation<double> animation;
 
   startTime() async {
-    var _duration = new Duration(seconds: 3);
-    return new Timer(_duration, navigationPage);
+    var _duration = const Duration(seconds: 3);
+    return Timer(_duration, navigationPage);
+  }
+
+  bool _showSignIn = true;
+
+  void _toggleView() {
+    setState(() {
+      _showSignIn = !_showSignIn;
+    });
   }
 
   void navigationPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignInPage()));
+     Navigator.of(context).push(MaterialPageRoute<bool>(builder: (BuildContext context) => SignInPage(toggleView: _toggleView )));
+    // Navigator.pushNamed(context, 'LOGIN');
   }
 
   @override
@@ -41,12 +52,12 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    animationController = new AnimationController(vsync: this, duration: new Duration(seconds: 5));
-    animation = new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    animation = CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 
     // animation.addListener(() => this.setState(() {}));
     animation.addListener(() {
-      if (mounted) this.setState(() {});
+      if (mounted) setState(() {});
     });
 
     animationController.forward();
@@ -73,7 +84,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(bottom: 30.0),
+                      padding: const EdgeInsets.only(bottom: 30.0),
                       child: Image.asset(
                         'assets/powered_by.png',
                         height: 25.0,
