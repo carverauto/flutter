@@ -19,8 +19,8 @@ class Splash extends StatefulWidget {
 class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   var _visible = true;
 
-  AnimationController animationController;
-  Animation<double> animation;
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   startTime() async {
     var _duration = new Duration(seconds: 3);
@@ -68,20 +68,20 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
           body: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              new Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Padding(
                       padding: EdgeInsets.only(bottom: 30.0),
-                      child: new Image.asset(
+                      child: Image.asset(
                         'assets/powered_by.png',
                         height: 25.0,
                         fit: BoxFit.scaleDown,
                       ))
                 ],
               ),
-              new Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Lottie.asset('assets/41812-christmas-tree.json')
