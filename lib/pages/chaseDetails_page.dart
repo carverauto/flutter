@@ -21,18 +21,18 @@ class ShowChase extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final Record record;
 
-  ShowChase({Key key, @required this.record}) : super(key: key);
+  ShowChase({required Key key, required this.record}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
-    final topBar = new AppBar(
+    final topBar = AppBar(
       // backgroundColor: new Color(0xfff8faf8),
       centerTitle: true,
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
-      leading: new IconButton(
-          icon: Icon(
+      leading: IconButton(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
           ),
@@ -45,13 +45,13 @@ class ShowChase extends StatelessWidget {
             padding: const EdgeInsets.only(right: 12.0),
             // child: Icon(Icons.share),
             child: IconButton(
-                icon: new Icon(Icons.share, color: Colors.black),
+                icon: const Icon(Icons.share, color: Colors.black),
                 onPressed: () => _onShare(context)
             )),
       ],
     );
 
-    return new Scaffold(appBar: topBar, body: _stream(record, context));
+    return Scaffold(appBar: topBar, body: _stream(record, context));
   }
 
   void _onShare(BuildContext context) async {
@@ -64,19 +64,18 @@ class ShowChase extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('chases').doc(record.ID).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _sizedBox(context, snapshot.data);
+        return _sizedBox(context, snapshot.data as DocumentSnapshot<Map<String, dynamic>>);
       },
     );
   }
 
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
-    Record record = Record.fromSnapshot(snapshot);
+    Record record = Record.fromSnapshot(snapshot as DocumentSnapshot<Map<String, dynamic>>);
     var imageURL = 'https://chaseapp.tv/police.gif';
 
 
     if (record.ImageURL.isNotEmpty) {
-      // TODO: finish feature that will modify ImageURL to display our thumbnails instead of the full image
       imageURL = record.ImageURL.replaceAll(
           RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
             caseSensitive: false,
@@ -115,8 +114,8 @@ class ShowChase extends StatelessWidget {
                     ),
                   ]
                 ),
-                ListTile(title: Text(record.Name, style: TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
-                Divider(),
+                ListTile(title: Text(record.Name, style: const TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
+                const Divider(),
                 /*
                 Container(
                   child:
@@ -146,17 +145,17 @@ class ShowChase extends StatelessWidget {
                  */
                   //),
                 Padding(
-                  padding: EdgeInsets.all(0.3),
-                  child: URLView(record.Networks),
+                  padding: const EdgeInsets.all(0.3),
+                  child: URLView(record.Networks as List<Map<dynamic, dynamic>>),
                 ),
                 Container(
-                    padding: EdgeInsets.all(30),
+                    padding: const EdgeInsets.all(30),
                     child: Align(
-                        alignment: FractionalOffset(1.0, 0.2),
+                        alignment: const FractionalOffset(1.0, 0.2),
                         child: ClapFAB.image(
                           clapFabCallback: (int counter) => FirebaseFirestore.instance.runTransaction((transaction) async {
                             final freshSnapshot = await transaction.get(record.reference);
-                            final fresh = Record.fromSnapshot(freshSnapshot);
+                            final fresh = Record.fromSnapshot(freshSnapshot as DocumentSnapshot<Map<String, dynamic>>);
                             transaction.update(record.reference, {'Votes': fresh.Votes + 1});
                             counter = fresh.Votes;
                           }),

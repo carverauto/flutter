@@ -8,11 +8,13 @@ class ChatPage extends StatefulWidget {
   final String chaseId;
   final String userName;
   final String chaseName;
+  final String uid;
 
   ChatPage({
     required this.chaseId,
     required this.userName,
-    required this.chaseName
+    required this.chaseName,
+    required this.uid
   });
 
   @override
@@ -52,7 +54,7 @@ class _ChatPageState extends State<ChatPage> {
         'time': DateTime.now().millisecondsSinceEpoch,
       };
 
-      DatabaseService().sendMessage(widget.chaseId, chatMessageMap);
+      DatabaseService(uid: widget.uid ).sendMessage(widget.chaseId, chatMessageMap);
 
       setState(() {
         messageEditingController.text = "";
@@ -63,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    DatabaseService().getChats(widget.chaseId).then((val) {
+    DatabaseService(uid: widget.uid).getChats(widget.chaseId).then((val) {
       // print(val);
       setState(() {
         _chats = val;

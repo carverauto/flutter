@@ -34,7 +34,7 @@ Widget TopBar(BuildContext context) {
                     MaterialPageRoute(builder: (context) =>
                         ProfilePage(
                           userName: FirebaseAuth.instance.currentUser?.displayName ?? 'John Doe',
-                          email: FirebaseAuth.instance.currentUser?.email ?? 'your@email.com',
+                          email: FirebaseAuth.instance.currentUser?.email ?? 'your@email.com', key: UniqueKey(),
                         )
                     )
                 )

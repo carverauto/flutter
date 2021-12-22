@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:chaseapp/pages/chat_page.dart';
 
 class ChaseTile extends StatelessWidget {
-  const ChaseTile({ Key? key, required this.userName, required this.chaseId, required this.chaseName}) : super(key: key);
+  const ChaseTile({ Key? key, required this.userName, required this.chaseId, required this.chaseName, required this.uid}) : super(key: key);
   final String userName;
   final String chaseId;
   final String chaseName;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(chaseId: chaseId, userName: userName, chaseName: chaseName,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(chaseId: chaseId, userName: userName, chaseName: chaseName, uid: uid)));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),

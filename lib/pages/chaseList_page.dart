@@ -9,6 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ChasesScreen extends StatefulWidget {
+  const ChasesScreen({Key? key}) : super(key: key);
+
   @override
   _ChasesScreenState createState() => _ChasesScreenState();
 }
@@ -26,7 +28,7 @@ class _ChasesScreenState extends State<ChasesScreen> {
 }
 
 class ChasesPage extends StatefulWidget {
-  ChasesPage({Key? key, required this.title, required this.analytics, required this.observer})
+  const ChasesPage({Key? key, required this.title, required this.analytics, required this.observer})
     : super(key: key);
 
   final String title;
@@ -81,19 +83,17 @@ Widget _buildBody(BuildContext context) {
 Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
   return ListView(
     padding: const EdgeInsets.only(top: 20.0),
-    children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+    children: snapshot.map((data) => _buildListItem(context, data as DocumentSnapshot<Map<String, dynamic>>)).toList(),
   );
 }
 
-Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+Widget _buildListItem(BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
   final record = Record.fromSnapshot(data);
-  // var record = Record.fromSnapshot(data);
   var imageURL = '';
 
-  final String assetName = 'assets/donut2.svg';
+  const String assetName = 'assets/donut2.svg';
 
   if (record.ImageURL != null) {
-    // TODO: finish feature that will modify ImageURL to display our thumbnails instead of the full image
     imageURL = record.ImageURL.replaceAll(
         RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
           caseSensitive: false,
@@ -170,7 +170,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ShowChase(record: record)))
+                    builder: (context) => ShowChase(record: record, key: UniqueKey(),)))
           }),
     ),
   );
