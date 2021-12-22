@@ -204,32 +204,6 @@ class Prefs {
     return instance.clear() ?? Future.value(false);
   }
 
-  // Save Language Code value to persistent storage
-  static Future<bool> setLanguageCode(String value) async {
-    var instance = await _prefs;
-    return instance.setString(KEY_LANGUAGE_CODE, value) ?? Future.value(false);
-  }
-
-  static String getLanguageCode([String? defValue]) {
-    assert(_initCalled, "Prefs.init() must be called first in an initState() preferably!");
-    assert(_prefsInstance != null, "Maybe call Prefs.getKeysF() instead. SharedPreferneces not ready yet!");
-
-    return _prefsInstance?.getString(KEY_LANGUAGE_CODE) ?? defValue ?? "";
-  }
-
-  // Save Country Code value to persistent storage
-  static Future<bool> setCountryCode(String value) async {
-    var instance = await _prefs;
-    return instance?.setString(KEY_COUNTRY_CODE, value) ?? Future.value(false);
-  }
-
-  static String getCountryCode([String? defValue]) {
-    assert(_initCalled, "Prefs.init() must be called first in an initState() preferably!");
-    assert(_prefsInstance != null, "Maybe call Prefs.getKeysF() instead. SharedPreferneces not ready yet!");
-
-    return _prefsInstance?.getString(KEY_COUNTRY_CODE) ?? defValue ?? "";
-  }
-
   static Future<bool> setLoggedIn(bool value) async {
     print('LOGGED_IN_STATUS: $value');
     var instance = await _prefs;

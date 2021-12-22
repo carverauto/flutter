@@ -523,7 +523,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                     model.state == ViewState.Busy
-                        ? Utils.progressBar()
+                        ? const LinearProgressIndicator()
                         : Container(),
                   ],
                 ),

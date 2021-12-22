@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase;
-import 'package:chaseapp/helper/prefer.dart';
+// import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/helper/routes.dart';
 import 'package:provider/provider.dart';
 // import 'package:permission_handler/permission_handler.dart';
@@ -24,7 +24,7 @@ Future<void> main() async {
     }
   }
 
-  Prefs.init();
+  // Prefs.init();
   setLocator();
   runApp(MultiProvider(
     child: MyApp(),
