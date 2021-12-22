@@ -9,12 +9,24 @@ import 'package:chaseapp/pages/signin_page.dart';
 // import 'package:chaseapp/utils/deviceSize.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 
+class Settings extends StatefulWidget {
+  @override
+  SettingsPage createState() => SettingsPage();
+}
 
-class Settings extends StatelessWidget {
+class SettingsPage extends State<Settings> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   void signOutGoogle() async {
     await _googleSignIn.signOut();
     print("User Sign Out");
+  }
+
+  bool _showSignIn = true;
+
+  void _toggleView() {
+    setState(() {
+      _showSignIn = !_showSignIn;
+    });
   }
 
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -24,13 +36,14 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
 
-    final topBar = new AppBar(
-      backgroundColor: new Color(0xfff8faf8),
+
+    final topBar = AppBar(
+      backgroundColor: Color(0xfff8faf8),
       centerTitle: true,
       elevation: 1.0,
       // leading: new Icon(Icons.arrow_back_ios),
-      leading: new IconButton(
-          icon: Icon(
+      leading: IconButton(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
           ),
@@ -39,27 +52,27 @@ class Settings extends StatelessWidget {
           }),
       actions: <Widget>[
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.logout,
             color: Colors.black,
           ),
           onPressed: () {
             signOutGoogle();
             //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => new SignInPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SignInPage(toggleView: _toggleView,)));
           },
         ),
       ],
       title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
     );
 
-    return new Scaffold(
+    return Scaffold(
       appBar: topBar,
-      body: new SizedBox(
+      body: SizedBox(
           height: deviceSize.height,
           child: Card(
               child: Column(
-            children: <Widget>[
+            children: const <Widget>[
               ListTile(
                 title: Text(
                   'Settings',
@@ -70,7 +83,7 @@ class Settings extends StatelessWidget {
               Padding(
                 // padding: EdgeInsets.all(0.2), child: Text('Notifications')),
                 padding: EdgeInsets.all(0.2),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: _launchURL,
                   // child: Text('Show Privacy Policy ${FirebaseAuth.instance.currentUser.displayName}'),
                   child: Text('Show Privacy Policy'),
