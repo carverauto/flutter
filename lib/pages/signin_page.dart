@@ -9,6 +9,7 @@ import 'package:chaseapp/services/auth_service.dart';
 import 'package:chaseapp/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/gestures.dart';
@@ -20,7 +21,7 @@ final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class SignInPage extends StatefulWidget {
   final Function toggleView;
-  SignInPage({this.toggleView});
+  SignInPage({required this.toggleView});
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -35,8 +36,8 @@ class _SignInPageState extends State<SignInPage> {
 
   // text field state
   String email = '';
-  String name;
-  String imageUrl;
+  late String name;
+  late String imageUrl;
   String password = '';
   String error = '';
 
@@ -64,56 +65,92 @@ class _SignInPageState extends State<SignInPage> {
     final permNotifyStatus = await Permission.notification.request();
 
     if (permBtServiceStatus == PermissionStatus.granted) {
-      print('BTServiceStatus - Permission Granted');
+      if (kDebugMode) {
+        print('BTServiceStatus - Permission Granted');
+      }
     } else if (permBtServiceStatus == PermissionStatus.denied) {
-      print('BTServiceStatus - Permission Denied');
+      if (kDebugMode) {
+        print('BTServiceStatus - Permission Denied');
+      }
     } else if (permBtServiceStatus == PermissionStatus.permanentlyDenied) {
-      print('BTServiceStatus - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('BTServiceStatus - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
     if (permBtScanStatus == PermissionStatus.granted) {
-      print('BTScanStatus - Permission Granted');
+      if (kDebugMode) {
+        print('BTScanStatus - Permission Granted');
+      }
     } else if (permBtScanStatus == PermissionStatus.denied) {
-      print('BTScanStatus - Permission Denied');
+      if (kDebugMode) {
+        print('BTScanStatus - Permission Denied');
+      }
     } else if (permBtScanStatus == PermissionStatus.permanentlyDenied) {
-      print('BTScanStatus - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('BTScanStatus - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
     if (permBtConnectStatus == PermissionStatus.granted) {
-      print('BTConnectStatus - Permission Granted');
+      if (kDebugMode) {
+        print('BTConnectStatus - Permission Granted');
+      }
     } else if (permBtConnectStatus == PermissionStatus.denied) {
-      print('BTConnectStatus - Permission Denied');
+      if (kDebugMode) {
+        print('BTConnectStatus - Permission Denied');
+      }
     } else if (permBtConnectStatus == PermissionStatus.permanentlyDenied) {
-      print('BTConnectStatus - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('BTConnectStatus - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
     if (permLocationAlwaysStatus == PermissionStatus.granted) {
-      print('LocationAlways - Permission Granted');
+      if (kDebugMode) {
+        print('LocationAlways - Permission Granted');
+      }
     } else if (permLocationAlwaysStatus == PermissionStatus.denied) {
-      print('LocationAlways - Permission Denied');
+      if (kDebugMode) {
+        print('LocationAlways - Permission Denied');
+      }
     } else if (permLocationAlwaysStatus == PermissionStatus.permanentlyDenied) {
-      print('LocationAlways - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('LocationAlways - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
     if (permLocationStatus == PermissionStatus.granted) {
-      print('Location - Permission Granted');
+      if (kDebugMode) {
+        print('Location - Permission Granted');
+      }
     } else if (permLocationStatus == PermissionStatus.denied) {
-      print('Location - Permission Denied');
+      if (kDebugMode) {
+        print('Location - Permission Denied');
+      }
     } else if (permLocationStatus == PermissionStatus.permanentlyDenied) {
-      print('Location - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('Location - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
     if (permNotifyStatus == PermissionStatus.granted) {
-      print('Notifications - Permission Granted');
+      if (kDebugMode) {
+        print('Notifications - Permission Granted');
+      }
     } else if (permNotifyStatus == PermissionStatus.denied) {
-      print('Notifications - Permission Denied');
+      if (kDebugMode) {
+        print('Notifications - Permission Denied');
+      }
     } else if (permNotifyStatus == PermissionStatus.permanentlyDenied) {
-      print('Notifications - Permission Permanently Denied');
+      if (kDebugMode) {
+        print('Notifications - Permission Permanently Denied');
+      }
       await openAppSettings();
     }
 
@@ -121,23 +158,25 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // Nodle
-  static const platform = const MethodChannel('com.carverauto.chaseapp/nodle');
+  static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
 
   // Define an async function to start Nodle SDK
   void startNodle() async {
-    String value;
     try {
-      value = await platform.invokeMethod("start");
+      String value = await platform.invokeMethod("start");
+      if (kDebugMode) {
+        print(value);
+      }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    print(value);
   }
 
   _onSignInWithGoogle(SignInViewModel model) async {
-    print("Singing in with google");
     await requestPermissions();
-    User user;
+    User? user;
 
     bool isSignedIn = await _googleSignIn.isSignedIn();
 
@@ -147,8 +186,6 @@ class _SignInPageState extends State<SignInPage> {
 
     // Check to see if we're signed in already
     if (isSignedIn) {
-      print("Already signed in");
-
       model.state = ViewState.Busy;
       user = FirebaseAuth.instance.currentUser;
 
@@ -162,7 +199,7 @@ class _SignInPageState extends State<SignInPage> {
       await _auth.signInWithGoogle().then((result) async {
         model.state = ViewState.Busy;
         if (result != null) {
-          QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(
+          QuerySnapshot userInfoSnapshot = await DatabaseService(uid: user!.uid).getUserData(
               result.email);
 
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
@@ -172,15 +209,20 @@ class _SignInPageState extends State<SignInPage> {
               (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
           );
 
-          print("Signed In");
           await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-            print("Logged in: $value");
+            if (kDebugMode) {
+              print("Logged in: $value");
+            }
           });
           await HelperFunctions.getUserEmailSharedPreference().then((value) {
-            print("Email: $value");
+            if (kDebugMode) {
+              print("Email: $value");
+            }
           });
           await HelperFunctions.getUserNameSharedPreference().then((value) {
-            print("Full Name: $value");
+            if (kDebugMode) {
+              print("Full Name: $value");
+            }
           });
 
           // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
@@ -202,10 +244,14 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _onSignIn(SignInViewModel model) async {
-    print("_onSignIn");
+    if (kDebugMode) {
+      print("_onSignIn");
+    }
+    User? user;
+    user = FirebaseAuth.instance.currentUser;
     await requestPermissions();
     model.state = ViewState.Busy;
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
@@ -213,7 +259,7 @@ class _SignInPageState extends State<SignInPage> {
         await _auth.signInWithEmailAndPassword(email, password).then((
             result) async {
           if (result != null) {
-            QuerySnapshot userInfoSnapshot = await DatabaseService().getUserData(
+            QuerySnapshot userInfoSnapshot = await DatabaseService(uid: user!.uid).getUserData(
                 email);
 
             await HelperFunctions.saveUserLoggedInSharedPreference(true);
@@ -274,9 +320,9 @@ class _SignInPageState extends State<SignInPage> {
                       child: Column(
                         children: <Widget>[
                           Container(
-                            height: deviceSize.height / 5.4,
+                            height: deviceSize!.height / 5.4,
                             // width: deviceSize.width / 1,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               //border: Border.all( color: Colors.black, width: 8),
                               image: DecorationImage(
                                 image:
@@ -312,18 +358,18 @@ class _SignInPageState extends State<SignInPage> {
                                         child: TextFormField(
                                           controller: model.userIdController,
                                           validator: (val) {
-                                            return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Please enter a valid email";
+                                            return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val!) ? null : "Please enter a valid email";
                                           },
                                           onChanged: (val) {
                                             setState(() {
                                               email = val;
                                             });
                                           },
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                             border: OutlineInputBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(15)),
@@ -352,24 +398,24 @@ class _SignInPageState extends State<SignInPage> {
                                             bottom: 8),
                                         child: TextFormField(
                                           controller: model.passwordController,
-                                          validator: (val) => val.length < 6 ? 'Password not strong enough': null,
+                                          validator: (val) => val!.length < 6 ? 'Password not strong enough': null,
                                           obscureText: !model.passwordVisible,
                                           onChanged: (val) {
                                             setState(() {
                                               password = val;
                                             });
                                           },
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
                                           decoration: InputDecoration(
-                                            border: OutlineInputBorder(
+                                            border: const OutlineInputBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(15)),
                                             ),
                                             hintText: "Password",
-                                            contentPadding: EdgeInsets.fromLTRB(
+                                            contentPadding: const EdgeInsets.fromLTRB(
                                                 20.0, 15.0, 20.0, 15.0),
                                             hintStyle: TextStyle(fontSize: 15),
                                             suffixIcon: IconButton(
@@ -403,7 +449,7 @@ class _SignInPageState extends State<SignInPage> {
                                           children: <TextSpan>[
                                             TextSpan(
                                               text: 'Register here',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   decoration: TextDecoration.underline
                                               ),
                                               recognizer: TapGestureRecognizer()..onTap = () {
@@ -419,8 +465,8 @@ class _SignInPageState extends State<SignInPage> {
                                       Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
                                       InkWell(
                                         child: Container(
-                                            width: deviceSize.width / 2,
-                                            height: deviceSize.height / 18,
+                                            width: deviceSize!.width / 2,
+                                            height: deviceSize!.height / 18,
                                             margin: EdgeInsets.only(top: 25),
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -434,7 +480,7 @@ class _SignInPageState extends State<SignInPage> {
                                                     Container(
                                                       height: 30.0,
                                                       width: 30.0,
-                                                      decoration: BoxDecoration(
+                                                      decoration: const BoxDecoration(
                                                         image: DecorationImage(
                                                             image: AssetImage(
                                                                 'assets/google.jpg'),
@@ -442,7 +488,7 @@ class _SignInPageState extends State<SignInPage> {
                                                         shape: BoxShape.circle,
                                                       ),
                                                     ),
-                                                    Text(
+                                                    const Text(
                                                       'Sign in with Google',
                                                       style: TextStyle(
                                                           fontSize: 16.0,
@@ -464,7 +510,7 @@ class _SignInPageState extends State<SignInPage> {
                                           }).catchError((e) => print(e));
                                         },
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 16,
                                       ),
                                     ],
