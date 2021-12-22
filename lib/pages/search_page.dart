@@ -34,9 +34,9 @@ class _SearchPageState extends State<SearchPage> {
   // functions
   _getCurrentUserNameAndUid() async {
     await HelperFunctions.getUserNameSharedPreference().then((value) {
-      _userName = value;
+      _userName = value!;
     });
-    User _user = FirebaseAuth.instance.currentUser;
+    User? _user = FirebaseAuth.instance.currentUser;
   }
 
 
@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         isLoading = true;
       });
-      await DatabaseService().searchByName(searchEditingController.text).then((snapshot) {
+      await DatabaseService(uid: _user.uid).searchByName(searchEditingController.text).then((snapshot) {
         searchResultSnapshot = snapshot;
         //print("$searchResultSnapshot");
         setState(() {
@@ -58,10 +58,10 @@ class _SearchPageState extends State<SearchPage> {
 
  
   void _showScaffold(String message) {
-    _scaffoldKey.currentState.showSnackBar(
+    _scaffoldKey.currentState?.showSnackBar(
       SnackBar(
         backgroundColor: Colors.blueAccent,
-        duration: Duration(milliseconds: 1500),
+        duration: const Duration(milliseconds: 1500),
         content: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0)),
       )
     );

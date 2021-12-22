@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleView;
-  RegisterPage({this.toggleView});
+  RegisterPage({required this.toggleView});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -27,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String error = '';
 
   _onRegister() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
@@ -132,10 +132,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 15.0),
                     
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: textInputDecoration.copyWith(labelText: 'Email'),
                     validator: (val) {
-                      return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Please enter a valid email";
+                      return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val!) ? null : "Please enter a valid email";
                     },
                     onChanged: (val) {
                       setState(() {
@@ -147,9 +147,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 15.0),
                     
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: textInputDecoration.copyWith(labelText: 'Password'),
-                    validator: (val) => val.length < 6 ? 'Password not strong enough' : null,
+                    validator: (val) => val!.length < 6 ? 'Password not strong enough' : null,
                     obscureText: true,
                     onChanged: (val) {
                       setState(() {
@@ -167,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       elevation: 0.0,
                       color: Colors.blue,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                      child: Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                      child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 16.0)),
                       onPressed: () {
                         _onRegister();
                       }
@@ -179,11 +179,11 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text.rich(
                     TextSpan(
                       text: "Already have an account? ",
-                      style: TextStyle(color: Colors.white, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.white, fontSize: 14.0),
                       children: <TextSpan>[
                         TextSpan(
                           text: 'Sign In',
-                          style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                          style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
                           recognizer: TapGestureRecognizer()..onTap = () {
                             widget.toggleView();
                           },
@@ -192,9 +192,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
 
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                     
-                  Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
+                  Text(error, style: const TextStyle(color: Colors.red, fontSize: 14.0)),
                 ],
               ),
             ],
