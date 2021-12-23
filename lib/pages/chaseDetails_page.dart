@@ -81,8 +81,6 @@ class ShowChase extends StatelessWidget {
       ), '_1200x600.webp?');
     }
 
-    print(record.Networks);
-
     // TODO: FIX - BROKEN
     // Support showing the network URL/icon in the chase Details screen
     const ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';

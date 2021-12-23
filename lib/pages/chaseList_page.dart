@@ -93,7 +93,8 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot<Map<String, dynamic
 
   const String assetName = 'assets/donut2.svg';
 
-  if (record.ImageURL != null) {
+  /*
+  if (record?.ImageURL != null) {
     if (record.ImageURL.isNotEmpty) {
       imageURL = record.ImageURL.replaceAll(
           RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
@@ -106,6 +107,7 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot<Map<String, dynamic
   } else {
     imageURL = 'https://chaseapp.tv/icon.png';
   }
+   */
 
   var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
   var today = DateTime.now().toLocal();

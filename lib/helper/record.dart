@@ -52,7 +52,7 @@ class Record {
         _imageURL = map?['ImageURL'],
         _sentiment = map?['sentiment'],
         _wheels = map?['Wheels'],
-        _networks = map!['Networks'] != null ? List<Map>.from(map['Networks']) : [];
+        _networks = map?['Networks'] != null ? List<Map>.from(map?['Networks']) : [];
 
   Record.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);
