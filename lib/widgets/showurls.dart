@@ -1,25 +1,26 @@
-import 'package:flutter/material.dart' show BuildContext, EdgeInsets, Flexible, ListView, NeverScrollableScrollPhysics, Padding, Row, SizedBox, StatelessWidget, Widget;
+import 'package:flutter/material.dart' show BuildContext, EdgeInsets, Flexible, ListView, NeverScrollableScrollPhysics, Padding, Row, SizedBox, StatelessWidget, Text, Widget;
 import 'dart:async';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class URLView extends StatelessWidget {
-  final List<Map> urls;
+  final List<Map> streams;
 
-  URLView(this.urls);
+  const URLView(this.streams);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = List<Widget>.empty();
-    urls.forEach((item) {
+    List<Widget> children = List<Widget>.empty(growable: true);
+    for (var item in streams) {
       children.add(
         Row(
           children: <Widget>[
             Flexible(
              child: Padding(
-                padding: EdgeInsets.all(0.4),
+                padding: const EdgeInsets.all(0.4),
                 // child: Linkify(onOpen: _onOpen, text: item.toString())),
-                child: Linkify(onOpen: _onOpen, text: item["URL"]))
+                // child: Linkify(onOpen: _onOpen, text: item["URL"]))
+                child: Text(item["URL"]))
             ),
           ],
         ),
@@ -30,13 +31,13 @@ class URLView extends StatelessWidget {
           height: 10.0,
         ),
       );
-    });
+    }
     return ListView(
-      padding: EdgeInsets.fromLTRB(40.0, 25.0, 25.0, 5.0),
+      padding: const EdgeInsets.fromLTRB(40.0, 25.0, 25.0, 5.0),
       // padding: EdgeInsets.all(0.2),
       children: children,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
     );
   }
 

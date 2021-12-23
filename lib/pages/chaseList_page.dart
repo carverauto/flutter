@@ -56,7 +56,7 @@ class _ChasesPageState extends State<ChasesPage> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: PreferredSize(
-      preferredSize: Size.fromHeight(100.0),
+      preferredSize: const Size.fromHeight(100.0),
       child: Column(
         children: <Widget>[
           TopBar(context)
@@ -74,7 +74,7 @@ Widget _buildBody(BuildContext context) {
         .orderBy('CreatedAt', descending: true)
         .snapshots(),
     builder: (context, AsyncSnapshot snapshot) {
-      if (!snapshot.hasData) return LinearProgressIndicator();
+      if (!snapshot.hasData) return const LinearProgressIndicator();
       return _buildList(context, snapshot.data.docs);
     },
   );
@@ -89,20 +89,26 @@ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
 
 Widget _buildListItem(BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
   final record = Record.fromSnapshot(data);
-  var imageURL = '';
+  String? imageURL = '';
 
   const String assetName = 'assets/donut2.svg';
 
   if (record.ImageURL != null) {
-    imageURL = record.ImageURL.replaceAll(
-        RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
-          caseSensitive: false,
-          multiLine: false,
-        ), '_200x200.webp?');
+    if (record.ImageURL.isNotEmpty) {
+      imageURL = record.ImageURL.replaceAll(
+          RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
+            caseSensitive: false,
+            multiLine: false,
+          ), '_200x200.webp?');
+    } else {
+      imageURL = 'https://chaseapp.tv/icon.png';
+    }
+  } else {
+    imageURL = 'https://chaseapp.tv/icon.png';
   }
 
   var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
-  var today = new DateTime.now().toLocal();
+  var today = DateTime.now().toLocal();
   var diff = chaseDate.difference(today);
   // print("URLs " + record.urls.toString());
 
@@ -143,9 +149,12 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot<Map<String, dynamic
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: ListTile(
+        /*
           leading: CircleAvatar(
-            child: imageURL.isNotEmpty ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
-          ),
+            // child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
+            child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
+          )
+         */
           title: Text(record.Name, style: GoogleFonts.getFont('Poppins')),
           // subtitle: Text(record.Votes.toString() + ' donuts'),
           subtitle: Text(dateMsg),

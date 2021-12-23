@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   // final Record record;
   late User _user;
   String _userName = '';
-  String _email = '';
+  final String _email = '';
   Stream ?_chases;
 
 
@@ -163,6 +163,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     //return ChasesScreen();
-    return Scaffold( body: ChasesScreen(), );
+    return const Scaffold( body: ChasesScreen(), );
   }
 }

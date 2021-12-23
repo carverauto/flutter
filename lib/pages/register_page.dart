@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function toggleView;
-  RegisterPage({required this.toggleView});
+  const RegisterPage({required this.toggleView});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -99,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading ? Loading() : Scaffold(
+    return _isLoading ? const Loading() : Scaffold(
       body: Form(
         key: _formKey,
         child: Container(
@@ -120,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20.0),
                     
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: textInputDecoration.copyWith(labelText: 'Full Name'),
                     onChanged: (val) {
                       setState(() {
@@ -174,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
 
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                     
                   Text.rich(
                     TextSpan(

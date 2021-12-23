@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'dart:core';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,7 +21,6 @@ class ShowChase extends StatelessWidget {
   final Record record;
 
   ShowChase({required Key key, required this.record}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +61,7 @@ class ShowChase extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance.collection('chases').doc(record.ID).snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
+        if (!snapshot.hasData) return const CircularProgressIndicator();
         return _sizedBox(context, snapshot.data as DocumentSnapshot<Map<String, dynamic>>);
       },
     );
@@ -81,12 +79,13 @@ class ShowChase extends StatelessWidget {
             caseSensitive: false,
             multiLine: false,
       ), '_1200x600.webp?');
-
     }
+
+    print(record.Networks);
 
     // TODO: FIX - BROKEN
     // Support showing the network URL/icon in the chase Details screen
-    final _ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
+    const ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
     /*
     var _networkURL, _networks;
 
@@ -116,37 +115,9 @@ class ShowChase extends StatelessWidget {
                 ),
                 ListTile(title: Text(record.Name, style: const TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 const Divider(),
-                /*
-                Container(
-                  child:
-                      ListTile(
-                        leading: // Shimmer.fromColors(
-                            // child:
-                          CircleAvatar(
-                              radius: 25,
-                              // backgroundColor: Colors.black38,
-                              backgroundColor: Colors.transparent,
-                              child: Material(
-                                clipBehavior: Clip.hardEdge,
-                                shape: CircleBorder(),
-                                color: Colors.transparent,
-                                child:
-                              CachedNetworkImage(
-                                  imageUrl: _networkURL
-                                ),
-                              ),
-                            ),
-                            // baseColor: Colors.transparent,
-                            // highlightColor: Colors.redAccent,
-                        title: Linkify(onOpen: _onOpen, text: record.Networks),
-                      ),
-                ),
-
-                 */
-                  //),
                 Padding(
                   padding: const EdgeInsets.all(0.3),
-                  child: URLView(record.Networks as List<Map<dynamic, dynamic>>),
+                  child: URLView(record.Networks as List<Map>),
                 ),
                 Container(
                     padding: const EdgeInsets.all(30),
@@ -168,15 +139,6 @@ class ShowChase extends StatelessWidget {
                           defaultImageColor: Colors.pink,
                           filledImageColor: Colors.pink,
                         ))),
-                // VxBox(  ).square(350).gray300.make()
-                const SizedBox(
-                  width: 400,
-                  height: 350,
-                  // child: ChatScreen(record.ID),
-                   // child: ChatView(record.ID), // #TODO: bring chat stuff back in
-                  // child: SingleChildScrollView( child: ChatScreen(record.ID))
-                )
-                //ChatScreen('Foo'),
               ],
             )));
   }
@@ -190,9 +152,3 @@ class ShowChase extends StatelessWidget {
   }
 
 }
-
-class Network {
-  late String URL;
-  late String name;
-}
-

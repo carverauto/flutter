@@ -10,7 +10,7 @@ class ChatPage extends StatefulWidget {
   final String chaseName;
   final String uid;
 
-  ChatPage({
+  const ChatPage({
     required this.chaseId,
     required this.userName,
     required this.chaseName,
@@ -24,7 +24,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   
   late Stream<QuerySnapshot> _chats;
-  TextEditingController messageEditingController = new TextEditingController();
+  TextEditingController messageEditingController = TextEditingController();
 
   Widget _chatMessages(){
     return StreamBuilder<QuerySnapshot>(
@@ -77,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chaseName, style: TextStyle(color: Colors.white)),
+        title: Text(widget.chaseName, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.black87,
         elevation: 0.0,
@@ -91,17 +91,17 @@ class _ChatPageState extends State<ChatPage> {
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
                 color: Colors.grey[700],
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: TextField(
                         controller: messageEditingController,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Send a message ...",
                           hintStyle: TextStyle(
                             color: Colors.white38,
@@ -112,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                     ),
 
-                    SizedBox(width: 12.0),
+                    const SizedBox(width: 12.0),
 
                     GestureDetector(
                       onTap: () {
@@ -125,7 +125,7 @@ class _ChatPageState extends State<ChatPage> {
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(50)
                         ),
-                        child: Center(child: Icon(Icons.send, color: Colors.white)),
+                        child: const Center(child: Icon(Icons.send, color: Colors.white)),
                       ),
                     )
                   ],

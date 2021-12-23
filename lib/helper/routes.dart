@@ -31,7 +31,7 @@ class Routes {
 //                  Image.asset('assets/images/error.jpg'),
                   Text(
                     "${settings.name} does not exists!",
-                    style: TextStyle(fontSize: 24.0),
+                    style: const TextStyle(fontSize: 24.0),
                   )
                 ],
               ),

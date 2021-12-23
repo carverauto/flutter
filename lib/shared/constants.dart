@@ -6,6 +6,6 @@ const textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.white, width: 2.0)
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFFF0889B6), width: 2.0)
+    borderSide: BorderSide(color: Color(0xffff0889b6), width: 2.0)
   ),
 );

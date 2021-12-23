@@ -43,12 +43,12 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> requestPermissions() async {
     print("in requestPermissions");
-    final btScanStatus = await Permission.bluetoothScan;
-    final btConnectStatus = await Permission.bluetoothConnect;
-    final btServiceStatus = await Permission.bluetooth;
-    final locationAlwaysStatus = await Permission.locationAlways;
-    final locationStatus = await Permission.location;
-    final notifyStatus = await Permission.notification;
+    final btScanStatus = Permission.bluetoothScan;
+    final btConnectStatus = Permission.bluetoothConnect;
+    final btServiceStatus = Permission.bluetooth;
+    final locationAlwaysStatus = Permission.locationAlways;
+    final locationStatus = Permission.location;
+    final notifyStatus = Permission.notification;
 
     bool isBtOn = btServiceStatus == btServiceStatus.isGranted;
     bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
@@ -311,7 +311,7 @@ class _SignInPageState extends State<SignInPage> {
                 // backgroundColor: Vx.gray200,
                 body: Stack(
                   children: <Widget>[
-                    Container(
+                    SizedBox(
                       height: 410,
                       width: 430,
                       // decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/background.png'), fit: BoxFit.contain, ), ),
@@ -342,8 +342,8 @@ class _SignInPageState extends State<SignInPage> {
                                       BorderRadius.circular(20.0)),
                                   child: Column(
                                     children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(15.0),
+                                      const Padding(
+                                        padding: EdgeInsets.all(15.0),
                                         // Old way
                                         child: Text( "Login", style: TextStyle( fontWeight: FontWeight.w800, fontSize: 25),),
                                         // new VX way
@@ -417,13 +417,13 @@ class _SignInPageState extends State<SignInPage> {
                                             hintText: "Password",
                                             contentPadding: const EdgeInsets.fromLTRB(
                                                 20.0, 15.0, 20.0, 15.0),
-                                            hintStyle: TextStyle(fontSize: 15),
+                                            hintStyle: const TextStyle(fontSize: 15),
                                             suffixIcon: IconButton(
                                                 icon: Icon(
                                                   model.passwordVisible
                                                       ? Icons.visibility
                                                       : Icons.visibility_off,
-                                                  color: Color(0xFFE6E6E6),
+                                                  color: const Color(0xFFE6E6E6),
                                                 ),
                                                 onPressed: () {
                                                   model.passwordVisible =
@@ -440,12 +440,12 @@ class _SignInPageState extends State<SignInPage> {
                                         ),
                                       ),
 
-                                      SizedBox( height: 10.0),
+                                      const SizedBox( height: 10.0),
 
                                       Text.rich(
                                         TextSpan(
                                           text: "Don't have an account? ",
-                                          style: TextStyle(fontSize: 14.0),
+                                          style: const TextStyle(fontSize: 14.0),
                                           children: <TextSpan>[
                                             TextSpan(
                                               text: 'Register here',
@@ -460,14 +460,14 @@ class _SignInPageState extends State<SignInPage> {
                                         ),
                                       ),
 
-                                      SizedBox(height: 10.0),
+                                      const SizedBox(height: 10.0),
 
-                                      Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0)),
+                                      Text(error, style: const TextStyle(color: Colors.red, fontSize: 14.0)),
                                       InkWell(
                                         child: Container(
                                             width: deviceSize!.width / 2,
                                             height: deviceSize!.height / 18,
-                                            margin: EdgeInsets.only(top: 25),
+                                            margin: const EdgeInsets.only(top: 25),
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                 BorderRadius.circular(20),

@@ -207,7 +207,7 @@ class Prefs {
   static Future<bool> setLoggedIn(bool value) async {
     print('LOGGED_IN_STATUS: $value');
     var instance = await _prefs;
-    return instance?.setBool(KEY_IS_LOGGED_IN, value) ?? Future.value(false);
+    return instance.setBool(KEY_IS_LOGGED_IN, value) ?? Future.value(false);
   }
 
   static bool isLoggedIn() {
@@ -238,7 +238,7 @@ class Prefs {
 
   static Future<Object> setToken(String token) async {
     var instance = await _prefs;
-    return instance?.setString(KEY_TOKEN, token) ?? '';
+    return instance.setString(KEY_TOKEN, token) ?? '';
   }
 
   static String getUserID() {
@@ -247,7 +247,7 @@ class Prefs {
 
   static Future<Object> setUserID(String userID) async {
     var instance = await _prefs;
-    return instance?.setString(USER_ID, userID) ?? '';
+    return instance.setString(USER_ID, userID) ?? '';
   }
 
   static int getUserLoginType() {
@@ -261,6 +261,6 @@ class Prefs {
 
   static Future<Object> setUserLoginType(int userType) async {
     var instance = await _prefs;
-    return instance?.setInt(USER_TYPE, userType) ?? 0;
+    return instance.setInt(USER_TYPE, userType) ?? 0;
   }
 }

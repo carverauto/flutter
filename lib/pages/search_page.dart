@@ -13,14 +13,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   // data
-  TextEditingController searchEditingController = new TextEditingController();
+  TextEditingController searchEditingController = TextEditingController();
   late QuerySnapshot searchResultSnapshot;
   bool isLoading = false;
   bool hasUserSearched = false;
   // bool _isJoined = false;
   String _userName = '';
   late User _user;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   // initState()
@@ -62,7 +62,7 @@ class _SearchPageState extends State<SearchPage> {
       SnackBar(
         backgroundColor: Colors.blueAccent,
         duration: const Duration(milliseconds: 1500),
-        content: Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 17.0)),
+        content: Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 17.0)),
       )
     );
   }
@@ -114,13 +114,13 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget chaseTile(String userName, String chaseId, String chaseName) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       leading: CircleAvatar(
         radius: 30.0,
         backgroundColor: Colors.blueAccent,
-        child: Text(chaseName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white))
+        child: Text(chaseName.substring(0, 1).toUpperCase(), style: const TextStyle(color: Colors.white))
       ),
-      title: Text(chaseName, style: TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(chaseName, style: const TextStyle(fontWeight: FontWeight.bold)),
       // subtitle: Text("Admin: $admin"),
       );
   }
@@ -134,7 +134,7 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.black87,
-        title: Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text('Search', style: TextStyle(fontSize: 27.0, fontWeight: FontWeight.bold, color: Colors.white)),
       ),
       body: // isLoading ? Container(
       //   child: Center(
@@ -146,17 +146,17 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               color: Colors.grey[700],
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: searchEditingController,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Search Chases...",
                         hintStyle: TextStyle(
                           color: Colors.white38,
@@ -177,13 +177,13 @@ class _SearchPageState extends State<SearchPage> {
                           color: Colors.blueAccent,
                           borderRadius: BorderRadius.circular(40)
                         ),
-                        child: Icon(Icons.search, color: Colors.white)
+                        child: const Icon(Icons.search, color: Colors.white)
                     )
                   )
                 ],
               ),
             ),
-            isLoading ? Container(child: Center(child: CircularProgressIndicator())) : chaseList()
+            isLoading ? Container(child: const Center(child: CircularProgressIndicator())) : chaseList()
           ],
         ),
       ),
