@@ -11,6 +11,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/helper/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -93,6 +94,43 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+    await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    print(message.data);
+    Fluttertoast.showToast(
+        msg: message.data.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+    /*
+    if (message.data['type'] == 'chat') {
+      Navigator.pushNamed(context, '/chat',
+        arguments: ChatArguments(message),
+      );
+    }
+     */
+  }
+
   @override
   void initState() {
     initializeFlutterFire();
@@ -100,6 +138,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _getUserLoggedInStatus();
     _startFirebaseMessaging();
+    setupInteractedMessage();
   }
 
   _startFirebaseMessaging() async {

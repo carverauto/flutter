@@ -20,6 +20,20 @@ import 'package:permission_handler/permission_handler.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+Future<void> saveTokenToDatabase(String token) async {
+  // Assume user is logged in for this example
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  print('Saving $userId to tokens field in users collection');
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .update({
+    'tokens': FieldValue.arrayUnion([token]),
+  });
+}
+
 class SignInPage extends StatefulWidget {
   final Function toggleView;
   const SignInPage({Key? key, required this.toggleView}) : super(key: key);
@@ -34,6 +48,9 @@ class _SignInPageState extends State<SignInPage> {
   bool _isLoading = false;
   bool isSignedIn = false;
   bool google = false;
+
+  // FCM
+  String? _token;
 
   // text field state
   String email = '';
@@ -205,6 +222,13 @@ class _SignInPageState extends State<SignInPage> {
       model.state = ViewState.Busy;
       user = FirebaseAuth.instance.currentUser;
 
+      // FCM token stuff for notifications
+      String? token = await FirebaseMessaging.instance.getToken();
+      print('Token $token');
+      await saveTokenToDatabase(token!);
+      // Any time the token refreshes, store this in the database too.
+      FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+
       // go to the home page
       Navigator.of(context)
           .pushNamedAndRemoveUntil(
@@ -217,6 +241,13 @@ class _SignInPageState extends State<SignInPage> {
         if (result != null) {
           QuerySnapshot userInfoSnapshot = await DatabaseService(uid: user!.uid).getUserData(
               result.email);
+
+          // FCM token stuff for notifications
+          String? token = await FirebaseMessaging.instance.getToken();
+          print('Token $token');
+          await saveTokenToDatabase(token!);
+          // Any time the token refreshes, store this in the database too.
+          FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
@@ -250,6 +281,7 @@ class _SignInPageState extends State<SignInPage> {
               false);
         }
         else {
+          print('The price is wrong bitch');
           setState(() {
             error = 'Error signing in!';
             _isLoading = false;
@@ -267,6 +299,7 @@ class _SignInPageState extends State<SignInPage> {
     user = FirebaseAuth.instance.currentUser;
     await requestPermissions();
     model.state = ViewState.Busy;
+
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -283,6 +316,13 @@ class _SignInPageState extends State<SignInPage> {
             await HelperFunctions.saveUserNameSharedPreference(
                 (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
             );
+
+            // FCM token stuff for notifications
+            String? token = await FirebaseMessaging.instance.getToken();
+            print('Token $token');
+            await saveTokenToDatabase(token!);
+            // Any time the token refreshes, store this in the database too.
+            FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
             print("Signed In");
             await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
