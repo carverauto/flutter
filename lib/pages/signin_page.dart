@@ -31,6 +31,7 @@ Future<void> saveTokenToDatabase(String token) async {
       .doc(userId)
       .update({
     'tokens': FieldValue.arrayUnion([token]),
+    'lastTokenUpdate': DateTime.now()
   });
 }
 
@@ -229,6 +230,8 @@ class _SignInPageState extends State<SignInPage> {
       // Any time the token refreshes, store this in the database too.
       FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
+      await FirebaseMessaging.instance.subscribeToTopic('chases');
+
       // go to the home page
       Navigator.of(context)
           .pushNamedAndRemoveUntil(
@@ -248,6 +251,9 @@ class _SignInPageState extends State<SignInPage> {
           await saveTokenToDatabase(token!);
           // Any time the token refreshes, store this in the database too.
           FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+
+          // Subscribe to 'chases' FCM topic
+          await FirebaseMessaging.instance.subscribeToTopic('chases');
 
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
@@ -281,7 +287,6 @@ class _SignInPageState extends State<SignInPage> {
               false);
         }
         else {
-          print('The price is wrong bitch');
           setState(() {
             error = 'Error signing in!';
             _isLoading = false;
@@ -323,6 +328,8 @@ class _SignInPageState extends State<SignInPage> {
             await saveTokenToDatabase(token!);
             // Any time the token refreshes, store this in the database too.
             FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+
+            await FirebaseMessaging.instance.subscribeToTopic('chases');
 
             print("Signed In");
             await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
