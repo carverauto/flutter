@@ -66,6 +66,26 @@ class ShowChase extends StatelessWidget {
       },
     );
   }
+  /*
+  Padding(
+  padding: const EdgeInsets.all(0.3),
+  child: URLView(record.Networks as List<Map>),
+  ),
+   */
+
+  Widget _showNetworks() {
+    if (record.Networks.isNotEmpty) {
+      return URLView(record.Networks as List<Map>);
+  }
+    return const Text('Please wait..');
+  }
+
+  Widget buildNetworks(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(0.3),
+        child: _showNetworks()
+    );
+  }
 
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
@@ -113,10 +133,7 @@ class ShowChase extends StatelessWidget {
                 ),
                 ListTile(title: Text(record.Name, style: const TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
                 const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(0.3),
-                  child: URLView(record.Networks as List<Map>),
-                ),
+                buildNetworks(context),
                 Container(
                     padding: const EdgeInsets.all(30),
                     child: Align(

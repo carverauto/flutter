@@ -7,7 +7,9 @@ class BaseModel with ChangeNotifier {
   ViewState get state => _state;
 
   set state(ViewState viewState) {
-    print('State:$viewState');
+    if (kDebugMode) {
+      print('State:$viewState');
+    }
     _state = viewState;
     notifyListeners();
   }

@@ -7,10 +7,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase;
+import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/helper/routes.dart';
 import 'package:provider/provider.dart';
 // import 'package:permission_handler/permission_handler.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +28,11 @@ Future<void> main() async {
     print("No firebase instance, lets create one..");
     try {
       await Firebase.initializeApp();
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     } catch (err) {
-      print('Firebase init error raised ${err.toString()}');
+      if (kDebugMode) {
+        print('Firebase init error raised ${err.toString()}');
+      }
     }
   }
 
@@ -48,6 +60,8 @@ class _MyAppState extends State<MyApp> {
   bool _isLoggedIn = false;
   bool _initialized = false;
   bool _error = false;
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
 
@@ -85,10 +99,20 @@ class _MyAppState extends State<MyApp> {
     initializeNodle();
     super.initState();
     _getUserLoggedInStatus();
-
-
+    _startFirebaseMessaging();
   }
 
+  _startFirebaseMessaging() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+  }
   _getUserLoggedInStatus() async {
     await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
       if(value != null) {
@@ -105,7 +129,9 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey[400], statusBarIconBrightness: Brightness.light )); // #TODO: update to support themes
 
     if (_error) {
-      print('Error $_error');
+      if (kDebugMode) {
+        print('Error $_error');
+      }
     }
 
     return ChangeNotifierProvider<SignInViewModel>(

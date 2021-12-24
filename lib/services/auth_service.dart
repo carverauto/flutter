@@ -3,7 +3,6 @@ import 'package:chaseapp/helper/helper_functions.dart';
 import 'package:chaseapp/models/user.dart';
 import 'package:chaseapp/services/database_service.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 
