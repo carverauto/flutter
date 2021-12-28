@@ -2,16 +2,6 @@
 ## About
  ChaseApp notifications and chat application using Flutter and Firebase, where users can register and start conversing with each other.
 
-## Snapshots
-
-Dark Mode: Off
-![Screenshots](/snapshots/5.png)
-
-Dark Mode: On
-![Screenshots](/snapshots/10.png)
-Dark Mode is enabled or disabled based on whether the system's theme is dark or light.
-
-<<<<<<< HEAD
 ## Configuration Steps
 1. Cloning the repository:
 
@@ -36,9 +26,6 @@ This installs all the required dependencies like cloud_firestore, shared_prefere
 1. You need to get your SHA and SHA256 signing key from the output of 'gradlew signingReport'
 2. Upload keys to the ChaseApp firebase project - https://console.firebase.google.com/u/0/project/chaseapp-8459b/settings/general/android:com.carverauto.chaseapp
 3. Download the updated google-services.json and install into the chaseapp/android/app/ directory
-
->>>>>>> 541940540c6753d5466d265a241133366a95e97e
-
 5. Configure ~/.gradle/gradle.properties for Mapbox Secret Token
 
 https://docs.mapbox.com/android/maps/guides/install/
