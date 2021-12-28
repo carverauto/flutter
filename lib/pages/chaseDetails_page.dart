@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:medium_clap_flutter/medium_clap_flutter.dart';
+import 'package:chaseapp/widgets/medium_clap_flutter.dart';
 import 'package:chaseapp/helper/record.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
