@@ -24,8 +24,6 @@ Future<void> saveTokenToDatabase(String token) async {
   // Assume user is logged in for this example
   String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  print('Saving $userId to tokens field in users collection');
-
   await FirebaseFirestore.instance
       .collection('users')
       .doc(userId)
@@ -61,7 +59,6 @@ class _SignInPageState extends State<SignInPage> {
   String error = '';
 
   Future<void> requestPermissions() async {
-    print("in requestPermissions");
     final btScanStatus = Permission.bluetoothScan;
     final btConnectStatus = Permission.bluetoothConnect;
     final btServiceStatus = Permission.bluetooth;
@@ -187,8 +184,6 @@ class _SignInPageState extends State<SignInPage> {
       sound: true,
     );
 
-    print('User granted permission: ${settings.authorizationStatus}');
-
   }
 
   // Nodle
@@ -218,6 +213,7 @@ class _SignInPageState extends State<SignInPage> {
     //  isUserSignedIn = userSignedIn;
     //});
 
+    print('signin w/ googleee');
     // Check to see if we're signed in already
     if (isSignedIn) {
       model.state = ViewState.Busy;
@@ -225,7 +221,6 @@ class _SignInPageState extends State<SignInPage> {
 
       // FCM token stuff for notifications
       String? token = await FirebaseMessaging.instance.getToken();
-      print('Token $token');
       await saveTokenToDatabase(token!);
       // Any time the token refreshes, store this in the database too.
       FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
@@ -247,7 +242,6 @@ class _SignInPageState extends State<SignInPage> {
 
           // FCM token stuff for notifications
           String? token = await FirebaseMessaging.instance.getToken();
-          print('Token $token');
           await saveTokenToDatabase(token!);
           // Any time the token refreshes, store this in the database too.
           FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
@@ -324,14 +318,12 @@ class _SignInPageState extends State<SignInPage> {
 
             // FCM token stuff for notifications
             String? token = await FirebaseMessaging.instance.getToken();
-            print('Token $token');
             await saveTokenToDatabase(token!);
             // Any time the token refreshes, store this in the database too.
             FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
             await FirebaseMessaging.instance.subscribeToTopic('chases');
 
-            print("Signed In");
             await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
               print("Logged in: $value");
             });
@@ -393,18 +385,20 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                             ),
                           ),
+
                           Container(
                             child: Form(
                               key: _formKey,
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 5.0, bottom: 15, left: 10, right: 10),
+                                    top: 5.0, bottom: 5.0, left: 10, right: 10),
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(20.0)),
                                   child: Column(
                                     children: <Widget>[
+                                      /*
                                       const Padding(
                                         padding: EdgeInsets.all(15.0),
                                         // Old way
@@ -502,7 +496,6 @@ class _SignInPageState extends State<SignInPage> {
                                            */
                                         ),
                                       ),
-
                                       const SizedBox( height: 10.0),
 
                                       Text.rich(
@@ -522,9 +515,8 @@ class _SignInPageState extends State<SignInPage> {
                                           ],
                                         ),
                                       ),
-
                                       const SizedBox(height: 10.0),
-
+                                       */
                                       Text(error, style: const TextStyle(color: Colors.red, fontSize: 14.0)),
                                       InkWell(
                                         child: Container(
