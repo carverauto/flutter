@@ -33,14 +33,16 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    runApp(MyApp());
-  }
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // void main() async {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  //   runApp(MyApp());
+  // }
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -57,7 +59,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -99,7 +100,7 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _initialized = true;
       });
-    } catch(e) {
+    } catch (e) {
       // Set `_error` state to true if Firebase initialization fails
       setState(() {
         _error = true;
@@ -111,7 +112,7 @@ class _MyAppState extends State<MyApp> {
     // Get any messages which caused the application to open from
     // a terminated state.
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
 
     // If the message also contains a data property with a "type" of "chat",
     // navigate to a chat screen
@@ -125,10 +126,11 @@ class _MyAppState extends State<MyApp> {
 
     // Handle high priority foreground notifications
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -163,8 +165,7 @@ class _MyAppState extends State<MyApp> {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
     /*
     if (message.data['type'] == 'chat') {
       Navigator.pushNamed(context, '/chat',
@@ -186,7 +187,6 @@ class _MyAppState extends State<MyApp> {
 
   _startFirebaseMessaging() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
@@ -195,9 +195,10 @@ class _MyAppState extends State<MyApp> {
       }
     });
   }
+
   _getUserLoggedInStatus() async {
     await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-      if(value != null) {
+      if (value != null) {
         setState(() {
           _isLoggedIn = value;
         });
@@ -207,8 +208,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([ DeviceOrientation.portraitUp, DeviceOrientation.portraitDown ]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.grey[400], statusBarIconBrightness: Brightness.light )); // #TODO: update to support themes
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.grey[400],
+        statusBarIconBrightness:
+            Brightness.light)); // #TODO: update to support themes
 
     if (_error) {
       if (kDebugMode) {
@@ -217,17 +222,15 @@ class _MyAppState extends State<MyApp> {
     }
 
     return ChangeNotifierProvider<SignInViewModel>(
-      create: (_) => SignInViewModel(),
-      child: Center(
-        child: MaterialApp(
+        create: (_) => SignInViewModel(),
+        child: Center(
+            child: MaterialApp(
           title: 'ChaseApp',
           initialRoute: '/',
           debugShowCheckedModeBanner: false,
           onGenerateRoute: Routes.onGenerateRoute,
           theme: ThemeData.dark(),
           darkTheme: ThemeData.dark(),
-          )
-        )
-      );
+        )));
   }
 }
