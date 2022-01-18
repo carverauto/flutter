@@ -3,9 +3,8 @@ import 'package:chaseapp/base/base_model.dart';
 import 'package:chaseapp/helper/locator.dart';
 import 'package:provider/provider.dart';
 
-
 class BaseView<T extends BaseModel> extends StatefulWidget {
-  final Widget Function(BuildContext context, T model, Widget child) builder;
+  final Widget Function(BuildContext context, T model, Widget? child) builder;
   final Function(T) onModelReady;
 
   const BaseView({required this.builder, required this.onModelReady});
@@ -26,7 +25,7 @@ class _BaseViewState<T extends BaseModel> extends State<BaseView<T>> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>(
-      create: (context) => model,
-      child: Consumer<T>(builder: widget.builder as Widget Function(BuildContext, T, Widget?)));
+        create: (context) => model,
+        child: Consumer<T>(builder: widget.builder));
   }
 }
