@@ -7,11 +7,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
 
 abstract class BaseAuth {
- Future<void> sendEmailVerification();
- Future<bool> isEmailVerified();
- Future<User?> getCurrentUser();
- Future<void> signOut();
-
+  Future<void> sendEmailVerification();
+  Future<bool> isEmailVerified();
+  Future<User?> getCurrentUser();
+  Future<void> signOut();
 }
 
 class AuthService implements BaseAuth {
@@ -23,16 +22,16 @@ class AuthService implements BaseAuth {
     return (user != null) ? MyUser(uid: user.uid) : null;
   }
 
-
   // Future<User> signInWithGoogle(SignInViewModel model) async {
   // Future<String> signInWithGoogle(SignInViewModel model) async {
-  signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
     // model.state = ViewState.Busy;
 
-    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
 
     final GoogleSignInAuthentication? googleSignInAuthentication =
-    await googleSignInAccount?.authentication;
+        await googleSignInAccount?.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication?.accessToken,
@@ -41,7 +40,7 @@ class AuthService implements BaseAuth {
 
     // AuthResult authResult = await _auth.signInWithCredential(credential);
     final UserCredential authResult =
-    await _auth.signInWithCredential(credential);
+        await _auth.signInWithCredential(credential);
 
     final User? user = authResult.user;
 
@@ -65,18 +64,21 @@ class AuthService implements BaseAuth {
     print("Google-User Name: ${user?.displayName}");
     print("Google-User Email ${user?.email}");
 
-    // await DatabaseService(uid: user.uid).updateUserData(fullName, email, password);
+    await DatabaseService(uid: user!.uid)
+        .updateUserData(user.displayName!, user.email!);
 
     // return _userFromFirebaseUser(currentUser);
     return user;
   }
-    // sign in with email and password
+
+  // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-        UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-        User? user = result.user;
-        return _userFromFirebaseUser(user!);
-    } catch(e) {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      return _userFromFirebaseUser(user!);
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -101,15 +103,16 @@ class AuthService implements BaseAuth {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(String fullName, String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String fullName, String email, String password) async {
     try {
-        UserCredential result = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        User? user = result.user;
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
       // Create a new document for the user with uid
-      await DatabaseService(uid: user!.uid).updateUserData(fullName, email, password);
+      await DatabaseService(uid: user!.uid).updateUserData(fullName, email);
       return _userFromFirebaseUser(user);
-    } catch(e) {
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
@@ -126,14 +129,12 @@ class AuthService implements BaseAuth {
       await HelperFunctions.saveUserNameSharedPreference('');
 
       return await _auth.signOut().whenComplete(() async {
-        await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-        });
-        await HelperFunctions.getUserEmailSharedPreference().then((value) {
-        });
-        await HelperFunctions.getUserNameSharedPreference().then((value) {
-        });
+        await HelperFunctions.getUserLoggedInSharedPreference()
+            .then((value) {});
+        await HelperFunctions.getUserEmailSharedPreference().then((value) {});
+        await HelperFunctions.getUserNameSharedPreference().then((value) {});
       });
-    } catch(e) {
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
