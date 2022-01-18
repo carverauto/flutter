@@ -16,7 +16,7 @@ class Networks {
   String name;
   String URL;
 
-  Networks({ required this.name, required this.URL});
+  Networks({required this.name, required this.URL});
 }
 
 class Record {
@@ -33,7 +33,18 @@ class Record {
 
   final DocumentReference reference;
 
-  Record(this._name, this._id, this._networks, this._live, this._createdAt, this._desc, this._imageURL, this._votes, this._wheels, this._sentiment, this.reference);
+  Record(
+      this._name,
+      this._id,
+      this._networks,
+      this._live,
+      this._createdAt,
+      this._desc,
+      this._imageURL,
+      this._votes,
+      this._wheels,
+      this._sentiment,
+      this.reference);
 
   Record.fromMap(Map<String, dynamic>? map, {required this.reference})
       : assert(map?['Name'] != null),
@@ -49,10 +60,11 @@ class Record {
         _live = map?['Live'],
         _votes = map?['Votes'],
         _desc = map?['Desc'],
-        _imageURL = map?['ImageURL'],
-        _sentiment = map?['sentiment'],
-        _wheels = map?['Wheels'],
-        _networks = map?['Networks'] != null ? List<Map>.from(map?['Networks']) : [];
+        _imageURL = map?['ImageURL'] ?? '',
+        _sentiment = map?['sentiment'] ?? {},
+        _wheels = map?['Wheels'] ?? {},
+        _networks =
+            map?['Networks'] != null ? List<Map>.from(map?['Networks']) : [];
 
   Record.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromMap(snapshot.data(), reference: snapshot.reference);
@@ -73,4 +85,3 @@ class Record {
   @override
   String toString() => "Record<$_name:$_votes>";
 }
-

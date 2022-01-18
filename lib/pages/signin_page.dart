@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chaseapp/base/base_view.dart';
 import 'package:chaseapp/helper/progressBar.dart';
 import 'package:chaseapp/helper/routeNames.dart';
@@ -24,10 +26,7 @@ Future<void> saveTokenToDatabase(String token) async {
   // Assume user is logged in for this example
   String userId = FirebaseAuth.instance.currentUser!.uid;
 
-  await FirebaseFirestore.instance
-      .collection('users')
-      .doc(userId)
-      .update({
+  await FirebaseFirestore.instance.collection('users').doc(userId).update({
     'tokens': FieldValue.arrayUnion([token]),
     'lastTokenUpdate': DateTime.now()
   });
@@ -70,7 +69,8 @@ class _SignInPageState extends State<SignInPage> {
     bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
     bool isBtConnectOn = btConnectStatus == btConnectStatus.isGranted;
     bool isLocationOn = locationStatus == locationStatus.isGranted;
-    bool isLocationAlwaysOn = locationAlwaysStatus == locationAlwaysStatus.isGranted;
+    bool isLocationAlwaysOn =
+        locationAlwaysStatus == locationAlwaysStatus.isGranted;
     bool isNotifyOn = notifyStatus == notifyStatus.isGranted;
 
     final permBtServiceStatus = await Permission.bluetooth.request();
@@ -183,7 +183,6 @@ class _SignInPageState extends State<SignInPage> {
       provisional: false,
       sound: true,
     );
-
   }
 
   // Nodle
@@ -204,7 +203,11 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   _onSignInWithGoogle(SignInViewModel model) async {
-    await requestPermissions();
+    //TODO: Temporary hold up in ios
+    if (Platform.isAndroid) {
+      await requestPermissions();
+    }
+
     User? user;
 
     bool isSignedIn = await _googleSignIn.isSignedIn();
@@ -228,17 +231,15 @@ class _SignInPageState extends State<SignInPage> {
       await FirebaseMessaging.instance.subscribeToTopic('chases');
 
       // go to the home page
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(
-          RouteName.Home,
-              (Route<dynamic> route) =>
-          false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          RouteName.Home, (Route<dynamic> route) => false);
     } else {
       await _auth.signInWithGoogle().then((result) async {
         model.state = ViewState.Busy;
-        if (result != null) {
-          QuerySnapshot userInfoSnapshot = await DatabaseService(uid: user!.uid).getUserData(
-              result.email);
+        user = result;
+        if (user != null) {
+          QuerySnapshot userInfoSnapshot =
+              await DatabaseService(uid: user!.uid).getUserData(user!.email!);
 
           // FCM token stuff for notifications
           String? token = await FirebaseMessaging.instance.getToken();
@@ -252,9 +253,10 @@ class _SignInPageState extends State<SignInPage> {
           await HelperFunctions.saveUserLoggedInSharedPreference(true);
           await HelperFunctions.saveUserEmailSharedPreference(email);
           // https://stackoverflow.com/questions/67447001/firebase-firestore-error-the-operator-isnt-defined-for-the-class-object
-          await HelperFunctions.saveUserNameSharedPreference( // #TODO: debug this, see if it is working
-              (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
-          );
+          await HelperFunctions.saveUserNameSharedPreference(
+              // #TODO: debug this, see if it is working
+              (userInfoSnapshot.docs[0].data()
+                  as Map<String, dynamic>)['userName']);
 
           await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
             if (kDebugMode) {
@@ -274,13 +276,9 @@ class _SignInPageState extends State<SignInPage> {
 
           // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
 
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(
-              RouteName.Home,
-                  (Route<dynamic> route) =>
-              false);
-        }
-        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.Home, (Route<dynamic> route) => false);
+        } else {
           setState(() {
             error = 'Error signing in!';
             _isLoading = false;
@@ -304,55 +302,50 @@ class _SignInPageState extends State<SignInPage> {
         _isLoading = true;
       });
 
-        await _auth.signInWithEmailAndPassword(email, password).then((
-            result) async {
-          if (result != null) {
-            QuerySnapshot userInfoSnapshot = await DatabaseService(uid: user!.uid).getUserData(
-                email);
+      await _auth
+          .signInWithEmailAndPassword(email, password)
+          .then((result) async {
+        if (result != null) {
+          QuerySnapshot userInfoSnapshot =
+              await DatabaseService(uid: user!.uid).getUserData(email);
 
-            await HelperFunctions.saveUserLoggedInSharedPreference(true);
-            await HelperFunctions.saveUserEmailSharedPreference(email);
-            await HelperFunctions.saveUserNameSharedPreference(
-                (userInfoSnapshot.docs[0].data() as Map<String,dynamic>)['fullName']
-            );
+          await HelperFunctions.saveUserLoggedInSharedPreference(true);
+          await HelperFunctions.saveUserEmailSharedPreference(email);
+          await HelperFunctions.saveUserNameSharedPreference(
+              (userInfoSnapshot.docs[0].data()
+                  as Map<String, dynamic>)['fullName']);
 
-            // FCM token stuff for notifications
-            String? token = await FirebaseMessaging.instance.getToken();
-            await saveTokenToDatabase(token!);
-            // Any time the token refreshes, store this in the database too.
-            FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
+          // FCM token stuff for notifications
+          String? token = await FirebaseMessaging.instance.getToken();
+          await saveTokenToDatabase(token!);
+          // Any time the token refreshes, store this in the database too.
+          FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
-            await FirebaseMessaging.instance.subscribeToTopic('chases');
+          await FirebaseMessaging.instance.subscribeToTopic('chases');
 
-            await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-              print("Logged in: $value");
-            });
-            await HelperFunctions.getUserEmailSharedPreference().then((value) {
-              print("Email: $value");
-            });
-            await HelperFunctions.getUserNameSharedPreference().then((value) {
-              print("Full Name: $value");
-            });
+          await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
+            print("Logged in: $value");
+          });
+          await HelperFunctions.getUserEmailSharedPreference().then((value) {
+            print("Email: $value");
+          });
+          await HelperFunctions.getUserNameSharedPreference().then((value) {
+            print("Full Name: $value");
+          });
 
-            // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
+          // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
 
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(
-                RouteName.Home,
-                    (Route<dynamic> route) =>
-                false);
-          }
-          else {
-            setState(() {
-              error = 'Error signing in!';
-              _isLoading = false;
-            });
-          }
-        });
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteName.Home, (Route<dynamic> route) => false);
+        } else {
+          setState(() {
+            error = 'Error signing in!';
+            _isLoading = false;
+          });
+        }
+      });
     } // email
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -380,12 +373,10 @@ class _SignInPageState extends State<SignInPage> {
                             decoration: const BoxDecoration(
                               //border: Border.all( color: Colors.black, width: 8),
                               image: DecorationImage(
-                                image:
-                                AssetImage('assets/chaseapp.png'),
+                                image: AssetImage('assets/chaseapp.png'),
                               ),
                             ),
                           ),
-
                           Container(
                             child: Form(
                               key: _formKey,
@@ -395,7 +386,7 @@ class _SignInPageState extends State<SignInPage> {
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
-                                      BorderRadius.circular(20.0)),
+                                          BorderRadius.circular(20.0)),
                                   child: Column(
                                     children: <Widget>[
                                       /*
@@ -517,51 +508,56 @@ class _SignInPageState extends State<SignInPage> {
                                       ),
                                       const SizedBox(height: 10.0),
                                        */
-                                      Text(error, style: const TextStyle(color: Colors.red, fontSize: 14.0)),
+                                      Text(error,
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontSize: 14.0)),
                                       InkWell(
                                         child: Container(
                                             width: deviceSize!.width / 2,
                                             height: deviceSize!.height / 18,
-                                            margin: const EdgeInsets.only(top: 25),
+                                            margin:
+                                                const EdgeInsets.only(top: 25),
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                BorderRadius.circular(20),
+                                                    BorderRadius.circular(20),
                                                 color: Colors.black),
                                             child: Center(
                                                 child: Row(
-                                                  mainAxisAlignment:
+                                              mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      height: 30.0,
-                                                      width: 30.0,
-                                                      decoration: const BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/google.jpg'),
-                                                            fit: BoxFit.cover),
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                    ),
-                                                    const Text(
-                                                      'Sign in with Google',
-                                                      style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          fontWeight:
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            'assets/google.jpg'),
+                                                        fit: BoxFit.cover),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                ),
+                                                const Text(
+                                                  'Sign in with Google',
+                                                  style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight:
                                                           FontWeight.bold,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ))),
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ))),
                                         onTap: () async {
                                           _onSignInWithGoogle(model)
                                               .then((result) {
                                             model.clearAllModels();
                                             Navigator.of(context)
                                                 .pushNamedAndRemoveUntil(
-                                                RouteName.Home,
+                                                    RouteName.Home,
                                                     (Route<dynamic> route) =>
-                                                false);
+                                                        false);
                                           }).catchError((e) => print(e));
                                         },
                                       ),
@@ -592,4 +588,3 @@ class _SignInPageState extends State<SignInPage> {
         });
   }
 }
-

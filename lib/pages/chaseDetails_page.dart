@@ -14,7 +14,6 @@ import 'package:shimmer/shimmer.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
 
-
 class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -44,8 +43,7 @@ class ShowChase extends StatelessWidget {
             // child: Icon(Icons.share),
             child: IconButton(
                 icon: const Icon(Icons.share, color: Colors.black),
-                onPressed: () => _onShare(context)
-            )),
+                onPressed: () => _onShare(context))),
       ],
     );
 
@@ -59,10 +57,14 @@ class ShowChase extends StatelessWidget {
 
   StreamBuilder _stream(Record record, BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance.collection('chases').doc(record.ID).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('chases')
+          .doc(record.ID)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const CircularProgressIndicator();
-        return _sizedBox(context, snapshot.data as DocumentSnapshot<Map<String, dynamic>>);
+        return _sizedBox(
+            context, snapshot.data as DocumentSnapshot<Map<String, dynamic>>);
       },
     );
   }
@@ -76,34 +78,34 @@ class ShowChase extends StatelessWidget {
   Widget _showNetworks() {
     if (record.Networks.isNotEmpty) {
       return URLView(record.Networks as List<Map>);
-  }
+    }
     return const Text('Please wait..');
   }
 
   Widget buildNetworks(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(0.3),
-        child: _showNetworks()
-    );
+    return Padding(padding: const EdgeInsets.all(0.3), child: _showNetworks());
   }
 
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
-    Record record = Record.fromSnapshot(snapshot as DocumentSnapshot<Map<String, dynamic>>);
+    Record record =
+        Record.fromSnapshot(snapshot as DocumentSnapshot<Map<String, dynamic>>);
     var imageURL = 'https://chaseapp.tv/police.gif';
-
 
     if (record.ImageURL.isNotEmpty) {
       imageURL = record.ImageURL.replaceAll(
-          RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
+          RegExp(
+            r"\.([0-9a-z]+)(?:[?#]|$)",
             caseSensitive: false,
             multiLine: false,
-      ), '_1200x600.webp?');
+          ),
+          '_1200x600.webp?');
     }
 
     // TODO: FIX - BROKEN
     // Support showing the network URL/icon in the chase Details screen
-    const ChaseLogo = 'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
+    const ChaseLogo =
+        'https://firebasestorage.googleapis.com/v0/b/chaseapp-8459b.appspot.com/o/chaseapplogo-512.png?alt=media&token=15820729-b6a4-4199-ba2b-a74e87b5c6ca';
     /*
     var _networkURL, _networks;
 
@@ -121,41 +123,48 @@ class ShowChase extends StatelessWidget {
         height: deviceSize.height,
         child: SingleChildScrollView(
             child: Column(
-              // child: SingleChildScrollView(
-              children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    const Center(child: CircularProgressIndicator()),
-                    Center(
-                        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: imageURL)
-                    ),
-                  ]
-                ),
-                ListTile(title: Text(record.Name, style: const TextStyle(fontWeight: FontWeight.w500)), subtitle: Text(record.Desc), trailing: Text(record.Votes.toString() + ' donuts')),
-                const Divider(),
-                buildNetworks(context),
-                Container(
-                    padding: const EdgeInsets.all(30),
-                    child: Align(
-                        alignment: const FractionalOffset(1.0, 0.2),
-                        child: ClapFAB.image(
-                          clapFabCallback: (int counter) => FirebaseFirestore.instance.runTransaction((transaction) async {
-                            final freshSnapshot = await transaction.get(record.reference);
-                            final fresh = Record.fromSnapshot(freshSnapshot as DocumentSnapshot<Map<String, dynamic>>);
-                            transaction.update(record.reference, {'Votes': fresh.Votes + 1});
-                            counter = fresh.Votes;
-                          }),
-                          defaultImage: "images/donut.png",
-                          filledImage: "images/donut.png",
-                          countCircleColor: Colors.pink,
-                          hasShadow: true,
-                          sparkleColor: Colors.red,
-                          shadowColor: Colors.pink,
-                          defaultImageColor: Colors.pink,
-                          filledImageColor: Colors.pink,
-                        ))),
-              ],
-            )));
+          // child: SingleChildScrollView(
+          children: <Widget>[
+            Stack(children: <Widget>[
+              const Center(child: CircularProgressIndicator()),
+              Center(
+                  child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage, image: imageURL)),
+            ]),
+            ListTile(
+                title: Text(record.Name,
+                    style: const TextStyle(fontWeight: FontWeight.w500)),
+                subtitle: Text(record.Desc),
+                trailing: Text(record.Votes.toString() + ' donuts')),
+            const Divider(),
+            buildNetworks(context),
+            Container(
+                padding: const EdgeInsets.all(30),
+                child: Align(
+                    alignment: const FractionalOffset(1.0, 0.2),
+                    child: ClapFAB.image(
+                      clapFabCallback: (int counter) => FirebaseFirestore
+                          .instance
+                          .runTransaction((transaction) async {
+                        final freshSnapshot =
+                            await transaction.get(record.reference);
+                        final fresh = Record.fromSnapshot(freshSnapshot
+                            as DocumentSnapshot<Map<String, dynamic>>);
+                        transaction.update(
+                            record.reference, {'Votes': fresh.Votes + 1});
+                        counter = fresh.Votes;
+                      }),
+                      defaultImage: "images/donut.png",
+                      filledImage: "images/donut.png",
+                      countCircleColor: Colors.pink,
+                      hasShadow: true,
+                      sparkleColor: Colors.red,
+                      shadowColor: Colors.pink,
+                      defaultImageColor: Colors.pink,
+                      filledImageColor: Colors.pink,
+                    ))),
+          ],
+        )));
   }
 
   Future<void> _onOpen(LinkableElement link) async {
@@ -165,5 +174,4 @@ class ShowChase extends StatelessWidget {
       throw 'Could not launch $link';
     }
   }
-
 }
