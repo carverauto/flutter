@@ -18,10 +18,39 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms-beta</string>
+		<string>itms</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Need for our bluetooth scan</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Need for our bluetooth scan</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need for our location request</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need for our location request</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,23 +70,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Need for our bluetooth scan</string>
-    <key>NSBluetoothPeripheralUsageDescription</key>
-    <string>Need for our bluetooth scan</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Need for our location request</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Need for our location request</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-    </dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-            <string>itms-beta</string>
-            <string>itms</string>
-    </array>
 </dict>
 </plist>
