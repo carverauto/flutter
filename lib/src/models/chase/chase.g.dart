@@ -7,29 +7,31 @@ part of 'chase.dart';
 // **************************************************************************
 
 _$_Chase _$$_ChaseFromJson(Map<String, dynamic> json) => _$_Chase(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      live: json['live'] as bool,
+      id: json['id'] as String?,
+      name: json['Name'] as String,
+      live: json['Live'] as bool,
       createdAt: const DatetimeTimestampConverter()
-          .fromJson(json['createdAt'] as Timestamp),
-      desc: json['desc'] as String,
-      imageURL: json['imageURL'] as String?,
-      votes: json['votes'] as int,
-      networks: json['networks'] as List<dynamic>?,
-      sentiment: json['sentiment'] as Map<String, dynamic>?,
-      wheels: json['wheels'] as Map<String, dynamic>?,
+          .fromJson(json['CreatedAt'] as Timestamp),
+      desc: json['Desc'] as String,
+      imageURL: json['ImageURL'] as String?,
+      votes: json['Votes'] as int,
+      networks: (json['Networks'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
+      sentiment: json['Sentiment'] as Map<String, dynamic>?,
+      wheels: json['Wheels'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$_ChaseToJson(_$_Chase instance) => <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'live': instance.live,
-      'createdAt':
+      'Name': instance.name,
+      'Live': instance.live,
+      'CreatedAt':
           const DatetimeTimestampConverter().toJson(instance.createdAt),
-      'desc': instance.desc,
-      'imageURL': instance.imageURL,
-      'votes': instance.votes,
-      'networks': instance.networks,
-      'sentiment': instance.sentiment,
-      'wheels': instance.wheels,
+      'Desc': instance.desc,
+      'ImageURL': instance.imageURL,
+      'Votes': instance.votes,
+      'Networks': instance.networks,
+      'Sentiment': instance.sentiment,
+      'Wheels': instance.wheels,
     };

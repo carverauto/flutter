@@ -22,16 +22,26 @@ class _$ChaseTearOff {
   const _$ChaseTearOff();
 
   _Chase call(
-      {required String id,
-      required String name,
-      required bool live,
-      @DatetimeTimestampConverter() required DateTime createdAt,
-      required String desc,
-      String? imageURL,
-      required int votes,
-      List<dynamic>? networks,
-      Map<dynamic, dynamic>? sentiment,
-      Map<dynamic, dynamic>? wheels}) {
+      {String? id,
+      @JsonKey(name: 'Name')
+          required String name,
+      @JsonKey(name: 'Live')
+          required bool live,
+      @JsonKey(name: 'CreatedAt')
+      @DatetimeTimestampConverter()
+          required DateTime createdAt,
+      @JsonKey(name: 'Desc')
+          required String desc,
+      @JsonKey(name: 'ImageURL')
+          String? imageURL,
+      @JsonKey(name: 'Votes')
+          required int votes,
+      @JsonKey(name: 'Networks')
+          List<Map<String, dynamic>>? networks,
+      @JsonKey(name: 'Sentiment')
+          Map<dynamic, dynamic>? sentiment,
+      @JsonKey(name: 'Wheels')
+          Map<dynamic, dynamic>? wheels}) {
     return _Chase(
       id: id,
       name: name,
@@ -56,16 +66,28 @@ const $Chase = _$ChaseTearOff();
 
 /// @nodoc
 mixin _$Chase {
-  String get id => throw _privateConstructorUsedError;
+// TODO: Marking as optional for the moment but shoudln't be
+// All documents must have an id
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Name')
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Live')
   bool get live => throw _privateConstructorUsedError;
+  @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Desc')
   String get desc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ImageURL')
   String? get imageURL => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Votes')
   int get votes => throw _privateConstructorUsedError;
-  List<dynamic>? get networks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Networks')
+  List<Map<String, dynamic>>? get networks =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: 'Sentiment')
   Map<dynamic, dynamic>? get sentiment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Wheels')
   Map<dynamic, dynamic>? get wheels => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -78,16 +100,26 @@ abstract class $ChaseCopyWith<$Res> {
   factory $ChaseCopyWith(Chase value, $Res Function(Chase) then) =
       _$ChaseCopyWithImpl<$Res>;
   $Res call(
-      {String id,
-      String name,
-      bool live,
-      @DatetimeTimestampConverter() DateTime createdAt,
-      String desc,
-      String? imageURL,
-      int votes,
-      List<dynamic>? networks,
-      Map<dynamic, dynamic>? sentiment,
-      Map<dynamic, dynamic>? wheels});
+      {String? id,
+      @JsonKey(name: 'Name')
+          String name,
+      @JsonKey(name: 'Live')
+          bool live,
+      @JsonKey(name: 'CreatedAt')
+      @DatetimeTimestampConverter()
+          DateTime createdAt,
+      @JsonKey(name: 'Desc')
+          String desc,
+      @JsonKey(name: 'ImageURL')
+          String? imageURL,
+      @JsonKey(name: 'Votes')
+          int votes,
+      @JsonKey(name: 'Networks')
+          List<Map<String, dynamic>>? networks,
+      @JsonKey(name: 'Sentiment')
+          Map<dynamic, dynamic>? sentiment,
+      @JsonKey(name: 'Wheels')
+          Map<dynamic, dynamic>? wheels});
 }
 
 /// @nodoc
@@ -115,7 +147,7 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -143,7 +175,7 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as List<Map<String, dynamic>>?,
       sentiment: sentiment == freezed
           ? _value.sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
@@ -162,16 +194,26 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
       __$ChaseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
-      String name,
-      bool live,
-      @DatetimeTimestampConverter() DateTime createdAt,
-      String desc,
-      String? imageURL,
-      int votes,
-      List<dynamic>? networks,
-      Map<dynamic, dynamic>? sentiment,
-      Map<dynamic, dynamic>? wheels});
+      {String? id,
+      @JsonKey(name: 'Name')
+          String name,
+      @JsonKey(name: 'Live')
+          bool live,
+      @JsonKey(name: 'CreatedAt')
+      @DatetimeTimestampConverter()
+          DateTime createdAt,
+      @JsonKey(name: 'Desc')
+          String desc,
+      @JsonKey(name: 'ImageURL')
+          String? imageURL,
+      @JsonKey(name: 'Votes')
+          int votes,
+      @JsonKey(name: 'Networks')
+          List<Map<String, dynamic>>? networks,
+      @JsonKey(name: 'Sentiment')
+          Map<dynamic, dynamic>? sentiment,
+      @JsonKey(name: 'Wheels')
+          Map<dynamic, dynamic>? wheels});
 }
 
 /// @nodoc
@@ -200,7 +242,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -228,7 +270,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>?,
+              as List<Map<String, dynamic>>?,
       sentiment: sentiment == freezed
           ? _value.sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
@@ -246,41 +288,61 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_Chase extends _Chase {
   const _$_Chase(
-      {required this.id,
-      required this.name,
-      required this.live,
-      @DatetimeTimestampConverter() required this.createdAt,
-      required this.desc,
-      this.imageURL,
-      required this.votes,
-      this.networks,
-      this.sentiment,
-      this.wheels})
+      {this.id,
+      @JsonKey(name: 'Name')
+          required this.name,
+      @JsonKey(name: 'Live')
+          required this.live,
+      @JsonKey(name: 'CreatedAt')
+      @DatetimeTimestampConverter()
+          required this.createdAt,
+      @JsonKey(name: 'Desc')
+          required this.desc,
+      @JsonKey(name: 'ImageURL')
+          this.imageURL,
+      @JsonKey(name: 'Votes')
+          required this.votes,
+      @JsonKey(name: 'Networks')
+          this.networks,
+      @JsonKey(name: 'Sentiment')
+          this.sentiment,
+      @JsonKey(name: 'Wheels')
+          this.wheels})
       : super._();
 
   factory _$_Chase.fromJson(Map<String, dynamic> json) =>
       _$$_ChaseFromJson(json);
 
+  @override // TODO: Marking as optional for the moment but shoudln't be
+// All documents must have an id
+  final String? id;
   @override
-  final String id;
-  @override
+  @JsonKey(name: 'Name')
   final String name;
   @override
+  @JsonKey(name: 'Live')
   final bool live;
   @override
+  @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   final DateTime createdAt;
   @override
+  @JsonKey(name: 'Desc')
   final String desc;
   @override
+  @JsonKey(name: 'ImageURL')
   final String? imageURL;
   @override
+  @JsonKey(name: 'Votes')
   final int votes;
   @override
-  final List<dynamic>? networks;
+  @JsonKey(name: 'Networks')
+  final List<Map<String, dynamic>>? networks;
   @override
+  @JsonKey(name: 'Sentiment')
   final Map<dynamic, dynamic>? sentiment;
   @override
+  @JsonKey(name: 'Wheels')
   final Map<dynamic, dynamic>? wheels;
 
   @override
@@ -332,40 +394,60 @@ class _$_Chase extends _Chase {
 
 abstract class _Chase extends Chase {
   const factory _Chase(
-      {required String id,
-      required String name,
-      required bool live,
-      @DatetimeTimestampConverter() required DateTime createdAt,
-      required String desc,
-      String? imageURL,
-      required int votes,
-      List<dynamic>? networks,
-      Map<dynamic, dynamic>? sentiment,
-      Map<dynamic, dynamic>? wheels}) = _$_Chase;
+      {String? id,
+      @JsonKey(name: 'Name')
+          required String name,
+      @JsonKey(name: 'Live')
+          required bool live,
+      @JsonKey(name: 'CreatedAt')
+      @DatetimeTimestampConverter()
+          required DateTime createdAt,
+      @JsonKey(name: 'Desc')
+          required String desc,
+      @JsonKey(name: 'ImageURL')
+          String? imageURL,
+      @JsonKey(name: 'Votes')
+          required int votes,
+      @JsonKey(name: 'Networks')
+          List<Map<String, dynamic>>? networks,
+      @JsonKey(name: 'Sentiment')
+          Map<dynamic, dynamic>? sentiment,
+      @JsonKey(name: 'Wheels')
+          Map<dynamic, dynamic>? wheels}) = _$_Chase;
   const _Chase._() : super._();
 
   factory _Chase.fromJson(Map<String, dynamic> json) = _$_Chase.fromJson;
 
+  @override // TODO: Marking as optional for the moment but shoudln't be
+// All documents must have an id
+  String? get id;
   @override
-  String get id;
-  @override
+  @JsonKey(name: 'Name')
   String get name;
   @override
+  @JsonKey(name: 'Live')
   bool get live;
   @override
+  @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   DateTime get createdAt;
   @override
+  @JsonKey(name: 'Desc')
   String get desc;
   @override
+  @JsonKey(name: 'ImageURL')
   String? get imageURL;
   @override
+  @JsonKey(name: 'Votes')
   int get votes;
   @override
-  List<dynamic>? get networks;
+  @JsonKey(name: 'Networks')
+  List<Map<String, dynamic>>? get networks;
   @override
+  @JsonKey(name: 'Sentiment')
   Map<dynamic, dynamic>? get sentiment;
   @override
+  @JsonKey(name: 'Wheels')
   Map<dynamic, dynamic>? get wheels;
   @override
   @JsonKey(ignore: true)

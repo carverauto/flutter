@@ -11,16 +11,20 @@ abstract class Chase implements _$Chase {
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory Chase({
-    required String id,
-    required String name,
-    required bool live,
-    @DatetimeTimestampConverter() required DateTime createdAt,
-    required String desc,
-    String? imageURL,
-    required int votes,
-    List? networks,
-    Map? sentiment,
-    Map? wheels,
+    // TODO: Marking as optional for the moment but shoudln't be
+    // All documents must have an id
+    String? id,
+    @JsonKey(name: 'Name') required String name,
+    @JsonKey(name: 'Live') required bool live,
+    @JsonKey(name: 'CreatedAt')
+    @DatetimeTimestampConverter()
+        required DateTime createdAt,
+    @JsonKey(name: 'Desc') required String desc,
+    @JsonKey(name: 'ImageURL') String? imageURL,
+    @JsonKey(name: 'Votes') required int votes,
+    @JsonKey(name: 'Networks') List<Map<String, dynamic>>? networks,
+    @JsonKey(name: 'Sentiment') Map? sentiment,
+    @JsonKey(name: 'Wheels') Map? wheels,
   }) = _Chase;
 
   factory Chase.fromJson(Map<String, dynamic> json) => _$ChaseFromJson(json);
