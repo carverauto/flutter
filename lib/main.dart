@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'package:chaseapp/helper/locator.dart';
-import 'package:chaseapp/viewModels/home_view_model.dart';
-import 'package:chaseapp/viewModels/sign_in_view_model.dart';
+import 'package:chaseapp/src/shared/util/helpers/locator.dart';
+import 'package:chaseapp/src/modules/home/view/providers/home_view_model.dart';
+import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:chaseapp/helper/helper_functions.dart';
+import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:chaseapp/helper/prefer.dart';
-import 'package:chaseapp/helper/routes.dart';
+import 'package:chaseapp/src/routes/routes.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -34,8 +34,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+      //  options: DefaultFirebaseOptions.currentPlatform,
+      );
   // void main() async {
   //   WidgetsFlutterBinding.ensureInitialized();
   //   await Firebase.initializeApp(
