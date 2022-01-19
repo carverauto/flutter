@@ -3,6 +3,7 @@ import 'package:chaseapp/src/root.dart';
 import 'package:chaseapp/src/shared/util/helpers/locator.dart';
 import 'package:chaseapp/src/modules/home/view/providers/home_view_model.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
+import 'package:chaseapp/src/shared/util/helpers/prefer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +39,8 @@ Future<void> main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  // Setting up const/singletons like this will be redundant after refactoring
   // Prefs.init();
-  // setLocator();
   runApp(MultiProvider(
     child: MyApp(),
     providers: [
