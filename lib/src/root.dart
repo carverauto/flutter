@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 import 'modules/signin/view/providers/sign_in_view_model.dart';
 
@@ -174,16 +173,13 @@ class _MyAppState extends State<MyApp> {
       }
     }
 
-    return ChangeNotifierProvider<SignInViewModel>(
-        create: (_) => SignInViewModel(),
-        child: Center(
-            child: MaterialApp(
-          title: 'ChaseApp',
-          initialRoute: '/',
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: Routes.onGenerateRoute,
-          theme: ThemeData.dark(),
-          darkTheme: ThemeData.dark(),
-        )));
+    return MaterialApp(
+      title: 'ChaseApp',
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: Routes.onGenerateRoute,
+      theme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(),
+    );
   }
 }

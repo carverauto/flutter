@@ -14,11 +14,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -33,15 +33,15 @@ Future<void> saveTokenToDatabase(String token) async {
   });
 }
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends ConsumerStatefulWidget {
   final Function toggleView;
   const SignInPage({Key? key, required this.toggleView}) : super(key: key);
 
   @override
-  _SignInPageState createState() => _SignInPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends ConsumerState<SignInPage> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
@@ -203,7 +203,7 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  _onSignInWithGoogle(SignInViewModel model) async {
+  Future<void> _onSignInWithGoogle() async {
     //TODO: Temporary hold up in ios
     if (Platform.isAndroid) {
       await requestPermissions();
@@ -220,7 +220,7 @@ class _SignInPageState extends State<SignInPage> {
     print('signin w/ googleee');
     // Check to see if we're signed in already
     if (isSignedIn) {
-      model.state = ViewState.Busy;
+      ref.read(signInProvider.notifier).update();
       user = FirebaseAuth.instance.currentUser;
 
       // FCM token stuff for notifications
@@ -236,7 +236,7 @@ class _SignInPageState extends State<SignInPage> {
           RouteName.Home, (Route<dynamic> route) => false);
     } else {
       await _auth.signInWithGoogle().then((result) async {
-        model.state = ViewState.Busy;
+        ref.read(signInProvider.notifier).update();
         user = result;
         if (user != null) {
           QuerySnapshot userInfoSnapshot =
@@ -289,14 +289,14 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  _onSignIn(SignInViewModel model) async {
+  _onSignIn() async {
     if (kDebugMode) {
       print("_onSignIn");
     }
     User? user;
     user = FirebaseAuth.instance.currentUser;
     await requestPermissions();
-    model.state = ViewState.Busy;
+    ref.read(signInProvider.notifier).update();
 
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -350,7 +350,6 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<SignInViewModel>(context);
     return WillPopScope(
       child: SafeArea(
         child: Scaffold(
@@ -544,8 +543,7 @@ class _SignInPageState extends State<SignInPage> {
                                         ],
                                       ))),
                                   onTap: () async {
-                                    _onSignInWithGoogle(model).then((result) {
-                                      model.clearAllModels();
+                                    _onSignInWithGoogle().then((result) {
                                       Navigator.of(context)
                                           .pushNamedAndRemoveUntil(
                                               RouteName.Home,
@@ -565,22 +563,19 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
-              model.state == ViewState.Busy
-                  ? const LinearProgressIndicator()
-                  : Container(),
+              Consumer(builder: (context, ref, _) {
+                final state = ref.watch(signInProvider);
+                return state == ViewState.Busy
+                    ? const LinearProgressIndicator()
+                    : Container();
+              }),
             ],
           ),
         ),
       ),
       onWillPop: () async {
-        model.clearAllModels();
         return false;
       },
     );
-    // return BaseView<SignInViewModel>(
-    //     onModelReady: (model) {},
-    //     builder: (context, model, build) {
-
-    //     });
   }
 }

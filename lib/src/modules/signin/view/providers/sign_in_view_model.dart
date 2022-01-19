@@ -1,46 +1,59 @@
-import 'package:flutter/material.dart';
-import 'package:chaseapp/src/modules/signin/view/providers/base_model.dart';
+import 'package:chaseapp/src/shared/enums/view_state.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignInViewModel extends BaseModel {
-  bool _userLoginAutoValidate = false;
+final signInProvider =
+    StateNotifierProvider<SignInViewModelStateNotifier, ViewState>(
+        (ref) => SignInViewModelStateNotifier());
 
-  TextEditingController _passwordController = TextEditingController();
+class SignInViewModelStateNotifier extends StateNotifier<ViewState> {
+  SignInViewModelStateNotifier() : super(ViewState.Idle);
 
-  TextEditingController _userIdController = TextEditingController();
+  // set state(ViewState viewState) {
+  //   if (kDebugMode) {
+  //     print('State:$viewState');
+  //   }
+  //   state = viewState;
+  // }
 
-  bool _passwordVisible = false;
-
-  bool get passwordVisible => _passwordVisible;
-
-  set passwordVisible(bool value) {
-    _passwordVisible = value;
-    notifyListeners();
+  void update() {
+    state = ViewState.Busy;
   }
 
-  TextEditingController get userIdController => _userIdController;
+  // bool _userLoginAutoValidate = false;
 
-  set userIdController(TextEditingController value) {
-    _userIdController = value;
-    notifyListeners();
-  }
+  // TextEditingController _passwordController = TextEditingController();
 
-  TextEditingController get passwordController => _passwordController;
+  // TextEditingController _userIdController = TextEditingController();
 
-  set passwordController(TextEditingController value) {
-    _passwordController = value;
-    notifyListeners();
-  }
+  // bool _passwordVisible = false;
 
-  bool get userLoginAutoValidate => _userLoginAutoValidate;
-  set userLoginAutoValidate(bool value) {
-    _userLoginAutoValidate = value;
-    notifyListeners();
-  }
+  // bool get passwordVisible => _passwordVisible;
 
-  clearAllModels() {
-    _userLoginAutoValidate = false;
-    _passwordController = TextEditingController();
-    _userIdController = TextEditingController();
-    _passwordVisible = false;
-  }
+  // set passwordVisible(bool value) {
+  //   _passwordVisible = value;
+  // }
+
+  // TextEditingController get userIdController => _userIdController;
+
+  // set userIdController(TextEditingController value) {
+  //   _userIdController = value;
+  // }
+
+  // TextEditingController get passwordController => _passwordController;
+
+  // set passwordController(TextEditingController value) {
+  //   _passwordController = value;
+  // }
+
+  // bool get userLoginAutoValidate => _userLoginAutoValidate;
+  // set userLoginAutoValidate(bool value) {
+  //   _userLoginAutoValidate = value;
+  // }
+
+  // clearAllModels() {
+  //   _passwordController = TextEditingController();
+  //   _userIdController = TextEditingController();
+  //   _passwordVisible = false;
+  // }
 }

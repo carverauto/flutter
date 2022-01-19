@@ -42,7 +42,7 @@ dependencies:
   url_launcher: ^6.0.16
   http: ^0.13.4
   path_provider: ^2.0.7
-  provider: ^6.0.1
+  # provider: ^6.0.1
   # get_it: ^7.2.0
   flutter_progress_hud: ^2.0.0
   font_awesome_flutter: ^9.2.0
@@ -60,6 +60,7 @@ dependencies:
   flutter_local_notifications: ^9.1.5
   freezed_annotation:
   json_annotation:
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:

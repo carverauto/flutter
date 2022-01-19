@@ -9,13 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'firebase_options.dart';
 // import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:chaseapp/helper/prefer.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
@@ -41,15 +41,19 @@ Future<void> main() async {
 
   // Setting up const/singletons like this will be redundant after refactoring
   // Prefs.init();
-  runApp(MultiProvider(
+  runApp(ProviderScope(
     child: MyApp(),
-    providers: [
-      ChangeNotifierProvider<HomeViewModel>(
-        create: (_) => HomeViewModel(),
-      ),
-      ChangeNotifierProvider<SignInViewModel>(
-        create: (_) => SignInViewModel(),
-      ),
-    ],
-  ));
+  )
+      // MultiProvider(
+      //   child: MyApp(),
+      //   providers: [
+      //     ChangeNotifierProvider<HomeViewModel>(
+      //       create: (_) => HomeViewModel(),
+      //     ),
+      //     ChangeNotifierProvider<SignInViewModel>(
+      //       create: (_) => SignInViewModel(),
+      //     ),
+      //   ],
+      // ),
+      );
 }

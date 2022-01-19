@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
 import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 class Splash extends StatefulWidget {
@@ -78,9 +78,10 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         aspectRatio: MediaQuery.of(context).size.aspectRatio);
-    return ChangeNotifierProvider<SignInViewModel>(
-        create: (_) => SignInViewModel(),
-        child: Scaffold(
+    return Consumer(
+      builder: (context, ref, _) {
+        ref.watch(signInProvider);
+        return Scaffold(
           backgroundColor: Colors.blueGrey,
           body: Stack(
             fit: StackFit.expand,
@@ -106,6 +107,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-        ));
+        );
+      },
+    );
   }
 }
