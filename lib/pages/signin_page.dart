@@ -216,7 +216,6 @@ class _SignInPageState extends State<SignInPage> {
     //  isUserSignedIn = userSignedIn;
     //});
 
-    print('signin w/ googleee');
     // Check to see if we're signed in already
     if (isSignedIn) {
       model.state = ViewState.Busy;
