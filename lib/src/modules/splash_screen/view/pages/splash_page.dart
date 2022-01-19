@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
+import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
 import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

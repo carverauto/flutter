@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'modules/signin/view/providers/sign_in_view_model.dart';
+import 'modules/signin/view/providers/providers.dart';
 
 class MyApp extends StatefulWidget {
   @override

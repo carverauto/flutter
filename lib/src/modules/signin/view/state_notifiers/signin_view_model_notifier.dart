@@ -1,10 +1,5 @@
 import 'package:chaseapp/src/shared/enums/view_state.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final signInProvider =
-    StateNotifierProvider<SignInViewModelStateNotifier, ViewState>(
-        (ref) => SignInViewModelStateNotifier());
 
 class SignInViewModelStateNotifier extends StateNotifier<ViewState> {
   SignInViewModelStateNotifier() : super(ViewState.Idle);

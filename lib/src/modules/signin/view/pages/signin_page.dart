@@ -6,7 +6,7 @@ import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
 import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
 import 'package:chaseapp/src/shared/enums/view_state.dart';
-import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
+import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_service.dart';
 import 'package:chaseapp/src/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

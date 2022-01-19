@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:chaseapp/src/root.dart';
 import 'package:chaseapp/src/shared/util/helpers/locator.dart';
 import 'package:chaseapp/src/modules/home/view/providers/home_view_model.dart';
-import 'package:chaseapp/src/modules/signin/view/providers/sign_in_view_model.dart';
+import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/prefer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
