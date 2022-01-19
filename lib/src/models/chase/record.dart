@@ -1,23 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Wheels {
-  String? W1;
-  String? W2;
-  String? W3;
-  String? W4;
-}
+// class Wheels {
+//   String? W1;
+//   String? W2;
+//   String? W3;
+//   String? W4;
+// }
 
-class Sentiment {
-  double? magnitude;
-  double? score;
-}
+// class Sentiment {
+//   double? magnitude;
+//   double? score;
+// }
 
-class Networks {
-  String name;
-  String URL;
+// class Networks {
+//   String name;
+//   String URL;
 
-  Networks({required this.name, required this.URL});
-}
+//   Networks({required this.name, required this.URL});
+// }
 
 // class Record {
 //   final String _id;
