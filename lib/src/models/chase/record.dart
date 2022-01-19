@@ -31,20 +31,19 @@ class Record {
   final Map _sentiment;
   final Map _wheels;
 
-  final DocumentReference reference;
-
   Record(
-      this._name,
-      this._id,
-      this._networks,
-      this._live,
-      this._createdAt,
-      this._desc,
-      this._imageURL,
-      this._votes,
-      this._wheels,
-      this._sentiment,
-      this.reference);
+    this._name,
+    this._id,
+    this._networks,
+    this._live,
+    this._createdAt,
+    this._desc,
+    this._imageURL,
+    this._votes,
+    this._wheels,
+    this._sentiment,
+    this.reference,
+  );
 
   Record.fromMap(Map<String, dynamic>? map, {required this.reference})
       : assert(map?['Name'] != null),

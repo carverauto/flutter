@@ -76,7 +76,7 @@ class ShowChase extends StatelessWidget {
    */
 
   Widget _showNetworks() {
-    if (record.Networks.isNotEmpty) {
+    if (record.Networks != null) {
       return URLView(record.Networks as List<Map>);
     }
     return const Text('Please wait..');
@@ -146,12 +146,15 @@ class ShowChase extends StatelessWidget {
                       clapFabCallback: (int counter) => FirebaseFirestore
                           .instance
                           .runTransaction((transaction) async {
+                        final chaseDocRef = FirebaseFirestore.instance
+                            .collection('chases')
+                            .doc(record.ID);
                         final freshSnapshot =
-                            await transaction.get(record.reference);
+                            await transaction.get(chaseDocRef);
                         final fresh = Record.fromSnapshot(freshSnapshot
                             as DocumentSnapshot<Map<String, dynamic>>);
-                        transaction.update(
-                            record.reference, {'Votes': fresh.Votes + 1});
+                        transaction
+                            .update(chaseDocRef, {'Votes': fresh.Votes + 1});
                         counter = fresh.Votes;
                       }),
                       defaultImage: "images/donut.png",
