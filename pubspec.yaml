@@ -58,14 +58,21 @@ dependencies:
   share_plus: ^3.0.4
   dotted_border: ^2.0.0+2
   flutter_local_notifications: ^9.1.5
+  freezed_annotation:
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.9.2
   flutter_test:
     sdk: flutter
+  # For configuring launcher icons
+  flutter_launcher_icons: ^0.9.2  
+  # For analytics  
   analyzer: ^2.8.0
   dart_code_metrics: ^4.8.0
   very_good_analysis: ^2.4.0
+  # For Freeze/Code generation
+  freezed: 
+  build_runner:
+  json_serializable:
 
 flutter_icons:
   android: "launcher_icon"

@@ -10,9 +10,12 @@
 # analyzer:
 #   exclude:
 #     - lib/app/models/personal_info/personal_info.g.dart
+#     - "**/*.g.dart"
+#     - "**/*.freezed.dart"
 #   plugins:
 #     - dart_code_metrics
 #   # errors:
+      # invalid_annotation_target: ignore
 
 
 
