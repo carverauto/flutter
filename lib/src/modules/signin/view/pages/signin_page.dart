@@ -18,6 +18,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -349,47 +350,44 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<SignInViewModel>(
-        onModelReady: (model) {},
-        builder: (context, model, build) {
-          return WillPopScope(
-            child: SafeArea(
-              child: Scaffold(
-                // backgroundColor: Color(0xFFE6E6E6),
-                // backgroundColor: Vx.gray200,
-                body: Stack(
+    final model = Provider.of<SignInViewModel>(context);
+    return WillPopScope(
+      child: SafeArea(
+        child: Scaffold(
+          // backgroundColor: Color(0xFFE6E6E6),
+          // backgroundColor: Vx.gray200,
+          body: Stack(
+            children: <Widget>[
+              SizedBox(
+                height: 410,
+                width: 430,
+                // decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/background.png'), fit: BoxFit.contain, ), ),
+              ),
+              SingleChildScrollView(
+                child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 410,
-                      width: 430,
-                      // decoration: BoxDecoration( image: DecorationImage( image: AssetImage('assets/background.png'), fit: BoxFit.contain, ), ),
+                    Container(
+                      height: deviceSize!.height / 5.4,
+                      // width: deviceSize.width / 1,
+                      decoration: const BoxDecoration(
+                        //border: Border.all( color: Colors.black, width: 8),
+                        image: DecorationImage(
+                          image: AssetImage('assets/chaseapp.png'),
+                        ),
+                      ),
                     ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: deviceSize!.height / 5.4,
-                            // width: deviceSize.width / 1,
-                            decoration: const BoxDecoration(
-                              //border: Border.all( color: Colors.black, width: 8),
-                              image: DecorationImage(
-                                image: AssetImage('assets/chaseapp.png'),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Form(
-                              key: _formKey,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 5.0, bottom: 5.0, left: 10, right: 10),
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0)),
-                                  child: Column(
-                                    children: <Widget>[
-                                      /*
+                    Container(
+                      child: Form(
+                        key: _formKey,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5.0, bottom: 5.0, left: 10, right: 10),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Column(
+                              children: <Widget>[
+                                /*
                                       const Padding(
                                         padding: EdgeInsets.all(15.0),
                                         // Old way
@@ -508,83 +506,81 @@ class _SignInPageState extends State<SignInPage> {
                                       ),
                                       const SizedBox(height: 10.0),
                                        */
-                                      Text(error,
-                                          style: const TextStyle(
-                                              color: Colors.red,
-                                              fontSize: 14.0)),
-                                      InkWell(
-                                        child: Container(
-                                            width: deviceSize!.width / 2,
-                                            height: deviceSize!.height / 18,
-                                            margin:
-                                                const EdgeInsets.only(top: 25),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.black),
-                                            child: Center(
-                                                child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: 30.0,
-                                                  width: 30.0,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            'assets/google.jpg'),
-                                                        fit: BoxFit.cover),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                ),
-                                                const Text(
-                                                  'Sign in with Google',
-                                                  style: TextStyle(
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
-                                            ))),
-                                        onTap: () async {
-                                          _onSignInWithGoogle(model)
-                                              .then((result) {
-                                            model.clearAllModels();
-                                            Navigator.of(context)
-                                                .pushNamedAndRemoveUntil(
-                                                    RouteName.Home,
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          }).catchError((e) => print(e));
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                    ],
-                                  ),
+                                Text(error,
+                                    style: const TextStyle(
+                                        color: Colors.red, fontSize: 14.0)),
+                                InkWell(
+                                  child: Container(
+                                      width: deviceSize!.width / 2,
+                                      height: deviceSize!.height / 18,
+                                      margin: const EdgeInsets.only(top: 25),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.black),
+                                      child: Center(
+                                          child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/google.jpg'),
+                                                  fit: BoxFit.cover),
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          const Text(
+                                            'Sign in with Google',
+                                            style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ))),
+                                  onTap: () async {
+                                    _onSignInWithGoogle(model).then((result) {
+                                      model.clearAllModels();
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              RouteName.Home,
+                                              (Route<dynamic> route) => false);
+                                    }).catchError((e) => print(e));
+                                  },
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                    model.state == ViewState.Busy
-                        ? const LinearProgressIndicator()
-                        : Container(),
                   ],
                 ),
               ),
-            ),
-            onWillPop: () async {
-              model.clearAllModels();
-              return false;
-            },
-          );
-        });
+              model.state == ViewState.Busy
+                  ? const LinearProgressIndicator()
+                  : Container(),
+            ],
+          ),
+        ),
+      ),
+      onWillPop: () async {
+        model.clearAllModels();
+        return false;
+      },
+    );
+    // return BaseView<SignInViewModel>(
+    //     onModelReady: (model) {},
+    //     builder: (context, model, build) {
+
+    //     });
   }
 }

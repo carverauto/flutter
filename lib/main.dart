@@ -34,26 +34,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      //  options: DefaultFirebaseOptions.currentPlatform,
-      );
-  // void main() async {
-  //   WidgetsFlutterBinding.ensureInitialized();
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  //   runApp(MyApp());
-  // }
+  await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Prefs.init();
-  setLocator();
+  // setLocator();
   runApp(MultiProvider(
     child: MyApp(),
     providers: [
       ChangeNotifierProvider<HomeViewModel>(
         create: (_) => HomeViewModel(),
+      ),
+      ChangeNotifierProvider<SignInViewModel>(
+        create: (_) => SignInViewModel(),
       ),
     ],
   ));
