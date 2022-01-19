@@ -95,7 +95,9 @@ class _ChasesPageState extends State<ChasesPage> {
 
   Widget _buildListItem(
       BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
-    final record = Chase.fromJson(data.data() as Map<String, dynamic>);
+    final chaseMap = data.data()!;
+    chaseMap["id"] = data.id;
+    final record = Chase.fromJson(chaseMap);
     String? imageURL = '';
 
     const String assetName = 'assets/donut2.svg';
