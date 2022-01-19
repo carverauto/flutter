@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -94,7 +95,7 @@ class _ChasesPageState extends State<ChasesPage> {
 
   Widget _buildListItem(
       BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
-    final record = Record.fromSnapshot(data);
+    final record = Chase.fromJson(data.data() as Map<String, dynamic>);
     String? imageURL = '';
 
     const String assetName = 'assets/donut2.svg';
@@ -115,14 +116,14 @@ class _ChasesPageState extends State<ChasesPage> {
   }
    */
 
-    var chaseDate = DateTime.parse(record.CreatedAt.toIso8601String());
+    var chaseDate = DateTime.parse(record.createdAt.toIso8601String());
     var today = DateTime.now().toLocal();
     var diff = chaseDate.difference(today);
     // print("URLs " + record.urls.toString());
 
     var dateMsg = '';
 
-    if (record.Live) {
+    if (record.live) {
       dateMsg = 'LIVE!';
     } else if (diff.inDays.abs() == 0) {
       // Was the chase today?
@@ -149,7 +150,7 @@ class _ChasesPageState extends State<ChasesPage> {
 
     return Padding(
       // key: ValueKey(record.Name),
-      key: ValueKey(record.ID),
+      key: ValueKey(record.id),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
@@ -163,7 +164,7 @@ class _ChasesPageState extends State<ChasesPage> {
             child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
           )
          */
-            title: Text(record.Name, style: GoogleFonts.getFont('Poppins')),
+            title: Text(record.name, style: GoogleFonts.getFont('Poppins')),
             // subtitle: Text(record.Votes.toString() + ' donuts'),
             subtitle: Text(dateMsg),
             trailing: Chip(
@@ -171,7 +172,7 @@ class _ChasesPageState extends State<ChasesPage> {
                 backgroundColor: Colors.black12,
                 child: SvgPicture.asset(assetName),
               ),
-              label: Text(record.Votes.toString()),
+              label: Text(record.votes.toString()),
             ),
 
             /*

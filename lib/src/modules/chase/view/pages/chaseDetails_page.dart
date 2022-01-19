@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
@@ -17,7 +18,7 @@ import 'package:shimmer/shimmer.dart';
 class ShowChase extends StatelessWidget {
   // ShowChase(this.observer);
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  final Record record;
+  final Chase record;
 
   ShowChase({required Key key, required this.record}) : super(key: key);
 
@@ -52,14 +53,14 @@ class ShowChase extends StatelessWidget {
 
   void _onShare(BuildContext context) async {
     final box = context.findRenderObject() as RenderBox?;
-    await Share.share(record.Desc, subject: record.Name);
+    await Share.share(record.desc, subject: record.name);
   }
 
-  StreamBuilder _stream(Record record, BuildContext context) {
+  StreamBuilder _stream(Chase record, BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('chases')
-          .doc(record.ID)
+          .doc(record.id)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const CircularProgressIndicator();
@@ -76,8 +77,8 @@ class ShowChase extends StatelessWidget {
    */
 
   Widget _showNetworks() {
-    if (record.Networks != null) {
-      return URLView(record.Networks as List<Map>);
+    if (record.networks != null) {
+      return URLView(record.networks as List<Map>);
     }
     return const Text('Please wait..');
   }
@@ -88,12 +89,11 @@ class ShowChase extends StatelessWidget {
 
   Widget _sizedBox(BuildContext context, DocumentSnapshot snapshot) {
     var deviceSize = MediaQuery.of(context).size;
-    Record record =
-        Record.fromSnapshot(snapshot as DocumentSnapshot<Map<String, dynamic>>);
+    Chase record = Chase.fromJson(snapshot.data() as Map<String, dynamic>);
     var imageURL = 'https://chaseapp.tv/police.gif';
 
-    if (record.ImageURL.isNotEmpty) {
-      imageURL = record.ImageURL.replaceAll(
+    if (record.imageURL != null) {
+      imageURL = record.imageURL!.replaceAll(
           RegExp(
             r"\.([0-9a-z]+)(?:[?#]|$)",
             caseSensitive: false,
@@ -132,10 +132,10 @@ class ShowChase extends StatelessWidget {
                       placeholder: kTransparentImage, image: imageURL)),
             ]),
             ListTile(
-                title: Text(record.Name,
+                title: Text(record.name,
                     style: const TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text(record.Desc),
-                trailing: Text(record.Votes.toString() + ' donuts')),
+                subtitle: Text(record.desc),
+                trailing: Text(record.votes.toString() + ' donuts')),
             const Divider(),
             buildNetworks(context),
             Container(
@@ -148,14 +148,14 @@ class ShowChase extends StatelessWidget {
                           .runTransaction((transaction) async {
                         final chaseDocRef = FirebaseFirestore.instance
                             .collection('chases')
-                            .doc(record.ID);
+                            .doc(record.id);
                         final freshSnapshot =
                             await transaction.get(chaseDocRef);
-                        final fresh = Record.fromSnapshot(freshSnapshot
-                            as DocumentSnapshot<Map<String, dynamic>>);
+                        final fresh = Chase.fromJson(
+                            freshSnapshot.data() as Map<String, dynamic>);
                         transaction
-                            .update(chaseDocRef, {'Votes': fresh.Votes + 1});
-                        counter = fresh.Votes;
+                            .update(chaseDocRef, {'Votes': fresh.votes + 1});
+                        counter = fresh.votes;
                       }),
                       defaultImage: "images/donut.png",
                       filledImage: "images/donut.png",
