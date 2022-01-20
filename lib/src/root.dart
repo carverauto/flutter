@@ -1,41 +1,14 @@
 import 'package:chaseapp/src/routes/routes.dart';
-import 'package:flutter/foundation.dart';
+import 'package:chaseapp/src/top_level_providers/nodle_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Locale? locale;
-  bool localeLoaded = false;
-
-  static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
-
-  // Define an async function to initialize Nodle SDK
-  void initializeNodle() async {
-    String value;
-    try {
-      value = await platform.invokeMethod("init");
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    initializeNodle();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //TODO: update to support themes
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(nodleProvider.notifier).initializeNodle();
     return MaterialApp(
       title: 'ChaseApp',
       initialRoute: '/',

@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:chaseapp/src/root.dart';
+import 'package:chaseapp/src/top_level_providers/nodle_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_core/firebase_core.dart' show Firebase;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,10 +17,8 @@ void main() async {
 
   // Setting up const/singletons like this will be redundant after refactoring
   // Prefs.init();
-
+  // Initialize other services like SharedPreferances, etc and provide through providers
   runApp(ProviderScope(
     child: MyApp(),
   ));
-  // First Frame is rendered
-  // Initialize Nodle
 }
