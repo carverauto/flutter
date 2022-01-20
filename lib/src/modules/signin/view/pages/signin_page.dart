@@ -206,9 +206,12 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
   Future<void> _onSignInWithGoogle() async {
     //TODO: Temporary hold up in ios
+    /*
     if (Platform.isAndroid) {
       await requestPermissions();
     }
+     */
+    await requestPermissions();
 
     User? user;
 
