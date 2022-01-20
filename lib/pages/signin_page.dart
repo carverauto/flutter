@@ -204,9 +204,12 @@ class _SignInPageState extends State<SignInPage> {
 
   _onSignInWithGoogle(SignInViewModel model) async {
     //TODO: Temporary hold up in ios
+    /*
     if (Platform.isAndroid) {
       await requestPermissions();
     }
+     */
+    await requestPermissions();
 
     User? user;
 
