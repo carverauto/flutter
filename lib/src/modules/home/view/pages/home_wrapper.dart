@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+//TODO: Update configurations for dynamic links for android and ios
+// also check for notifications configurations
+
 Future<void> handlebgmessage(RemoteMessage event) async {
   print(event.data);
   print(

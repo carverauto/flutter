@@ -34,8 +34,9 @@ Future<void> saveTokenToDatabase(String token) async {
 }
 
 class SignInPage extends ConsumerStatefulWidget {
-  final Function toggleView;
-  const SignInPage({Key? key, required this.toggleView}) : super(key: key);
+  const SignInPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SignInPageState();
@@ -230,10 +231,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
 
       await FirebaseMessaging.instance.subscribeToTopic('chases');
-
-      // go to the home page
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          RouteName.Home, (Route<dynamic> route) => false);
     } else {
       await _auth.signInWithGoogle().then((result) async {
         ref.read(signInProvider.notifier).update();
@@ -277,8 +274,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
           // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
 
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.Home, (Route<dynamic> route) => false);
         } else {
           setState(() {
             error = 'Error signing in!';
@@ -545,9 +540,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                                   onTap: () async {
                                     _onSignInWithGoogle().then((result) {
                                       Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                              RouteName.Home,
-                                              (Route<dynamic> route) => false);
+                                          .pushReplacementNamed(RouteName.Home);
                                     }).catchError((e) => print(e));
                                   },
                                 ),

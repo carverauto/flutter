@@ -7,16 +7,11 @@ import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 
 class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
-    void _toggleView() {}
-
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => const Splash());
       case RouteName.USER_LOGIN:
-        return MaterialPageRoute(
-            builder: (_) => SignInPage(
-                  toggleView: _toggleView,
-                ));
+        return MaterialPageRoute(builder: (_) => SignInPage());
       case RouteName.Home:
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.Profile:

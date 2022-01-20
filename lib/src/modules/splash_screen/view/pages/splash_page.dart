@@ -18,57 +18,15 @@ class Splash extends StatefulWidget {
 // DeviceSize deviceSize;
 
 class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
-  var _visible = true;
-
-  late AnimationController animationController;
-  late Animation<double> animation;
-
-  startTime() async {
-    var _duration = const Duration(seconds: 3);
-    return Timer(_duration, navigationPage);
-  }
-
-  bool _showSignIn = true;
-
-  void _toggleView() {
-    setState(() {
-      _showSignIn = !_showSignIn;
-    });
-  }
-
   void navigationPage() {
     Navigator.of(context).push(MaterialPageRoute<bool>(
-        builder: (BuildContext context) =>
-            SignInPage(toggleView: _toggleView)));
+        builder: (BuildContext context) => SignInPage()));
     // Navigator.pushNamed(context, 'LOGIN');
-  }
-
-  @override
-  dispose() {
-    animationController.dispose(); // you need this
-    super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut);
-
-    // animation.addListener(() => this.setState(() {}));
-    animation.addListener(() {
-      if (mounted) setState(() {});
-    });
-
-    animationController.forward();
-
-    setState(() {
-      _visible = !_visible;
-    });
-    startTime();
   }
 
   @override
@@ -102,7 +60,12 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Lottie.asset('assets/41812-christmas-tree.json')
+                  Lottie.asset('assets/41812-christmas-tree.json',
+                      onLoaded: (composition) {
+                    Timer(Duration(seconds: 3), () {
+                      navigationPage();
+                    });
+                  })
                 ],
               ),
             ],
