@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/modules/auth/view/pages/auth_view_wrapper.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,10 @@ class Routes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => const Splash());
+      case RouteName.AuthViewWrapper:
+        return MaterialPageRoute(builder: (context) => AuthViewWrapper());
       case RouteName.USER_LOGIN:
-        return MaterialPageRoute(builder: (_) => SignInPage());
+        return MaterialPageRoute(builder: (_) => LogInView());
       case RouteName.Home:
         return MaterialPageRoute(builder: (_) => HomePage());
       case RouteName.Profile:
