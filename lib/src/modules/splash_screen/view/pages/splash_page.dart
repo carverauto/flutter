@@ -19,7 +19,7 @@ class Splash extends StatefulWidget {
 
 class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   void navigationPage() {
-    Navigator.of(context).push(MaterialPageRoute<bool>(
+    Navigator.of(context).pushReplacement(MaterialPageRoute<bool>(
         builder: (BuildContext context) => SignInPage()));
     // Navigator.pushNamed(context, 'LOGIN');
   }
@@ -60,6 +60,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  //TODO: Too big size
                   Lottie.asset('assets/41812-christmas-tree.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
