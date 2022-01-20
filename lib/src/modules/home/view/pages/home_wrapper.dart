@@ -14,6 +14,8 @@ Future<void> handlebgmessage(RemoteMessage event) async {
   print(event.data);
   print(
       'hmm,so this is called if app is in background no matter when user opens the app');
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
 }
 
 class HomeWrapper extends ConsumerStatefulWidget {

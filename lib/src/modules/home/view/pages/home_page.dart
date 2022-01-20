@@ -1,16 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
-import 'package:chaseapp/src/modules/auth/view/pages/authenticate_page.dart';
-import 'package:chaseapp/src/modules/chats/view/pages/chat_page.dart';
-import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
-import 'package:chaseapp/src/modules/search/view/pages/search_page.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_service.dart';
-import 'package:chaseapp/src/services/database_service.dart';
-import 'package:chaseapp/src/shared/widgets/chase/chase_tile.dart';
 // import 'package:chaseapp/helper/record.dart';
 import 'package:chaseapp/src/modules/dashboard/view/pages/chaseList_page.dart';
+import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   @override
