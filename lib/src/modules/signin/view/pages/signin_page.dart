@@ -1,352 +1,17 @@
-import 'dart:io';
-
-import 'package:chaseapp/src/modules/signin/view/parts/base_view.dart';
-import 'package:chaseapp/src/shared/widgets/progress_bars/progressBar.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
-import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
-import 'package:chaseapp/src/shared/enums/view_state.dart';
+import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/auth/data/auth_service.dart';
-import 'package:chaseapp/src/services/database_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/gestures.dart';
+import 'package:chaseapp/src/shared/enums/social_logins.dart';
+import 'package:chaseapp/src/shared/enums/view_state.dart';
+import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-Future<void> saveTokenToDatabase(String token) async {
-  // Assume user is logged in for this example
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-
-  await FirebaseFirestore.instance.collection('users').doc(userId).update({
-    'tokens': FieldValue.arrayUnion([token]),
-    'lastTokenUpdate': DateTime.now()
-  });
-}
-
-class SignInPage extends ConsumerStatefulWidget {
-  const SignInPage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SignInPageState();
-}
-
-class _SignInPageState extends ConsumerState<SignInPage> {
-  final AuthService _auth = AuthService();
+class LogInView extends ConsumerWidget {
+  LogInView({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
-  bool isSignedIn = false;
-  bool google = false;
-
-  // FCM
-  String? _token;
-
-  // text field state
-  String email = '';
-  late String name;
-  late String imageUrl;
-  String password = '';
-  String error = '';
-
-  Future<void> requestPermissions() async {
-    const btScanStatus = Permission.bluetoothScan;
-    const btConnectStatus = Permission.bluetoothConnect;
-    const btServiceStatus = Permission.bluetooth;
-    const locationAlwaysStatus = Permission.locationAlways;
-    const locationStatus = Permission.location;
-    const notifyStatus = Permission.notification;
-
-    bool isBtOn = btServiceStatus == btServiceStatus.isGranted;
-    bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
-    bool isBtConnectOn = btConnectStatus == btConnectStatus.isGranted;
-    bool isLocationOn = locationStatus == locationStatus.isGranted;
-    bool isLocationAlwaysOn =
-        locationAlwaysStatus == locationAlwaysStatus.isGranted;
-    bool isNotifyOn = notifyStatus == notifyStatus.isGranted;
-
-    final permBtServiceStatus = await Permission.bluetooth.request();
-    final permBtScanStatus = await Permission.bluetoothScan.request();
-    final permBtConnectStatus = await Permission.bluetoothConnect.request();
-    final permLocationStatus = await Permission.location.request();
-    final permLocationAlwaysStatus = await Permission.locationAlways.request();
-    final permNotifyStatus = await Permission.notification.request();
-
-    if (permBtServiceStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('BTServiceStatus - Permission Granted');
-      }
-    } else if (permBtServiceStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('BTServiceStatus - Permission Denied');
-      }
-    } else if (permBtServiceStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('BTServiceStatus - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    if (permBtScanStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('BTScanStatus - Permission Granted');
-      }
-    } else if (permBtScanStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('BTScanStatus - Permission Denied');
-      }
-    } else if (permBtScanStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('BTScanStatus - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    if (permBtConnectStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('BTConnectStatus - Permission Granted');
-      }
-    } else if (permBtConnectStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('BTConnectStatus - Permission Denied');
-      }
-    } else if (permBtConnectStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('BTConnectStatus - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    if (permLocationAlwaysStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('LocationAlways - Permission Granted');
-      }
-    } else if (permLocationAlwaysStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('LocationAlways - Permission Denied');
-      }
-    } else if (permLocationAlwaysStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('LocationAlways - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    if (permLocationStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('Location - Permission Granted');
-      }
-    } else if (permLocationStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('Location - Permission Denied');
-      }
-    } else if (permLocationStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('Location - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    if (permNotifyStatus == PermissionStatus.granted) {
-      if (kDebugMode) {
-        print('Notifications - Permission Granted');
-      }
-    } else if (permNotifyStatus == PermissionStatus.denied) {
-      if (kDebugMode) {
-        print('Notifications - Permission Denied');
-      }
-    } else if (permNotifyStatus == PermissionStatus.permanentlyDenied) {
-      if (kDebugMode) {
-        print('Notifications - Permission Permanently Denied');
-      }
-      await openAppSettings();
-    }
-
-    startNodle();
-
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-  }
-
-  // Nodle
-  static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
-
-  // Define an async function to start Nodle SDK
-  void startNodle() async {
-    try {
-      String value = await platform.invokeMethod("start");
-      if (kDebugMode) {
-        print(value);
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
-
-  Future<void> _onSignInWithGoogle() async {
-    //TODO: Temporary hold up in ios
-    /*
-    if (Platform.isAndroid) {
-      await requestPermissions();
-    }
-     */
-    await requestPermissions();
-
-    User? user;
-
-    bool isSignedIn = await _googleSignIn.isSignedIn();
-
-    //setState(() {
-    //  isUserSignedIn = userSignedIn;
-    //});
-
-    // Check to see if we're signed in already
-    if (isSignedIn) {
-      ref.read(signInProvider.notifier).update();
-      user = FirebaseAuth.instance.currentUser;
-
-      // FCM token stuff for notifications
-      String? token = await FirebaseMessaging.instance.getToken();
-      await saveTokenToDatabase(token!);
-      // Any time the token refreshes, store this in the database too.
-      FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-
-      await FirebaseMessaging.instance.subscribeToTopic('chases');
-    } else {
-      await _auth.signInWithGoogle().then((result) async {
-        ref.read(signInProvider.notifier).update();
-        user = result;
-        if (user != null) {
-          QuerySnapshot userInfoSnapshot =
-              await DatabaseService(uid: user!.uid).getUserData(user!.email!);
-
-          // FCM token stuff for notifications
-          String? token = await FirebaseMessaging.instance.getToken();
-          await saveTokenToDatabase(token!);
-          // Any time the token refreshes, store this in the database too.
-          FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-
-          // Subscribe to 'chases' FCM topic
-          await FirebaseMessaging.instance.subscribeToTopic('chases');
-
-          await HelperFunctions.saveUserLoggedInSharedPreference(true);
-          await HelperFunctions.saveUserEmailSharedPreference(email);
-          // https://stackoverflow.com/questions/67447001/firebase-firestore-error-the-operator-isnt-defined-for-the-class-object
-          await HelperFunctions.saveUserNameSharedPreference(
-              // #TODO: debug this, see if it is working
-              (userInfoSnapshot.docs[0].data()
-                  as Map<String, dynamic>)['userName']);
-
-          await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-            if (kDebugMode) {
-              print("Logged in: $value");
-            }
-          });
-          await HelperFunctions.getUserEmailSharedPreference().then((value) {
-            if (kDebugMode) {
-              print("Email: $value");
-            }
-          });
-          await HelperFunctions.getUserNameSharedPreference().then((value) {
-            if (kDebugMode) {
-              print("Full Name: $value");
-            }
-          });
-
-          // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
-
-        } else {
-          setState(() {
-            error = 'Error signing in!';
-            _isLoading = false;
-          });
-        }
-      });
-    }
-  }
-
-  _onSignIn() async {
-    if (kDebugMode) {
-      print("_onSignIn");
-    }
-    User? user;
-    user = FirebaseAuth.instance.currentUser;
-    await requestPermissions();
-    ref.read(signInProvider.notifier).update();
-
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await _auth
-          .signInWithEmailAndPassword(email, password)
-          .then((result) async {
-        if (result != null) {
-          QuerySnapshot userInfoSnapshot =
-              await DatabaseService(uid: user!.uid).getUserData(email);
-
-          await HelperFunctions.saveUserLoggedInSharedPreference(true);
-          await HelperFunctions.saveUserEmailSharedPreference(email);
-          await HelperFunctions.saveUserNameSharedPreference(
-              (userInfoSnapshot.docs[0].data()
-                  as Map<String, dynamic>)['fullName']);
-
-          // FCM token stuff for notifications
-          String? token = await FirebaseMessaging.instance.getToken();
-          await saveTokenToDatabase(token!);
-          // Any time the token refreshes, store this in the database too.
-          FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
-
-          await FirebaseMessaging.instance.subscribeToTopic('chases');
-
-          await HelperFunctions.getUserLoggedInSharedPreference().then((value) {
-            print("Logged in: $value");
-          });
-          await HelperFunctions.getUserEmailSharedPreference().then((value) {
-            print("Email: $value");
-          });
-          await HelperFunctions.getUserNameSharedPreference().then((value) {
-            print("Full Name: $value");
-          });
-
-          // Navigator.of(context).pushReplacement( MaterialPageRoute(builder: (context) => HomePage()));
-
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              RouteName.Home, (Route<dynamic> route) => false);
-        } else {
-          setState(() {
-            error = 'Error signing in!';
-            _isLoading = false;
-          });
-        }
-      });
-    } // email
-  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return WillPopScope(
       child: SafeArea(
         child: Scaffold(
@@ -502,9 +167,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                                       ),
                                       const SizedBox(height: 10.0),
                                        */
-                                Text(error,
-                                    style: const TextStyle(
-                                        color: Colors.red, fontSize: 14.0)),
                                 InkWell(
                                   child: Container(
                                       width: deviceSize!.width / 2,
@@ -540,10 +202,16 @@ class _SignInPageState extends ConsumerState<SignInPage> {
                                         ],
                                       ))),
                                   onTap: () async {
-                                    _onSignInWithGoogle().then((result) {
-                                      Navigator.of(context)
-                                          .pushReplacementNamed(RouteName.Home);
-                                    }).catchError((e) => print(e));
+                                    try {
+                                      ref
+                                          .read(authRepoProvider)
+                                          .socialLogin(SIGNINMETHOD.GOOGLE);
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(e.toString()),
+                                      ));
+                                    }
                                   },
                                 ),
                                 const SizedBox(
