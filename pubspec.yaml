@@ -61,6 +61,7 @@ dependencies:
   freezed_annotation:
   json_annotation:
   flutter_riverpod: ^1.0.3
+  firebase_dynamic_links: ^4.0.4
 
 dev_dependencies:
   flutter_test:
