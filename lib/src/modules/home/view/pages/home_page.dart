@@ -1,4 +1,4 @@
-import 'package:chaseapp/src/modules/auth/data/auth_service.dart';
+import 'package:chaseapp/src/modules/auth/data/auth_db.dart';
 // import 'package:chaseapp/helper/record.dart';
 import 'package:chaseapp/src/modules/dashboard/view/pages/chaseList_page.dart';
 import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // data
-  final AuthService _auth = AuthService();
   // final Record record;
   late User _user;
   String _userName = '';
