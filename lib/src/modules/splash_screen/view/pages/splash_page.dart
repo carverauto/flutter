@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
@@ -18,12 +19,6 @@ class Splash extends StatefulWidget {
 // DeviceSize deviceSize;
 
 class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
-  void navigationPage() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute<bool>(
-        builder: (BuildContext context) => SignInPage()));
-    // Navigator.pushNamed(context, 'LOGIN');
-  }
-
   @override
   void initState() {
     super.initState();
@@ -64,7 +59,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                   Lottie.asset('assets/41812-christmas-tree.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
-                      navigationPage();
+                      Navigator.of(context)
+                          .pushReplacementNamed(RouteName.AuthViewWrapper);
                     });
                   })
                 ],

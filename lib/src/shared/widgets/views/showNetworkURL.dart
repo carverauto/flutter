@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart'
     show BuildContext, StatelessWidget, Text, Widget;
-import 'package:chaseapp/src/models/chase/record.dart';
 import 'package:flutter/src/foundation/key.dart';
 
 /*

@@ -12,28 +12,6 @@ class DatabaseService {
   final CollectionReference chaseCollection =
       FirebaseFirestore.instance.collection('chases');
 
-  // update userdata
-  Future updateUserData(String fullName, String email) async {
-    return await userCollection.doc(uid).set({
-      "uid": uid,
-      'userName': fullName,
-      'email': email,
-      // 'password': password,
-      'photoUrl': null,
-      'lastUpdated': DateTime.now().millisecondsSinceEpoch
-    });
-  }
-
-  // get user data
-  Future getUserData(String email) async {
-    QuerySnapshot snapshot =
-        await userCollection.where('email', isEqualTo: email).get();
-    if (kDebugMode) {
-      print(snapshot.docs[0].data);
-    }
-    return snapshot;
-  }
-
   getChases() async {
     return FirebaseFirestore.instance.collection("chases").snapshots();
   }

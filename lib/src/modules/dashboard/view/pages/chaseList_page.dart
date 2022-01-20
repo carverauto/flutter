@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/src/modules/chase/view/pages/chaseDetails_page.dart';
-import 'package:chaseapp/src/models/chase/record.dart';
 import 'package:chaseapp/src/shared/widgets/appbar/topbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -64,7 +63,7 @@ class _ChasesPageState extends State<ChasesPage> {
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(100.0),
           child: Column(
-            children: <Widget>[TopBar(context)],
+            children: <Widget>[TopBar()],
           )),
       body: _buildBody(context),
     );

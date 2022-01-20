@@ -59,7 +59,7 @@ class SettingsPage extends State<Settings> {
             signOutGoogle();
             //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SignInPage()));
+                context, MaterialPageRoute(builder: (context) => LogInView()));
           },
         ),
       ],

@@ -6,7 +6,6 @@ import 'dart:core';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
-import 'package:chaseapp/src/models/chase/record.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
