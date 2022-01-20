@@ -60,12 +60,12 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   String error = '';
 
   Future<void> requestPermissions() async {
-    final btScanStatus = Permission.bluetoothScan;
-    final btConnectStatus = Permission.bluetoothConnect;
-    final btServiceStatus = Permission.bluetooth;
-    final locationAlwaysStatus = Permission.locationAlways;
-    final locationStatus = Permission.location;
-    final notifyStatus = Permission.notification;
+    const btScanStatus = Permission.bluetoothScan;
+    const btConnectStatus = Permission.bluetoothConnect;
+    const btServiceStatus = Permission.bluetooth;
+    const locationAlwaysStatus = Permission.locationAlways;
+    const locationStatus = Permission.location;
+    const notifyStatus = Permission.notification;
 
     bool isBtOn = btServiceStatus == btServiceStatus.isGranted;
     bool isBtScanOn = btScanStatus == btScanStatus.isGranted;
@@ -218,7 +218,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     //  isUserSignedIn = userSignedIn;
     //});
 
-    print('signin w/ googleee');
     // Check to see if we're signed in already
     if (isSignedIn) {
       ref.read(signInProvider.notifier).update();
