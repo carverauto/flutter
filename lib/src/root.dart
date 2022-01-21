@@ -1,5 +1,5 @@
 import 'package:chaseapp/src/routes/routes.dart';
-import 'package:chaseapp/src/top_level_providers/nodle_provider.dart';
+import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
