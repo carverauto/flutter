@@ -56,7 +56,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   //TODO: Too big size
-                  Lottie.asset('assets/41812-christmas-tree.json',
+                  Lottie.asset('assets/47816-lunar-new-year-lion-dance.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
                       Navigator.of(context)
