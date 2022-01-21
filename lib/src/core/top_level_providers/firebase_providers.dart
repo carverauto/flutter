@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,13 +12,18 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
 
 final googleSignInProvider = Provider<GoogleSignIn>((ref) => GoogleSignIn());
 
-//Klaro
 // final functionsProvider = Provider<FirebaseFunctions>((ref) {
 //   return FirebaseFunctions.instanceFor(region: "us-central1");
 // });
 
 final storageProvider = Provider<FirebaseStorage>((ref) {
   return FirebaseStorage.instance;
+});
+final analyticsProvider = Provider<FirebaseAnalytics>((ref) {
+  return FirebaseAnalytics.instance;
+});
+final analyticsoObserverProvider = Provider<FirebaseAnalyticsObserver>((ref) {
+  return FirebaseAnalyticsObserver(analytics: ref.watch(analyticsProvider));
 });
 final firebaseMesssagingProvider = Provider<FirebaseMessaging>((ref) {
   return FirebaseMessaging.instance;
