@@ -52,14 +52,14 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Future<void> socialLogin(SIGNINMETHOD loginmethods) {
+  Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     return read(authDbProvider).socialLogin(loginmethods);
   }
 
   @override
-  Future<void> createUser() async {
+  Future<UserData> fetchOrCreateUser() async {
     // TODO: implement createUser
-    return await read(authDbProvider).createUserDoc();
+    return await read(authDbProvider).fetchOrCreateUser();
   }
 
   @override

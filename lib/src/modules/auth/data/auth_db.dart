@@ -132,27 +132,6 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<void> createUserDoc() async {
-    final user = read(firebaseAuthProvider).currentUser!;
-    final uid = user.uid;
-
-    final DocumentReference docRef = usersCollectionRef.doc(uid);
-
-    final userDoc = await docRef.get();
-
-    if (!userDoc.exists) {
-      await usersCollectionRef.doc(uid).set(
-            UserData(
-                uid: uid,
-                userName: user.displayName!,
-                email: user.email!,
-                photoURL: null,
-                lastUpdated: DateTime.now().millisecondsSinceEpoch),
-          );
-    }
-  }
-
-  @override
   Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     switch (loginmethods) {
       case SIGNINMETHOD.GOOGLE:
@@ -163,6 +142,68 @@ class AuthDatabase implements AuthDB {
         throw UnimplementedError();
         break;
       default:
+    }
+  }
+
+  @override
+  Future<UserData> createUser() async {
+    final user = read(firebaseAuthProvider).currentUser!;
+    final uid = user.uid;
+
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+    try {
+      await docRef.set(
+        UserData(
+            uid: uid,
+            userName: user.displayName!,
+            email: user.email!,
+            photoURL: null,
+            lastUpdated: DateTime.now().millisecondsSinceEpoch),
+      );
+      return await fetchUser();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<UserData> fetchUser() async {
+    final user = read(firebaseAuthProvider).currentUser!;
+    final uid = user.uid;
+
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+    try {
+      final document = await docRef.get();
+
+      if (document.data() != null) {
+        return document.data()!;
+      } else {
+        throw UnimplementedError();
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<UserData> fetchOrCreateUser() async {
+    final user = read(firebaseAuthProvider).currentUser!;
+    final uid = user.uid;
+
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+    try {
+      final document = await docRef.get();
+
+      if (document.exists) {
+        if (document.data() != null) {
+          return document.data()!;
+        } else {
+          throw UnimplementedError();
+        }
+      } else {
+        return await createUser();
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }

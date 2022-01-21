@@ -14,8 +14,9 @@ class AuthViewWrapper extends ConsumerWidget {
     return loggedinstatus.when(
       data: (user) {
         if (user != null) {
-          return ref.watch(createUserProvider).when(
-                data: (v) {
+          return ref.watch(getUserProvider).when(
+                data: (userData) {
+                  log("Logged in");
                   ref
                       .read(postLoginStateNotifierProvider.notifier)
                       .initPostLoginActions(user);
