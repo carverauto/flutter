@@ -6,6 +6,16 @@
 //   final String uid;
 //   DatabaseService({required this.uid});
 
+//   // Collection reference
+//   final CollectionReference userCollection =
+//       FirebaseFirestore.instance.collection('users');
+//   final CollectionReference chaseCollection =
+//       FirebaseFirestore.instance.collection('chases');
+
+//   getChases() async {
+//     return FirebaseFirestore.instance.collection("chases").snapshots();
+//   }
+
 //   // send message
 //   sendMessage(String chaseId, chatMessageData) {
 //     FirebaseFirestore.instance
