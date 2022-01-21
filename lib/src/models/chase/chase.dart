@@ -15,15 +15,15 @@ abstract class Chase implements _$Chase {
   const factory Chase({
     // TODO: Marking as optional for the moment but shoudln't be
     // All documents must have an id
-    String? id,
-    @JsonKey(name: 'Name') required String name,
-    @JsonKey(name: 'Live') required bool live,
+    required String id,
+    @JsonKey(name: 'Name') required String? name,
+    @JsonKey(name: 'Live') required bool? live,
     @JsonKey(name: 'CreatedAt')
-    @DatetimeTimestampConverter()
-        required DateTime createdAt,
-    @JsonKey(name: 'Desc') required String desc,
+    @DatetimeTimestampNullableConverter()
+        required DateTime? createdAt,
+    @JsonKey(name: 'Desc') required String? desc,
     @JsonKey(name: 'ImageURL') String? imageURL,
-    @JsonKey(name: 'Votes') required int votes,
+    @JsonKey(name: 'Votes') required int? votes,
     @JsonKey(name: 'Networks') List<Map<String, dynamic>>? networks,
     @JsonKey(name: 'Sentiment') Map? sentiment,
     @JsonKey(name: 'Wheels') Map? wheels,
