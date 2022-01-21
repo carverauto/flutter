@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/appbar/topbar.dart';
@@ -46,15 +47,15 @@ class Dashboard extends ConsumerWidget {
                       ),
                       label: Text(chase.votes.toString()),
                     ),
-                    onTap: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShowChase(
-                                        record: chase,
-                                        key: UniqueKey(),
-                                      )))
-                        }),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShowChase(
+                                    record: chase,
+                                    key: UniqueKey(),
+                                  )));
+                    }),
               ),
             );
           }).toList(),
