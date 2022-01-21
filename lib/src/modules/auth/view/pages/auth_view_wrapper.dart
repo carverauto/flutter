@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:chaseapp/src/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
-import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,11 +16,11 @@ class AuthViewWrapper extends ConsumerWidget {
         if (user != null) {
           return ref.watch(createUserProvider).when(
                 data: (v) {
-                  requestPermissions();
+                  ref
+                      .read(postLoginStateNotifierProvider.notifier)
+                      .initPostLoginActions(user);
 
-                  ref.read(authRepoProvider).saveFirebaseDeviceToken();
-                  ref.read(authRepoProvider).subscribeToTopics();
-                  return HomePage();
+                  return Home();
                 },
                 error: (e, s) {
                   log("ERROR --->", error: e);

@@ -13,4 +13,5 @@ abstract class AuthRepositoryAB {
   Future<bool> isEmailVerified();
   Future<User?> getCurrentUser();
   Future<void> signOut();
+  void updateTokenWhenRefreshed();
 }

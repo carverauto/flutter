@@ -14,4 +14,5 @@ abstract class AuthDB {
   Future<bool> isEmailVerified();
   Future<User?> getCurrentUser();
   Future<void> signOut();
+  void updateTokenWhenRefreshed();
 }

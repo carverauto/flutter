@@ -61,4 +61,9 @@ class AuthRepository implements AuthRepositoryAB {
     // TODO: implement createUser
     return await read(authDbProvider).createUserDoc();
   }
+
+  @override
+  void updateTokenWhenRefreshed() {
+    read(authDbProvider).updateTokenWhenRefreshed();
+  }
 }

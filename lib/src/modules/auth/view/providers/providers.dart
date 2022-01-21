@@ -2,8 +2,14 @@ import 'package:chaseapp/src/modules/auth/data/auth_db.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/modules/auth/domain/auth_repo.dart';
 import 'package:chaseapp/src/modules/auth/domain/auth_repo_ab.dart';
+import 'package:chaseapp/src/modules/auth/view/notifiers/post_login_state_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final postLoginStateNotifierProvider =
+    StateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>((ref) {
+  return PostLoginStateNotifier(ref.read);
+});
 
 final authRepoProvider = Provider<AuthRepositoryAB>((ref) => AuthRepository(
       read: ref.read,

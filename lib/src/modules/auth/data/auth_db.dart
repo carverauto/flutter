@@ -1,21 +1,17 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
-import 'package:chaseapp/src/services/database_service.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
-import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
-import 'package:chaseapp/src/top_level_providers/firebase_providers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fauth;
-import 'package:http/http.dart';
 
 class AuthDatabase implements AuthDB {
   AuthDatabase({
@@ -56,8 +52,6 @@ class AuthDatabase implements AuthDB {
       'tokens': FieldValue.arrayUnion([token]),
       'lastTokenUpdate': DateTime.now()
     });
-
-    updateTokenWhenRefreshed();
   }
 
   void updateTokenWhenRefreshed() {
