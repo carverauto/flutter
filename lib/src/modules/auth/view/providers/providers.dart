@@ -1,9 +1,7 @@
-import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/modules/auth/domain/auth_repo.dart';
 import 'package:chaseapp/src/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/top_level_providers/firebase_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
