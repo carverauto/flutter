@@ -9,6 +9,8 @@ abstract class AuthDB {
   Stream<UserData> streamUserData();
   Stream<User?> streamLogInStatus();
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
   Future<void> subscribeToTopics();
   Future<void> saveFirebaseDeviceToken();
   Future<void> sendEmailVerification();

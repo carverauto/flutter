@@ -66,4 +66,11 @@ class AuthRepository implements AuthRepositoryAB {
   void updateTokenWhenRefreshed() {
     read(authDbProvider).updateTokenWhenRefreshed();
   }
+
+  @override
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) {
+    return read(authDbProvider)
+        .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
+  }
 }

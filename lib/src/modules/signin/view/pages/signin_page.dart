@@ -1,10 +1,14 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/enums/view_state.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
+import 'package:chaseapp/src/shared/util/helpers/multi_provider_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +19,48 @@ class LogInView extends ConsumerWidget {
   Future<void> signIn(
       Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
     try {
-      read(authRepoProvider).socialLogin(signinmethod);
+      await read(authRepoProvider).socialLogin(signinmethod);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          List<String> signInlist = await read(firebaseAuthProvider)
+              .fetchSignInMethodsForEmail(e.email!);
+          log(signInlist.toString());
+          await showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                          "Account already created with different Provider. Please sign in with the provider you used to create the account at first. This will link your account with the provider you are currently using."),
+                      Wrap(
+                        children: signInlist.map<Widget>((provider) {
+                          final SIGNINMETHOD knownProvider =
+                              getSignInProviderHelper(provider);
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                read(authRepoProvider)
+                                    .handleMutliProviderSignIn(
+                                        knownProvider, e.credential!);
+                                Navigator.pop(context);
+                              },
+                              child: Text(knownProvider.name),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                );
+              });
+
+          break;
+        default:
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),

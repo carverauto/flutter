@@ -76,6 +76,7 @@ class AuthDatabase implements AuthDB {
       // await HelperFunctions.saveUserNameSharedPreference('');
       await read(googleSignInProvider).signOut();
       await read(firebaseAuthProvider).signOut();
+      await read(facebookSignInProvider).logOut();
       // return await read(firebaseAuthProvider).signOut().whenComplete(() async {
       //   await HelperFunctions.getUserLoggedInSharedPreference()
       //       .then((value) {});
@@ -111,47 +112,46 @@ class AuthDatabase implements AuthDB {
   Future<UserCredential> googleLogin() async {
     GoogleSignIn _googleSignIn = GoogleSignIn();
 
-    try {
-      GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+    GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
 
-      if (_googleUser == null) {
-        throw Exception('Google sign in failed');
-      }
-
-      GoogleSignInAuthentication? _googleAuth =
-          await _googleUser.authentication;
-      final fauth.AuthCredential credential =
-          fauth.GoogleAuthProvider.credential(
-              idToken: _googleAuth.idToken,
-              accessToken: _googleAuth.accessToken);
-
-      return await read(firebaseAuthProvider).signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      throw UnimplementedError();
-    } on PlatformException catch (e) {
-      rethrow;
-    } catch (e) {
-      rethrow;
+    if (_googleUser == null) {
+      throw Exception('Google sign in failed');
     }
+
+    GoogleSignInAuthentication? _googleAuth = await _googleUser.authentication;
+    final fauth.AuthCredential credential = fauth.GoogleAuthProvider.credential(
+        idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
+
+    return await read(firebaseAuthProvider).signInWithCredential(credential);
   }
 
   @override
   Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
-    switch (loginmethods) {
-      case SIGNINMETHOD.GOOGLE:
-        await googleLogin();
-        break;
+    try {
+      switch (loginmethods) {
+        case SIGNINMETHOD.GOOGLE:
+          await googleLogin();
+          break;
 
-      case SIGNINMETHOD.APPLE:
-        await appleLogin();
-        break;
-      case SIGNINMETHOD.FACEBOOK:
-        await facebookLogin();
-        break;
-      case SIGNINMETHOD.TWITTER:
-        await twitterLogin();
-        break;
-      default:
+        case SIGNINMETHOD.APPLE:
+          await appleLogin();
+          break;
+        case SIGNINMETHOD.FACEBOOK:
+          await facebookLogin();
+          break;
+        case SIGNINMETHOD.TWITTER:
+          await twitterLogin();
+          break;
+        default:
+      }
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          rethrow;
+        default:
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -231,10 +231,8 @@ class AuthDatabase implements AuthDB {
       }
       final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
           .credential(idToken: _appleSignIn.identityToken);
-      final _authResult =
-          await read(firebaseAuthProvider).signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      throw e;
+
+      await read(firebaseAuthProvider).signInWithCredential(credential);
     } on sa.SignInWithAppleAuthorizationException catch (e) {
       if (e.code != sa.AuthorizationErrorCode.canceled) {
         throw e;
@@ -245,67 +243,47 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<UserCredential> facebookLogin() async {
-    // Trigger the sign-in flow
-    final LoginResult loginResult = await FacebookAuth.instance.login();
-    final userData = await FacebookAuth.instance.getUserData();
-    final email = userData["email"];
+  Future<void> facebookLogin() async {
+    late final LoginResult loginResult;
+    late final OAuthCredential facebookAuthCredential;
+
+    loginResult = await FacebookAuth.instance.login();
+
     // Create a credential from the access token
-    final OAuthCredential facebookAuthCredential =
+    facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    List<String> signInlist =
-        await read(firebaseAuthProvider).fetchSignInMethodsForEmail(email);
-    log(signInlist.toString());
-    //TODO: Temporary workaround untill a good ui/ux flow is set up
-    // to resolve this problem
-    if (signInlist.contains("facebook.com")) {
-      return await read(firebaseAuthProvider)
-          .signInWithCredential(facebookAuthCredential);
-    } else {
-      await googleLogin();
+    await read(firebaseAuthProvider)
+        .signInWithCredential(facebookAuthCredential);
+  }
 
-      return await read(firebaseAuthProvider)
-          .currentUser!
-          .linkWithCredential(facebookAuthCredential);
-    }
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) async {
+    await socialLogin(signinmethod);
+
+    await read(firebaseAuthProvider)
+        .currentUser!
+        .linkWithCredential(providerOAuthCredential);
   }
 
   @override
-  Future<UserCredential> twitterLogin() async {
-    try {
-      // Create a TwitterLogin instance
-      final twitterLogin = new TwitterLogin(
-          apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
-          apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
-          redirectURI: "social-firebase-auth://");
+  Future<void> twitterLogin() async {
+    // Create a TwitterLogin instance
+    final twitterLogin = new TwitterLogin(
+        apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
+        apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
+        redirectURI: "social-firebase-auth://");
 
-      // Trigger the sign-in flow
-      final authResult = await twitterLogin.login();
+    // Trigger the sign-in flow
+    final authResult = await twitterLogin.login();
 
-      // Create a credential from the access token
-      final twitterAuthCredential = TwitterAuthProvider.credential(
-        accessToken: authResult.authToken!,
-        secret: authResult.authTokenSecret!,
-      );
-      List<String> signInlist = await read(firebaseAuthProvider)
-          .fetchSignInMethodsForEmail(authResult.user!.email);
-      log(signInlist.toString());
+    // Create a credential from the access token
+    final twitterAuthCredential = TwitterAuthProvider.credential(
+      accessToken: authResult.authToken!,
+      secret: authResult.authTokenSecret!,
+    );
 
-      if (signInlist.contains("twitter.com")) {
-        return await read(firebaseAuthProvider)
-            .signInWithCredential(twitterAuthCredential);
-      } else {
-        await googleLogin();
-
-        return await read(firebaseAuthProvider)
-            .currentUser!
-            .linkWithCredential(twitterAuthCredential);
-      }
-    } catch (e) {
-      log("Error", error: e);
-
-      throw e;
-    }
+    await read(firebaseAuthProvider)
+        .signInWithCredential(twitterAuthCredential);
   }
 }

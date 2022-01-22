@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRepositoryAB {
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
   Future<UserData> fetchOrCreateUser();
   Stream<User?> streamLogInStatus();
   Stream<UserData> streamUserData();
