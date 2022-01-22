@@ -62,6 +62,9 @@ dependencies:
   json_annotation:
   flutter_riverpod: ^1.0.3
   firebase_dynamic_links: ^4.0.4
+  sign_in_with_apple: ^3.3.0
+  flutter_facebook_auth: ^3.5.0
+  twitter_login: ^4.0.1
 
 dev_dependencies:
   flutter_test:
