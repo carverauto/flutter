@@ -26,9 +26,28 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t</string>
+				<!-- Twitter redirecing url -->
+				<string>social-firebase-auth://</string>
+				<!-- Facebook redirecting url -->
+				<string>fb392332671355922</string>
 			</array>
 		</dict>
 	</array>
+	<!--Start : For facebook auth -->
+	<key>FacebookAppID</key>
+	<string>392332671355922</string>
+	<key>FacebookClientToken</key>
+	<string>1cc32b4fe3a584021cddfa956b666f3f</string>
+	<key>FacebookDisplayName</key>
+	<string>chaseapp</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<!--End : For facebook auth -->
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
