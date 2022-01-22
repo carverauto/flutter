@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
+import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +13,9 @@ import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart' as sa;
+import 'package:twitter_login/twitter_login.dart';
 
 class AuthDatabase implements AuthDB {
   AuthDatabase({
@@ -104,14 +108,14 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<void> googleLogin() async {
+  Future<UserCredential> googleLogin() async {
     GoogleSignIn _googleSignIn = GoogleSignIn();
 
     try {
       GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
 
       if (_googleUser == null) {
-        return;
+        throw Exception('Google sign in failed');
       }
 
       GoogleSignInAuthentication? _googleAuth =
@@ -121,11 +125,11 @@ class AuthDatabase implements AuthDB {
               idToken: _googleAuth.idToken,
               accessToken: _googleAuth.accessToken);
 
-      await read(firebaseAuthProvider).signInWithCredential(credential);
+      return await read(firebaseAuthProvider).signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       throw UnimplementedError();
     } on PlatformException catch (e) {
-      log(e.toString());
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -139,7 +143,13 @@ class AuthDatabase implements AuthDB {
         break;
 
       case SIGNINMETHOD.APPLE:
-        throw UnimplementedError();
+        await appleLogin();
+        break;
+      case SIGNINMETHOD.FACEBOOK:
+        await facebookLogin();
+        break;
+      case SIGNINMETHOD.TWITTER:
+        await twitterLogin();
         break;
       default:
     }
@@ -203,6 +213,98 @@ class AuthDatabase implements AuthDB {
         return await createUser();
       }
     } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<void> appleLogin() async {
+    try {
+      sa.AuthorizationCredentialAppleID _appleSignIn =
+          await sa.SignInWithApple.getAppleIDCredential(scopes: [
+        sa.AppleIDAuthorizationScopes.email,
+        sa.AppleIDAuthorizationScopes.fullName
+      ]);
+
+      if (_appleSignIn.identityToken == null) {
+        return;
+      }
+      final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
+          .credential(idToken: _appleSignIn.identityToken);
+      final _authResult =
+          await read(firebaseAuthProvider).signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw e;
+    } on sa.SignInWithAppleAuthorizationException catch (e) {
+      if (e.code != sa.AuthorizationErrorCode.canceled) {
+        throw e;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UserCredential> facebookLogin() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+    final userData = await FacebookAuth.instance.getUserData();
+    final email = userData["email"];
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    List<String> signInlist =
+        await read(firebaseAuthProvider).fetchSignInMethodsForEmail(email);
+    log(signInlist.toString());
+    //TODO: Temporary workaround untill a good ui/ux flow is set up
+    // to resolve this problem
+    if (signInlist.contains("facebook.com")) {
+      return await read(firebaseAuthProvider)
+          .signInWithCredential(facebookAuthCredential);
+    } else {
+      await googleLogin();
+
+      return await read(firebaseAuthProvider)
+          .currentUser!
+          .linkWithCredential(facebookAuthCredential);
+    }
+  }
+
+  @override
+  Future<UserCredential> twitterLogin() async {
+    try {
+      // Create a TwitterLogin instance
+      final twitterLogin = new TwitterLogin(
+          apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
+          apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
+          redirectURI: "social-firebase-auth://");
+
+      // Trigger the sign-in flow
+      final authResult = await twitterLogin.login();
+
+      // Create a credential from the access token
+      final twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: authResult.authToken!,
+        secret: authResult.authTokenSecret!,
+      );
+      List<String> signInlist = await read(firebaseAuthProvider)
+          .fetchSignInMethodsForEmail(authResult.user!.email);
+      log(signInlist.toString());
+
+      if (signInlist.contains("twitter.com")) {
+        return await read(firebaseAuthProvider)
+            .signInWithCredential(twitterAuthCredential);
+      } else {
+        await googleLogin();
+
+        return await read(firebaseAuthProvider)
+            .currentUser!
+            .linkWithCredential(twitterAuthCredential);
+      }
+    } catch (e) {
+      log("Error", error: e);
+
       throw e;
     }
   }

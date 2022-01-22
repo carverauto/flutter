@@ -12,7 +12,10 @@ abstract class AuthDB {
   Future<void> subscribeToTopics();
   Future<void> saveFirebaseDeviceToken();
   Future<void> sendEmailVerification();
-  Future<void> googleLogin();
+  Future<UserCredential> googleLogin();
+  Future<void> appleLogin();
+  Future<void> facebookLogin();
+  Future<void> twitterLogin();
   Future<bool> isEmailVerified();
   Future<User?> getCurrentUser();
   Future<void> signOut();
