@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
@@ -9,6 +11,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class LogInView extends ConsumerWidget {
   LogInView({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> signIn(
+      Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
+    try {
+      read(authRepoProvider).socialLogin(signinmethod);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -167,52 +180,52 @@ class LogInView extends ConsumerWidget {
                                       ),
                                       const SizedBox(height: 10.0),
                                        */
-                                InkWell(
-                                  child: Container(
-                                      width: deviceSize!.width / 2,
-                                      height: deviceSize!.height / 18,
-                                      margin: const EdgeInsets.only(top: 25),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black),
-                                      child: Center(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: const BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/google.jpg'),
-                                                  fit: BoxFit.cover),
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          const Text(
-                                            'Sign in with Google',
-                                            style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ))),
-                                  onTap: () async {
-                                    try {
-                                      ref
-                                          .read(authRepoProvider)
-                                          .socialLogin(SIGNINMETHOD.GOOGLE);
-                                    } catch (e) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(e.toString()),
-                                      ));
-                                    }
-                                  },
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.GOOGLE,
+                                        );
+                                      },
+                                      child: Text("Continue With Google"),
+                                    ),
+                                    if (Platform.isIOS)
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          signIn(
+                                            ref.read,
+                                            context,
+                                            SIGNINMETHOD.APPLE,
+                                          );
+                                        },
+                                        child: Text("Continue With Apple"),
+                                      ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.FACEBOOK,
+                                        );
+                                      },
+                                      child: Text("Continue With Facebook"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.TWITTER,
+                                        );
+                                      },
+                                      child: Text("Continue With Twitter"),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(
                                   height: 16,
