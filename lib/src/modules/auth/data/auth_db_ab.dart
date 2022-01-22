@@ -3,10 +3,10 @@ import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthDB {
-  Future<UserData> fetchOrCreateUser();
-  Future<void> createUser();
-  Future<UserData> fetchUser();
-  Stream<UserData> streamUserData();
+  Future<UserData> fetchOrCreateUser(User user);
+  Future<void> createUser(User user);
+  Future<UserData> fetchUser(User user);
+  Stream<UserData> streamUserData(String uid);
   Stream<User?> streamLogInStatus();
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
   Future<void> handleMutliProviderSignIn(

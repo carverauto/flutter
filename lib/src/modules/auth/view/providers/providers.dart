@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
@@ -27,8 +28,10 @@ final streamLogInStatus = StreamProvider<User?>((ref) {
   return authrepo.streamLogInStatus();
 });
 
-final getUserProvider = FutureProvider<UserData>(
-    (ref) async => ref.read(authRepoProvider).fetchOrCreateUser());
+final getUserProvider = FutureProvider.family<UserData, User>(
+    (ref, user) async => ref.read(authRepoProvider).fetchOrCreateUser(user));
 
-final streamUserProvider = StreamProvider<UserData>(
-    (ref) => ref.read(authRepoProvider).streamUserData());
+final streamUserProvider = StreamProvider<UserData>((ref) {
+  final user = ref.watch(firebaseAuthProvider).currentUser!;
+  return ref.read(authRepoProvider).streamUserData(user.uid);
+});

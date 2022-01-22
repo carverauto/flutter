@@ -37,8 +37,8 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Stream<UserData> streamUserData() {
-    return read(authDbProvider).streamUserData();
+  Stream<UserData> streamUserData(String uid) {
+    return read(authDbProvider).streamUserData(uid);
   }
 
   @override
@@ -57,9 +57,9 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Future<UserData> fetchOrCreateUser() async {
+  Future<UserData> fetchOrCreateUser(User user) async {
     // TODO: implement createUser
-    return await read(authDbProvider).fetchOrCreateUser();
+    return await read(authDbProvider).fetchOrCreateUser(user);
   }
 
   @override

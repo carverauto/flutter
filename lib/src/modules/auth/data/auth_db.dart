@@ -95,8 +95,7 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Stream<UserData> streamUserData() {
-    final uid = read(firebaseAuthProvider).currentUser?.uid;
+  Stream<UserData> streamUserData(String uid) {
     final snapshot = usersCollectionRef.doc(uid).snapshots();
 
     return snapshot.map((e) {
@@ -156,32 +155,27 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<UserData> createUser() async {
-    final user = read(firebaseAuthProvider).currentUser!;
-    final uid = user.uid;
-
-    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+  Future<UserData> createUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
     try {
       await docRef.set(
         UserData(
-            uid: uid,
-            userName: user.displayName!,
-            email: user.email!,
-            photoURL: null,
-            lastUpdated: DateTime.now().millisecondsSinceEpoch),
+          uid: user.uid,
+          userName: user.displayName!,
+          email: user.email!,
+          photoURL: null,
+          lastUpdated: DateTime.now().millisecondsSinceEpoch,
+        ),
       );
-      return await fetchUser();
+      return await fetchUser(user);
     } catch (e) {
       throw e;
     }
   }
 
   @override
-  Future<UserData> fetchUser() async {
-    final user = read(firebaseAuthProvider).currentUser!;
-    final uid = user.uid;
-
-    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+  Future<UserData> fetchUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
     try {
       final document = await docRef.get();
 
@@ -195,11 +189,8 @@ class AuthDatabase implements AuthDB {
     }
   }
 
-  Future<UserData> fetchOrCreateUser() async {
-    final user = read(firebaseAuthProvider).currentUser!;
-    final uid = user.uid;
-
-    final DocumentReference<UserData> docRef = usersCollectionRef.doc(uid);
+  Future<UserData> fetchOrCreateUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
     try {
       final document = await docRef.get();
 
@@ -210,7 +201,7 @@ class AuthDatabase implements AuthDB {
           throw UnimplementedError();
         }
       } else {
-        return await createUser();
+        return await createUser(user);
       }
     } catch (e) {
       throw e;

@@ -6,9 +6,9 @@ abstract class AuthRepositoryAB {
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
   Future<void> handleMutliProviderSignIn(
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
-  Future<UserData> fetchOrCreateUser();
+  Future<UserData> fetchOrCreateUser(User user);
   Stream<User?> streamLogInStatus();
-  Stream<UserData> streamUserData();
+  Stream<UserData> streamUserData(String uid);
   Future<void> subscribeToTopics();
   Future<void> saveFirebaseDeviceToken();
   Future<void> sendEmailVerification();
