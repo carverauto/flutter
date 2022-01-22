@@ -71,18 +71,9 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> signOut() async {
     try {
-      // await HelperFunctions.saveUserLoggedInSharedPreference(false);
-      // await HelperFunctions.saveUserEmailSharedPreference('');
-      // await HelperFunctions.saveUserNameSharedPreference('');
       await read(googleSignInProvider).signOut();
       await read(firebaseAuthProvider).signOut();
       await read(facebookSignInProvider).logOut();
-      // return await read(firebaseAuthProvider).signOut().whenComplete(() async {
-      //   await HelperFunctions.getUserLoggedInSharedPreference()
-      //       .then((value) {});
-      //   await HelperFunctions.getUserEmailSharedPreference().then((value) {});
-      //   await HelperFunctions.getUserNameSharedPreference().then((value) {});
-      // });
     } catch (e) {
       log(e.toString());
     }
