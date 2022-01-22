@@ -26,37 +26,48 @@ class LogInView extends ConsumerWidget {
           List<String> signInlist = await read(firebaseAuthProvider)
               .fetchSignInMethodsForEmail(e.email!);
           log(signInlist.toString());
-          await showDialog(
-              context: context,
-              builder: (context) {
-                return Dialog(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                          "Account already created with different Provider. Please sign in with the provider you used to create the account at first. This will link your account with the provider you are currently using."),
-                      Wrap(
-                        children: signInlist.map<Widget>((provider) {
-                          final SIGNINMETHOD knownProvider =
-                              getSignInProviderHelper(provider);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                read(authRepoProvider)
-                                    .handleMutliProviderSignIn(
-                                        knownProvider, e.credential!);
-                                Navigator.pop(context);
-                              },
-                              child: Text(knownProvider.name),
-                            ),
-                          );
-                        }).toList(),
+          final SIGNINMETHOD? knownAuthProvider =
+              await showDialog<SIGNINMETHOD?>(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                              "Account already created with different Provider. Please sign in with the provider you used to create the account at first. This will link your account with the provider you are currently using."),
+                          Wrap(
+                            children: signInlist.map<Widget>((provider) {
+                              final SIGNINMETHOD knownAuthProvider =
+                                  getSignInProviderHelper(provider);
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, knownAuthProvider);
+                                  },
+                                  child: Text(knownAuthProvider.name),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              });
+                    );
+                  });
+
+          if (knownAuthProvider != null) {
+            try {
+              await read(authRepoProvider)
+                  .handleMutliProviderSignIn(knownAuthProvider, e.credential!);
+            } catch (e) {
+              log("Error", error: e);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(e.toString()),
+              ));
+            }
+          }
 
           break;
         default:
