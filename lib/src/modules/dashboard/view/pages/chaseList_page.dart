@@ -1,110 +1,83 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:chaseapp/src/modules/chase/view/pages/chaseDetails_page.dart';
+import 'dart:developer';
+
+import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
+import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/appbar/topbar.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ChasesScreen extends StatefulWidget {
-  const ChasesScreen({Key? key}) : super(key: key);
-
-  @override
-  _ChasesScreenState createState() => _ChasesScreenState();
-}
-
-class _ChasesScreenState extends State<ChasesScreen> {
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+class Dashboard extends ConsumerWidget {
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: ChasesPage(
-            title: 'Loading..', analytics: analytics, observer: observer));
-  }
-}
-
-class ChasesPage extends StatefulWidget {
-  const ChasesPage(
-      {Key? key,
-      required this.title,
-      required this.analytics,
-      required this.observer})
-      : super(key: key);
-
-  final String title;
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
-
-  @override
-  _ChasesPageState createState() => _ChasesPageState(analytics, observer);
-}
-
-class _ChasesPageState extends State<ChasesPage> {
-  _ChasesPageState(this.analytics, this.observer);
-
-  final FirebaseAnalyticsObserver observer;
-  final FirebaseAnalytics analytics;
-  String _message = '';
-
-  void setMessage(String message) {
-    setState(() {
-      _message = message;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(100.0),
           child: Column(
             children: <Widget>[TopBar()],
           )),
-      body: _buildBody(context),
+      body: ref.watch(streamChasesProvider).when(data: (chases) {
+        log(chases.length.toString());
+        return ListView(
+          padding: const EdgeInsets.only(top: 20.0),
+          children: chases.map((chase) {
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: ListTile(
+                    title: Text(chase.name ?? "NA",
+                        style: GoogleFonts.getFont('Poppins')),
+                    // subtitle: Text(chase.Votes.toString() + ' donuts'),
+                    subtitle: Text(dateAdded(chase)),
+                    trailing: Chip(
+                      avatar: CircleAvatar(
+                        backgroundColor: Colors.black12,
+                        child: SvgPicture.asset(donutSVG),
+                      ),
+                      label: Text(chase.votes.toString()),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShowChase(
+                                    record: chase,
+                                    key: UniqueKey(),
+                                  )));
+                    }),
+              ),
+            );
+          }).toList(),
+        );
+      }, error: (error, stackTrace) {
+        return Center(
+          child: Text('Error: $error'),
+        );
+      }, loading: () {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }),
     );
   }
+}
 
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('chases')
-          .orderBy('CreatedAt', descending: true)
-          .snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) return const LinearProgressIndicator();
-        return _buildList(context, snapshot.data.docs);
-      },
-    );
-  }
 
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot
-          .map((data) => _buildListItem(
-              context, data as DocumentSnapshot<Map<String, dynamic>>))
-          .toList(),
-    );
-  }
-
-  Widget _buildListItem(
-      BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
-    final chaseMap = data.data()!;
-    chaseMap["id"] = data.id;
-    final record = Chase.fromJson(chaseMap);
-    String? imageURL = '';
-
-    const String assetName = 'assets/donut2.svg';
-
-    /*
-  if (record?.ImageURL != null) {
-    if (record.ImageURL.isNotEmpty) {
-      imageURL = record.ImageURL.replaceAll(
+              /*
+  if (chase?.ImageURL != null) {
+    if (chase.ImageURL.isNotEmpty) {
+      imageURL = chase.ImageURL.replaceAll(
           RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
             caseSensitive: false,
             multiLine: false,
@@ -116,92 +89,3 @@ class _ChasesPageState extends State<ChasesPage> {
     imageURL = 'https://chaseapp.tv/icon.png';
   }
    */
-
-    var chaseDate = DateTime.parse(record.createdAt.toIso8601String());
-    var today = DateTime.now().toLocal();
-    var diff = chaseDate.difference(today);
-    // print("URLs " + record.urls.toString());
-
-    var dateMsg = '';
-
-    if (record.live) {
-      dateMsg = 'LIVE!';
-    } else if (diff.inDays.abs() == 0) {
-      // Was the chase today?
-      if (diff.inHours.abs() == 0) {
-        // Chase in last hour?
-        if (diff.inMinutes == 0) {
-          // In the last minute? show seconds
-          dateMsg = diff.inSeconds.abs().toString() + ' seconds ago';
-        } else {
-          // Otherwise show how many minutes
-          dateMsg = diff.inMinutes.abs().toString() + ' minutes ago';
-        }
-      } else if (diff.inHours.abs() == 1) {
-        // One hour ago
-        dateMsg = diff.inHours.abs().toString() + ' hour ago';
-      } else if (diff.inHours.abs() > 1) {
-        // Hours ago
-        dateMsg = diff.inHours.abs().toString() + ' hours ago';
-      }
-    } else {
-      // More than a day ago, just print the date
-      dateMsg = chaseDate.toIso8601String().substring(0, 10);
-    }
-
-    return Padding(
-      // key: ValueKey(record.Name),
-      key: ValueKey(record.id),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: ListTile(
-            /*
-          leading: CircleAvatar(
-            // child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
-            child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
-          )
-         */
-            title: Text(record.name, style: GoogleFonts.getFont('Poppins')),
-            // subtitle: Text(record.Votes.toString() + ' donuts'),
-            subtitle: Text(dateMsg),
-            trailing: Chip(
-              avatar: CircleAvatar(
-                backgroundColor: Colors.black12,
-                child: SvgPicture.asset(assetName),
-              ),
-              label: Text(record.votes.toString()),
-            ),
-
-            /*
-            trailing: new CircleAvatar(
-                backgroundColor: Colors.pink,
-                child: new Image(
-                  image: new AssetImage("images/donut.jpg"),
-                )),
-                */
-            onTap: () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShowChase(
-                                record: record,
-                                key: UniqueKey(),
-                              )))
-                }),
-      ),
-    );
-  }
-}
-
-_displayPlaceholderIcon() {
-  return const Image(image: AssetImage("images/video.png"));
-}
-
-_displayImageURL(String imageURL) {
-  return FadeInImage.memoryNetwork(
-      placeholder: kTransparentImage, image: imageURL);
-}

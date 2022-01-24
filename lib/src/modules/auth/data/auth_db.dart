@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:developer';
-
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/data/auth_db_ab.dart';
-import 'package:chaseapp/src/services/database_service.dart';
+import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
-import 'package:chaseapp/src/shared/util/helpers/helper_functions.dart';
-import 'package:chaseapp/src/top_level_providers/firebase_providers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:http/http.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart' as sa;
+import 'package:twitter_login/twitter_login.dart';
 
 class AuthDatabase implements AuthDB {
   AuthDatabase({
@@ -56,8 +56,6 @@ class AuthDatabase implements AuthDB {
       'tokens': FieldValue.arrayUnion([token]),
       'lastTokenUpdate': DateTime.now()
     });
-
-    updateTokenWhenRefreshed();
   }
 
   void updateTokenWhenRefreshed() {
@@ -73,17 +71,9 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> signOut() async {
     try {
-      // await HelperFunctions.saveUserLoggedInSharedPreference(false);
-      // await HelperFunctions.saveUserEmailSharedPreference('');
-      // await HelperFunctions.saveUserNameSharedPreference('');
       await read(googleSignInProvider).signOut();
       await read(firebaseAuthProvider).signOut();
-      // return await read(firebaseAuthProvider).signOut().whenComplete(() async {
-      //   await HelperFunctions.getUserLoggedInSharedPreference()
-      //       .then((value) {});
-      //   await HelperFunctions.getUserEmailSharedPreference().then((value) {});
-      //   await HelperFunctions.getUserNameSharedPreference().then((value) {});
-      // });
+      await read(facebookSignInProvider).logOut();
     } catch (e) {
       log(e.toString());
     }
@@ -96,8 +86,7 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Stream<UserData> streamUserData() {
-    final uid = read(firebaseAuthProvider).currentUser?.uid;
+  Stream<UserData> streamUserData(String uid) {
     final snapshot = usersCollectionRef.doc(uid).snapshots();
 
     return snapshot.map((e) {
@@ -110,65 +99,173 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<void> googleLogin() async {
+  Future<UserCredential> googleLogin() async {
     GoogleSignIn _googleSignIn = GoogleSignIn();
 
+    GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+
+    if (_googleUser == null) {
+      throw Exception('Google sign in failed');
+    }
+
+    GoogleSignInAuthentication? _googleAuth = await _googleUser.authentication;
+    final fauth.AuthCredential credential = fauth.GoogleAuthProvider.credential(
+        idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
+
+    return await read(firebaseAuthProvider).signInWithCredential(credential);
+  }
+
+  @override
+  Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     try {
-      GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+      switch (loginmethods) {
+        case SIGNINMETHOD.GOOGLE:
+          await googleLogin();
+          break;
 
-      if (_googleUser == null) {
-        return;
+        case SIGNINMETHOD.APPLE:
+          await appleLogin();
+          break;
+        case SIGNINMETHOD.FACEBOOK:
+          await facebookLogin();
+          break;
+        case SIGNINMETHOD.TWITTER:
+          await twitterLogin();
+          break;
+        default:
       }
-
-      GoogleSignInAuthentication? _googleAuth =
-          await _googleUser.authentication;
-      final fauth.AuthCredential credential =
-          fauth.GoogleAuthProvider.credential(
-              idToken: _googleAuth.idToken,
-              accessToken: _googleAuth.accessToken);
-
-      await read(firebaseAuthProvider).signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
-      throw UnimplementedError();
-    } on PlatformException catch (e) {
-      log(e.toString());
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          rethrow;
+        default:
+      }
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> createUserDoc() async {
-    final user = read(firebaseAuthProvider).currentUser!;
-    final uid = user.uid;
-
-    final DocumentReference docRef = usersCollectionRef.doc(uid);
-
-    final userDoc = await docRef.get();
-
-    if (!userDoc.exists) {
-      await usersCollectionRef.doc(uid).set(
-            UserData(
-                uid: uid,
-                userName: user.displayName!,
-                email: user.email!,
-                photoURL: null,
-                lastUpdated: DateTime.now().millisecondsSinceEpoch),
-          );
+  Future<UserData> createUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
+    try {
+      await docRef.set(
+        UserData(
+          uid: user.uid,
+          userName: user.displayName!,
+          email: user.email!,
+          photoURL: null,
+          lastUpdated: DateTime.now().millisecondsSinceEpoch,
+        ),
+      );
+      return await fetchUser(user);
+    } catch (e) {
+      throw e;
     }
   }
 
   @override
-  Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
-    switch (loginmethods) {
-      case SIGNINMETHOD.GOOGLE:
-        await googleLogin();
-        break;
+  Future<UserData> fetchUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
+    try {
+      final document = await docRef.get();
 
-      case SIGNINMETHOD.APPLE:
+      if (document.data() != null) {
+        return document.data()!;
+      } else {
         throw UnimplementedError();
-        break;
-      default:
+      }
+    } catch (e) {
+      throw e;
     }
+  }
+
+  Future<UserData> fetchOrCreateUser(User user) async {
+    final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
+    try {
+      final document = await docRef.get();
+
+      if (document.exists) {
+        if (document.data() != null) {
+          return document.data()!;
+        } else {
+          throw UnimplementedError();
+        }
+      } else {
+        return await createUser(user);
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<void> appleLogin() async {
+    try {
+      sa.AuthorizationCredentialAppleID _appleSignIn =
+          await sa.SignInWithApple.getAppleIDCredential(scopes: [
+        sa.AppleIDAuthorizationScopes.email,
+        sa.AppleIDAuthorizationScopes.fullName
+      ]);
+
+      if (_appleSignIn.identityToken == null) {
+        return;
+      }
+      final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
+          .credential(idToken: _appleSignIn.identityToken);
+
+      await read(firebaseAuthProvider).signInWithCredential(credential);
+    } on sa.SignInWithAppleAuthorizationException catch (e) {
+      if (e.code != sa.AuthorizationErrorCode.canceled) {
+        throw e;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> facebookLogin() async {
+    late final LoginResult loginResult;
+    late final OAuthCredential facebookAuthCredential;
+
+    loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    await read(firebaseAuthProvider)
+        .signInWithCredential(facebookAuthCredential);
+  }
+
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) async {
+    await socialLogin(signinmethod);
+
+    await read(firebaseAuthProvider)
+        .currentUser!
+        .linkWithCredential(providerOAuthCredential);
+  }
+
+  @override
+  Future<void> twitterLogin() async {
+    // Create a TwitterLogin instance
+    final twitterLogin = new TwitterLogin(
+        apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
+        apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
+        redirectURI: "social-firebase-auth://");
+
+    // Trigger the sign-in flow
+    final authResult = await twitterLogin.login();
+
+    // Create a credential from the access token
+    final twitterAuthCredential = TwitterAuthProvider.credential(
+      accessToken: authResult.authToken!,
+      secret: authResult.authTokenSecret!,
+    );
+
+    await read(firebaseAuthProvider)
+        .signInWithCredential(twitterAuthCredential);
   }
 }

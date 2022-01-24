@@ -47,7 +47,38 @@ found in the LICENSE file. -->
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Start: For Twitter auth -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <!-- Registered Callback URLs in TwitterApp -->
+                <data android:scheme="social-firebase-auth"
+                android:host="" /> <!-- host is optional -->
+            </intent-filter>
+            <!-- End: For Twitter auth -->
         </activity>
+
+        <!-- Start: For Facebook auth -->
+           <activity android:name="com.facebook.FacebookActivity"
+       android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+       android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <!-- End: For Facebook auth -->
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
@@ -56,6 +87,7 @@ found in the LICENSE file. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="live" />
+      
     </application>
     <queries>
         <intent>

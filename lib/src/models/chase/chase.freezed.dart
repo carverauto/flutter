@@ -22,20 +22,20 @@ class _$ChaseTearOff {
   const _$ChaseTearOff();
 
   _Chase call(
-      {String? id,
+      {required String id,
       @JsonKey(name: 'Name')
-          required String name,
+          required String? name,
       @JsonKey(name: 'Live')
-          required bool live,
+          required bool? live,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
-          required DateTime createdAt,
+      @DatetimeTimestampNullableConverter()
+          required DateTime? createdAt,
       @JsonKey(name: 'Desc')
-          required String desc,
+          required String? desc,
       @JsonKey(name: 'ImageURL')
           String? imageURL,
       @JsonKey(name: 'Votes')
-          required int votes,
+          required int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
       @JsonKey(name: 'Sentiment')
@@ -68,20 +68,20 @@ const $Chase = _$ChaseTearOff();
 mixin _$Chase {
 // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'Name')
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'Live')
-  bool get live => throw _privateConstructorUsedError;
+  bool? get live => throw _privateConstructorUsedError;
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  @DatetimeTimestampNullableConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'Desc')
-  String get desc => throw _privateConstructorUsedError;
+  String? get desc => throw _privateConstructorUsedError;
   @JsonKey(name: 'ImageURL')
   String? get imageURL => throw _privateConstructorUsedError;
   @JsonKey(name: 'Votes')
-  int get votes => throw _privateConstructorUsedError;
+  int? get votes => throw _privateConstructorUsedError;
   @JsonKey(name: 'Networks')
   List<Map<String, dynamic>>? get networks =>
       throw _privateConstructorUsedError;
@@ -100,20 +100,20 @@ abstract class $ChaseCopyWith<$Res> {
   factory $ChaseCopyWith(Chase value, $Res Function(Chase) then) =
       _$ChaseCopyWithImpl<$Res>;
   $Res call(
-      {String? id,
+      {String id,
       @JsonKey(name: 'Name')
-          String name,
+          String? name,
       @JsonKey(name: 'Live')
-          bool live,
+          bool? live,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
-          DateTime createdAt,
+      @DatetimeTimestampNullableConverter()
+          DateTime? createdAt,
       @JsonKey(name: 'Desc')
-          String desc,
+          String? desc,
       @JsonKey(name: 'ImageURL')
           String? imageURL,
       @JsonKey(name: 'Votes')
-          int votes,
+          int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
       @JsonKey(name: 'Sentiment')
@@ -147,23 +147,23 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       live: live == freezed
           ? _value.live
           : live // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       desc: desc == freezed
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       imageURL: imageURL == freezed
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
@@ -171,7 +171,7 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       votes: votes == freezed
           ? _value.votes
           : votes // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -194,20 +194,20 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
       __$ChaseCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? id,
+      {String id,
       @JsonKey(name: 'Name')
-          String name,
+          String? name,
       @JsonKey(name: 'Live')
-          bool live,
+          bool? live,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
-          DateTime createdAt,
+      @DatetimeTimestampNullableConverter()
+          DateTime? createdAt,
       @JsonKey(name: 'Desc')
-          String desc,
+          String? desc,
       @JsonKey(name: 'ImageURL')
           String? imageURL,
       @JsonKey(name: 'Votes')
-          int votes,
+          int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
       @JsonKey(name: 'Sentiment')
@@ -242,23 +242,23 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       live: live == freezed
           ? _value.live
           : live // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       desc: desc == freezed
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       imageURL: imageURL == freezed
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
@@ -266,7 +266,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       votes: votes == freezed
           ? _value.votes
           : votes // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
@@ -288,13 +288,13 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_Chase extends _Chase {
   const _$_Chase(
-      {this.id,
+      {required this.id,
       @JsonKey(name: 'Name')
           required this.name,
       @JsonKey(name: 'Live')
           required this.live,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
+      @DatetimeTimestampNullableConverter()
           required this.createdAt,
       @JsonKey(name: 'Desc')
           required this.desc,
@@ -315,26 +315,26 @@ class _$_Chase extends _Chase {
 
   @override // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-  final String? id;
+  final String id;
   @override
   @JsonKey(name: 'Name')
-  final String name;
+  final String? name;
   @override
   @JsonKey(name: 'Live')
-  final bool live;
+  final bool? live;
   @override
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampConverter()
-  final DateTime createdAt;
+  @DatetimeTimestampNullableConverter()
+  final DateTime? createdAt;
   @override
   @JsonKey(name: 'Desc')
-  final String desc;
+  final String? desc;
   @override
   @JsonKey(name: 'ImageURL')
   final String? imageURL;
   @override
   @JsonKey(name: 'Votes')
-  final int votes;
+  final int? votes;
   @override
   @JsonKey(name: 'Networks')
   final List<Map<String, dynamic>>? networks;
@@ -394,20 +394,20 @@ class _$_Chase extends _Chase {
 
 abstract class _Chase extends Chase {
   const factory _Chase(
-      {String? id,
+      {required String id,
       @JsonKey(name: 'Name')
-          required String name,
+          required String? name,
       @JsonKey(name: 'Live')
-          required bool live,
+          required bool? live,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
-          required DateTime createdAt,
+      @DatetimeTimestampNullableConverter()
+          required DateTime? createdAt,
       @JsonKey(name: 'Desc')
-          required String desc,
+          required String? desc,
       @JsonKey(name: 'ImageURL')
           String? imageURL,
       @JsonKey(name: 'Votes')
-          required int votes,
+          required int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
       @JsonKey(name: 'Sentiment')
@@ -420,26 +420,26 @@ abstract class _Chase extends Chase {
 
   @override // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-  String? get id;
+  String get id;
   @override
   @JsonKey(name: 'Name')
-  String get name;
+  String? get name;
   @override
   @JsonKey(name: 'Live')
-  bool get live;
+  bool? get live;
   @override
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampConverter()
-  DateTime get createdAt;
+  @DatetimeTimestampNullableConverter()
+  DateTime? get createdAt;
   @override
   @JsonKey(name: 'Desc')
-  String get desc;
+  String? get desc;
   @override
   @JsonKey(name: 'ImageURL')
   String? get imageURL;
   @override
   @JsonKey(name: 'Votes')
-  int get votes;
+  int? get votes;
   @override
   @JsonKey(name: 'Networks')
   List<Map<String, dynamic>>? get networks;

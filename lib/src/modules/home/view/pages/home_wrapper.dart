@@ -126,6 +126,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return Home();
   }
 }

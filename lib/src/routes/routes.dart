@@ -16,7 +16,7 @@ class Routes {
       case RouteName.USER_LOGIN:
         return MaterialPageRoute(builder: (_) => LogInView());
       case RouteName.Home:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(builder: (_) => Home());
       case RouteName.Profile:
         return MaterialPageRoute(
             builder: (_) => ProfilePage(

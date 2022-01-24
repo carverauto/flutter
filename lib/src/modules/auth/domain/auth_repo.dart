@@ -37,8 +37,8 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Stream<UserData> streamUserData() {
-    return read(authDbProvider).streamUserData();
+  Stream<UserData> streamUserData(String uid) {
+    return read(authDbProvider).streamUserData(uid);
   }
 
   @override
@@ -52,13 +52,25 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Future<void> socialLogin(SIGNINMETHOD loginmethods) {
+  Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     return read(authDbProvider).socialLogin(loginmethods);
   }
 
   @override
-  Future<void> createUser() async {
+  Future<UserData> fetchOrCreateUser(User user) async {
     // TODO: implement createUser
-    return await read(authDbProvider).createUserDoc();
+    return await read(authDbProvider).fetchOrCreateUser(user);
+  }
+
+  @override
+  void updateTokenWhenRefreshed() {
+    read(authDbProvider).updateTokenWhenRefreshed();
+  }
+
+  @override
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) {
+    return read(authDbProvider)
+        .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
   }
 }

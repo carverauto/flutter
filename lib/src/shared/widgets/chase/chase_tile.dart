@@ -18,14 +18,15 @@ class ChaseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChatPage(
-                    chaseId: chaseId,
-                    userName: userName,
-                    chaseName: chaseName,
-                    uid: uid)));
+        throw UnimplementedError();
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => ChatPage(
+        //             chaseId: chaseId,
+        //             userName: userName,
+        //             chaseName: chaseName,
+        //             uid: uid)));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),

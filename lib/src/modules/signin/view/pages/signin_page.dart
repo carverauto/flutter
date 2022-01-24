@@ -1,14 +1,83 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/enums/view_state.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
+import 'package:chaseapp/src/shared/util/helpers/multi_provider_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LogInView extends ConsumerWidget {
   LogInView({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> signIn(
+      Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
+    try {
+      await read(authRepoProvider).socialLogin(signinmethod);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          List<String> signInlist = await read(firebaseAuthProvider)
+              .fetchSignInMethodsForEmail(e.email!);
+          log(signInlist.toString());
+          final SIGNINMETHOD? knownAuthProvider =
+              await showDialog<SIGNINMETHOD?>(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                              "Account already created with different Provider. Please sign in with the provider you used to create the account at first. This will link your account with the provider you are currently using."),
+                          Wrap(
+                            children: signInlist.map<Widget>((provider) {
+                              final SIGNINMETHOD knownAuthProvider =
+                                  getSignInProviderHelper(provider);
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, knownAuthProvider);
+                                  },
+                                  child: Text(knownAuthProvider.name),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+
+          if (knownAuthProvider != null) {
+            try {
+              await read(authRepoProvider)
+                  .handleMutliProviderSignIn(knownAuthProvider, e.credential!);
+            } catch (e) {
+              log("Error", error: e);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(e.toString()),
+              ));
+            }
+          }
+
+          break;
+        default:
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -167,52 +236,52 @@ class LogInView extends ConsumerWidget {
                                       ),
                                       const SizedBox(height: 10.0),
                                        */
-                                InkWell(
-                                  child: Container(
-                                      width: deviceSize!.width / 2,
-                                      height: deviceSize!.height / 18,
-                                      margin: const EdgeInsets.only(top: 25),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black),
-                                      child: Center(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                          Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            decoration: const BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/google.jpg'),
-                                                  fit: BoxFit.cover),
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                          const Text(
-                                            'Sign in with Google',
-                                            style: TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                        ],
-                                      ))),
-                                  onTap: () async {
-                                    try {
-                                      ref
-                                          .read(authRepoProvider)
-                                          .socialLogin(SIGNINMETHOD.GOOGLE);
-                                    } catch (e) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(e.toString()),
-                                      ));
-                                    }
-                                  },
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.GOOGLE,
+                                        );
+                                      },
+                                      child: Text("Continue With Google"),
+                                    ),
+                                    if (Platform.isIOS)
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          signIn(
+                                            ref.read,
+                                            context,
+                                            SIGNINMETHOD.APPLE,
+                                          );
+                                        },
+                                        child: Text("Continue With Apple"),
+                                      ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.FACEBOOK,
+                                        );
+                                      },
+                                      child: Text("Continue With Facebook"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        signIn(
+                                          ref.read,
+                                          context,
+                                          SIGNINMETHOD.TWITTER,
+                                        );
+                                      },
+                                      child: Text("Continue With Twitter"),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(
                                   height: 16,

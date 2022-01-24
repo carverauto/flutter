@@ -4,13 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRepositoryAB {
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
-  Future<void> createUser();
+  Future<void> handleMutliProviderSignIn(
+      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
+  Future<UserData> fetchOrCreateUser(User user);
   Stream<User?> streamLogInStatus();
-  Stream<UserData> streamUserData();
+  Stream<UserData> streamUserData(String uid);
   Future<void> subscribeToTopics();
   Future<void> saveFirebaseDeviceToken();
   Future<void> sendEmailVerification();
   Future<bool> isEmailVerified();
   Future<User?> getCurrentUser();
   Future<void> signOut();
+  void updateTokenWhenRefreshed();
 }
