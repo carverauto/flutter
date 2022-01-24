@@ -33,6 +33,20 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        prod {
+            dimension "flavor-type"
+            applicationId "com.carverauto.chaseapp"
+           
+        }
+        dev {
+            dimension "flavor-type"
+            applicationId "com.carverauto.chaseapp.dev"
+           
+        }
+    }
     compileSdkVersion 31
 
     sourceSets {

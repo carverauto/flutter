@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ChaseApp_Dev</string>
+    <!-- Start: For Facebook auth -->
+    <string name="facebook_app_id">392332671355922</string>
+    <string name="fb_login_protocol_scheme">fb392332671355922</string>
+    <string name="facebook_client_token">1cc32b4fe3a584021cddfa956b666f3f</string>
+    <!-- End: For Facebook auth -->
+</resources>
