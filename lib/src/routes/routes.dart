@@ -1,5 +1,7 @@
 import 'package:chaseapp/src/modules/auth/view/pages/auth_view_wrapper.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
+import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
+import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chaseapp/src/modules/splash_screen/view/pages/splash_page.dart';
@@ -15,8 +17,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => AuthViewWrapper());
       case RouteName.USER_LOGIN:
         return MaterialPageRoute(builder: (_) => LogInView());
-      case RouteName.Home:
-        return MaterialPageRoute(builder: (_) => Home());
+      case RouteName.HomeWrapper:
+        return MaterialPageRoute(builder: (_) => HomeWrapper());
       case RouteName.Profile:
         return MaterialPageRoute(
             builder: (_) => ProfilePage(

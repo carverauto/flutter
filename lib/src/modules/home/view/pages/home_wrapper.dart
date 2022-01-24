@@ -14,7 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // also check for notifications configurations
 
 Future<void> handlebgmessage(RemoteMessage event) async {
-  print(event.data);
+  log(event.data.toString());
   print(
       'this is called if app is in background no matter when user opens the app');
   // If you're going to use other Firebase services in the background, such as Firestore,

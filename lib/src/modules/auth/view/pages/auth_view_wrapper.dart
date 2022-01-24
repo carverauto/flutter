@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chaseapp/src/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
+import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +22,7 @@ class AuthViewWrapper extends ConsumerWidget {
                       .read(postLoginStateNotifierProvider.notifier)
                       .initPostLoginActions(user);
 
-                  return Home();
+                  return HomeWrapper();
                 },
                 error: (e, s) {
                   log("ERROR --->", error: e);
