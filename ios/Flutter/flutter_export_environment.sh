@@ -3,7 +3,7 @@
 export "FLUTTER_ROOT=/Applications/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/rutviktak/flutter_projects/chaseApp/flutter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=/Users/rutviktak/flutter_projects/chaseApp/flutter/lib/main.dart"
+export "FLUTTER_TARGET=/Users/rutviktak/flutter_projects/chaseApp/flutter/lib/main_prod.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.2.0"
 export "FLUTTER_BUILD_NUMBER=2"
