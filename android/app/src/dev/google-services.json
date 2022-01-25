@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "949466065060",
+    "firebase_url": "https://chaseapp-staging-default-rtdb.firebaseio.com",
+    "project_id": "chaseapp-staging",
+    "storage_bucket": "chaseapp-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949466065060:android:4278c1fe7e48c990335e31",
+        "android_client_info": {
+          "package_name": "com.carverauto.chasedev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949466065060-9371u1p0lnd20ess2ei1l6dejpfavf7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carverauto.chasedev",
+            "certificate_hash": "ea11dc699450c09cd52f91a1a24e3e29a4a9f6d7"
+          }
+        },
+        {
+          "client_id": "949466065060-3j3ud0mad79j54vrvecvqf6pp5nakq30.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVVDXyXZ5-6HmRZ1FhgjRcKjt6HtSnas4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949466065060-3j3ud0mad79j54vrvecvqf6pp5nakq30.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949466065060-27mbkjnvk09f5hqbbsh61sphebjv93ot.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.carverauto.chaseapp.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
