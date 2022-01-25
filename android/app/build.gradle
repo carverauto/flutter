@@ -43,7 +43,7 @@ android {
         }
         dev {
             dimension "flavor-type"
-            applicationId "com.carverauto.chaseapp.dev"
+            applicationId "com.carverauto.chasedev"
            
         }
     }
