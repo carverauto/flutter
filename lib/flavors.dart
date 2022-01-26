@@ -9,12 +9,11 @@ class F {
   static String get title {
     switch (appFlavor) {
       case Flavor.PROD:
-        return 'Coves Management';
+        return 'ChaseApp Prod';
       case Flavor.DEV:
-        return 'Coves Management Dev';
+        return 'ChaseApp Dev';
       default:
-        return 'title';
+        throw UnimplementedError();
     }
   }
-
 }
