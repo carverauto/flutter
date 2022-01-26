@@ -55,12 +55,7 @@ class SettingsPage extends State<Settings> {
             Icons.logout,
             color: Colors.black,
           ),
-          onPressed: () {
-            signOutGoogle();
-            //Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) { return LoginScreen(); }), ModalRoute.withName('/'));
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => LogInView()));
-          },
+          onPressed: () {},
         ),
       ],
       title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),

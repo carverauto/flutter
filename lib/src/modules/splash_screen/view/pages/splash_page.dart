@@ -60,7 +60,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
                       Navigator.of(context)
-                          .pushReplacementNamed(RouteName.AuthViewWrapper);
+                          .pushReplacementNamed(RouteName.AUTH_VIEW_WRAPPER);
                     });
                   })
                 ],

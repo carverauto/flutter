@@ -1,11 +1,14 @@
-import 'dart:developer';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
-import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
+import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/widgets/appbar/topbar.dart';
+import 'package:chaseapp/src/shared/widgets/providerStateBuilder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,58 +20,75 @@ class Dashboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100.0),
-          child: Column(
-            children: <Widget>[TopBar()],
-          )),
-      body: ref.watch(streamChasesProvider).when(data: (chases) {
-        log(chases.length.toString());
-        return ListView(
-          padding: const EdgeInsets.only(top: 20.0),
-          children: chases.map((chase) {
-            return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: ListTile(
-                    title: Text(chase.name ?? "NA",
-                        style: GoogleFonts.getFont('Poppins')),
-                    // subtitle: Text(chase.Votes.toString() + ' donuts'),
-                    subtitle: Text(dateAdded(chase)),
-                    trailing: Chip(
-                      avatar: CircleAvatar(
-                        backgroundColor: Colors.black12,
-                        child: SvgPicture.asset(donutSVG),
-                      ),
-                      label: Text(chase.votes.toString()),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShowChase(
-                                    record: chase,
-                                    key: UniqueKey(),
-                                  )));
-                    }),
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: kElevation,
+        title: Image.asset(chaseAppNameImage),
+        actions: <Widget>[
+          IconButton(
+            icon: CircleAvatar(
+              radius: kImageSizeMedium,
+              backgroundImage: CachedNetworkImageProvider(
+                  ref.read(firebaseAuthProvider).currentUser?.photoURL ??
+                      'defaultPhotoURL'),
+            ),
+            onPressed: () => Navigator.pushNamed(
+              // context, MaterialPageRoute(builder: (context) => Settings()))),
+              context,
+              RouteName.PROFILE,
+            ),
+          ),
+        ],
+      ),
+      body: ProviderStateBuilder<List<Chase>>(
+          watchThisProvider: streamChasesProvider,
+          builder: (chases) {
+            return ListView(
+              padding: const EdgeInsets.symmetric(
+                vertical: kPaddingMediumConstant,
+                horizontal: kPaddingMediumConstant,
               ),
+              children: chases.map((chase) {
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: kPaddingMediumConstant,
+                  ),
+                  child: ListTile(
+                      style: ListTileStyle.list,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Theme.of(context).primaryColorLight,
+                          width: kBorderSideWidthSmallConstant,
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(kBorderRadiusSmallConstant),
+                      ),
+                      title: Text(chase.name ?? "NA",
+                          style: GoogleFonts.getFont('Poppins')),
+                      subtitle: Text(dateAdded(chase)),
+                      trailing: Chip(
+                        backgroundColor: Theme.of(context).hintColor,
+                        avatar: SvgPicture.asset(donutSVG),
+                        label: Text(
+                          chase.votes.toString(),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouteName.CHASE_VIEW,
+                          arguments: {
+                            "chase": chase,
+                          },
+                        );
+                      }),
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
-      }, error: (error, stackTrace) {
-        return Center(
-          child: Text('Error: $error'),
-        );
-      }, loading: () {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }),
+          }),
     );
   }
 }
