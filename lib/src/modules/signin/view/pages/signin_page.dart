@@ -20,9 +20,12 @@ class LogInView extends ConsumerWidget {
   Future<void> signIn(
       Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
     try {
+      //TODO: Loading State and call for login should go in SignInNotifer
       read(signInProvider.notifier).state = ViewState.Busy;
       await read(authRepoProvider).socialLogin(signinmethod);
     } on FirebaseAuthException catch (e) {
+      read(signInProvider.notifier).state = ViewState.Idle;
+
       switch (e.code) {
         case "account-exists-with-different-credential":
           List<String> signInlist = await read(firebaseAuthProvider)
@@ -85,6 +88,8 @@ class LogInView extends ConsumerWidget {
         default:
       }
     } catch (e) {
+      read(signInProvider.notifier).state = ViewState.Idle;
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),
       ));
