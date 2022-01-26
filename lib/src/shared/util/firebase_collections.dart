@@ -9,8 +9,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
+final CollectionReference chasesCollection = _firestore.collection('chases');
+final CollectionReference usersCollection = _firestore.collection('chases');
+
 final CollectionReference<UserData> usersCollectionRef =
-    _firestore.collection("users").withConverter<UserData>(
+    usersCollection.withConverter<UserData>(
   fromFirestore: (data, _) {
     final rawData = data.data()!;
 
@@ -22,7 +25,7 @@ final CollectionReference<UserData> usersCollectionRef =
 );
 
 final CollectionReference<Chase> chasesCollectionRef =
-    _firestore.collection("chases").withConverter<Chase>(
+    chasesCollection.withConverter<Chase>(
   fromFirestore: (data, _) {
     final rawData = data.data()!;
     rawData["id"] = data.id;
