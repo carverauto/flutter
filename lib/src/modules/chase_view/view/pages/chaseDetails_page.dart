@@ -36,7 +36,6 @@ class ShowChase extends ConsumerWidget {
         leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
-              color: Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -44,7 +43,7 @@ class ShowChase extends ConsumerWidget {
         title: Image.asset(chaseAppNameImage),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.share, color: Colors.black),
+            icon: const Icon(Icons.share),
             onPressed: () async {
               await Share.share(chase.desc ?? "NA", subject: chase.name);
             },
@@ -60,53 +59,72 @@ class ShowChase extends ConsumerWidget {
             children: <Widget>[
               AspectRatio(
                 aspectRatio: aspectRatioStandard,
-                child: AdaptiveImageBuilder(
-                  url: imageURL ?? '',
+                child: ColoredBox(
+                  color: Theme.of(context).colorScheme.primaryVariant,
+                  child: AdaptiveImageBuilder(
+                    url: imageURL ?? '',
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(kPaddingMediumConstant),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(chase.name ?? "NA",
-                        style: const TextStyle(fontWeight: FontWeight.w500)),
-                    Text(chase.desc ?? "NA"),
-                    const Divider(),
-                    chase.networks != null
-                        ? URLView(chase.networks as List<Map>)
-                        : const Text('Please wait..'),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: ClapFAB.image(
-                        trailing: Text(
-                          chase.votes.toString(),
-                          style: TextStyle(
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .subtitle1!
-                                .fontSize!,
-                          ),
-                        ),
-                        clapFabCallback: (int counter) async {
-                          final chaseDocRef = chasesCollection.doc(chase.id);
-
-                          await chaseDocRef.update({
-                            'Votes': FieldValue.increment(1),
-                          });
-                        },
-                        defaultImage: donutImage,
-                        filledImage: donutImage,
-                        countCircleColor: Colors.pink,
-                        hasShadow: true,
-                        sparkleColor: Colors.red,
-                        shadowColor: Colors.pink,
-                        defaultImageColor: Colors.pink,
-                        filledImageColor: Colors.pink,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(kPaddingMediumConstant),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        chase.name ?? "NA",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                    ),
-                  ],
+                      Divider(
+                        height: 10,
+                        color: Theme.of(context).colorScheme.primaryVariant,
+                      ),
+                      Expanded(
+                        child: Text(
+                          chase.desc ?? "NA",
+                          style: Theme.of(context).textTheme.subtitle2!,
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      chase.networks != null
+                          ? URLView(chase.networks as List<Map>)
+                          : const Text('Please wait..'),
+                    ],
+                  ),
                 ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: ClapFAB.image(
+                  trailing: Text(
+                    chase.votes.toString(),
+                    style: Theme.of(context).textTheme.headline6!,
+                  ),
+                  clapFabCallback: (int counter) async {
+                    final chaseDocRef = chasesCollection.doc(chase.id);
+
+                    await chaseDocRef.update({
+                      'Votes': FieldValue.increment(1),
+                    });
+                  },
+                  defaultImage: donutImage,
+                  filledImage: donutImage,
+                  countCircleColor: Colors.pink,
+                  hasShadow: true,
+                  sparkleColor: Colors.red,
+                  shadowColor: Colors.pink,
+                  defaultImageColor: Colors.pink,
+                  filledImageColor: Colors.pink,
+                ),
+              ),
+              SizedBox(
+                height: kItemsSpacingMedium,
               ),
             ],
           );

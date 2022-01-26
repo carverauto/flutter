@@ -3,5 +3,5 @@ import 'package:chaseapp/src/shared/enums/view_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final signInProvider =
-    StateNotifierProvider<SignInViewModelStateNotifier, ViewState>(
+    StateNotifierProvider.autoDispose<SignInViewModelStateNotifier, ViewState>(
         (ref) => SignInViewModelStateNotifier());

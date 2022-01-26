@@ -54,10 +54,11 @@ class Dashboard extends ConsumerWidget {
                     bottom: kPaddingMediumConstant,
                   ),
                   child: ListTile(
+                      tileColor: Theme.of(context).colorScheme.surface,
                       style: ListTileStyle.list,
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
-                          color: Theme.of(context).primaryColorLight,
+                          color: Theme.of(context).colorScheme.onSurface,
                           width: kBorderSideWidthSmallConstant,
                         ),
                         borderRadius:
@@ -67,13 +68,16 @@ class Dashboard extends ConsumerWidget {
                           style: GoogleFonts.getFont('Poppins')),
                       subtitle: Text(dateAdded(chase)),
                       trailing: Chip(
-                        backgroundColor: Theme.of(context).hintColor,
+                        // backgroundColor:
+                        //     Theme.of(context).colorScheme.onSurface,
+                        elevation: kElevation,
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         avatar: SvgPicture.asset(donutSVG),
                         label: Text(
                           chase.votes.toString(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                          ),
                         ),
                       ),
                       onTap: () {

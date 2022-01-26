@@ -19,9 +19,17 @@ class AdaptiveImageBuilder extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.info, color: Colors.white),
+            Icon(
+              Icons.info,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             SizedBox(height: 5),
-            Text("Failed to load image"),
+            Text(
+              "Failed to load image",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
           ],
         );
       },
@@ -41,7 +49,12 @@ class AdaptiveImageBuilder extends StatelessWidget {
           return child;
         }
 
-        return Center(child: CircularProgressIndicator());
+        return Center(
+            child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(
+            Theme.of(context).colorScheme.onPrimary,
+          ),
+        ));
       },
     );
   }

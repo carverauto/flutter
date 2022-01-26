@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/const/widgets.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
@@ -48,32 +47,55 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           user.photoURL ?? defaultPhotoURL),
                     ),
                   ),
-                  const Divider(height: kItemsSpacingMedium),
+                  Divider(
+                    height: kItemsSpacingMedium,
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('Full Name', style: TextStyle(fontSize: 17.0)),
                       Text(
-                          ref
-                                  .read(firebaseAuthProvider)
-                                  .currentUser!
-                                  .displayName ??
-                              "NA",
-                          style: const TextStyle(fontSize: 17.0)),
+                        'Full Name',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ref
+                                .read(firebaseAuthProvider)
+                                .currentUser!
+                                .displayName ??
+                            "NA",
+                        style: Theme.of(context).textTheme.subtitle1!,
+                      ),
                     ],
                   ),
-                  dividerMedium,
+                  Divider(
+                    height: kItemsSpacingMedium,
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('Email', style: TextStyle(fontSize: 17.0)),
                       Text(
-                          ref.read(firebaseAuthProvider).currentUser!.email ??
-                              "NA",
-                          style: const TextStyle(fontSize: 17.0)),
+                        'Email',
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ref.read(firebaseAuthProvider).currentUser!.email ??
+                            "NA",
+                        style: Theme.of(context).textTheme.subtitle1!,
+                      ),
                     ],
                   ),
-                  dividerLarge,
+                  Divider(
+                    height: kItemsSpacingLarge,
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                  ),
                   ElevatedButton(
                       onPressed: () async {
                         await launchUrl(privacyPolicy);
@@ -92,6 +114,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                         return ElevatedButton(
                           onPressed: () {
                             ref.read(authRepoProvider).signOut();
+                            Navigator.of(context).pop();
                           },
                           child: Text('Logout'),
                         );

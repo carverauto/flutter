@@ -44,7 +44,6 @@ class SettingsPage extends State<Settings> {
       leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -53,7 +52,6 @@ class SettingsPage extends State<Settings> {
         IconButton(
           icon: const Icon(
             Icons.logout,
-            color: Colors.black,
           ),
           onPressed: () {},
         ),

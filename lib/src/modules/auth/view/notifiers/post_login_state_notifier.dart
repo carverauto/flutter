@@ -17,7 +17,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user) async {
     if (!isInitialized) {
       //TODO: need to update the flow for requesting permissions
-      requestPermissions();
+      // requestPermissions();
       await _initFirebaseActions();
       isInitialized = true;
     }
