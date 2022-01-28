@@ -62,106 +62,111 @@ class Dashboard extends ConsumerWidget {
           );
         },
       ),
-      body: CustomScrollView(
-        controller: scrollController,
-        restorationId: "Chases List",
-        slivers: [
-          SliverAppBar(
-            centerTitle: true,
-            elevation: kElevation,
-            pinned: true,
-            title: Image.asset(chaseAppNameImage),
-            actions: [
-              IconButton(
-                icon: CircleAvatar(
-                  radius: kImageSizeMedium,
-                  backgroundImage: CachedNetworkImageProvider(
-                      ref.read(firebaseAuthProvider).currentUser?.photoURL ??
-                          'defaultPhotoURL'),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(chasesPaginatedStreamProvider.notifier).fetchFirstPage(true);
+        },
+        child: CustomScrollView(
+          controller: scrollController,
+          restorationId: "Chases List",
+          slivers: [
+            SliverAppBar(
+              centerTitle: true,
+              elevation: kElevation,
+              pinned: true,
+              title: Image.asset(chaseAppNameImage),
+              actions: [
+                IconButton(
+                  icon: CircleAvatar(
+                    radius: kImageSizeMedium,
+                    backgroundImage: CachedNetworkImageProvider(
+                        ref.read(firebaseAuthProvider).currentUser?.photoURL ??
+                            'defaultPhotoURL'),
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    // context, MaterialPageRoute(builder: (context) => Settings()))),
+                    context,
+                    RouteName.PROFILE,
+                  ),
                 ),
-                onPressed: () => Navigator.pushNamed(
-                  // context, MaterialPageRoute(builder: (context) => Settings()))),
-                  context,
-                  RouteName.PROFILE,
-                ),
-              ),
-            ],
-          ),
-          // Error if removed (Need to report)
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: kPaddingMediumConstant,
+              ],
             ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-            sliver: ProviderStateNotifierBuilder<List<Chase>>(
-                watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
-                scrollController: scrollController,
-                builder: (chases, controller, [Widget? bottomWidget]) {
-                  return chases.isEmpty
-                      ? SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  ref
-                                      .read(chasesPaginatedStreamProvider
-                                          .notifier)
-                                      .fetchFirstPage(true);
-                                },
-                                icon: Icon(Icons.replay),
-                              ),
-                              Chip(
-                                label: Text("No Chases Found!"),
-                              ),
-                            ],
-                          ),
-                        )
-                      : SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final chase = chases[index];
-
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  bottom: kPaddingMediumConstant,
+            // Error if removed (Need to report)
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: kPaddingMediumConstant,
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+              sliver: ProviderStateNotifierBuilder<List<Chase>>(
+                  watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
+                  scrollController: scrollController,
+                  builder: (chases, controller, [Widget? bottomWidget]) {
+                    return chases.isEmpty
+                        ? SliverToBoxAdapter(
+                            child: Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(chasesPaginatedStreamProvider
+                                            .notifier)
+                                        .fetchFirstPage(true);
+                                  },
+                                  icon: Icon(Icons.replay),
                                 ),
-                                child: ChaseTile(chase: chase),
-                              );
-                            },
-                            childCount: chases.length,
-                          ),
-                        );
-                }),
-          ),
-          SliverToBoxAdapter(
-            child: Align(
-              alignment: Alignment.center,
-              child: Consumer(
-                builder: (context, ref, _) {
-                  return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
-                        data: (chases, canLoad) {
-                          final isFetching = ref
-                              .read(chasesPaginatedStreamProvider.notifier)
-                              .isFetching;
-                          final onGoingState = ref
-                              .read(chasesPaginatedStreamProvider.notifier)
-                              .onGoingState;
-                          return BottomWidget(
-                            isFetching: isFetching,
-                            onGoingState: onGoingState,
-                            watchThisStateNotifierProvider:
-                                chasesPaginatedStreamProvider,
+                                Chip(
+                                  label: Text("No Chases Found!"),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final chase = chases[index];
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: kPaddingMediumConstant,
+                                  ),
+                                  child: ChaseTile(chase: chase),
+                                );
+                              },
+                              childCount: chases.length,
+                            ),
                           );
-                        },
-                        orElse: () => SizedBox.shrink(),
-                      );
-                },
+                  }),
+            ),
+            SliverToBoxAdapter(
+              child: Align(
+                alignment: Alignment.center,
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
+                          data: (chases, canLoad) {
+                            final isFetching = ref
+                                .read(chasesPaginatedStreamProvider.notifier)
+                                .isFetching;
+                            final onGoingState = ref
+                                .read(chasesPaginatedStreamProvider.notifier)
+                                .onGoingState;
+                            return BottomWidget(
+                              isFetching: isFetching,
+                              onGoingState: onGoingState,
+                              watchThisStateNotifierProvider:
+                                  chasesPaginatedStreamProvider,
+                            );
+                          },
+                          orElse: () => SizedBox.shrink(),
+                        );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
