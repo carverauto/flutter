@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
@@ -107,11 +108,14 @@ class ShowChase extends ConsumerWidget {
                     style: Theme.of(context).textTheme.headline6!,
                   ),
                   clapFabCallback: (int counter) async {
-                    final chaseDocRef = chasesCollection.doc(chase.id);
-
-                    await chaseDocRef.update({
-                      'Votes': FieldValue.increment(1),
-                    });
+                    try {
+                      ref.read(chaseRepoProvider).upVoteChase(chase.id);
+                    } catch (e) {
+                      log(
+                        "Error while upvoting a chase",
+                        error: e,
+                      );
+                    }
                   },
                   defaultImage: donutImage,
                   filledImage: donutImage,

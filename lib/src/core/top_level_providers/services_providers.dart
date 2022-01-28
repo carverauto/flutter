@@ -10,8 +10,7 @@ final sharedPreferancesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError();
 });
 
-final chaseDbProvider =
-    Provider<ChaseDbAB>((ref) => ChaseDatabase(read: ref.read));
+final chaseDbProvider = Provider<ChaseDbAB>((ref) => ChaseDatabase());
 
 final chaseRepoProvider =
     Provider<ChaseRepoAB>((ref) => ChaseRepository(read: ref.read));
