@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/modules/auth/view/pages/login_register.dart';
-import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class AuthViewWrapper extends ConsumerWidget {
     return loggedinstatus.when(
       data: (user) {
         if (user != null) {
-          return ref.watch(getUserProvider(user)).when(
+          return ref.watch(fetchUserProvider(user)).when(
                 data: (userData) {
                   log("Logged in");
                   ref

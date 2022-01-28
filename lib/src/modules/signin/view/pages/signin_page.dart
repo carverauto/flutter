@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
-import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/enums/view_state.dart';
@@ -20,7 +20,7 @@ class LogInView extends ConsumerWidget {
   Future<void> signIn(
       Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
     try {
-      //TODO: Loading State and call for login should go in SignInNotifer
+      //TODO:Loading State and call for login should go in SignInNotifer
       read(signInProvider.notifier).state = ViewState.Busy;
       await read(authRepoProvider).socialLogin(signinmethod);
     } on FirebaseAuthException catch (e) {
