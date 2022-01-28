@@ -83,8 +83,6 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
       try {
         onGoingState = OnGoingState.Loading;
         state = PaginationNotifierState.data(_items, true);
-        await Future.delayed(Duration(seconds: 5));
-
         final result = await fetchNextItems(_items.last, _items.length);
         if (result.isEmpty) {
           state = PaginationNotifierState.data(_items, true);
