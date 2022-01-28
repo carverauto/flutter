@@ -31,97 +31,86 @@ class Dashboard extends ConsumerWidget {
       }
     });
     return Scaffold(
-      body: NestedScrollView(
-        // controller: controller,
-        //               restorationId: "Chases List",
-        //               padding: const EdgeInsets.symmetric(
-        //                 vertical: kPaddingMediumConstant,
-        //                 horizontal: kPaddingMediumConstant,
-        //               ),
-        headerSliverBuilder: (context, isScrolled) {
-          return [
-            SliverAppBar(
-              centerTitle: true,
-              elevation: kElevation,
-              pinned: true,
-              title: Image.asset(chaseAppNameImage),
-              actions: [
-                IconButton(
-                  icon: CircleAvatar(
-                    radius: kImageSizeMedium,
-                    backgroundImage: CachedNetworkImageProvider(
-                        ref.read(firebaseAuthProvider).currentUser?.photoURL ??
-                            'defaultPhotoURL'),
-                  ),
-                  onPressed: () => Navigator.pushNamed(
-                    // context, MaterialPageRoute(builder: (context) => Settings()))),
-                    context,
-                    RouteName.PROFILE,
-                  ),
+      body: CustomScrollView(
+        controller: scrollController,
+        restorationId: "Chases List",
+        slivers: [
+          SliverAppBar(
+            centerTitle: true,
+            elevation: kElevation,
+            pinned: true,
+            title: Image.asset(chaseAppNameImage),
+            actions: [
+              IconButton(
+                icon: CircleAvatar(
+                  radius: kImageSizeMedium,
+                  backgroundImage: CachedNetworkImageProvider(
+                      ref.read(firebaseAuthProvider).currentUser?.photoURL ??
+                          'defaultPhotoURL'),
                 ),
-              ],
-            )
-          ];
-        },
-        body: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            // Error if removed (Need to report)
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: kPaddingMediumConstant,
+                onPressed: () => Navigator.pushNamed(
+                  // context, MaterialPageRoute(builder: (context) => Settings()))),
+                  context,
+                  RouteName.PROFILE,
+                ),
               ),
+            ],
+          ),
+          // Error if removed (Need to report)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: kPaddingMediumConstant,
             ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-              sliver: ProviderStateNotifierBuilder<List<Chase>>(
-                  watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
-                  scrollController: scrollController,
-                  builder: (chases, controller, [Widget? bottomWidget]) {
-                    log(chases.length.toString());
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+            sliver: ProviderStateNotifierBuilder<List<Chase>>(
+                watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
+                scrollController: scrollController,
+                builder: (chases, controller, [Widget? bottomWidget]) {
+                  log(chases.length.toString());
 
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final chase = chases[index];
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final chase = chases[index];
 
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: kPaddingMediumConstant,
-                            ),
-                            child: ChaseTile(chase: chase),
-                          );
-                        },
-                        childCount: chases.length,
-                      ),
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: kPaddingMediumConstant,
+                          ),
+                          child: ChaseTile(chase: chase),
+                        );
+                      },
+                      childCount: chases.length,
+                    ),
+                  );
+                }),
+          ),
+          SliverToBoxAdapter(
+            child: Consumer(
+              builder: (context, ref, _) {
+                return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
+                      data: (chases, canLoad) {
+                        final isFetching = ref
+                            .read(chasesPaginatedStreamProvider.notifier)
+                            .isFetching;
+                        final onGoingState = ref
+                            .read(chasesPaginatedStreamProvider.notifier)
+                            .onGoingState;
+                        return BottomWidget(
+                          isFetching: isFetching,
+                          onGoingState: onGoingState,
+                          watchThisStateNotifierProvider:
+                              chasesPaginatedStreamProvider,
+                        );
+                      },
+                      orElse: () => SizedBox.shrink(),
                     );
-                  }),
+              },
             ),
-            SliverToBoxAdapter(
-              child: Consumer(
-                builder: (context, ref, _) {
-                  return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
-                        data: (chases, canLoad) {
-                          final isFetching = ref
-                              .read(chasesPaginatedStreamProvider.notifier)
-                              .isFetching;
-                          final onGoingState = ref
-                              .read(chasesPaginatedStreamProvider.notifier)
-                              .onGoingState;
-                          return BottomWidget(
-                            isFetching: isFetching,
-                            onGoingState: onGoingState,
-                            watchThisStateNotifierProvider:
-                                chasesPaginatedStreamProvider,
-                          );
-                        },
-                        orElse: () => SizedBox.shrink(),
-                      );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -161,13 +150,13 @@ class ChaseTile extends StatelessWidget {
           ),
         ),
         onTap: () {
-          // Navigator.pushNamed(
-          //   context,
-          //   RouteName.CHASE_VIEW,
-          //   arguments: {
-          //     "chase": chase,
-          //   },
-          // );
+          Navigator.pushNamed(
+            context,
+            RouteName.CHASE_VIEW,
+            arguments: {
+              "chase": chase,
+            },
+          );
         });
   }
 }
