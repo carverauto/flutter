@@ -57,6 +57,7 @@ class ShowChase extends ConsumerWidget {
           String? imageURL = chase.imageURL;
 
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               AspectRatio(
                 aspectRatio: aspectRatioStandard,
@@ -69,67 +70,103 @@ class ShowChase extends ConsumerWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(kPaddingMediumConstant),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kPaddingMediumConstant,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        chase.name ?? "NA",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                              fontWeight: FontWeight.bold,
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: kItemsSpacingMedium,
                             ),
-                      ),
-                      Divider(
-                        height: 10,
-                        color: Theme.of(context).colorScheme.primaryVariant,
-                      ),
-                      Expanded(
-                        child: Text(
-                          chase.desc ?? "NA",
-                          style: Theme.of(context).textTheme.subtitle2!,
-                          maxLines: 10,
-                          overflow: TextOverflow.ellipsis,
+                            Text(
+                              chase.name ?? "NA",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            Divider(
+                              height: kItemsSpacingSmall,
+                              color:
+                                  Theme.of(context).colorScheme.primaryVariant,
+                            ),
+                            Flexible(
+                              child: Text(
+                                chase.desc ?? "NA",
+                                style: Theme.of(context).textTheme.subtitle2!,
+                                maxLines: 10,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      chase.networks != null
-                          ? URLView(chase.networks as List<Map>)
-                          : const Text('Please wait..'),
+                      SizedBox(
+                        height: kItemsSpacingSmall,
+                      ),
+                      Divider(
+                        height: kItemsSpacingSmall,
+                        color: Theme.of(context).colorScheme.primaryVariant,
+                      ),
+                      Text(
+                        "Watch here :",
+                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                              decoration: TextDecoration.underline,
+                            ),
+                      ),
+                      Expanded(
+                        child: chase.networks != null
+                            ? URLView(chase.networks as List<Map>)
+                            : const Text('Please wait..'),
+                      ),
+                      // Spacer(),
+                      SizedBox(
+                        height: kItemsSpacingMedium,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: ClapFAB.image(
+                          trailing: Text(
+                            chase.votes.toString(),
+                            style: Theme.of(context).textTheme.headline6!,
+                          ),
+                          clapFabCallback: (int counter) async {
+                            try {
+                              ref.read(chaseRepoProvider).upVoteChase(chase.id);
+                            } catch (e) {
+                              log(
+                                "Error while upvoting a chase",
+                                error: e,
+                              );
+                            }
+                          },
+                          defaultImage: donutImage,
+                          filledImage: donutImage,
+                          countCircleColor: Colors.pink,
+                          hasShadow: true,
+                          sparkleColor: Colors.red,
+                          shadowColor: Colors.pink,
+                          defaultImageColor: Colors.pink,
+                          filledImageColor: Colors.pink,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: ClapFAB.image(
-                  trailing: Text(
-                    chase.votes.toString(),
-                    style: Theme.of(context).textTheme.headline6!,
-                  ),
-                  clapFabCallback: (int counter) async {
-                    try {
-                      ref.read(chaseRepoProvider).upVoteChase(chase.id);
-                    } catch (e) {
-                      log(
-                        "Error while upvoting a chase",
-                        error: e,
-                      );
-                    }
-                  },
-                  defaultImage: donutImage,
-                  filledImage: donutImage,
-                  countCircleColor: Colors.pink,
-                  hasShadow: true,
-                  sparkleColor: Colors.red,
-                  shadowColor: Colors.pink,
-                  defaultImageColor: Colors.pink,
-                  filledImageColor: Colors.pink,
-                ),
-              ),
               SizedBox(
                 height: kItemsSpacingMedium,
-              ),
+              )
             ],
           );
         },
