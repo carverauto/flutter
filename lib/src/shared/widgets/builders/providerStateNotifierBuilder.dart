@@ -11,18 +11,12 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
   const ProviderStateNotifierBuilder({
     Key? key,
     required this.builder,
-    this.watchThisProvider,
-    this.watchThisStateNotifierProvider,
+    required this.watchThisStateNotifierProvider,
     required this.scrollController,
-  })  : assert(
-            watchThisProvider == null || watchThisStateNotifierProvider == null,
-            "One of them should be provided"),
-        super(key: key);
-
-  final ProviderBase<AsyncValue<T>>? watchThisProvider;
+  }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>>? watchThisStateNotifierProvider;
+      PaginationNotifierState<Chase>> watchThisStateNotifierProvider;
 
   final Widget Function(T data, ScrollController controller,
       [Widget bottomWidget]) builder;
@@ -31,12 +25,12 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(watchThisStateNotifierProvider!).when(
+    return ref.watch(watchThisStateNotifierProvider).when(
         data: (data, canLoad) {
       final isFetching =
-          ref.read(watchThisStateNotifierProvider!.notifier).isFetching;
+          ref.read(watchThisStateNotifierProvider.notifier).isFetching;
       final onGoingState =
-          ref.read(watchThisStateNotifierProvider!.notifier).onGoingState;
+          ref.read(watchThisStateNotifierProvider.notifier).onGoingState;
       return builder(
         data as T,
         scrollController,
@@ -48,7 +42,24 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
       );
     }, error: (e, s) {
       log("Error Occured", error: e, stackTrace: s);
-      return Text("Error : ${e.toString()}");
+      return SliverToBoxAdapter(
+        child: Column(
+          children: [
+            IconButton(
+              onPressed: () {
+                ref
+                    .read(watchThisStateNotifierProvider.notifier)
+                    .fetchFirstPage(true);
+              },
+              icon: Icon(Icons.replay),
+            ),
+            //Chip doesn't show label properly with multiline text
+            Chip(
+              label: Text("Something went wrong.\nPlease try again."),
+            ),
+          ],
+        ),
+      );
     }, loading: (chases) {
       return SliverToBoxAdapter(
         child: Center(
@@ -70,53 +81,59 @@ class BottomWidget extends ConsumerWidget {
   final bool isFetching;
   final OnGoingState onGoingState;
   final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>>? watchThisStateNotifierProvider;
+      PaginationNotifierState<Chase>> watchThisStateNotifierProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          border: BorderDirectional(
-            top:
-                BorderSide(color: Theme.of(context).colorScheme.primaryVariant),
-          ),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0, 3),
-              blurRadius: 8,
-              spreadRadius: 0.5,
-              color: Theme.of(context).colorScheme.primaryVariant,
-            )
-          ]),
-      child: Column(
-        children: [
-          if (isFetching)
-            Column(
-              children: [
-                CircularProgressIndicator.adaptive(),
-              ],
-            ),
-          if (onGoingState == OnGoingState.Error)
-            Column(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    ref
-                        .read(watchThisStateNotifierProvider!.notifier)
-                        .fetchNextPage();
-                  },
-                  icon: Icon(
-                    Icons.replay,
-                  ),
+    return onGoingState == OnGoingState.Data
+        ? ref.watch(watchThisStateNotifierProvider.notifier).noMoreChases
+            ? Chip(
+                label: Text("No more Chases Found."),
+              )
+            : SizedBox.shrink()
+        : Container(
+            padding: const EdgeInsets.all(15),
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                border: BorderDirectional(
+                  top: BorderSide(
+                      color: Theme.of(context).colorScheme.primaryVariant),
                 ),
-                Text("Something went wrong")
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, 3),
+                    blurRadius: 8,
+                    spreadRadius: 0.5,
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                  )
+                ]),
+            child: Column(
+              children: [
+                if (isFetching)
+                  Column(
+                    children: [
+                      CircularProgressIndicator.adaptive(),
+                    ],
+                  ),
+                if (onGoingState == OnGoingState.Error)
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          ref
+                              .read(watchThisStateNotifierProvider.notifier)
+                              .fetchNextPage();
+                        },
+                        icon: Icon(
+                          Icons.replay,
+                        ),
+                      ),
+                      Text("Something went wrong")
+                    ],
+                  ),
               ],
             ),
-        ],
-      ),
-    );
+          );
   }
 }

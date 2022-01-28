@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -17,16 +15,18 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
   final int hitsPerPage;
 
   final List<T> _items = [];
-  OnGoingState onGoingState = OnGoingState.Idle;
+  OnGoingState onGoingState = OnGoingState.Data;
 
   Timer _timer = Timer(Duration(milliseconds: 500), () {});
 
   bool get isFetching => onGoingState == OnGoingState.Loading;
 
+  bool noMoreChases = false;
+
   void init() {
     if (_items.isEmpty) {
       _timer.cancel();
-      fetchNextPage();
+      fetchFirstPage(true);
     }
   }
 
@@ -35,6 +35,30 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
         data: (_, hasReachedMax) => !hasReachedMax,
         orElse: () => true,
       );
+
+  Future<void> fetchFirstPage(bool clearCurrentList) async {
+    try {
+      state = PaginationNotifierState.loading(_items);
+      final List<T> result = _items.isEmpty || clearCurrentList
+          ? await fetchNextItems(
+              null,
+              0,
+            )
+          : await fetchNextItems(_items.last, _items.length);
+      if (clearCurrentList) {
+        _items.clear();
+      }
+      if (result.isEmpty) {
+        state = PaginationNotifierState.data(_items, true);
+      } else if (result.length < hitsPerPage) {
+        state = PaginationNotifierState.data(_items..addAll(result), true);
+      } else {
+        state = PaginationNotifierState.data(_items..addAll(result), false);
+      }
+    } catch (e, stk) {
+      state = PaginationNotifierState.error(e, stk);
+    }
+  }
 
   Future<void> fetchNextPage({
     bool clearCurrentList = false,
@@ -53,37 +77,18 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
     }
 
     if (_items.isEmpty) {
-      try {
-        state = PaginationNotifierState.loading(_items);
-        final List<T> result = _items.isEmpty || clearCurrentList
-            ? await fetchNextItems(
-                null,
-                0,
-              )
-            : await fetchNextItems(_items.last, _items.length);
-        if (clearCurrentList) {
-          _items.clear();
-        }
-        if (result.isEmpty) {
-          state = PaginationNotifierState.data(_items, true);
-        } else if (result.length < hitsPerPage) {
-          state = PaginationNotifierState.data(_items..addAll(result), true);
-        } else {
-          state = PaginationNotifierState.data(_items..addAll(result), false);
-        }
-      } catch (e, stk) {
-        print(mounted);
-        state = PaginationNotifierState.error(e, stk);
-      }
+      await fetchFirstPage(clearCurrentList);
     } else {
       if (onGoingState == OnGoingState.Loading) {
         return;
       }
-      log('nope');
       try {
         onGoingState = OnGoingState.Loading;
+
         state = PaginationNotifierState.data(_items, true);
         final result = await fetchNextItems(_items.last, _items.length);
+        noMoreChases = result.length < hitsPerPage;
+
         if (result.isEmpty) {
           state = PaginationNotifierState.data(_items, true);
         } else if (result.length < hitsPerPage) {
@@ -95,13 +100,12 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
       } catch (e) {
         state = PaginationNotifierState.data(_items, false);
         onGoingState = OnGoingState.Error;
-      } finally {}
+      }
     }
   }
 }
 
 enum OnGoingState {
-  Idle,
   Data,
   Loading,
   Error,

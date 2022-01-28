@@ -99,46 +99,66 @@ class Dashboard extends ConsumerWidget {
                 watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
                 scrollController: scrollController,
                 builder: (chases, controller, [Widget? bottomWidget]) {
-                  log(chases.length.toString());
-
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final chase = chases[index];
-
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: kPaddingMediumConstant,
+                  return chases.isEmpty
+                      ? SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  ref
+                                      .read(chasesPaginatedStreamProvider
+                                          .notifier)
+                                      .fetchFirstPage(true);
+                                },
+                                icon: Icon(Icons.replay),
+                              ),
+                              Chip(
+                                label: Text("No Chases Found!"),
+                              ),
+                            ],
                           ),
-                          child: ChaseTile(chase: chase),
+                        )
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final chase = chases[index];
+
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: kPaddingMediumConstant,
+                                ),
+                                child: ChaseTile(chase: chase),
+                              );
+                            },
+                            childCount: chases.length,
+                          ),
                         );
-                      },
-                      childCount: chases.length,
-                    ),
-                  );
                 }),
           ),
           SliverToBoxAdapter(
-            child: Consumer(
-              builder: (context, ref, _) {
-                return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
-                      data: (chases, canLoad) {
-                        final isFetching = ref
-                            .read(chasesPaginatedStreamProvider.notifier)
-                            .isFetching;
-                        final onGoingState = ref
-                            .read(chasesPaginatedStreamProvider.notifier)
-                            .onGoingState;
-                        return BottomWidget(
-                          isFetching: isFetching,
-                          onGoingState: onGoingState,
-                          watchThisStateNotifierProvider:
-                              chasesPaginatedStreamProvider,
-                        );
-                      },
-                      orElse: () => SizedBox.shrink(),
-                    );
-              },
+            child: Align(
+              alignment: Alignment.center,
+              child: Consumer(
+                builder: (context, ref, _) {
+                  return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
+                        data: (chases, canLoad) {
+                          final isFetching = ref
+                              .read(chasesPaginatedStreamProvider.notifier)
+                              .isFetching;
+                          final onGoingState = ref
+                              .read(chasesPaginatedStreamProvider.notifier)
+                              .onGoingState;
+                          return BottomWidget(
+                            isFetching: isFetching,
+                            onGoingState: onGoingState,
+                            watchThisStateNotifierProvider:
+                                chasesPaginatedStreamProvider,
+                          );
+                        },
+                        orElse: () => SizedBox.shrink(),
+                      );
+                },
+              ),
             ),
           ),
         ],
