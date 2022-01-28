@@ -1,16 +1,20 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +35,33 @@ class Dashboard extends ConsumerWidget {
       }
     });
     return Scaffold(
+      floatingActionButton: AnimatedBuilder(
+        animation: scrollController,
+        builder: (context, child) {
+          double scrollOffset = scrollController.offset;
+          return AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: scrollOffset > Sizescaleconfig.screenheight! * 0.5
+                ? FloatingActionButton(
+                    tooltip: "Scroll to top",
+                    child: Icon(
+                      Icons.arrow_upward,
+                    ),
+                    onPressed: () {
+                      scrollController.animateTo(
+                        0,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                  )
+                : SizedBox.shrink(),
+          );
+        },
+      ),
       body: CustomScrollView(
         controller: scrollController,
         restorationId: "Chases List",
