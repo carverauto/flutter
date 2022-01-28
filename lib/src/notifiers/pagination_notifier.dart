@@ -84,7 +84,6 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
         onGoingState = OnGoingState.Loading;
         state = PaginationNotifierState.data(_items, true);
         await Future.delayed(Duration(seconds: 5));
-        throw FirebaseException(plugin: "firestore", message: "timeout");
 
         final result = await fetchNextItems(_items.last, _items.length);
         if (result.isEmpty) {

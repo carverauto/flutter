@@ -13,7 +13,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
     required this.builder,
     this.watchThisProvider,
     this.watchThisStateNotifierProvider,
-    this.scrollController,
+    required this.scrollController,
   })  : assert(
             watchThisProvider == null || watchThisStateNotifierProvider == null,
             "One of them should be provided"),
@@ -27,36 +27,10 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
   final Widget Function(T data, ScrollController controller,
       [Widget bottomWidget]) builder;
 
-  final ScrollController? scrollController;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (watchThisProvider != null) {
-      return ref.watch(watchThisProvider!).when(
-            data: (data) {
-              return Column(
-                children: [
-                  Expanded(
-                    child:
-                        builder(data, scrollController ?? ScrollController()),
-                  ),
-                  SizedBox(
-                    height: kItemsSpacingLarge,
-                  ),
-                  CircularProgressIndicator(),
-                ],
-              );
-            },
-            error: (e, s) {
-              log("Error Occured", error: e, stackTrace: s);
-              return Text("Error : ${e.toString()}");
-            },
-            loading: () => Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-    }
-
     return ref.watch(watchThisStateNotifierProvider!).when(
         data: (data, canLoad) {
       final isFetching =
@@ -65,7 +39,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
           ref.read(watchThisStateNotifierProvider!.notifier).onGoingState;
       return builder(
         data as T,
-        scrollController ?? ScrollController(),
+        scrollController,
         BottomWidget(
           isFetching: isFetching,
           onGoingState: onGoingState,
@@ -76,7 +50,11 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
       log("Error Occured", error: e, stackTrace: s);
       return Text("Error : ${e.toString()}");
     }, loading: (chases) {
-      return Center(child: CircularProgressIndicator());
+      return SliverToBoxAdapter(
+        child: Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      );
     });
   }
 }

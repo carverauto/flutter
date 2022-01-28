@@ -31,83 +31,101 @@ class Dashboard extends ConsumerWidget {
       }
     });
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: kElevation,
-        title: Image.asset(chaseAppNameImage),
-        actions: <Widget>[
-          IconButton(
-            icon: CircleAvatar(
-              radius: kImageSizeMedium,
-              backgroundImage: CachedNetworkImageProvider(
-                  ref.read(firebaseAuthProvider).currentUser?.photoURL ??
-                      'defaultPhotoURL'),
-            ),
-            onPressed: () => Navigator.pushNamed(
-              // context, MaterialPageRoute(builder: (context) => Settings()))),
-              context,
-              RouteName.PROFILE,
-            ),
-          ),
-        ],
-      ),
-      body: ProviderStateNotifierBuilder<List<Chase>>(
-          watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
-          scrollController: scrollController,
-          builder: (chases, controller, [Widget? bottomWidget]) {
-            log(chases.length.toString());
-            return ListView.builder(
-                controller: controller,
-                restorationId: "Chases List",
-                padding: const EdgeInsets.symmetric(
-                  vertical: kPaddingMediumConstant,
-                  horizontal: kPaddingMediumConstant,
+      body: NestedScrollView(
+        // controller: controller,
+        //               restorationId: "Chases List",
+        //               padding: const EdgeInsets.symmetric(
+        //                 vertical: kPaddingMediumConstant,
+        //                 horizontal: kPaddingMediumConstant,
+        //               ),
+        headerSliverBuilder: (context, isScrolled) {
+          return [
+            SliverAppBar(
+              centerTitle: true,
+              elevation: kElevation,
+              pinned: true,
+              title: Image.asset(chaseAppNameImage),
+              actions: [
+                IconButton(
+                  icon: CircleAvatar(
+                    radius: kImageSizeMedium,
+                    backgroundImage: CachedNetworkImageProvider(
+                        ref.read(firebaseAuthProvider).currentUser?.photoURL ??
+                            'defaultPhotoURL'),
+                  ),
+                  onPressed: () => Navigator.pushNamed(
+                    // context, MaterialPageRoute(builder: (context) => Settings()))),
+                    context,
+                    RouteName.PROFILE,
+                  ),
                 ),
-                itemCount: chases.length,
-                itemBuilder: (context, index) {
-                  final chase = chases[index];
+              ],
+            )
+          ];
+        },
+        body: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            // Error if removed (Need to report)
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: kPaddingMediumConstant,
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+              sliver: ProviderStateNotifierBuilder<List<Chase>>(
+                  watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
+                  scrollController: scrollController,
+                  builder: (chases, controller, [Widget? bottomWidget]) {
+                    log(chases.length.toString());
 
-                  if (index != chases.length - 1) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: kPaddingMediumConstant,
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final chase = chases[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: kPaddingMediumConstant,
+                            ),
+                            child: ChaseTile(chase: chase),
+                          );
+                        },
+                        childCount: chases.length,
                       ),
-                      child: ChaseTile(chase: chase),
                     );
-                  } else {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: kPaddingMediumConstant,
-                          ),
-                          child: ChaseTile(chase: chase),
-                        ),
-                        if (bottomWidget != null) bottomWidget,
-                      ],
-                    );
-                  }
-                });
-          }),
+                  }),
+            ),
+            SliverToBoxAdapter(
+              child: Consumer(
+                builder: (context, ref, _) {
+                  return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
+                        data: (chases, canLoad) {
+                          final isFetching = ref
+                              .read(chasesPaginatedStreamProvider.notifier)
+                              .isFetching;
+                          final onGoingState = ref
+                              .read(chasesPaginatedStreamProvider.notifier)
+                              .onGoingState;
+                          return BottomWidget(
+                            isFetching: isFetching,
+                            onGoingState: onGoingState,
+                            watchThisStateNotifierProvider:
+                                chasesPaginatedStreamProvider,
+                          );
+                        },
+                        orElse: () => SizedBox.shrink(),
+                      );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-
-/*
-  if (chase?.ImageURL != null) {
-    if (chase.ImageURL.isNotEmpty) {
-      imageURL = chase.ImageURL.replaceAll(
-          RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
-            caseSensitive: false,
-            multiLine: false,
-          ), '_200x200.webp?');
-    } else {
-      imageURL = 'https://chaseapp.tv/icon.png';
-    }
-  } else {
-    imageURL = 'https://chaseapp.tv/icon.png';
-  }
-   */
 
 class ChaseTile extends StatelessWidget {
   const ChaseTile({
