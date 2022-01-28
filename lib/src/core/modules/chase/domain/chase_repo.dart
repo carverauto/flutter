@@ -16,8 +16,14 @@ class ChaseRepository implements ChaseRepoAB {
   }
 
   @override
-  Stream<List<Chase>> streamChases() {
-    return read(chaseDbProvider).streamChases();
+  Future<List<Chase>> streamChases(
+    Chase? chase,
+    int offset,
+  ) {
+    return read(chaseDbProvider).streamChases(
+      chase,
+      offset,
+    );
   }
 
   @override

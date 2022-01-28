@@ -15,7 +15,5 @@ final chaseDbProvider = Provider<ChaseDbAB>((ref) => ChaseDatabase());
 final chaseRepoProvider =
     Provider<ChaseRepoAB>((ref) => ChaseRepository(read: ref.read));
 
-final streamChasesProvider = StreamProvider<List<Chase>>(
-    (ref) => ref.watch(chaseRepoProvider).streamChases());
 final streamChaseProvider = StreamProvider.family<Chase, String>(
     (ref, chaseId) => ref.watch(chaseRepoProvider).streamChase(chaseId));

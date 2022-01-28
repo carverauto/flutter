@@ -17,14 +17,24 @@ class ChaseDatabase implements ChaseDbAB {
   }
 
   @override
-  Stream<List<Chase>> streamChases() {
-    // TODO: implement streamChases
-    return chasesCollectionRef
-        .orderBy("CreatedAt", descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) => doc.data()).toList();
-    });
+  Future<List<Chase>> streamChases(
+    Chase? chase,
+    int offset,
+  ) async {
+    if (chase == null) {
+      final documentSnapshot = await chasesCollectionRef
+          .orderBy("CreatedAt", descending: true)
+          .limit(20)
+          .get();
+      return documentSnapshot.docs.map((snapshot) => snapshot.data()).toList();
+    } else {
+      final documentSnapshot = await chasesCollectionRef
+          .orderBy("CreatedAt", descending: true)
+          .startAfter([chase.createdAt])
+          .limit(20)
+          .get();
+      return documentSnapshot.docs.map((snapshot) => snapshot.data()).toList();
+    }
   }
 
   @override
