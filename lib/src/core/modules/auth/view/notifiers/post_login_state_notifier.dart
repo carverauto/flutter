@@ -5,6 +5,7 @@ import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   PostLoginStateNotifier(
@@ -14,6 +15,8 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   final Reader _read;
 
   bool isInitialized = false;
+
+  Logger logger = Logger("PostLoginStateNotifier");
 
   Future<void> initPostLoginActions() async {
     if (!isInitialized) {
@@ -48,8 +51,8 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
       _read(firebaseCrashlyticsProvider).setUserIdentifier(userData.uid);
       _read(authRepoProvider).updateTokenWhenRefreshed();
-    } catch (e) {
-      log("Firebase Error --->", error: e);
+    } catch (e, stk) {
+      logger.warning("Error in initPostLoginActions", e, stk);
     }
   }
 }
