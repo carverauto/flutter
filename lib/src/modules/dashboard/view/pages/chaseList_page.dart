@@ -74,19 +74,23 @@ class Dashboard extends ConsumerWidget {
               title: Image.asset(chaseAppNameImage),
               actions: [
                 IconButton(
-                  icon: CircleAvatar(
-                    radius: kImageSizeMedium,
-                    backgroundImage: CachedNetworkImageProvider(
-                      ref.watch(userStreamProvider.select(
-                              (value) => value.asData?.value.photoURL)) ??
-                          defaultPhotoURL,
+                    icon: CircleAvatar(
+                      radius: kImageSizeMedium,
+                      backgroundImage: CachedNetworkImageProvider(
+                        ref.watch(userStreamProvider.select(
+                                (value) => value.asData?.value.photoURL)) ??
+                            defaultPhotoURL,
+                      ),
                     ),
-                  ),
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    RouteName.PROFILE,
-                  ),
-                ),
+                    onPressed: () async {
+                      bool? logOut = await Navigator.pushNamed<bool>(
+                        context,
+                        RouteName.PROFILE,
+                      );
+                      if (logOut != null) {
+                        await ref.read(authRepoProvider).signOut();
+                      }
+                    }),
               ],
             ),
             // Error if removed (Need to report)

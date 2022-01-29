@@ -35,19 +35,13 @@ class ShowChase extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 1.0,
-        // leading: IconButton(
-        //     icon: const Icon(
-        //       Icons.arrow_back_ios,
-        //     ),
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     }),
         title: Image.asset(chaseAppNameImage),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () async {
-              await Share.share(chase.desc ?? "NA", subject: chase.name);
+              //TODO:Need to share a dynamic link or web link for the chase
+              Share.share(chase.desc ?? "NA", subject: chase.name);
             },
           ),
         ],

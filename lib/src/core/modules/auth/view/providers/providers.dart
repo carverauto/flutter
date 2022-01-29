@@ -29,7 +29,7 @@ final streamLogInStatus = StreamProvider<User?>((ref) {
 final fetchUserProvider = FutureProvider.family<UserData, User>(
     (ref, user) async => ref.read(authRepoProvider).fetchOrCreateUser(user));
 
-final userStreamProvider = StreamProvider<UserData>((ref) {
+final userStreamProvider = StreamProvider.autoDispose<UserData>((ref) {
   final user = ref.watch(firebaseAuthProvider).currentUser!;
   return ref.read(authRepoProvider).streamUserData(user.uid);
 });

@@ -67,11 +67,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                   .copyWith(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              ref
-                                      .read(firebaseAuthProvider)
-                                      .currentUser!
-                                      .displayName ??
-                                  "NA",
+                              user.userName,
                               style: Theme.of(context).textTheme.subtitle1!,
                             ),
                           ],
@@ -91,11 +87,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                   .copyWith(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              ref
-                                      .read(firebaseAuthProvider)
-                                      .currentUser!
-                                      .email ??
-                                  "NA",
+                              user.email,
                               style: Theme.of(context).textTheme.subtitle1!,
                             ),
                           ],
@@ -124,9 +116,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             child: Consumer(
               builder: (context, ref, _) {
                 return ElevatedButton(
-                  onPressed: () {
-                    ref.read(authRepoProvider).signOut();
-                    Navigator.of(context).pop();
+                  onPressed: () async {
+                    Navigator.of(context).pop(true);
                   },
                   child: Text('Logout'),
                 );

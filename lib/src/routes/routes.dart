@@ -33,7 +33,7 @@ class Routes {
                   chase: chase,
                 ));
       case RouteName.PROFILE:
-        return MaterialPageRoute(builder: (_) => ProfileView());
+        return MaterialPageRoute<bool>(builder: (_) => ProfileView());
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(
