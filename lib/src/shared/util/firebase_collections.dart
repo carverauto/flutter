@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final _firestore = FirebaseFirestore.instance;
 
 final CollectionReference chasesCollection = _firestore.collection('chases');
-final CollectionReference usersCollection = _firestore.collection('chases');
+final CollectionReference usersCollection = _firestore.collection('users');
 
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(
