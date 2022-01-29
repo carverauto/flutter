@@ -25,7 +25,7 @@ class _$UserDataTearOff {
       {required String uid,
       required String userName,
       required String email,
-      String? photoURL,
+      required String photoURL,
       required int lastUpdated}) {
     return _UserData(
       uid: uid,
@@ -49,7 +49,7 @@ mixin _$UserData {
   String get uid => throw _privateConstructorUsedError;
   String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String? get photoURL => throw _privateConstructorUsedError;
+  String get photoURL => throw _privateConstructorUsedError;
   int get lastUpdated => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,7 +66,7 @@ abstract class $UserDataCopyWith<$Res> {
       {String uid,
       String userName,
       String email,
-      String? photoURL,
+      String photoURL,
       int lastUpdated});
 }
 
@@ -102,7 +102,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       lastUpdated: lastUpdated == freezed
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
@@ -120,7 +120,7 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       {String uid,
       String userName,
       String email,
-      String? photoURL,
+      String photoURL,
       int lastUpdated});
 }
 
@@ -157,7 +157,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       lastUpdated: lastUpdated == freezed
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
@@ -174,7 +174,7 @@ class _$_UserData extends _UserData {
       {required this.uid,
       required this.userName,
       required this.email,
-      this.photoURL,
+      required this.photoURL,
       required this.lastUpdated})
       : super._();
 
@@ -188,7 +188,7 @@ class _$_UserData extends _UserData {
   @override
   final String email;
   @override
-  final String? photoURL;
+  final String photoURL;
   @override
   final int lastUpdated;
 
@@ -235,7 +235,7 @@ abstract class _UserData extends UserData {
       {required String uid,
       required String userName,
       required String email,
-      String? photoURL,
+      required String photoURL,
       required int lastUpdated}) = _$_UserData;
   const _UserData._() : super._();
 
@@ -248,7 +248,7 @@ abstract class _UserData extends UserData {
   @override
   String get email;
   @override
-  String? get photoURL;
+  String get photoURL;
   @override
   int get lastUpdated;
   @override

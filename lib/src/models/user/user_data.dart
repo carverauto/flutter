@@ -11,7 +11,7 @@ abstract class UserData implements _$UserData {
     required String uid,
     required String userName,
     required String email,
-    String? photoURL,
+    required String photoURL,
     required int lastUpdated,
   }) = _UserData;
   factory UserData.fromJson(Map<String, dynamic> json) =>

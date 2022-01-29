@@ -10,7 +10,7 @@ _$_UserData _$$_UserDataFromJson(Map<String, dynamic> json) => _$_UserData(
       uid: json['uid'] as String,
       userName: json['userName'] as String,
       email: json['email'] as String,
-      photoURL: json['photoURL'] as String?,
+      photoURL: json['photoURL'] as String,
       lastUpdated: json['lastUpdated'] as int,
     );
 
