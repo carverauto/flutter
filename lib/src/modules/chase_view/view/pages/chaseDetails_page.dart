@@ -9,7 +9,7 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
-import 'package:chaseapp/src/shared/widgets/providerStateBuilder.dart';
+import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';

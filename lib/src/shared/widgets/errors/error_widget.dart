@@ -19,6 +19,7 @@ class ChaseAppErrorWidget extends StatelessWidget {
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
               onPressed: onRefresh,

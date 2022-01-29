@@ -100,24 +100,15 @@ class BottomWidget extends ConsumerWidget {
                   )
                 ]),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 if (isFetching) CircularAdaptiveProgressIndicator(),
                 if (onGoingState == OnGoingState.Error)
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          ref
-                              .read(watchThisStateNotifierProvider.notifier)
-                              .fetchNextPage();
-                        },
-                        icon: Icon(
-                          Icons.replay,
-                        ),
-                      ),
-                      Text("Something went wrong")
-                    ],
-                  ),
+                  ChaseAppErrorWidget(onRefresh: () {
+                    ref
+                        .read(watchThisStateNotifierProvider.notifier)
+                        .fetchNextPage();
+                  })
               ],
             ),
           );

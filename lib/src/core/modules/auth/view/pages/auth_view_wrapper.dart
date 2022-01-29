@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
@@ -34,10 +35,24 @@ class AuthViewWrapper extends ConsumerWidget {
                     logger.severe("Error while loading users data.", e, stk);
 
                     return Scaffold(
-                      body: ChaseAppErrorWidget(
-                        onRefresh: () {
-                          ref.refresh(streamLogInStatus);
-                        },
+                      body: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChaseAppErrorWidget(
+                            onRefresh: () {
+                              ref.refresh(streamLogInStatus);
+                            },
+                          ),
+                          SizedBox(
+                            height: kItemsSpacingMedium,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              ref.read(authRepoProvider).signOut();
+                            },
+                            child: Text("Logout"),
+                          )
+                        ],
                       ),
                     );
                   },
@@ -47,11 +62,14 @@ class AuthViewWrapper extends ConsumerWidget {
 
           return const LoginOrRegister();
         },
-        loading: () => CircularAdaptiveProgressIndicator(),
+        loading: () => Scaffold(
+              body: CircularAdaptiveProgressIndicator(),
+            ),
         error: (e, stk) {
           logger.severe("Error while loading users login status.", e, stk);
           return Scaffold(
             body: ChaseAppErrorWidget(
+              message: "Something went wrong. Please try again later.",
               onRefresh: () {
                 ref.refresh(streamLogInStatus);
               },
