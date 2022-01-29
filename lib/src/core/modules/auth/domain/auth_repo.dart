@@ -1,6 +1,6 @@
+import 'package:chaseapp/src/core/modules/auth/domain/auth_repo_ab.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,7 +58,6 @@ class AuthRepository implements AuthRepositoryAB {
 
   @override
   Future<UserData> fetchOrCreateUser(User user) async {
-    // TODO: implement createUser
     return await read(authDbProvider).fetchOrCreateUser(user);
   }
 

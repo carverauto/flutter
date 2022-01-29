@@ -10,26 +10,21 @@ class URLView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(0, 25.0, 25.0, 5.0),
-      // padding: EdgeInsets.all(0.2),
-
-      children: streams
-          .map<Widget>(
-            (data) => Align(
-              alignment: Alignment.centerLeft,
-              child: Chip(
-                backgroundColor: Theme.of(context).colorScheme.onBackground,
-                label: Linkify(
-                  onOpen: _onOpen,
-                  text: data["URL"],
-                ),
-              ),
+    return ListView.builder(
+      itemCount: streams.length,
+      itemBuilder: (context, index) {
+        final data = streams[index];
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: Chip(
+            backgroundColor: Theme.of(context).colorScheme.onBackground,
+            label: Linkify(
+              onOpen: _onOpen,
+              text: data["URL"],
             ),
-          )
-          .toList(),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+          ),
+        );
+      },
     );
   }
 

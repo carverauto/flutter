@@ -3,30 +3,33 @@ import 'dart:developer';
 import 'package:chaseapp/src/shared/enums/nodle_state.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class NodelStateNotifier extends StateNotifier<NodleState> {
   NodelStateNotifier() : super(NodleState.Idle);
 
+  final Logger logger = Logger('NodelStateNotifier');
+
   static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
   late final String _value;
   String get value => _value;
-  String status = "NA";
-  String nodleConfig = "NA";
+  String? status = null;
+  String? nodleConfig = null;
 
   void initializeNodle() async {
     try {
       _value = await platform.invokeMethod("init");
       log("Nodle initialized: $_value");
-    } catch (e) {
-      log("Error Initializing Nodle", error: e);
+    } catch (e, stk) {
+      logger.severe("Error initializing nodle", e, stk);
     }
   }
 
   Future getNodleStatus() async {
     try {
       status = await platform.invokeMethod("isScanning");
-    } catch (e) {
-      log("Error getting Nodle status", error: e);
+    } catch (e, stk) {
+      logger.warning("Error getting Nodle status", e, stk);
     }
   }
 
@@ -35,8 +38,8 @@ class NodelStateNotifier extends StateNotifier<NodleState> {
 
     try {
       nodleConfig = await platform.invokeMethod("showConfig");
-    } catch (e) {
-      log("Error getting Nodle config", error: e);
+    } catch (e, stk) {
+      logger.warning("Error getting Nodle config", e, stk);
     }
   }
 }

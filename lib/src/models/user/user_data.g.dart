@@ -10,8 +10,12 @@ _$_UserData _$$_UserDataFromJson(Map<String, dynamic> json) => _$_UserData(
       uid: json['uid'] as String,
       userName: json['userName'] as String,
       email: json['email'] as String,
-      photoURL: json['photoURL'] as String?,
+      photoURL: json['photoURL'] as String,
       lastUpdated: json['lastUpdated'] as int,
+      lastTokenUpdate: const DatetimeTimestampNullableConverter()
+          .fromJson(json['lastTokenUpdate'] as Timestamp?),
+      tokens:
+          (json['tokens'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$_UserDataToJson(_$_UserData instance) =>
@@ -21,4 +25,7 @@ Map<String, dynamic> _$$_UserDataToJson(_$_UserData instance) =>
       'email': instance.email,
       'photoURL': instance.photoURL,
       'lastUpdated': instance.lastUpdated,
+      'lastTokenUpdate': const DatetimeTimestampNullableConverter()
+          .toJson(instance.lastTokenUpdate),
+      'tokens': instance.tokens,
     };

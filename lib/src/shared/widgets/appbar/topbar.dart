@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';

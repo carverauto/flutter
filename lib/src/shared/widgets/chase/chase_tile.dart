@@ -1,49 +1,54 @@
+import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:flutter/material.dart';
-import 'package:chaseapp/src/modules/chats/view/pages/chat_page.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ChaseTile extends StatelessWidget {
-  const ChaseTile(
-      {Key? key,
-      required this.userName,
-      required this.chaseId,
-      required this.chaseName,
-      required this.uid})
-      : super(key: key);
-  final String userName;
-  final String chaseId;
-  final String chaseName;
-  final String uid;
+  const ChaseTile({
+    Key? key,
+    required this.chase,
+  }) : super(key: key);
+
+  final Chase chase;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        throw UnimplementedError();
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => ChatPage(
-        //             chaseId: chaseId,
-        //             userName: userName,
-        //             chaseName: chaseName,
-        //             uid: uid)));
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-        child: ListTile(
-          leading: CircleAvatar(
-            radius: 30.0,
-            backgroundColor: Colors.blueAccent,
-            child: Text(chaseName.substring(0, 1).toUpperCase(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white)),
+    return ListTile(
+        tileColor: Theme.of(context).colorScheme.surface,
+        style: ListTileStyle.list,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.onSurface,
+            width: kBorderSideWidthSmallConstant,
           ),
-          title: Text(chaseName,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text("Join the conversation as $userName",
-              style: const TextStyle(fontSize: 13.0)),
+          borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
         ),
-      ),
-    );
+        title: Text(
+          chase.name ?? "NA",
+        ),
+        subtitle: Text(dateAdded(chase)),
+        trailing: Chip(
+          elevation: kElevation,
+          labelStyle: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+          avatar: SvgPicture.asset(donutSVG),
+          label: Text(
+            chase.votes.toString(),
+          ),
+        ),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            RouteName.CHASE_VIEW,
+            arguments: {
+              "chase": chase,
+            },
+          );
+        });
   }
 }

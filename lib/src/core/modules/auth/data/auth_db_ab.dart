@@ -13,13 +13,10 @@ abstract class AuthDB {
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
   Future<void> subscribeToTopics();
   Future<void> saveFirebaseDeviceToken();
-  Future<void> sendEmailVerification();
-  Future<UserCredential> googleLogin();
+  Future<void> googleLogin();
   Future<void> appleLogin();
   Future<void> facebookLogin();
   Future<void> twitterLogin();
-  Future<bool> isEmailVerified();
-  Future<User?> getCurrentUser();
   Future<void> signOut();
   void updateTokenWhenRefreshed();
 }

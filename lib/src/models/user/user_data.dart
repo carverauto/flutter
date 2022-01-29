@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user_data.freezed.dart';
@@ -11,8 +12,10 @@ abstract class UserData implements _$UserData {
     required String uid,
     required String userName,
     required String email,
-    String? photoURL,
+    required String photoURL,
     required int lastUpdated,
+    @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
+    List<String>? tokens,
   }) = _UserData;
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
