@@ -12,17 +12,21 @@ import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class LogInView extends ConsumerWidget {
   LogInView({Key? key}) : super(key: key);
-  final _formKey = GlobalKey<FormState>();
+
+  final Logger logger = Logger("LogInView");
 
   Future<void> signIn(
       Reader read, BuildContext context, SIGNINMETHOD signinmethod) async {
+    read(signInProvider.notifier).state = ViewState.Busy;
     try {
       //TODO:Loading State and call for login should go in SignInNotifer
-      read(signInProvider.notifier).state = ViewState.Busy;
+
       await read(authRepoProvider).socialLogin(signinmethod);
+      read(signInProvider.notifier).state = ViewState.Idle;
     } on FirebaseAuthException catch (e) {
       read(signInProvider.notifier).state = ViewState.Idle;
 
@@ -30,7 +34,7 @@ class LogInView extends ConsumerWidget {
         case "account-exists-with-different-credential":
           List<String> signInlist = await read(firebaseAuthProvider)
               .fetchSignInMethodsForEmail(e.email!);
-          log(signInlist.toString());
+
           final SIGNINMETHOD? knownAuthProvider =
               await showDialog<SIGNINMETHOD?>(
                   context: context,
@@ -76,22 +80,29 @@ class LogInView extends ConsumerWidget {
             try {
               await read(authRepoProvider)
                   .handleMutliProviderSignIn(knownAuthProvider, e.credential!);
-            } catch (e) {
-              log("Error", error: e);
+            } catch (e, stk) {
+              logger.severe("Error while logging User.", e, stk);
+
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(e.toString()),
+                content: Text(
+                    "Error logging in with $knownAuthProvider. Please try again."),
               ));
             }
           }
 
           break;
         default:
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(e.code.replaceAll("-", " ").toUpperCase()),
+          ));
+          break;
       }
-    } catch (e) {
+    } catch (e, stk) {
+      logger.severe("Error while logging User.", e, stk);
       read(signInProvider.notifier).state = ViewState.Idle;
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
+        content: Text("Something went wrong. Please try again."),
       ));
     }
   }

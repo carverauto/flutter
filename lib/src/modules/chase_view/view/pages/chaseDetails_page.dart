@@ -15,6 +15,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
@@ -26,21 +27,21 @@ class ShowChase extends ConsumerWidget {
 
   ShowChase({Key? key, required this.chase}) : super(key: key);
 
+  final Logger logger = Logger("ChaseView");
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: new Color(0xfff8faf8),
         centerTitle: true,
         elevation: 1.0,
-        // leading: new Icon(Icons.arrow_back_ios),
-        leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
+        // leading: IconButton(
+        //     icon: const Icon(
+        //       Icons.arrow_back_ios,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     }),
         title: Image.asset(chaseAppNameImage),
         actions: <Widget>[
           IconButton(
@@ -53,6 +54,7 @@ class ShowChase extends ConsumerWidget {
       ),
       body: ProviderStateBuilder<Chase>(
         watchThisProvider: streamChaseProvider(chase.id),
+        logger: logger,
         builder: (chase) {
           String? imageURL = chase.imageURL;
 
@@ -142,11 +144,20 @@ class ShowChase extends ConsumerWidget {
                           ),
                           clapFabCallback: (int counter) async {
                             try {
+                              //TODO: Improve this handling
                               ref.read(chaseRepoProvider).upVoteChase(chase.id);
-                            } catch (e) {
-                              log(
-                                "Error while upvoting a chase",
-                                error: e,
+                            } catch (e, stk) {
+                              logger.warning(
+                                "Error while upvoting a Chase",
+                                e,
+                                stk,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Something went wrong. Please try again later.',
+                                  ),
+                                ),
                               );
                             }
                           },

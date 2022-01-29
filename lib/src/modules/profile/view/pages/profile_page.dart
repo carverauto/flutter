@@ -10,6 +10,7 @@ import 'package:chaseapp/src/shared/widgets/providerStateBuilder.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class ProfileView extends ConsumerStatefulWidget {
 }
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
+  final Logger logger = Logger("Profile");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +31,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       ),
       body: ProviderStateBuilder<UserData>(
         watchThisProvider: userStreamProvider,
+        logger: logger,
         builder: (user) {
           return Padding(
               padding: const EdgeInsets.symmetric(

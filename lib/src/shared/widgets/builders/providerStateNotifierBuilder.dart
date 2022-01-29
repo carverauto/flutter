@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
   const ProviderStateNotifierBuilder({
@@ -13,6 +13,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
     required this.builder,
     required this.watchThisStateNotifierProvider,
     required this.scrollController,
+    required this.logger,
   }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
@@ -22,6 +23,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
       [Widget bottomWidget]) builder;
 
   final ScrollController scrollController;
+  final Logger logger;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,8 +42,8 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
           watchThisStateNotifierProvider: watchThisStateNotifierProvider,
         ),
       );
-    }, error: (e, s) {
-      log("Error Occured", error: e, stackTrace: s);
+    }, error: (e, stk) {
+      logger.log(Level.SEVERE, "Error Fetching Data", e, stk);
       return SliverToBoxAdapter(
         child: Column(
           children: [
@@ -55,7 +57,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
             ),
             //Chip doesn't show label properly with multiline text
             Chip(
-              label: Text("Something went wrong.\nPlease try again."),
+              label: Text("Something went wrong."),
             ),
           ],
         ),

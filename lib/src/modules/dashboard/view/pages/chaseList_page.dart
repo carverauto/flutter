@@ -10,20 +10,23 @@ import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilde
 import 'package:chaseapp/src/shared/widgets/chase/chase_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class Dashboard extends ConsumerWidget {
   Dashboard({Key? key}) : super(key: key);
 
   final ScrollController scrollController = ScrollController();
+  final Logger logger = Logger('Dashboard');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chasesPaingationProvider = chasesPaginatedStreamProvider(logger);
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
       double delta = MediaQuery.of(context).size.width * 0.20;
       if (maxScroll - currentScroll <= delta) {
-        ref.read(chasesPaginatedStreamProvider.notifier).fetchNextPage();
+        ref.read(chasesPaingationProvider.notifier).fetchNextPage();
       }
     });
     return Scaffold(
@@ -42,7 +45,7 @@ class Dashboard extends ConsumerWidget {
                     child: Icon(
                       Icons.arrow_upward,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       scrollController.animateTo(
                         0,
                         duration: Duration(milliseconds: 300),
@@ -56,7 +59,7 @@ class Dashboard extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          ref.read(chasesPaginatedStreamProvider.notifier).fetchFirstPage(true);
+          ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
         },
         child: CustomScrollView(
           controller: scrollController,
@@ -76,7 +79,6 @@ class Dashboard extends ConsumerWidget {
                             'defaultPhotoURL'),
                   ),
                   onPressed: () => Navigator.pushNamed(
-                    // context, MaterialPageRoute(builder: (context) => Settings()))),
                     context,
                     RouteName.PROFILE,
                   ),
@@ -92,7 +94,8 @@ class Dashboard extends ConsumerWidget {
             SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
               sliver: ProviderStateNotifierBuilder<List<Chase>>(
-                  watchThisStateNotifierProvider: chasesPaginatedStreamProvider,
+                  watchThisStateNotifierProvider: chasesPaingationProvider,
+                  logger: logger,
                   scrollController: scrollController,
                   builder: (chases, controller, [Widget? bottomWidget]) {
                     return chases.isEmpty
@@ -102,7 +105,8 @@ class Dashboard extends ConsumerWidget {
                                 IconButton(
                                   onPressed: () {
                                     ref
-                                        .read(chasesPaginatedStreamProvider
+                                        .read(chasesPaginatedStreamProvider(
+                                                logger)
                                             .notifier)
                                         .fetchFirstPage(true);
                                   },
@@ -136,19 +140,19 @@ class Dashboard extends ConsumerWidget {
                 alignment: Alignment.center,
                 child: Consumer(
                   builder: (context, ref, _) {
-                    return ref.watch(chasesPaginatedStreamProvider).maybeWhen(
+                    return ref.watch(chasesPaingationProvider).maybeWhen(
                           data: (chases, canLoad) {
                             final isFetching = ref
-                                .read(chasesPaginatedStreamProvider.notifier)
+                                .read(chasesPaingationProvider.notifier)
                                 .isFetching;
                             final onGoingState = ref
-                                .read(chasesPaginatedStreamProvider.notifier)
+                                .read(chasesPaingationProvider.notifier)
                                 .onGoingState;
                             return BottomWidget(
                               isFetching: isFetching,
                               onGoingState: onGoingState,
                               watchThisStateNotifierProvider:
-                                  chasesPaginatedStreamProvider,
+                                  chasesPaingationProvider,
                             );
                           },
                           orElse: () => SizedBox.shrink(),

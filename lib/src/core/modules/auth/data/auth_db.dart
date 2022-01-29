@@ -21,24 +21,6 @@ class AuthDatabase implements AuthDB {
   });
   final Reader read;
 
-  @override
-  Future<User?> getCurrentUser() async {
-    final User? user = FirebaseAuth.instance.currentUser;
-    return user;
-  }
-
-  @override
-  Future<void> sendEmailVerification() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    user?.sendEmailVerification();
-  }
-
-  @override
-  Future<bool> isEmailVerified() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    return user!.emailVerified;
-  }
-
   Future<void> saveFirebaseDeviceToken() async {
     String? token = await read(firebaseMesssagingProvider).getToken();
     if (token != null) {
@@ -72,8 +54,12 @@ class AuthDatabase implements AuthDB {
       await read(googleSignInProvider).signOut();
       await read(firebaseAuthProvider).signOut();
       await read(facebookSignInProvider).logOut();
-    } catch (e) {
-      log(e.toString());
+    } catch (e, stk) {
+      log(
+        "Error signing out",
+        error: e,
+        stackTrace: stk,
+      );
     }
   }
 
@@ -97,49 +83,39 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Future<UserCredential> googleLogin() async {
+  Future<void> googleLogin() async {
     GoogleSignIn _googleSignIn = GoogleSignIn();
 
     GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
 
     if (_googleUser == null) {
-      throw Exception('Google sign in failed');
+      return;
     }
 
     GoogleSignInAuthentication? _googleAuth = await _googleUser.authentication;
     final fauth.AuthCredential credential = fauth.GoogleAuthProvider.credential(
         idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
 
-    return await read(firebaseAuthProvider).signInWithCredential(credential);
+    await read(firebaseAuthProvider).signInWithCredential(credential);
   }
 
   @override
   Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
-    try {
-      switch (loginmethods) {
-        case SIGNINMETHOD.GOOGLE:
-          await googleLogin();
-          break;
+    switch (loginmethods) {
+      case SIGNINMETHOD.GOOGLE:
+        await googleLogin();
+        break;
 
-        case SIGNINMETHOD.APPLE:
-          await appleLogin();
-          break;
-        case SIGNINMETHOD.FACEBOOK:
-          await facebookLogin();
-          break;
-        case SIGNINMETHOD.TWITTER:
-          await twitterLogin();
-          break;
-        default:
-      }
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "account-exists-with-different-credential":
-          rethrow;
-        default:
-      }
-    } catch (e) {
-      rethrow;
+      case SIGNINMETHOD.APPLE:
+        await appleLogin();
+        break;
+      case SIGNINMETHOD.FACEBOOK:
+        await facebookLogin();
+        break;
+      case SIGNINMETHOD.TWITTER:
+        await twitterLogin();
+        break;
+      default:
     }
   }
 
@@ -206,9 +182,6 @@ class AuthDatabase implements AuthDB {
         sa.AppleIDAuthorizationScopes.fullName
       ]);
 
-      if (_appleSignIn.identityToken == null) {
-        return;
-      }
       final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
           .credential(idToken: _appleSignIn.identityToken);
 
@@ -250,9 +223,10 @@ class AuthDatabase implements AuthDB {
   Future<void> twitterLogin() async {
     // Create a TwitterLogin instance
     final twitterLogin = new TwitterLogin(
-        apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
-        apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
-        redirectURI: "social-firebase-auth://");
+      apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
+      apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
+      redirectURI: "social-firebase-auth://",
+    );
 
     // Trigger the sign-in flow
     final authResult = await twitterLogin.login();

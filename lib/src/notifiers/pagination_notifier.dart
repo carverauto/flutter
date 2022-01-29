@@ -5,12 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
 class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
-  PaginationNotifier({required this.fetchNextItems, required this.hitsPerPage})
-      : super(const PaginationNotifierState.data([], false)) {
+  PaginationNotifier({
+    required this.fetchNextItems,
+    required this.hitsPerPage,
+    required this.logger,
+  }) : super(const PaginationNotifierState.data([], false)) {
     init();
   }
 
-  final Logger logger = Logger('PaginationNotifier');
+  final Logger logger;
   final Future<List<T>> Function(T? item, int offset) fetchNextItems;
   final int hitsPerPage;
 
@@ -69,7 +72,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
     _timer = Timer(Duration(milliseconds: 1000), () {});
 
     if (!mounted) {
-      logger.warning("fetchNextPage called on unmounted PaginationNotifier");
+      logger.warning("FetchNextPage called on unmounted PaginationNotifier");
       return;
     }
     if (!_canLoadNextPage) {
@@ -97,7 +100,8 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
           state = PaginationNotifierState.data(_items..addAll(result), false);
         }
         onGoingState = OnGoingState.Data;
-      } catch (e) {
+      } catch (e, stk) {
+        logger.warning("Error fetching next page", e, stk);
         state = PaginationNotifierState.data(_items, false);
         onGoingState = OnGoingState.Error;
       }
