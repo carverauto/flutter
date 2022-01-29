@@ -8,6 +8,7 @@ import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -172,7 +173,6 @@ class AuthDatabase implements AuthDB {
         sa.AppleIDAuthorizationScopes.email,
         sa.AppleIDAuthorizationScopes.fullName
       ]);
-
       final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
           .credential(idToken: _appleSignIn.identityToken);
 
@@ -192,6 +192,10 @@ class AuthDatabase implements AuthDB {
     late final OAuthCredential facebookAuthCredential;
 
     loginResult = await FacebookAuth.instance.login();
+
+    if (loginResult.status == LoginStatus.cancelled) {
+      return;
+    }
 
     // Create a credential from the access token
     facebookAuthCredential =
@@ -213,6 +217,7 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> twitterLogin() async {
     // Create a TwitterLogin instance
+
     final twitterLogin = new TwitterLogin(
       apiKey: "VFgiAVqCmf7iBcyvNpJwHeUZi",
       apiSecretKey: "Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL",
@@ -222,6 +227,9 @@ class AuthDatabase implements AuthDB {
     // Trigger the sign-in flow
     final authResult = await twitterLogin.login();
 
+    if (authResult.status == TwitterLoginStatus.cancelledByUser) {
+      return;
+    }
     // Create a credential from the access token
     final twitterAuthCredential = TwitterAuthProvider.credential(
       accessToken: authResult.authToken!,

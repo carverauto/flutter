@@ -58,7 +58,6 @@ class AuthRepository implements AuthRepositoryAB {
 
   @override
   Future<UserData> fetchOrCreateUser(User user) async {
-    // TODO: implement createUser
     return await read(authDbProvider).fetchOrCreateUser(user);
   }
 
