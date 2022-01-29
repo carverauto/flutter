@@ -27,7 +27,7 @@ class AuthViewWrapper extends ConsumerWidget {
                   data: (userData) {
                     ref
                         .read(postLoginStateNotifierProvider.notifier)
-                        .initPostLoginActions(user);
+                        .initPostLoginActions();
 
                     return HomeWrapper();
                   },
