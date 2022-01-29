@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
+import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
+import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -45,28 +45,17 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
     }, error: (e, stk) {
       logger.log(Level.SEVERE, "Error Fetching Data", e, stk);
       return SliverToBoxAdapter(
-        child: Column(
-          children: [
-            IconButton(
-              onPressed: () {
-                ref
-                    .read(watchThisStateNotifierProvider.notifier)
-                    .fetchFirstPage(true);
-              },
-              icon: Icon(Icons.replay),
-            ),
-            //Chip doesn't show label properly with multiline text
-            Chip(
-              label: Text("Something went wrong."),
-            ),
-          ],
+        child: ChaseAppErrorWidget(
+          onRefresh: () {
+            ref
+                .read(watchThisStateNotifierProvider.notifier)
+                .fetchFirstPage(true);
+          },
         ),
       );
     }, loading: (chases) {
       return SliverToBoxAdapter(
-        child: Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
+        child: CircularAdaptiveProgressIndicator(),
       );
     });
   }
@@ -112,12 +101,7 @@ class BottomWidget extends ConsumerWidget {
                 ]),
             child: Column(
               children: [
-                if (isFetching)
-                  Column(
-                    children: [
-                      CircularProgressIndicator.adaptive(),
-                    ],
-                  ),
+                if (isFetching) CircularAdaptiveProgressIndicator(),
                 if (onGoingState == OnGoingState.Error)
                   Column(
                     children: [

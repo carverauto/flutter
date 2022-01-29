@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
@@ -50,17 +49,9 @@ class AuthDatabase implements AuthDB {
   //sign out
   @override
   Future<void> signOut() async {
-    try {
-      await read(googleSignInProvider).signOut();
-      await read(firebaseAuthProvider).signOut();
-      await read(facebookSignInProvider).logOut();
-    } catch (e, stk) {
-      log(
-        "Error signing out",
-        error: e,
-        stackTrace: stk,
-      );
-    }
+    await read(googleSignInProvider).signOut();
+    await read(firebaseAuthProvider).signOut();
+    await read(facebookSignInProvider).logOut();
   }
 
   @override

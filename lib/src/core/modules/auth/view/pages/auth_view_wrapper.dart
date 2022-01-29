@@ -1,13 +1,15 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
+import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 class AuthViewWrapper extends ConsumerWidget {
+  final Logger logger = Logger("AuthViewWrapper");
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Sizescaleconfig.setSizes(
@@ -18,36 +20,43 @@ class AuthViewWrapper extends ConsumerWidget {
     final loggedinstatus = ref.watch(streamLogInStatus);
 
     return loggedinstatus.when(
-      data: (user) {
-        if (user != null) {
-          return ref.watch(fetchUserProvider(user)).when(
-                data: (userData) {
-                  log("Logged in");
-                  ref
-                      .read(postLoginStateNotifierProvider.notifier)
-                      .initPostLoginActions(user);
+        data: (user) {
+          if (user != null) {
+            return ref.watch(fetchUserProvider(user)).when(
+                  data: (userData) {
+                    ref
+                        .read(postLoginStateNotifierProvider.notifier)
+                        .initPostLoginActions(user);
 
-                  return HomeWrapper();
-                },
-                error: (e, s) {
-                  log("ERROR --->", error: e);
-                  return Text(e.toString());
-                },
-                loading: () => Center(child: CircularProgressIndicator()),
-              );
-        }
+                    return HomeWrapper();
+                  },
+                  error: (e, stk) {
+                    logger.severe("Error while loading users data.", e, stk);
 
-        return const LoginOrRegister();
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (e, s) => Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [Text(e.toString())],
-          ),
-        ),
-      ),
-    );
+                    return Scaffold(
+                      body: ChaseAppErrorWidget(
+                        onRefresh: () {
+                          ref.refresh(streamLogInStatus);
+                        },
+                      ),
+                    );
+                  },
+                  loading: () => CircularAdaptiveProgressIndicator(),
+                );
+          }
+
+          return const LoginOrRegister();
+        },
+        loading: () => CircularAdaptiveProgressIndicator(),
+        error: (e, stk) {
+          logger.severe("Error while loading users login status.", e, stk);
+          return Scaffold(
+            body: ChaseAppErrorWidget(
+              onRefresh: () {
+                ref.refresh(streamLogInStatus);
+              },
+            ),
+          );
+        });
   }
 }
