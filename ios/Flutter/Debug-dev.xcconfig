@@ -3,3 +3,4 @@
 
 FLUTTER_TARGET=lib/main_dev.dart
 FLAVOR_APP_NAME=ChaseApp_Dev
+APP_ID=1:949466065060:ios:b0cdd167fc66056b335e31

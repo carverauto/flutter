@@ -64,6 +64,8 @@ dependencies:
   sign_in_with_apple: ^3.3.0
   flutter_facebook_auth: ^3.5.0
   twitter_login: ^4.0.1
+  firebase_crashlytics: ^2.5.0
+  logging: ^1.0.2
 
 dev_dependencies:
   flutter_test:
