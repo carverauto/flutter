@@ -56,7 +56,9 @@ class AuthViewWrapper extends ConsumerWidget {
                       ),
                     );
                   },
-                  loading: () => CircularAdaptiveProgressIndicator(),
+                  loading: () => Scaffold(
+                    body: CircularAdaptiveProgressIndicator(),
+                  ),
                 );
           }
 

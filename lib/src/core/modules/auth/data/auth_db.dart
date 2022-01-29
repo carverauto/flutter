@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
@@ -118,9 +119,9 @@ class AuthDatabase implements AuthDB {
       await docRef.set(
         UserData(
           uid: user.uid,
-          userName: user.displayName!,
+          userName: user.displayName ?? "NA",
           email: user.email!,
-          photoURL: null,
+          photoURL: user.photoURL ?? defaultPhotoURL,
           lastUpdated: DateTime.now().millisecondsSinceEpoch,
         ),
       );
@@ -171,7 +172,7 @@ class AuthDatabase implements AuthDB {
       sa.AuthorizationCredentialAppleID _appleSignIn =
           await sa.SignInWithApple.getAppleIDCredential(scopes: [
         sa.AppleIDAuthorizationScopes.email,
-        sa.AppleIDAuthorizationScopes.fullName
+        sa.AppleIDAuthorizationScopes.fullName,
       ]);
       final fauth.AuthCredential credential = fauth.OAuthProvider("apple.com")
           .credential(idToken: _appleSignIn.identityToken);
