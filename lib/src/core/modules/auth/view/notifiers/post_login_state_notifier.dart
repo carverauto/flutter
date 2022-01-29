@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -37,11 +33,11 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
         final difference = today.difference(lastTokenUpdate).inDays;
         String? token = await _read(firebaseMesssagingProvider).getToken();
         final isTokenPresent = tokens.contains(token);
-        if (difference > 7 && !isTokenPresent) {
+        if (difference > 7 || !isTokenPresent) {
           //update tokens
           _read(authRepoProvider).saveFirebaseDeviceToken();
         }
-        if (!isTokenPresent) {
+        if (difference > 28 || !isTokenPresent) {
           _read(authRepoProvider).subscribeToTopics();
         }
       } else {
@@ -52,7 +48,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
       _read(firebaseCrashlyticsProvider).setUserIdentifier(userData.uid);
       _read(authRepoProvider).updateTokenWhenRefreshed();
     } catch (e, stk) {
-      logger.warning("Error in initPostLoginActions", e, stk);
+      logger.warning("Error in initPostLogin Firebase Actions", e, stk);
     }
   }
 }

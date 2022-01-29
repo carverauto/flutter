@@ -35,12 +35,16 @@ class AuthDatabase implements AuthDB {
 
     await usersCollectionRef.doc(userId).update({
       'tokens': FieldValue.arrayUnion([token]),
-      'lastTokenUpdate': DateTime.now()
+      'lastTokenUpdate': DateTime.now(),
+      'lastUpdated': DateTime.now().millisecondsSinceEpoch,
     });
   }
 
   void updateTokenWhenRefreshed() {
-    read(firebaseMesssagingProvider).onTokenRefresh.listen(saveTokenToDatabase);
+    read(firebaseMesssagingProvider).onTokenRefresh.listen((token) {
+      saveTokenToDatabase(token);
+      subscribeToTopics();
+    });
   }
 
   // Subcribe to topics
