@@ -17,11 +17,10 @@ Future<void> setUpServices() async {
   FirebaseApp firebaseApp = await Firebase.initializeApp();
 
   if (kDebugMode) {
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-
   Logger.root.onRecord.listen((record) {
     FirebaseCrashlytics.instance.recordError(
       record.loggerName + " : " + record.message,

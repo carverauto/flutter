@@ -381,7 +381,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai ${APP_ID}\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai ${APP_ID}\n";
+			shellScript = "$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase --validate -ai $APP_ID\n$PODS_ROOT/FirebaseCrashlytics/upload-symbols --build-phase -ai $APP_ID\n";
 		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
