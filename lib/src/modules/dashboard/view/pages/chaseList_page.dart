@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
@@ -75,8 +77,10 @@ class Dashboard extends ConsumerWidget {
                   icon: CircleAvatar(
                     radius: kImageSizeMedium,
                     backgroundImage: CachedNetworkImageProvider(
-                        ref.read(firebaseAuthProvider).currentUser?.photoURL ??
-                            'defaultPhotoURL'),
+                      ref.watch(userStreamProvider.select(
+                              (value) => value.asData?.value.photoURL)) ??
+                          defaultPhotoURL,
+                    ),
                   ),
                   onPressed: () => Navigator.pushNamed(
                     context,
