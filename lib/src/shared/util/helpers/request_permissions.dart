@@ -4,6 +4,22 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+Future<bool> checkForPermissionsStatuses() async {
+  final bluetoothStatus = await Permission.bluetooth.isGranted;
+  final bluetoothScanStatus =
+      Platform.isAndroid ? await Permission.bluetoothScan.isGranted : true;
+  final bluetoothConnectStatus =
+      Platform.isAndroid ? await Permission.bluetoothConnect.isGranted : true;
+  final locationStatus = await Permission.location.isGranted;
+  final notificationStatus = await Permission.notification.isGranted;
+
+  return bluetoothStatus &&
+      bluetoothScanStatus &&
+      bluetoothConnectStatus &&
+      locationStatus &&
+      notificationStatus;
+}
+
 Future<UsersPermissionStatuses> requestPermissions() async {
   Map<Permission, PermissionStatus> statuses = await [
     Permission.bluetooth,
