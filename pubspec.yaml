@@ -11,6 +11,8 @@ description: Never miss a live police chase again
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+publish_to: 'none' 
+
 version: 1.2.0+2
 
 #  2.12.0 nonnullable
@@ -47,7 +49,11 @@ dependencies:
   flutter_progress_hud: ^2.0.0
   font_awesome_flutter: ^9.2.0
   google_fonts: ^2.1.0
-  permission_handler: ^8.3.0
+  permission_handler:
+    git:
+      url: https://github.com/Baseflow/flutter-permission-handler.git
+      path: permission_handler/
+    
   shimmer: ^2.0.0
   transparent_image: ^2.0.0
   algolia: ^1.0.4
