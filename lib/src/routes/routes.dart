@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart';
+import 'package:chaseapp/src/core/modules/auth/view/pages/check_permissions.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
@@ -18,6 +19,8 @@ class Routes {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => const Splash());
+      case RouteName.CHECK_PERMISSIONS_VIEW:
+        return MaterialPageRoute(builder: (context) => CheckPermissionsView());
       case RouteName.AUTH_VIEW_WRAPPER:
         return MaterialPageRoute(builder: (context) => AuthViewWrapper());
       case RouteName.USER_LOGIN:

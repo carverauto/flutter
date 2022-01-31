@@ -59,8 +59,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                   Lottie.asset('assets/47816-lunar-new-year-lion-dance.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(RouteName.AUTH_VIEW_WRAPPER);
+                      Navigator.of(context).pushReplacementNamed(
+                          RouteName.CHECK_PERMISSIONS_VIEW);
                     });
                   })
                 ],

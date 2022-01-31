@@ -1,4 +1,5 @@
 class RouteName {
+  static const String CHECK_PERMISSIONS_VIEW = "CHECK_PERMISSIONS_VIEW";
   static const String AUTH_VIEW_WRAPPER = "AuthViewWrapper";
   static const String USER_LOGIN = "LOGIN";
   static const String HOME = "HOME";
