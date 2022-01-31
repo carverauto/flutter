@@ -5,31 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<UsersPermissionStatuses> requestPermissions() async {
-  const blutoothScanService = Permission.bluetoothScan;
-  const blutoothConnectService = Permission.bluetoothConnect;
-  const blutoothService = Permission.bluetooth;
-  const locationAlwayOnService = Permission.locationAlways;
-  const locationOnService = Permission.location;
-  const notificationService = Permission.notification;
-
-  bool isBlutoothPermissionGranted = await blutoothService.isGranted;
-  bool isBlutoothScanOnPermissionGranted = await blutoothScanService.isGranted;
-  bool isBlutoothConnectOnPermissionGranted =
-      await blutoothConnectService.isGranted;
-  bool isLocationOnPermissionGranted = await locationOnService.isGranted;
-  bool isLocationAlwaysOnPermissionGranted =
-      await locationAlwayOnService.isGranted;
-  bool isNotificationsPermissionGranted = await notificationService.isGranted;
-
   Map<Permission, PermissionStatus> statuses = await [
-    if (!isBlutoothPermissionGranted) Permission.bluetooth,
+    Permission.bluetooth,
     if (Platform.isAndroid) ...[
-      if (!isBlutoothScanOnPermissionGranted) Permission.bluetoothScan,
-      if (!isBlutoothConnectOnPermissionGranted) Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
     ],
-    if (!isLocationOnPermissionGranted) Permission.location,
-    if (!isLocationAlwaysOnPermissionGranted) Permission.locationAlways,
-    if (!isNotificationsPermissionGranted) Permission.notification,
+    Permission.location,
+    Permission.notification,
   ].request();
 
   List<Permission> permanentlyDeniedPermissions = [];
@@ -38,11 +21,11 @@ Future<UsersPermissionStatuses> requestPermissions() async {
     final status = entry.value;
     if (status == PermissionStatus.granted) {
       if (kDebugMode) {
-        print('BTServiceStatus - Permission Granted');
+        log('BTServiceStatus - Permission Granted');
       }
     } else if (status == PermissionStatus.denied) {
       if (kDebugMode) {
-        print('BTServiceStatus - Permission Denied');
+        log('BTServiceStatus - Permission Denied');
       }
 
       return UsersPermissionStatuses(
@@ -50,23 +33,16 @@ Future<UsersPermissionStatuses> requestPermissions() async {
         permanentlyDeniedPermissions,
       );
     } else if (status == PermissionStatus.permanentlyDenied) {
-      log(entry.key.toString());
       permanentlyDeniedPermissions.add(entry.key);
       if (kDebugMode) {
-        print('BTServiceStatus - Permission Permanently Denied');
+        log('BTServiceStatus - Permission Permanently Denied');
       }
     }
   }
 
-  return UsersPermissionStatuses(
-    permanentlyDeniedPermissions.isNotEmpty
-        ? UsersPermissionStatus.PERMANENTLY_DENIED
-        : UsersPermissionStatus.ALLOWED,
-    permanentlyDeniedPermissions,
-  );
-
   // FirebaseMessaging messaging = FirebaseMessaging.instance;
-
+  //TODO: Is this required now? I don't think so.
+  // Already granted when asked for notifications permission above.
   // NotificationSettings settings = await messaging.requestPermission(
   //   alert: true,
   //   announcement: false,
@@ -76,6 +52,13 @@ Future<UsersPermissionStatuses> requestPermissions() async {
   //   provisional: false,
   //   sound: true,
   // );
+
+  return UsersPermissionStatuses(
+    permanentlyDeniedPermissions.isNotEmpty
+        ? UsersPermissionStatus.PERMANENTLY_DENIED
+        : UsersPermissionStatus.ALLOWED,
+    permanentlyDeniedPermissions,
+  );
 }
 
 class UsersPermissionStatuses {
