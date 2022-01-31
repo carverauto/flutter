@@ -72,6 +72,7 @@ dependencies:
   twitter_login: ^4.0.1
   firebase_crashlytics: ^2.5.0
   logging: ^1.0.2
+  device_preview: ^1.0.0
 
 dev_dependencies:
   flutter_test:
