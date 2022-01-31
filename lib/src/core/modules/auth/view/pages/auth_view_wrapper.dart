@@ -13,11 +13,6 @@ class AuthViewWrapper extends ConsumerWidget {
   final Logger logger = Logger("AuthViewWrapper");
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Sizescaleconfig.setSizes(
-      MediaQuery.of(context).size.height,
-      MediaQuery.of(context).size.width,
-      MediaQuery.of(context).textScaleFactor,
-    );
     final loggedinstatus = ref.watch(streamLogInStatus);
 
     return loggedinstatus.when(
@@ -25,9 +20,11 @@ class AuthViewWrapper extends ConsumerWidget {
           if (user != null) {
             return ref.watch(fetchUserProvider(user)).when(
                   data: (userData) {
-                    ref
-                        .read(postLoginStateNotifierProvider.notifier)
-                        .initPostLoginActions();
+                    WidgetsBinding.instance!.addPostFrameCallback((t) {
+                      ref
+                          .read(postLoginStateNotifierProvider.notifier)
+                          .initPostLoginActions(userData);
+                    });
 
                     return HomeWrapper();
                   },

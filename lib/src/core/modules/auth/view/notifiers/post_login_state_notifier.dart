@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
+import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -15,17 +16,14 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Logger logger = Logger("PostLoginStateNotifier");
 
-  Future<void> initPostLoginActions() async {
+  Future<void> initPostLoginActions(UserData userData) async {
     if (!isInitialized) {
-      //TODO: need to update the flow for requesting permissions
-      // requestPermissions();
-      await _initFirebaseActions();
+      await _initFirebaseActions(userData);
       isInitialized = true;
     }
   }
 
-  Future<void> _initFirebaseActions() async {
-    final userData = await _read(userStreamProvider.future);
+  Future<void> _initFirebaseActions(UserData userData) async {
     final lastTokenUpdate = userData.lastTokenUpdate;
     final tokens = userData.tokens;
     try {

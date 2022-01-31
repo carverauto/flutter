@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:flutter/material.dart';
+
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
-import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
@@ -22,6 +23,17 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Sizescaleconfig.setSizes(
+      MediaQuery.of(context).size.height,
+      MediaQuery.of(context).size.width,
+      MediaQuery.of(context).textScaleFactor,
+    );
   }
 
   @override
@@ -59,8 +71,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                   Lottie.asset('assets/47816-lunar-new-year-lion-dance.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () {
-                      Navigator.of(context).pushReplacementNamed(
-                          RouteName.CHECK_PERMISSIONS_VIEW);
+                      Navigator.of(context)
+                          .pushReplacementNamed(RouteName.ONBOARDING_VIEW);
                     });
                   })
                 ],

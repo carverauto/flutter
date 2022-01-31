@@ -49,79 +49,75 @@ class LogInView extends ConsumerWidget {
             ));
           });
     });
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.topCenter,
-              child: Consumer(builder: (context, ref, _) {
-                final state = ref.watch(signInProvider);
-                return state.maybeWhen(loading: () {
-                  return const LinearProgressIndicator();
-                }, orElse: () {
-                  return SizedBox.shrink();
-                });
-              }),
-            ),
-            Spacer(),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Consumer(builder: (context, ref, _) {
+              final state = ref.watch(signInProvider);
+              return state.maybeWhen(loading: () {
+                return const LinearProgressIndicator();
+              }, orElse: () {
+                return SizedBox.shrink();
+              });
+            }),
+          ),
+          Spacer(),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ElevatedButton(
+                style: styleFrom,
+                onPressed: () {
+                  ref.read(signInProvider.notifier).signIn(SIGNINMETHOD.GOOGLE);
+                },
+                child: Text("Continue With Google"),
+              ),
+              SizedBox(
+                height: kItemsSpacingSmall,
+              ),
+              if (Platform.isIOS)
                 ElevatedButton(
                   style: styleFrom,
                   onPressed: () {
                     ref
                         .read(signInProvider.notifier)
-                        .signIn(SIGNINMETHOD.GOOGLE);
+                        .signIn(SIGNINMETHOD.APPLE);
                   },
-                  child: Text("Continue With Google"),
+                  child: Text("Continue With Apple"),
                 ),
+              if (Platform.isIOS)
                 SizedBox(
                   height: kItemsSpacingSmall,
                 ),
-                if (Platform.isIOS)
-                  ElevatedButton(
-                    style: styleFrom,
-                    onPressed: () {
-                      ref
-                          .read(signInProvider.notifier)
-                          .signIn(SIGNINMETHOD.APPLE);
-                    },
-                    child: Text("Continue With Apple"),
-                  ),
-                if (Platform.isIOS)
-                  SizedBox(
-                    height: kItemsSpacingSmall,
-                  ),
-                ElevatedButton(
-                  style: styleFrom,
-                  onPressed: () {
-                    ref
-                        .read(signInProvider.notifier)
-                        .signIn(SIGNINMETHOD.FACEBOOK);
-                  },
-                  child: Text("Continue With Facebook"),
-                ),
-                SizedBox(
-                  height: kItemsSpacingSmall,
-                ),
-                ElevatedButton(
-                  style: styleFrom,
-                  onPressed: () {
-                    ref
-                        .read(signInProvider.notifier)
-                        .signIn(SIGNINMETHOD.TWITTER);
-                  },
-                  child: Text("Continue With Twitter"),
-                ),
-              ],
-            ),
-            Spacer(),
-          ],
-        ),
+              ElevatedButton(
+                style: styleFrom,
+                onPressed: () {
+                  ref
+                      .read(signInProvider.notifier)
+                      .signIn(SIGNINMETHOD.FACEBOOK);
+                },
+                child: Text("Continue With Facebook"),
+              ),
+              SizedBox(
+                height: kItemsSpacingSmall,
+              ),
+              ElevatedButton(
+                style: styleFrom,
+                onPressed: () {
+                  ref
+                      .read(signInProvider.notifier)
+                      .signIn(SIGNINMETHOD.TWITTER);
+                },
+                child: Text("Continue With Twitter"),
+              ),
+            ],
+          ),
+          Spacer(),
+        ],
       ),
     );
   }
