@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dialog.dart';
@@ -19,9 +20,7 @@ class CheckPermissionsView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: ListView(
-          //  crossAxisAlignment: CrossAxisAlignment.center,
           padding: EdgeInsets.all(0),
-
           children: [
             SizedBox(
               height: kItemsSpacingSmallConstant,
@@ -33,25 +32,35 @@ class CheckPermissionsView extends StatelessWidget {
             SizedBox(
               height: kItemsSpacingSmallConstant,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.info,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                SizedBox(
-                  width: kItemsSpacingSmallConstant,
-                ),
-                Expanded(
-                  child: Text(
-                    '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
-                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                          fontWeight: FontWeight.normal,
-                        ),
+            Container(
+              padding: EdgeInsets.all(
+                kListPaddingConstant,
+              ),
+              decoration: BoxDecoration(
+                color: primaryColor.shade400,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.info,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                ),
-              ],
+                  SizedBox(
+                    width: kItemsSpacingSmallConstant,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: kItemsSpacingLarge,

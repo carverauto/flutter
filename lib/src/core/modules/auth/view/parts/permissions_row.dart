@@ -1,5 +1,3 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
@@ -22,11 +20,13 @@ class PermissionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     //TODO: Need to check on how I can set only some borders with new updates in stlying for buttons
     return ListTile(
-      leading: Icon(
-        icon,
-        color: Theme.of(context).colorScheme.primary,
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
+        child: Icon(
+          icon,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
-      style: ListTileStyle.drawer,
       title: Text(
         title,
         style: Sizescaleconfig.getDeviceType == DeviceType.MOBILE

@@ -25,6 +25,7 @@ double kIconSizeExtraLarge = Sizescaleconfig.scalehightfactor(65);
 const double kPaddingSmallConstant = 10;
 const double kPaddingMediumConstant = 20;
 const double kPaddingLargeConstant = 30;
+const double kListPaddingConstant = 16;
 
 const double kBorderRadiusSmallConstant = 8;
 const double kBorderRadiusMediumConstant = 20;

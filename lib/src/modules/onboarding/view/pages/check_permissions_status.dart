@@ -13,9 +13,7 @@ class CheckPermissionsViewWrapper extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(isGrantedPermissionsProvider).when(
         data: (isGrantedPermissions) {
-          return isGrantedPermissions
-              ? AuthViewWrapper()
-              : CheckPermissionsView();
+          return false ? AuthViewWrapper() : CheckPermissionsView();
         },
         error: (e, stk) {
           return ChaseAppErrorWidget(onRefresh: () {
