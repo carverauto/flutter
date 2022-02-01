@@ -12,17 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class LogInView extends ConsumerWidget {
   LogInView({Key? key}) : super(key: key);
 
-  final styleFrom = OutlinedButton.styleFrom(
-    maximumSize: Size(
-      Sizescaleconfig.screenwidth! * 0.6,
-      50,
-    ),
-    minimumSize: Size(
-      Sizescaleconfig.screenwidth! * 0.6,
-      50,
-    ),
-  );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<LogInState>(signInProvider, (oldState, newState) {
@@ -66,55 +55,80 @@ class LogInView extends ConsumerWidget {
             }),
           ),
           Spacer(),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ElevatedButton(
-                style: styleFrom,
-                onPressed: () {
-                  ref.read(signInProvider.notifier).signIn(SIGNINMETHOD.GOOGLE);
-                },
-                child: Text("Continue With Google"),
-              ),
-              SizedBox(
-                height: kItemsSpacingSmall,
-              ),
-              if (Platform.isIOS)
+          Padding(
+            padding: const EdgeInsets.all(kPaddingMediumConstant),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
                 ElevatedButton(
-                  style: styleFrom,
+                  style: callToActionButtonStyle,
                   onPressed: () {
                     ref
                         .read(signInProvider.notifier)
-                        .signIn(SIGNINMETHOD.APPLE);
+                        .signIn(SIGNINMETHOD.GOOGLE);
                   },
-                  child: Text("Continue With Apple"),
+                  child: Text(
+                    "Continue With Google",
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
                 ),
-              if (Platform.isIOS)
                 SizedBox(
                   height: kItemsSpacingSmall,
                 ),
-              ElevatedButton(
-                style: styleFrom,
-                onPressed: () {
-                  ref
-                      .read(signInProvider.notifier)
-                      .signIn(SIGNINMETHOD.FACEBOOK);
-                },
-                child: Text("Continue With Facebook"),
-              ),
-              SizedBox(
-                height: kItemsSpacingSmall,
-              ),
-              ElevatedButton(
-                style: styleFrom,
-                onPressed: () {
-                  ref
-                      .read(signInProvider.notifier)
-                      .signIn(SIGNINMETHOD.TWITTER);
-                },
-                child: Text("Continue With Twitter"),
-              ),
-            ],
+                if (Platform.isIOS)
+                  ElevatedButton(
+                    style: callToActionButtonStyle,
+                    onPressed: () {
+                      ref
+                          .read(signInProvider.notifier)
+                          .signIn(SIGNINMETHOD.APPLE);
+                    },
+                    child: Text(
+                      "Continue With Apple",
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
+                  ),
+                if (Platform.isIOS)
+                  SizedBox(
+                    height: kItemsSpacingSmall,
+                  ),
+                ElevatedButton(
+                  style: callToActionButtonStyle,
+                  onPressed: () {
+                    ref
+                        .read(signInProvider.notifier)
+                        .signIn(SIGNINMETHOD.FACEBOOK);
+                  },
+                  child: Text(
+                    "Continue With Facebook",
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+                SizedBox(
+                  height: kItemsSpacingSmall,
+                ),
+                ElevatedButton(
+                  style: callToActionButtonStyle,
+                  onPressed: () {
+                    ref
+                        .read(signInProvider.notifier)
+                        .signIn(SIGNINMETHOD.TWITTER);
+                  },
+                  child: Text(
+                    "Continue With Twitter",
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Spacer(),
         ],

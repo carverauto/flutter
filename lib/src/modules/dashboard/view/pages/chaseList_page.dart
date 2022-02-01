@@ -71,7 +71,10 @@ class Dashboard extends ConsumerWidget {
               centerTitle: true,
               elevation: kElevation,
               pinned: true,
-              title: Image.asset(chaseAppNameImage),
+              title: Image.asset(
+                chaseAppNameImage,
+                height: kImageSizeLarge,
+              ),
               actions: [
                 IconButton(
                     icon: CircleAvatar(

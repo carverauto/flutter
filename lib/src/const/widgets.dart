@@ -1,12 +1,12 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 
-const dividerSmall = Divider(
+final dividerSmall = Divider(
   height: kItemsSpacingSmall,
 );
-const dividerMedium = Divider(
+final dividerMedium = Divider(
   height: kItemsSpacingMedium,
 );
-const dividerLarge = Divider(
+final dividerLarge = Divider(
   height: kItemsSpacingLarge,
 );

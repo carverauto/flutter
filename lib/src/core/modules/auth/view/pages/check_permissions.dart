@@ -6,6 +6,7 @@ import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dia
 import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_row.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -20,13 +21,17 @@ class CheckPermissionsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(chaseAppNameImage),
+            Image.asset(
+              chaseAppNameImage,
+              height: kImageSizeLarge,
+            ),
             Text(
-              "Free version of ChaseApp requires following permissions to work properly. ",
+              '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
+              style: Theme.of(context).textTheme.subtitle1,
               textAlign: TextAlign.center,
             ),
             SizedBox(
-              height: kItemsSpacingMedium,
+              height: kItemsSpacingLarge,
             ),
             PermissionRow(
               icon: Icons.location_pin,
@@ -66,9 +71,7 @@ class CheckPermissionsView extends StatelessWidget {
                 ),
                 Text(
                   "Or",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
                 Flexible(
                   child: Divider(
@@ -83,14 +86,13 @@ class CheckPermissionsView extends StatelessWidget {
               height: kItemsSpacingMedium,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                double.maxFinite,
-                50,
-              )),
+              style: callToActionButtonStyle,
               onPressed: () {},
               child: Text(
                 "Go Premium!",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
               ),
             ),
           ],
@@ -133,11 +135,7 @@ class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
       child: isLoading
           ? CircularAdaptiveProgressIndicator()
           : ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                double.maxFinite,
-                50,
-              )),
+              style: callToActionButtonStyle,
               onPressed: () async {
                 setState(() {
                   isLoading = true;
@@ -169,7 +167,12 @@ class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
                   );
                 }
               },
-              child: Text("Grant All Permissions"),
+              child: Text(
+                "Grant All Permissions",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+              ),
             ),
     );
   }

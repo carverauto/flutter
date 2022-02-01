@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +21,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'ChaseApp',
       initialRoute: '/',
+      locale: Locale('en'), // Add the locale here
+      builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
       theme: getThemeData(context),

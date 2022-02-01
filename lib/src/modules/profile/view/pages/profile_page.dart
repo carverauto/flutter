@@ -26,7 +26,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       appBar: AppBar(
         centerTitle: true,
         elevation: kElevation,
-        title: Image.asset(chaseAppNameImage),
+        title: Image.asset(
+          chaseAppNameImage,
+          height: kImageSizeLarge,
+        ),
       ),
       body: Column(
         children: [
@@ -57,14 +60,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           color: Theme.of(context).colorScheme.primaryVariant,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Full Name',
+                              'Full Name :',
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: kItemsSpacingSmallConstant,
                             ),
                             Text(
                               user.userName,
@@ -77,14 +82,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           color: Theme.of(context).colorScheme.primaryVariant,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Email',
+                              'Email :',
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: kItemsSpacingSmallConstant,
                             ),
                             Text(
                               user.email,

@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:flutter/material.dart';
 
 final double profileImageSize = Sizescaleconfig.scalehightfactor(100);
 
@@ -6,9 +7,9 @@ double kVerticalSizeSmall = Sizescaleconfig.scalehightfactor(10);
 double kVerticalSizeMedium = Sizescaleconfig.scalehightfactor(17);
 double kVerticalSizeLarge = Sizescaleconfig.scalehightfactor(25);
 
-double kImageSizeSmall = Sizescaleconfig.scalehightfactor(20);
-double kImageSizeMedium = Sizescaleconfig.scalehightfactor(34);
-double kImageSizeLarge = Sizescaleconfig.scalehightfactor(75);
+double kImageSizeSmall = 24;
+double kImageSizeMedium = 34;
+double kImageSizeLarge = 50;
 
 const double kVerticalSizeSmallConstant = 10;
 const double kVerticalSizeMediumConstant = 17;
@@ -41,10 +42,37 @@ const double kAppBarIconSize = 50;
 
 const double kElevation = 1;
 
-const double kItemsSpacingSmall = 10;
-const double kItemsSpacingMedium = 20;
-const double kItemsSpacingLarge = 30;
+double kItemsSpacingSmall =
+    Sizescaleconfig.scalehightfactor(kItemsSpacingSmallConstant);
+double kItemsSpacingMedium =
+    Sizescaleconfig.scalehightfactor(kItemsSpacingMediumConstant);
+double kItemsSpacingLarge =
+    Sizescaleconfig.scalehightfactor(kItemsSpacingLargeConstant);
+
+const double kItemsSpacingSmallConstant = 10;
+const double kItemsSpacingMediumConstant = 20;
+const double kItemsSpacingLargeConstant = 30;
 
 const double kButtonHeightSmall = 36;
 const double kButtonHeightMedium = 45;
 const double kButtonHeightLarge = 65;
+
+const double kFontSizeExtraSmallConstant = 15;
+const double kFontSizeSmallConstant = 18;
+const double kFontSizeMediumConstant = 22;
+const double kFontSizeLargeConstant = 28;
+
+double kFontSizeExtraSmall =
+    Sizescaleconfig.scaletextfactor(kFontSizeSmallConstant);
+double kFontSizeSmall = Sizescaleconfig.scaletextfactor(kFontSizeSmallConstant);
+double kFontSizeMedium =
+    Sizescaleconfig.scaletextfactor(kFontSizeMediumConstant);
+double kFontSizeLarge = Sizescaleconfig.scaletextfactor(kFontSizeLargeConstant);
+
+final callToActionButtonStyle = ElevatedButton.styleFrom(
+  maximumSize: Size(
+    Sizescaleconfig.screenwidth! * 0.6,
+    50,
+  ),
+  fixedSize: Size.fromHeight(50),
+);

@@ -35,7 +35,10 @@ class ShowChase extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 1.0,
-        title: Image.asset(chaseAppNameImage),
+        title: Image.asset(
+          chaseAppNameImage,
+          height: kImageSizeLarge,
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.share),
@@ -86,7 +89,7 @@ class ShowChase extends ConsumerWidget {
                               maxLines: 2,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1!
+                                  .headline5!
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -99,7 +102,7 @@ class ShowChase extends ConsumerWidget {
                             Flexible(
                               child: Text(
                                 chase.desc ?? "NA",
-                                style: Theme.of(context).textTheme.subtitle2!,
+                                style: Theme.of(context).textTheme.bodyText1!,
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -116,7 +119,7 @@ class ShowChase extends ConsumerWidget {
                       ),
                       Text(
                         "Watch here :",
-                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               decoration: TextDecoration.underline,
                             ),
                       ),
@@ -134,7 +137,7 @@ class ShowChase extends ConsumerWidget {
                         child: ClapFAB.image(
                           trailing: Text(
                             chase.votes.toString(),
-                            style: Theme.of(context).textTheme.headline6!,
+                            style: Theme.of(context).textTheme.headline5!,
                           ),
                           clapFabCallback: (int counter) async {
                             try {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
@@ -60,7 +61,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: Image.asset(
                       'assets/powered_by.png',
-                      height: 25.0,
+                      height: kImageSizeSmall,
                       fit: BoxFit.scaleDown,
                     ),
                   )

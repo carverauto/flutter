@@ -1,4 +1,5 @@
 // import 'package:chaseapp/utils/routeNames.dart';
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -56,7 +57,10 @@ class SettingsPage extends State<Settings> {
           onPressed: () {},
         ),
       ],
-      title: SizedBox(height: 35.0, child: Image.asset("images/chaseapp.png")),
+      title: Image.asset(
+        "images/chaseapp.png",
+        height: kImageSizeLarge,
+      ),
     );
 
     return Scaffold(

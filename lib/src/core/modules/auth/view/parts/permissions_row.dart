@@ -25,8 +25,13 @@ class PermissionRow extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
       ),
       style: ListTileStyle.drawer,
-      title: Text(title),
-      subtitle: Text(subTitle),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headline6,
+      ),
+      subtitle: Text(
+        subTitle,
+      ),
       onTap: () {},
     );
   }
