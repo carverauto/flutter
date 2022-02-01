@@ -8,6 +8,7 @@ import 'package:chaseapp/src/shared/util/helpers/deviceSize.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 class Splash extends StatefulWidget {
@@ -31,6 +32,14 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    precachePicture(
+        SvgPicture.asset("assets/icon/google.svg").pictureProvider, context);
+    precachePicture(
+        SvgPicture.asset("assets/icon/apple.svg").pictureProvider, context);
+    precachePicture(
+        SvgPicture.asset("assets/icon/facebook.svg").pictureProvider, context);
+    precachePicture(
+        SvgPicture.asset("assets/icon/twitter.svg").pictureProvider, context);
     Sizescaleconfig.setSizes(
       MediaQuery.of(context).size.height,
       MediaQuery.of(context).size.width,
