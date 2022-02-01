@@ -21,7 +21,11 @@ class CheckPermissionsView extends StatelessWidget {
         child: ListView(
           //  crossAxisAlignment: CrossAxisAlignment.center,
           padding: EdgeInsets.all(0),
+
           children: [
+            SizedBox(
+              height: kItemsSpacingSmallConstant,
+            ),
             Image.asset(
               chaseAppNameImage,
               height: kImageSizeLarge,
@@ -101,12 +105,14 @@ class CheckPermissionsView extends StatelessWidget {
             SizedBox(
               height: kItemsSpacingMedium,
             ),
-            ElevatedButton(
-              style: callToActionButtonStyle,
-              onPressed: () {},
-              child: Text(
-                "Go Premium!",
-                style: getButtonStyle(context),
+            Center(
+              child: ElevatedButton(
+                style: callToActionButtonStyle,
+                onPressed: () {},
+                child: Text(
+                  "Go Premium!",
+                  style: getButtonStyle(context),
+                ),
               ),
             ),
           ],
