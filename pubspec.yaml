@@ -103,6 +103,7 @@ flutter:
   # assets:
   assets:
     - assets/
+    - assets/icon/
     - images/donut.png
     - images/sparkles.png
     - images/chaseapp.png
