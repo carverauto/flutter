@@ -14,6 +14,8 @@ ThemeData getThemeData(context) => ThemeData.from(
       textTheme: GoogleFonts.poppinsTextTheme(
         Theme.of(context).textTheme,
       ),
+    ).copyWith(
+      dividerColor: primaryColor,
     );
 
 //  ThemeData(
