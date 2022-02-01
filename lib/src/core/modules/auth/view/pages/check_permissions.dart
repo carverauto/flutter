@@ -6,6 +6,7 @@ import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dia
 import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_row.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
+import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 
 class CheckPermissionsView extends StatelessWidget {
@@ -24,17 +25,62 @@ class CheckPermissionsView extends StatelessWidget {
               "Free version of ChaseApp requires following permissions to work properly. ",
               textAlign: TextAlign.center,
             ),
-            PermissionRow(
-              icon: Icons.info,
-              title: "Location permission for location tracking.",
+            SizedBox(
+              height: kItemsSpacingMedium,
             ),
             PermissionRow(
-              icon: Icons.info,
-              title: "Location permission for location tracking.",
+              icon: Icons.location_pin,
+              title: "Location",
+              subTitle: "Location permission for location tracking.",
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.primary,
             ),
             PermissionRow(
-              icon: Icons.info,
-              title: "Location permission for location tracking.",
+              icon: Icons.bluetooth_connected,
+              title: "Bluetooth",
+              subTitle: "Location permission for location tracking.",
+            ),
+            Divider(),
+            PermissionRow(
+              icon: Icons.notifications_active,
+              title: "Notifications",
+              subTitle: "Location permission for location tracking.",
+            ),
+            Divider(),
+            SizedBox(
+              height: kItemsSpacingMedium,
+            ),
+            GrantAllPermissionsButton(),
+            SizedBox(
+              height: kItemsSpacingMedium,
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: Divider(
+                    height: 2,
+                    indent: kPaddingLargeConstant,
+                    endIndent: kPaddingLargeConstant,
+                  ),
+                ),
+                Text(
+                  "Or",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Flexible(
+                  child: Divider(
+                    height: 2,
+                    indent: kPaddingLargeConstant,
+                    endIndent: kPaddingLargeConstant,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: kItemsSpacingMedium,
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -42,9 +88,66 @@ class CheckPermissionsView extends StatelessWidget {
                 double.maxFinite,
                 50,
               )),
+              onPressed: () {},
+              child: Text(
+                "Go Premium!",
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GrantAllPermissionsButton extends StatefulWidget {
+  const GrantAllPermissionsButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<GrantAllPermissionsButton> createState() =>
+      _GrantAllPermissionsButtonState();
+}
+
+class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
+  late bool isLoading;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isLoading = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) {
+        return ScaleTransition(
+          scale: animation,
+          child: child,
+        );
+      },
+      child: isLoading
+          ? CircularAdaptiveProgressIndicator()
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: Size(
+                double.maxFinite,
+                50,
+              )),
               onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
                 final UsersPermissionStatuses usersPermissions =
                     await requestPermissions();
+
+                setState(() {
+                  isLoading = false;
+                });
 
                 if (usersPermissions.status == UsersPermissionStatus.DENIED) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -66,35 +169,8 @@ class CheckPermissionsView extends StatelessWidget {
                   );
                 }
               },
-              child: Text("Grant Permissions"),
+              child: Text("Grant All Permissions"),
             ),
-            Row(
-              children: [
-                Flexible(
-                  child: Divider(
-                    height: 2,
-                  ),
-                ),
-                Text("Or"),
-                Flexible(
-                  child: Divider(
-                    height: 2,
-                  ),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                double.maxFinite,
-                50,
-              )),
-              onPressed: () {},
-              child: Text("Go Premium!"),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

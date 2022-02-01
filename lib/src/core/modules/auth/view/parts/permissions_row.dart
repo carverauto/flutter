@@ -6,6 +6,7 @@ class PermissionRow extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.title,
+    required this.subTitle,
   }) : super(key: key);
 
   //get icon and text
@@ -13,25 +14,20 @@ class PermissionRow extends StatelessWidget {
 
   final String title;
 
+  final String subTitle;
+
   @override
   Widget build(BuildContext context) {
     //TODO: Need to check on how I can set only some borders with new updates in stlying for buttons
-    return TextButton.icon(
-      onPressed: () {},
-      style: TextButton.styleFrom(
-        side: BorderSide(),
-        shape: RoundedRectangleBorder(),
-        padding: EdgeInsets.all(
-          kButtonPaddingSmall,
-        ),
-      ),
-      label: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-      ),
-      icon: Icon(
+    return ListTile(
+      leading: Icon(
         icon,
+        color: Theme.of(context).colorScheme.primary,
       ),
+      style: ListTileStyle.drawer,
+      title: Text(title),
+      subtitle: Text(subTitle),
+      onTap: () {},
     );
   }
 }

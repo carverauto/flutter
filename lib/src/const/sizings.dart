@@ -44,3 +44,7 @@ const double kElevation = 1;
 const double kItemsSpacingSmall = 10;
 const double kItemsSpacingMedium = 20;
 const double kItemsSpacingLarge = 30;
+
+const double kButtonHeightSmall = 36;
+const double kButtonHeightMedium = 45;
+const double kButtonHeightLarge = 65;
