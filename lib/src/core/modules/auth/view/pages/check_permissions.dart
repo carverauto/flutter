@@ -30,6 +30,9 @@ class CheckPermissionsView extends StatelessWidget {
               chaseAppNameImage,
               height: kImageSizeLarge,
             ),
+            SizedBox(
+              height: kItemsSpacingSmallConstant,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
