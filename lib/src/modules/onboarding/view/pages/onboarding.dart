@@ -104,7 +104,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                               RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
                             );
                           },
-                          style: TextButton.styleFrom(),
                           child: Text("Continue"),
                         )
                       : TextButton(

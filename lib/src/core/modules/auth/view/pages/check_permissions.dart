@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dialog.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_row.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -18,17 +18,33 @@ class CheckPermissionsView extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          //  crossAxisAlignment: CrossAxisAlignment.center,
+          padding: EdgeInsets.all(0),
           children: [
             Image.asset(
               chaseAppNameImage,
               height: kImageSizeLarge,
             ),
-            Text(
-              '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.center,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.info,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                SizedBox(
+                  width: kItemsSpacingSmallConstant,
+                ),
+                Expanded(
+                  child: Text(
+                    '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                          fontWeight: FontWeight.normal,
+                        ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               height: kItemsSpacingLarge,
@@ -90,9 +106,7 @@ class CheckPermissionsView extends StatelessWidget {
               onPressed: () {},
               child: Text(
                 "Go Premium!",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                style: getButtonStyle(context),
               ),
             ),
           ],
@@ -169,9 +183,7 @@ class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
               },
               child: Text(
                 "Grant All Permissions",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                style: getButtonStyle(context),
               ),
             ),
     );

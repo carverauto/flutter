@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/models/login_state/login_state.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/multi_auth_dialog.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
@@ -69,9 +70,7 @@ class LogInView extends ConsumerWidget {
                   },
                   child: Text(
                     "Continue With Google",
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                    style: getButtonStyle(context),
                   ),
                 ),
                 SizedBox(
@@ -87,9 +86,7 @@ class LogInView extends ConsumerWidget {
                     },
                     child: Text(
                       "Continue With Apple",
-                      style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
+                      style: getButtonStyle(context),
                     ),
                   ),
                 if (Platform.isIOS)
@@ -105,9 +102,7 @@ class LogInView extends ConsumerWidget {
                   },
                   child: Text(
                     "Continue With Facebook",
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                    style: getButtonStyle(context),
                   ),
                 ),
                 SizedBox(
@@ -122,9 +117,7 @@ class LogInView extends ConsumerWidget {
                   },
                   child: Text(
                     "Continue With Twitter",
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
+                    style: getButtonStyle(context),
                   ),
                 ),
               ],

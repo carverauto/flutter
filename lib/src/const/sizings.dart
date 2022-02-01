@@ -71,7 +71,7 @@ double kFontSizeLarge = Sizescaleconfig.scaletextfactor(kFontSizeLargeConstant);
 
 final callToActionButtonStyle = ElevatedButton.styleFrom(
   maximumSize: Size(
-    Sizescaleconfig.screenwidth! * 0.6,
+    Sizescaleconfig.screenwidth! * 0.8,
     50,
   ),
   fixedSize: Size.fromHeight(50),

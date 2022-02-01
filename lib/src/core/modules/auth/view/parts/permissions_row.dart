@@ -1,4 +1,6 @@
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/const/textstyles.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
 class PermissionRow extends StatelessWidget {
@@ -27,7 +29,9 @@ class PermissionRow extends StatelessWidget {
       style: ListTileStyle.drawer,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.headline6,
+        style: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+            ? Theme.of(context).textTheme.subtitle1!
+            : Theme.of(context).textTheme.headline5!,
       ),
       subtitle: Text(
         subTitle,
