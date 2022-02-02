@@ -1,17 +1,15 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/shared/util/firebase_collections.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,7 +61,7 @@ class ShowChase extends ConsumerWidget {
                 child: ColoredBox(
                   color: Theme.of(context).colorScheme.primaryVariant,
                   child: AdaptiveImageBuilder(
-                    url: imageURL ?? '',
+                    url: parseImageUrl(imageURL),
                   ),
                 ),
               ),

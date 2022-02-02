@@ -3,7 +3,6 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
@@ -51,8 +50,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           alignment: Alignment.center,
                           child: CircleAvatar(
                             radius: kImageSizeLarge,
-                            backgroundImage:
-                                CachedNetworkImageProvider(user.photoURL),
+                            backgroundImage: CachedNetworkImageProvider(
+                              user.photoURL ?? defaultPhotoURL,
+                            ),
                           ),
                         ),
                         Divider(
@@ -72,7 +72,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               width: kItemsSpacingSmallConstant,
                             ),
                             Text(
-                              user.userName,
+                              user.userName ?? "NA",
                               style: Theme.of(context).textTheme.subtitle1!,
                             ),
                           ],
