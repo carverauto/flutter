@@ -18,7 +18,8 @@ class CheckPermissionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(kPaddingMediumConstant),
+        padding:
+            const EdgeInsets.all(kPaddingMediumConstant).copyWith(bottom: 0),
         child: ListView(
           padding: EdgeInsets.all(0),
           children: [
