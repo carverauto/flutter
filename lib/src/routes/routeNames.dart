@@ -9,4 +9,5 @@ class RouteName {
   static const String HOME_WRAPPER = "HOMEWrapper";
   static const String CHASE_VIEW = "ChaseView";
   static const String PROFILE = "PROFILE";
+  static const String ABOUT_US = "ABOUT_US";
 }

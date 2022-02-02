@@ -2,17 +2,15 @@ import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart
 import 'package:chaseapp/src/core/modules/auth/view/pages/check_permissions.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/about/view/about.dart';
 import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
-import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
-import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/check_permissions_status.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/onboarding.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
-import 'package:flutter/material.dart';
 import 'package:chaseapp/src/modules/splash_screen/view/pages/splash_page.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -45,6 +43,8 @@ class Routes {
                 ));
       case RouteName.PROFILE:
         return MaterialPageRoute<bool>(builder: (_) => ProfileView());
+      case RouteName.ABOUT_US:
+        return MaterialPageRoute<bool>(builder: (_) => AboutUsView());
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(
