@@ -86,7 +86,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                       final user = await ref.read(streamLogInStatus.future);
                       Navigator.of(context).pushReplacementNamed(
                         user != null
-                            ? RouteName.AUTH_VIEW_WRAPPER
+                            ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
                             : RouteName.ONBOARDING_VIEW,
                       );
                     });

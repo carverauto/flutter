@@ -1,11 +1,9 @@
-import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
-import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -24,175 +22,150 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(kPaddingMediumConstant),
-        child: Column(
-          children: [
-            SizedBox(
-              height: kItemsSpacingLarge,
-            ),
-            Expanded(
-              child: PageView.builder(
-                  controller: pageController,
-                  itemCount: 3,
-                  onPageChanged: (index) {
-                    setState(() {
-                      pageIndex = index;
-                      if (index == 2) activateContinueButton = true;
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Get live events of exclusive chases on app.",
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.headline4!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    // fontSize: Sizescaleconfig.scalehightfactor(
-                                    //   28,
-                                    // ),
-                                  ),
-                        ),
-                        SizedBox(
-                          height: kItemsSpacingSmall,
-                        ),
-                        Expanded(
-                          child: Placeholder(),
-                        ),
-                      ],
-                    );
-                  }),
-            ),
-            SizedBox(
-              height: kItemsSpacingMedium,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
+      body: Column(
+        children: [
+          SizedBox(
+            height: kItemsSpacingLarge,
+          ),
+          Image.asset(
+            chaseAppNameImage,
+            height: kImageSizeLarge,
+          ),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              padEnds: true,
+              onPageChanged: (index) {
+                setState(() {
+                  pageIndex = index;
+                  if (index == 1) activateContinueButton = true;
+                });
+              },
               children: [
-                if (pageIndex != 0)
-                  TextButton(
-                    onPressed: () {
-                      pageController.previousPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.linear);
-                    },
-                    style: TextButton.styleFrom(
-                      side: BorderSide(),
-                    ),
-                    child: Text("Prev"),
+                OnboardingPage(
+                  title: Text(
+                    "Welcom To ChaseApp!",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                   ),
-                Spacer(),
-                AnimatedSwitcher(
-                  duration: Duration(milliseconds: 100),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: animation,
-                      child: child,
+                  message: chaseAppMessage,
+                  onTap: () {
+                    pageController.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.linear,
                     );
                   },
-                  child: pageIndex == 2
-                      ? ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
-                            );
-                          },
-                          child: Text("Continue"),
-                        )
-                      : TextButton(
-                          onPressed: () {
-                            pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.linear,
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            side: BorderSide(),
-                          ),
-                          child: Text("Next"),
-                        ),
+                  pageIndex: pageIndex,
+                ),
+                OnboardingPage(
+                  title: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Powered by",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                      SizedBox(
+                        width: kItemsSpacingSmallConstant,
+                      ),
+                      SvgPicture.asset(
+                        "assets/icon/nodle.svg",
+                        height: kIconSizeMediumConstant,
+                      ),
+                    ],
+                  ),
+                  message: nodleUsageMessage,
+                  onTap: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
+                    );
+                  },
+                  pageIndex: pageIndex,
                 ),
               ],
             ),
-            // ElevatedButton(
-            //   style: ElevatedButton.styleFrom(
-            //     minimumSize: Size.fromHeight(
-            //       kButtonHeightSmall,
-            //     ),
-            //     fixedSize:
-            //         Size.fromHeight(Sizescaleconfig.screenheight! * 0.08),
-            //     maximumSize: Size.fromHeight(
-            //       kButtonHeightLarge,
-            //     ),
-            //   ),
-            //   onPressed: !activateContinueButton
-            //       ? null
-            //       : () {
-            //           Navigator.pushReplacementNamed(
-            //             context,
-            //             RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
-            //           );
-            //         },
-            //   child: Text(
-            //     "Continue",
-            //     style: Theme.of(context).textTheme.headline5!.copyWith(
-            //           color: Theme.of(context).colorScheme.onPrimary,
-            //         ),
-            //   ),
-            // )
-          ],
-        ),
+          ),
+          SizedBox(
+            height: kItemsSpacingMedium,
+          ),
+        ],
       ),
     );
   }
 }
 
-class AnimatingWalletsDots extends StatelessWidget {
-  const AnimatingWalletsDots({
+class OnboardingPage extends StatelessWidget {
+  const OnboardingPage({
     Key? key,
+    required this.title,
+    required this.message,
+    required this.onTap,
     required this.pageIndex,
   }) : super(key: key);
 
-  final pageIndex;
+  final Widget title;
+  final String message;
+  final VoidCallback onTap;
+  final int pageIndex;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var i = 0; i < 3; i++)
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            margin: EdgeInsets.all(
-              kItemsSpacingSmallConstant,
+    return Container(
+      padding: EdgeInsets.all(
+        kPaddingMediumConstant,
+      ),
+      margin: EdgeInsets.all(
+        kPaddingMediumConstant,
+      ),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onBackground,
+        borderRadius: BorderRadius.circular(
+          kBorderRadiusSmallConstant,
+        ),
+      ),
+      child: Column(
+        children: [
+          title,
+          SizedBox(
+            height: kItemsSpacingSmall,
+          ),
+          Expanded(
+            child: ListView(
+              children: [
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                )
+              ],
             ),
-            height: Sizescaleconfig.scaleHeightFactorWithMaxMinConstraints(
-              kPaddingSmallConstant,
-              kPaddingMediumConstant,
-              kPaddingSmallConstant,
-            ),
-            width: Sizescaleconfig.scaleHeightFactorWithMaxMinConstraints(
-              pageIndex == i
-                  ? kPaddingMediumConstant * 2
-                  : kPaddingSmallConstant,
-              kPaddingMediumConstant,
-              kPaddingSmallConstant,
-            ),
-            decoration: BoxDecoration(
-              color: pageIndex == i
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColorLight,
-              borderRadius: BorderRadius.circular(8),
+          ),
+          SizedBox(
+            height: kItemsSpacingSmall,
+          ),
+          ElevatedButton(
+            onPressed: onTap,
+            style: callToActionButtonStyle,
+            child: Text(
+              pageIndex == 0 ? "Next" : "Continue",
+              style: getButtonStyle(context),
             ),
           )
-      ],
+        ],
+      ),
     );
   }
 }
+
+const String chaseAppMessage =
+    """We have created an exciting platform powered by the chase and live-action news and streaming community and are proud to be the only ones delivering live notifications and links to multiple streaming sources whenever a live police pursuit occurs anywhere in the world.""";
+
+const String nodleUsageMessage =
+    """ This version of ChaseApp is supported by Nodle. Your smartphones Bluetooth connection and Location services are used while you're browsing ChaseApp to enable a crowdsourced IoT network. There is no personal data captured, and it uses very low bandwidth. We earn a small fee for this that helps cover our costs and you see no advertisements and pay nothing.\n\nThere are millions of these IoT devices everywhere, and they need to send small messages periodically; devices like your gas meter, Apple tags, and there will be billions more.""";
