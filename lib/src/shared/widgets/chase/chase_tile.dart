@@ -46,7 +46,7 @@ class ChaseTile extends StatelessWidget {
             context,
             RouteName.CHASE_VIEW,
             arguments: {
-              "chase": chase,
+              "chaseId": chase.id,
             },
           );
         });

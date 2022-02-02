@@ -5,6 +5,7 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
@@ -21,9 +22,9 @@ import 'package:share_plus/share_plus.dart';
 class ShowChase extends ConsumerWidget {
   // ShowChase(this.observer);
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  final Chase chase;
+  final String chaseId;
 
-  ShowChase({Key? key, required this.chase}) : super(key: key);
+  ShowChase({Key? key, required this.chaseId}) : super(key: key);
 
   final Logger logger = Logger("ChaseView");
 
@@ -41,14 +42,16 @@ class ShowChase extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () async {
+              final chase = await ref.read(streamChaseProvider(chaseId).future);
+              final shareLink = await createRecordDynamicLink(chase);
               //TODO:Need to share a dynamic link or web link for the chase
-              Share.share(chase.desc ?? "NA", subject: chase.name);
+              Share.share(shareLink);
             },
           ),
         ],
       ),
       body: ProviderStateBuilder<Chase>(
-        watchThisProvider: streamChaseProvider(chase.id),
+        watchThisProvider: streamChaseProvider(chaseId),
         logger: logger,
         builder: (chase) {
           String? imageURL = chase.imageURL;

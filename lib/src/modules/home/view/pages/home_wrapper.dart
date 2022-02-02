@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -30,7 +29,13 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     with WidgetsBindingObserver {
   Timer? _timerLink;
 
-  Future<void> navigateToView(WidgetRef ref, Uri deepLink) async {}
+  Future<void> navigateToView(WidgetRef ref, Uri deepLink) async {
+    final chaseId = deepLink.queryParameters["chaseId"];
+
+    Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
+      "chaseId": chaseId,
+    });
+  }
 
   void handledynamiclink(WidgetRef ref, BuildContext context) async {
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
