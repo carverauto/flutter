@@ -15,7 +15,10 @@ Future<String> createRecordDynamicLink(Chase chase) async {
       ? "https://carverauto.page.link"
       : "https://m.chaseapp.tv";
 
-  final link = Uri.parse('https://carverauto.com/chases?chaseId=${chase.id}');
+  final linkPrefix =
+      F.appFlavor == Flavor.DEV ? "carverauto.com" : "link.m.chaseapp.tv";
+
+  final link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
 
   //Dynamic link generalization
   final DynamicLinkParameters parameters = DynamicLinkParameters(

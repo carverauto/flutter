@@ -38,15 +38,15 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handledynamiclink(WidgetRef ref, BuildContext context) async {
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      final Uri? deepLink = dynamicLink.link;
+    // FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
+    //   final Uri? deepLink = dynamicLink.link;
 
-      if (deepLink != null) {
-        await navigateToView(ref, deepLink);
-      }
-    }, onError: (Object error, StackTrace stackTrace) {
-      log("Error while recieving message", error: error);
-    });
+    //   if (deepLink != null) {
+    //     await navigateToView(ref, deepLink);
+    //   }
+    // }, onError: (Object error, StackTrace stackTrace) {
+    //   log("Error while recieving message", error: error);
+    // });
 
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
@@ -123,7 +123,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         _timerLink = new Timer(
           const Duration(milliseconds: 1000),
           () {
-            handledynamiclink(ref, context);
+            // handledynamiclink(ref, context);
             handlemessagesthatopenedtheapp(context);
           },
         );

@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
@@ -43,9 +44,16 @@ class ShowChase extends ConsumerWidget {
             icon: const Icon(Icons.share),
             onPressed: () async {
               final chase = await ref.read(streamChaseProvider(chaseId).future);
-              final shareLink = await createRecordDynamicLink(chase);
-              //TODO:Need to share a dynamic link or web link for the chase
-              Share.share(shareLink);
+
+              try {
+                final shareLink = await createRecordDynamicLink(chase);
+                Share.share(shareLink);
+              } catch (e) {
+                log("Wha'ts wrong?", error: e);
+              }
+
+              // //TODO:Need to share a dynamic link or web link for the chase
+              // Share.share(shareLink);
             },
           ),
         ],
