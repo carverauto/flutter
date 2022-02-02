@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chaseapp/src/const/assets.dart';
@@ -60,7 +60,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
           ),
         )
         .animate(_animationController);
-    Future.delayed(Duration(seconds: 1));
+    Future.delayed(Duration(milliseconds: 300));
     _animationController.forward();
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -85,7 +85,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 30),
+      duration: const Duration(seconds: 60),
     );
     playTrack();
   }
@@ -118,10 +118,11 @@ While the Congress of the Republic endlessly debates this alarming chain of even
               ),
             ),
             CrawlText(
-                animationController: _animationController,
-                crawlText: crawlText,
-                crawlTextposition: crawlTextposition,
-                disappearCrawlText: disappearCrawlText),
+              animationController: _animationController,
+              crawlText: crawlText,
+              crawlTextposition: crawlTextposition,
+              disappearCrawlText: disappearCrawlText,
+            ),
             BackButton(),
           ],
         ));
@@ -158,7 +159,7 @@ class CrawlText extends StatelessWidget {
           ),
           transform: Matrix4.identity()
             ..setRotationX(
-              pi / 2.6, //2.8, //2.5,
+              math.pi / 2.6, //2.8, //2.5,
             )
             ..setEntry(
               3,
