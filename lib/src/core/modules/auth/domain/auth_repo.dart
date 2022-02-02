@@ -4,7 +4,6 @@ import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 
 class AuthRepository implements AuthRepositoryAB {
   AuthRepository({
@@ -47,8 +46,8 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Future<void> saveFirebaseDeviceToken() {
-    return read(authDbProvider).saveFirebaseDeviceToken();
+  Future<void> saveFirebaseDeviceToken(User user) {
+    return read(authDbProvider).saveFirebaseDeviceToken(user);
   }
 
   @override
@@ -62,8 +61,8 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  void updateTokenWhenRefreshed() {
-    read(authDbProvider).updateTokenWhenRefreshed();
+  void updateTokenWhenRefreshed(User user) {
+    read(authDbProvider).updateTokenWhenRefreshed(user);
   }
 
   @override

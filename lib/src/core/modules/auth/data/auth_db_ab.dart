@@ -12,11 +12,12 @@ abstract class AuthDB {
   Future<void> handleMutliProviderSignIn(
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
   Future<void> subscribeToTopics();
-  Future<void> saveFirebaseDeviceToken();
+  Future<void> saveFirebaseDeviceToken(User user);
+  Future<void> saveTokenToDatabase(User user, String token);
   Future<void> googleLogin();
   Future<void> appleLogin();
   Future<void> facebookLogin();
   Future<void> twitterLogin();
   Future<void> signOut();
-  void updateTokenWhenRefreshed();
+  void updateTokenWhenRefreshed(User user);
 }
