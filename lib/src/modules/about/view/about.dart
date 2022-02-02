@@ -49,14 +49,14 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
     final topOffset = height + 100;
-    final bottomOffset = -height / 2;
+    final bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
             .animate(_animationController);
     disappearCrawlText = Tween<double>(begin: 1.0, end: 0)
         .chain(
           CurveTween(
-            curve: Interval(0.9, 0.95),
+            curve: Interval(0.95, 1.0),
           ),
         )
         .animate(_animationController);
@@ -173,7 +173,9 @@ class CrawlText extends StatelessWidget {
                 overflow: TextOverflow.visible,
                 style: TextStyle(
                   height: 1.3,
-                  fontSize: Theme.of(context).textTheme.subtitle2!.fontSize,
+                  fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+                      ? Theme.of(context).textTheme.caption!.fontSize
+                      : Theme.of(context).textTheme.subtitle2!.fontSize,
                   color: starWarsCrawlTextColor,
                   fontFamily: "Crawl",
                 ),
