@@ -20,8 +20,19 @@ class MultiAuthDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Icon(
+              Icons.info,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
             Text(
-              "Account already created with different Provider. Please sign in with the provider you used to create the account at first. This will link your account with the provider you are currently using.",
+              "Account exists with multiple sign in providers.",
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              "Please sign in using any one of the previously used providers to continue.",
               style: Theme.of(context).textTheme.subtitle1,
               textAlign: TextAlign.center,
             ),
