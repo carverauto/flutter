@@ -23,9 +23,9 @@ class _$UserDataTearOff {
 
   _UserData call(
       {required String uid,
-      required String userName,
+      String? userName,
       required String email,
-      required String photoURL,
+      String? photoURL,
       required int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
       List<String>? tokens}) {
@@ -51,9 +51,9 @@ const $UserData = _$UserDataTearOff();
 /// @nodoc
 mixin _$UserData {
   String get uid => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get photoURL => throw _privateConstructorUsedError;
+  String? get photoURL => throw _privateConstructorUsedError;
   int get lastUpdated => throw _privateConstructorUsedError;
   @DatetimeTimestampNullableConverter()
   DateTime? get lastTokenUpdate => throw _privateConstructorUsedError;
@@ -71,9 +71,9 @@ abstract class $UserDataCopyWith<$Res> {
       _$UserDataCopyWithImpl<$Res>;
   $Res call(
       {String uid,
-      String userName,
+      String? userName,
       String email,
-      String photoURL,
+      String? photoURL,
       int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
       List<String>? tokens});
@@ -105,7 +105,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       userName: userName == freezed
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -113,7 +113,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       lastUpdated: lastUpdated == freezed
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
@@ -137,9 +137,9 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
   @override
   $Res call(
       {String uid,
-      String userName,
+      String? userName,
       String email,
-      String photoURL,
+      String? photoURL,
       int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
       List<String>? tokens});
@@ -172,7 +172,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       userName: userName == freezed
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -180,7 +180,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       lastUpdated: lastUpdated == freezed
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
@@ -203,9 +203,9 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 class _$_UserData extends _UserData {
   const _$_UserData(
       {required this.uid,
-      required this.userName,
+      this.userName,
       required this.email,
-      required this.photoURL,
+      this.photoURL,
       required this.lastUpdated,
       @DatetimeTimestampNullableConverter() this.lastTokenUpdate,
       this.tokens})
@@ -217,11 +217,11 @@ class _$_UserData extends _UserData {
   @override
   final String uid;
   @override
-  final String userName;
+  final String? userName;
   @override
   final String email;
   @override
-  final String photoURL;
+  final String? photoURL;
   @override
   final int lastUpdated;
   @override
@@ -276,9 +276,9 @@ class _$_UserData extends _UserData {
 abstract class _UserData extends UserData {
   const factory _UserData(
       {required String uid,
-      required String userName,
+      String? userName,
       required String email,
-      required String photoURL,
+      String? photoURL,
       required int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
       List<String>? tokens}) = _$_UserData;
@@ -289,11 +289,11 @@ abstract class _UserData extends UserData {
   @override
   String get uid;
   @override
-  String get userName;
+  String? get userName;
   @override
   String get email;
   @override
-  String get photoURL;
+  String? get photoURL;
   @override
   int get lastUpdated;
   @override
