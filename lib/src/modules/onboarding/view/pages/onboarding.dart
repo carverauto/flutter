@@ -118,27 +118,31 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(
-        kPaddingMediumConstant,
-      ),
-      margin: EdgeInsets.all(
-        kPaddingMediumConstant,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onBackground,
-        borderRadius: BorderRadius.circular(
-          kBorderRadiusSmallConstant,
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(
+          kPaddingMediumConstant,
         ),
-      ),
-      child: Column(
-        children: [
-          title,
-          SizedBox(
-            height: kItemsSpacingSmall,
+        margin: EdgeInsets.all(
+          kPaddingMediumConstant,
+        ).copyWith(
+          bottom: 0,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onBackground,
+          borderRadius: BorderRadius.circular(
+            kBorderRadiusSmallConstant,
           ),
-          Expanded(
-            child: ListView(
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            title,
+            SizedBox(
+              height: kItemsSpacingSmall,
+            ),
+            ListView(
+              shrinkWrap: true,
               children: [
                 Text(
                   message,
@@ -146,19 +150,19 @@ class OnboardingPage extends StatelessWidget {
                 )
               ],
             ),
-          ),
-          SizedBox(
-            height: kItemsSpacingSmall,
-          ),
-          ElevatedButton(
-            onPressed: onTap,
-            style: callToActionButtonStyle,
-            child: Text(
-              pageIndex == 0 ? "Next" : "Continue",
-              style: getButtonStyle(context),
+            SizedBox(
+              height: kItemsSpacingMediumConstant,
             ),
-          )
-        ],
+            ElevatedButton(
+              onPressed: onTap,
+              style: callToActionButtonStyle,
+              child: Text(
+                pageIndex == 0 ? "Next" : "Continue",
+                style: getButtonStyle(context),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
