@@ -65,14 +65,20 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<!-- For Bluetooth Usage -->
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
+	<!-- End -->
+	<!-- For Location Usage -->
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Need for our location request</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need for our location request</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need for our location request</string>
+	<!-- End -->
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -97,5 +103,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://m.chaseapp.tv</string>
+		<string>https://m.chaseapp.tv/link</string>		
+	</array>
 </dict>
 </plist>

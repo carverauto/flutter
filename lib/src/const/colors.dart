@@ -15,3 +15,5 @@ const primaryColor = MaterialColor(
     900: Color(0xff321b92)
   },
 );
+
+const starWarsCrawlTextColor = Color(0xffc7890a);

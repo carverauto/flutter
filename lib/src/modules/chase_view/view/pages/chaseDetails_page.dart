@@ -6,12 +6,12 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/shared/util/firebase_collections.dart';
+import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,9 +23,9 @@ import 'package:share_plus/share_plus.dart';
 class ShowChase extends ConsumerWidget {
   // ShowChase(this.observer);
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  final Chase chase;
+  final String chaseId;
 
-  ShowChase({Key? key, required this.chase}) : super(key: key);
+  ShowChase({Key? key, required this.chaseId}) : super(key: key);
 
   final Logger logger = Logger("ChaseView");
 
@@ -35,19 +35,31 @@ class ShowChase extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 1.0,
-        title: Image.asset(chaseAppNameImage),
+        title: Image.asset(
+          chaseAppNameImage,
+          height: kImageSizeLarge,
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () async {
-              //TODO:Need to share a dynamic link or web link for the chase
-              Share.share(chase.desc ?? "NA", subject: chase.name);
+              final chase = await ref.read(streamChaseProvider(chaseId).future);
+
+              try {
+                final shareLink = await createRecordDynamicLink(chase);
+                Share.share(shareLink);
+              } catch (e) {
+                log("Wha'ts wrong?", error: e);
+              }
+
+              // //TODO:Need to share a dynamic link or web link for the chase
+              // Share.share(shareLink);
             },
           ),
         ],
       ),
       body: ProviderStateBuilder<Chase>(
-        watchThisProvider: streamChaseProvider(chase.id),
+        watchThisProvider: streamChaseProvider(chaseId),
         logger: logger,
         builder: (chase) {
           String? imageURL = chase.imageURL;
@@ -60,7 +72,7 @@ class ShowChase extends ConsumerWidget {
                 child: ColoredBox(
                   color: Theme.of(context).colorScheme.primaryVariant,
                   child: AdaptiveImageBuilder(
-                    url: imageURL ?? '',
+                    url: parseImageUrl(imageURL),
                   ),
                 ),
               ),
@@ -86,7 +98,7 @@ class ShowChase extends ConsumerWidget {
                               maxLines: 2,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1!
+                                  .headline5!
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -99,7 +111,7 @@ class ShowChase extends ConsumerWidget {
                             Flexible(
                               child: Text(
                                 chase.desc ?? "NA",
-                                style: Theme.of(context).textTheme.subtitle2!,
+                                style: Theme.of(context).textTheme.bodyText1!,
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -116,7 +128,7 @@ class ShowChase extends ConsumerWidget {
                       ),
                       Text(
                         "Watch here :",
-                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               decoration: TextDecoration.underline,
                             ),
                       ),
@@ -134,7 +146,7 @@ class ShowChase extends ConsumerWidget {
                         child: ClapFAB.image(
                           trailing: Text(
                             chase.votes.toString(),
-                            style: Theme.of(context).textTheme.headline6!,
+                            style: Theme.of(context).textTheme.headline5!,
                           ),
                           clapFabCallback: (int counter) async {
                             try {

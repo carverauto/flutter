@@ -3,10 +3,9 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/chase/chase_tile.dart';
@@ -71,26 +70,24 @@ class Dashboard extends ConsumerWidget {
               centerTitle: true,
               elevation: kElevation,
               pinned: true,
-              title: Image.asset(chaseAppNameImage),
+              title: Image.asset(
+                chaseAppNameImage,
+                height: kImageSizeLarge,
+              ),
               actions: [
-                IconButton(
-                    icon: CircleAvatar(
-                      radius: kImageSizeMedium,
-                      backgroundImage: CachedNetworkImageProvider(
-                        ref.watch(userStreamProvider.select(
-                                (value) => value.asData?.value.photoURL)) ??
-                            defaultPhotoURL,
-                      ),
+                ChaseAppDropDownButton(
+                  child: CircleAvatar(
+                    radius: kImageSizeSmall,
+                    backgroundImage: CachedNetworkImageProvider(
+                      ref.watch(userStreamProvider.select(
+                              (value) => value.asData?.value.photoURL)) ??
+                          defaultPhotoURL,
                     ),
-                    onPressed: () async {
-                      bool? logOut = await Navigator.pushNamed<bool>(
-                        context,
-                        RouteName.PROFILE,
-                      );
-                      if (logOut != null) {
-                        await ref.read(authRepoProvider).signOut();
-                      }
-                    }),
+                  ),
+                ),
+                SizedBox(
+                  width: kItemsSpacingSmallConstant,
+                ),
               ],
             ),
             // Error if removed (Need to report)

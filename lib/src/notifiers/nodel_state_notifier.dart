@@ -15,13 +15,17 @@ class NodelStateNotifier extends StateNotifier<NodleState> {
   String get value => _value;
   String? status = null;
   String? nodleConfig = null;
+  bool isInitialized = false;
 
   void initializeNodle() async {
-    try {
-      _value = await platform.invokeMethod("init");
-      log("Nodle initialized: $_value");
-    } catch (e, stk) {
-      logger.severe("Error initializing nodle", e, stk);
+    if (!isInitialized) {
+      try {
+        _value = await platform.invokeMethod("init");
+        isInitialized = true;
+        log("Nodle initialized: $_value");
+      } catch (e, stk) {
+        logger.severe("Error initializing nodle", e, stk);
+      }
     }
   }
 

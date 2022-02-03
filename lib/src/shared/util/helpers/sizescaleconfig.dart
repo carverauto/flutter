@@ -7,6 +7,19 @@ class Sizescaleconfig {
   static late double widthscaleratio;
   static late double textscalefactor;
 
+  static final mobileBreakpoint = 480;
+  static final tabletBreakpoint = 900;
+
+  static DeviceType get getDeviceType {
+    if (screenwidth! <= 480) {
+      return DeviceType.MOBILE;
+    } else if (screenwidth! > 480 && screenwidth! <= 900) {
+      return DeviceType.TABLET;
+    } else {
+      return DeviceType.DESKTOP;
+    }
+  }
+
   static void calculaterscaleratio() {
     heightscaleratio = screenheight! / refrenceheight;
     widthscaleratio = screenwidth! / referencewidth;
@@ -53,4 +66,10 @@ class Sizescaleconfig {
 
     calculaterscaleratio();
   }
+}
+
+enum DeviceType {
+  MOBILE,
+  TABLET,
+  DESKTOP,
 }

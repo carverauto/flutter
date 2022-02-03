@@ -3,9 +3,7 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +24,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       appBar: AppBar(
         centerTitle: true,
         elevation: kElevation,
-        title: Image.asset(chaseAppNameImage),
+        title: Image.asset(
+          chaseAppNameImage,
+          height: kImageSizeLarge,
+        ),
       ),
       body: Column(
         children: [
@@ -48,8 +49,9 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           alignment: Alignment.center,
                           child: CircleAvatar(
                             radius: kImageSizeLarge,
-                            backgroundImage:
-                                CachedNetworkImageProvider(user.photoURL),
+                            backgroundImage: CachedNetworkImageProvider(
+                              user.photoURL ?? defaultPhotoURL,
+                            ),
                           ),
                         ),
                         Divider(
@@ -57,17 +59,19 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           color: Theme.of(context).colorScheme.primaryVariant,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Full Name',
+                              'Full Name :',
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(fontWeight: FontWeight.bold),
                             ),
+                            SizedBox(
+                              width: kItemsSpacingSmallConstant,
+                            ),
                             Text(
-                              user.userName,
+                              user.userName ?? "NA",
                               style: Theme.of(context).textTheme.subtitle1!,
                             ),
                           ],
@@ -77,14 +81,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           color: Theme.of(context).colorScheme.primaryVariant,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Email',
+                              'Email :',
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: kItemsSpacingSmallConstant,
                             ),
                             Text(
                               user.email,
@@ -96,36 +102,10 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           height: kItemsSpacingLarge,
                           color: Theme.of(context).colorScheme.primaryVariant,
                         ),
-                        ElevatedButton(
-                            onPressed: () async {
-                              await launchUrl(privacyPolicy);
-                            },
-                            child: const Text('Privacy')),
-                        ElevatedButton(
-                            onPressed: () async {
-                              await launchUrl(tosPolicy);
-                            },
-                            child: const Text('Terms of Service')),
                       ],
                     ));
               },
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Consumer(
-              builder: (context, ref, _) {
-                return ElevatedButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text('Logout'),
-                );
-              },
-            ),
-          ),
-          SizedBox(
-            height: kItemsSpacingSmall,
           ),
         ],
       ),

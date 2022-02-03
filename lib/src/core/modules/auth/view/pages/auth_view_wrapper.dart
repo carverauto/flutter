@@ -2,7 +2,6 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,6 @@ class AuthViewWrapper extends ConsumerWidget {
   final Logger logger = Logger("AuthViewWrapper");
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Sizescaleconfig.setSizes(
-      MediaQuery.of(context).size.height,
-      MediaQuery.of(context).size.width,
-      MediaQuery.of(context).textScaleFactor,
-    );
     final loggedinstatus = ref.watch(streamLogInStatus);
 
     return loggedinstatus.when(
@@ -25,9 +19,11 @@ class AuthViewWrapper extends ConsumerWidget {
           if (user != null) {
             return ref.watch(fetchUserProvider(user)).when(
                   data: (userData) {
-                    ref
-                        .read(postLoginStateNotifierProvider.notifier)
-                        .initPostLoginActions();
+                    WidgetsBinding.instance!.addPostFrameCallback((t) {
+                      ref
+                          .read(postLoginStateNotifierProvider.notifier)
+                          .initPostLoginActions(user, userData);
+                    });
 
                     return HomeWrapper();
                   },

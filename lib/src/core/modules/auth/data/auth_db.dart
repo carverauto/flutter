@@ -9,7 +9,6 @@ import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,27 +21,28 @@ class AuthDatabase implements AuthDB {
   });
   final Reader read;
 
-  Future<void> saveFirebaseDeviceToken() async {
+  Future<void> saveFirebaseDeviceToken(User user) async {
     String? token = await read(firebaseMesssagingProvider).getToken();
     if (token != null) {
-      saveTokenToDatabase(token);
+      saveTokenToDatabase(user, token);
     }
   }
 
-  Future<void> saveTokenToDatabase(String token) async {
-    // Assume user is logged in for this example
+  Future<void> saveTokenToDatabase(User user, String token) async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
     await usersCollectionRef.doc(userId).update({
       'tokens': FieldValue.arrayUnion([token]),
+      "photoURL": user.photoURL,
+      "userName": user.displayName,
       'lastTokenUpdate': DateTime.now(),
       'lastUpdated': DateTime.now().millisecondsSinceEpoch,
     });
   }
 
-  void updateTokenWhenRefreshed() {
+  void updateTokenWhenRefreshed(User user) {
     read(firebaseMesssagingProvider).onTokenRefresh.listen((token) {
-      saveTokenToDatabase(token);
+      saveTokenToDatabase(user, token);
       subscribeToTopics();
     });
   }
