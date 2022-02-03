@@ -103,5 +103,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://m.chaseapp.tv</string>
+		<string>https://m.chaseapp.tv/link</string>		
+	</array>
 </dict>
 </plist>
