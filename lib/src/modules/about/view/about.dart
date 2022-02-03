@@ -203,18 +203,14 @@ class CrawlContributions extends StatelessWidget {
 
     return GestureDetector(
       onVerticalDragUpdate: (details) {
-        // print(details.primaryDelta.toString());
-        //  final moveToTarget = details.primaryDelta
         final maxdrag = details.primaryDelta! / Sizescaleconfig.screenheight!;
 
         final isScrolledDown = maxdrag.isNegative;
-        print(isScrolledDown);
+
         final animationValue = animationController.value;
         animationController
             .animateTo(
-          isScrolledDown
-              ? (animationValue + 0.1).toDouble()
-              : (animationValue - 0.1),
+          isScrolledDown ? (animationValue + 0.1) : (animationValue - 0.1),
           duration: Duration(milliseconds: 300),
         )
             .then((value) {

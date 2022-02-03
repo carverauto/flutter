@@ -7,7 +7,6 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 //TODO: Update configurations for dynamic links for android and ios
 // also check for notifications configurations
@@ -58,15 +57,16 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handlenotifications(RemoteMessage message) {
-    log(message.data.toString());
-    Fluttertoast.showToast(
-        msg: message.data.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    log("Notification Message Arrived--->" + message.data.toString());
+    //TODO:Handle notifications message
+    // Fluttertoast.showToast(
+    //     msg: message.data.toString(),
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.CENTER,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.red,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0);
     switch (message.data["type"]) {
       //TODO: Add cases for notification types
       case 'chat':
@@ -98,6 +98,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     WidgetsBinding.instance!.addObserver(this);
 
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
+      log("Dynamic Link Recieved--->" + dynamicLink.link.toString());
       final Uri? deepLink = dynamicLink.link;
 
       if (deepLink != null) {
