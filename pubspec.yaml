@@ -105,6 +105,7 @@ flutter:
   assets:
     - assets/
     - assets/icon/
+    - assets/audio/
     - images/donut.png
     - images/sparkles.png
     - images/chaseapp.png
