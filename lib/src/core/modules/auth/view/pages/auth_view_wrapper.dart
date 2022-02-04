@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
@@ -39,6 +40,8 @@ class AuthViewWrapper extends ConsumerWidget {
             return ref.watch(fetchUserProvider(user)).when(
                   data: (userData) {
                     WidgetsBinding.instance!.addPostFrameCallback((t) {
+                      ref.read(nodleProvider.notifier).initializeNodle();
+
                       ref
                           .read(postLoginStateNotifierProvider.notifier)
                           .initPostLoginActions(user, userData);
@@ -79,6 +82,10 @@ class AuthViewWrapper extends ConsumerWidget {
                   ),
                 );
           }
+
+          WidgetsBinding.instance!.addPostFrameCallback((t) {
+            ref.read(checkForUpdateStateNotifier.notifier).doRequest();
+          });
 
           return const LoginOrRegister();
         },

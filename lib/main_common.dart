@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
 import 'package:device_preview/device_preview.dart';
@@ -18,7 +17,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(nodleProvider.notifier).initializeNodle();
     return MaterialApp(
       title: 'ChaseApp',
       initialRoute: '/',
