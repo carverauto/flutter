@@ -268,7 +268,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
             color: counter > 0
                 ? widget.filledImageColor
                 : widget.defaultImageColor,
-            size: 30.0,
+            size: 40.0,
           ),
         ));
   }
@@ -362,7 +362,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
           width: 10,
         ),
         SizedBox(
-          width: Theme.of(context).textTheme.headline5!.fontSize! * 2,
+          width: Theme.of(context).textTheme.headline5!.fontSize! * 4,
           child: _scoreWidgetStatus == ScoreWidgetStatus.HIDDEN
               ? widget.trailing(counter)
               : SizedBox.shrink(),
