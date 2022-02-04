@@ -2,9 +2,12 @@ import 'package:chaseapp/src/core/modules/chase/data/chase_db.dart';
 import 'package:chaseapp/src/core/modules/chase/data/chase_db_ab.dart';
 import 'package:chaseapp/src/core/modules/chase/domain/chase_repo.dart';
 import 'package:chaseapp/src/core/modules/chase/domain/chase_repo_ab.dart';
+import 'package:chaseapp/src/core/notifiers/app_update_notifier.dart';
+import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sharedPreferancesProvider = Provider<SharedPreferences>((ref) {
@@ -30,4 +33,13 @@ final isConnected = StreamProvider<bool>((ref) async* {
 
     return active;
   });
+});
+
+final appInfoProvider =
+    Provider<PackageInfo>((ref) => throw UnimplementedError());
+
+final checkForUpdateStateNotifier =
+    StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>(
+        (ref) {
+  return AppUpdateStateNotifier(read: ref.read);
 });
