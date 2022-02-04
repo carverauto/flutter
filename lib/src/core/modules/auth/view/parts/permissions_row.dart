@@ -30,11 +30,18 @@ class PermissionRow extends StatelessWidget {
       title: Text(
         title,
         style: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-            ? Theme.of(context).textTheme.subtitle1!
-            : Theme.of(context).textTheme.headline5!,
+            ? Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                )
+            : Theme.of(context).textTheme.headline5!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
       ),
       subtitle: Text(
         subTitle,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
+        ),
       ),
       onTap: () {},
     );

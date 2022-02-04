@@ -107,6 +107,9 @@ class ShowChase extends ConsumerWidget {
                                   .headline5!
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                             ),
                             Divider(
@@ -117,7 +120,14 @@ class ShowChase extends ConsumerWidget {
                             Flexible(
                               child: Text(
                                 chase.desc ?? "NA",
-                                style: Theme.of(context).textTheme.bodyText1!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -136,6 +146,7 @@ class ShowChase extends ConsumerWidget {
                         "Watch here :",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               decoration: TextDecoration.underline,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
                       Expanded(

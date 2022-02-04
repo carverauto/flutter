@@ -60,6 +60,7 @@ class Dashboard extends ConsumerWidget {
         },
       ),
       body: RefreshIndicator(
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
         onRefresh: () async {
           ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
         },
@@ -199,9 +200,14 @@ class Dashboard extends ConsumerWidget {
                                   Theme.of(context).colorScheme.onPrimary,
                               avatar: Icon(
                                 Icons.cloud_off,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                               label: Text(
                                 "You're Offline!",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
                               ),
                             ),
                     );

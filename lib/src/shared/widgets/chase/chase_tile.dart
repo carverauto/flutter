@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -20,7 +21,7 @@ class ChaseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        tileColor: Theme.of(context).colorScheme.surface,
+        tileColor: primaryColor.shade600,
         style: ListTileStyle.list,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant / 2),
@@ -68,10 +69,16 @@ class ChaseTile extends StatelessWidget {
           chase.name ?? "NA",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
         subtitle: Text(
           dateAdded(chase),
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary.withAlpha(190),
+          ),
         ),
         trailing: Chip(
           elevation: kElevation,

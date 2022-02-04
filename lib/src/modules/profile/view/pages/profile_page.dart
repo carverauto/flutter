@@ -65,14 +65,26 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                             ),
                             SizedBox(
                               width: kItemsSpacingSmallConstant,
                             ),
                             Text(
                               user.userName ?? "NA",
-                              style: Theme.of(context).textTheme.subtitle1!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                             ),
                           ],
                         ),
@@ -87,14 +99,26 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!
-                                  .copyWith(fontWeight: FontWeight.bold),
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                             ),
                             SizedBox(
                               width: kItemsSpacingSmallConstant,
                             ),
                             Text(
                               user.email,
-                              style: Theme.of(context).textTheme.subtitle1!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                             ),
                           ],
                         ),

@@ -129,7 +129,7 @@ class OnboardingPage extends StatelessWidget {
           bottom: 0,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(
             kBorderRadiusSmallConstant,
           ),

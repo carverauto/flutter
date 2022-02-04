@@ -38,7 +38,7 @@ class CheckPermissionsView extends StatelessWidget {
                 kListPaddingConstant,
               ),
               decoration: BoxDecoration(
-                color: primaryColor.shade400,
+                color: primaryColor.shade500,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -104,7 +104,9 @@ class CheckPermissionsView extends StatelessWidget {
                 ),
                 Text(
                   "Or",
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                 ),
                 Flexible(
                   child: Divider(
@@ -127,6 +129,9 @@ class CheckPermissionsView extends StatelessWidget {
                   style: getButtonStyle(context),
                 ),
               ),
+            ),
+            SizedBox(
+              height: kItemsSpacingLargeConstant,
             ),
           ],
         ),
