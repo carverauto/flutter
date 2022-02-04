@@ -27,6 +27,7 @@ final isConnected = StreamProvider<bool>((ref) async* {
   bool active = result != ConnectivityResult.none;
 
   yield active;
+
   yield* Connectivity().onConnectivityChanged.map((event) {
     bool active =
         ConnectivityResult.values[event.index] != ConnectivityResult.none;
