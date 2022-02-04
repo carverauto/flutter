@@ -3,6 +3,7 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
@@ -89,6 +90,41 @@ class Dashboard extends ConsumerWidget {
                   width: kItemsSpacingSmallConstant,
                 ),
               ],
+            ),
+            SliverToBoxAdapter(
+              child: Consumer(builder: (context, ref, child) {
+                final state = ref.watch(isConnected);
+                return state.maybeWhen(
+                  data: (isConnected) {
+                    return AnimatedSwitcher(
+                        duration: Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
+                        },
+                        child: isConnected
+                            ? SizedBox.shrink()
+                            : Container(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.cloud_off,
+                                    ),
+                                    Text(
+                                      "You're Offline!",
+                                    )
+                                  ],
+                                ),
+                              ));
+                  },
+                  orElse: () => SizedBox.shrink(),
+                );
+              }),
             ),
             // Error if removed (Need to report)
             SliverToBoxAdapter(

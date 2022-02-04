@@ -74,6 +74,7 @@ dependencies:
   logging: ^1.0.2
   device_preview: ^1.0.0
   audioplayers: ^0.20.1
+  connectivity_plus: ^2.2.0
 
 dev_dependencies:
   flutter_test:
