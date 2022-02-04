@@ -41,7 +41,7 @@ Future<String> createRecordDynamicLink(Chase chase) async {
     socialMetaTagParameters: SocialMetaTagParameters(
       title: chase.name,
       description: chase.desc,
-      imageUrl: Uri.parse(chase.imageURL ?? defaultChaseImage),
+      imageUrl: Uri.parse(chase.imageURL ?? defaultPhotoURL),
     ),
   );
   //TODO:Need to report

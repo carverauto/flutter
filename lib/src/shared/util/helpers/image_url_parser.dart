@@ -1,7 +1,33 @@
-import 'package:chaseapp/src/const/links.dart';
-
-String parseImageUrl(String? imageUrl) {
-  if (imageUrl == null || imageUrl.isEmpty) return defaultChaseImage;
+String parseImageUrl(
+  String imageUrl, [
+  ImageDimensions imageDimensions = ImageDimensions.MEDIUM,
+]) {
   return imageUrl.replaceAll(
-      RegExp(r'/\.([0-9a-z]+)(?:[?#]|$)/i'), "_1200x600.webp?");
+    RegExp(r'/\.([0-9a-z]+)(?:[?#]|$)/i'),
+    imageDimensions.getDimensions,
+  );
+}
+
+enum ImageDimensions {
+  SMALL,
+  MEDIUM,
+  LARGE,
+}
+
+extension ImageDimensionParser on ImageDimensions {
+  String get getDimensions {
+    switch (this) {
+      case ImageDimensions.SMALL:
+        return "_200x200.webp?";
+        break;
+      case ImageDimensions.MEDIUM:
+        return "_600x600.webp?";
+        break;
+      case ImageDimensions.SMALL:
+        return "_1200x600.webp?";
+        break;
+      default:
+        return "_200x200.webp?";
+    }
+  }
 }

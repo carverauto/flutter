@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -22,10 +23,6 @@ class ChaseTile extends StatelessWidget {
         tileColor: Theme.of(context).colorScheme.surface,
         style: ListTileStyle.list,
         shape: RoundedRectangleBorder(
-          // side: BorderSide(
-          //   color: Theme.of(context).colorScheme.onSurface,
-          //   width: kBorderSideWidthSmallConstant,
-          // ),
           borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant / 2),
         ),
         leading: AspectRatio(
@@ -34,19 +31,37 @@ class ChaseTile extends StatelessWidget {
             height: double.maxFinite,
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(
                 kBorderRadiusSmallConstant / 2,
               ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 1,
+                  color: Theme.of(context).shadowColor,
+                ),
+              ],
             ),
-            child: AdaptiveImageBuilder(
-              url: chase.imageURL != null && chase.imageURL!.isNotEmpty
-                  ? chase.imageURL!
-                  : defaultChaseImage,
-              errorWidget: Icon(
-                Icons.info,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                ? CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: parseImageUrl(
+                      chase.imageURL!,
+                    ),
+                    placeholder: (context, value) => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, value, value2) {
+                      return Icon(
+                        Icons.info,
+                        color: Theme.of(context).colorScheme.primary,
+                      );
+                    },
+                  )
+                : Image(
+                    fit: BoxFit.cover,
+                    image: AssetImage(defaultChaseImage),
+                  ),
           ),
         ),
         title: Text(

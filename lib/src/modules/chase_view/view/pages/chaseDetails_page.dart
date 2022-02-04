@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -71,9 +72,14 @@ class ShowChase extends ConsumerWidget {
                 aspectRatio: aspectRatioStandard,
                 child: ColoredBox(
                   color: Theme.of(context).colorScheme.primaryVariant,
-                  child: AdaptiveImageBuilder(
-                    url: parseImageUrl(imageURL),
-                  ),
+                  child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                      ? AdaptiveImageBuilder(
+                          url: parseImageUrl(imageURL!),
+                        )
+                      : Image(
+                          fit: BoxFit.cover,
+                          image: AssetImage(defaultChaseImage),
+                        ),
                 ),
               ),
               Expanded(

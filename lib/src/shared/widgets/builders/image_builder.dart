@@ -6,11 +6,9 @@ class AdaptiveImageBuilder extends StatelessWidget {
   const AdaptiveImageBuilder({
     Key? key,
     required this.url,
-    this.errorWidget,
   }) : super(key: key);
 
   final String url;
-  final Widget? errorWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +16,23 @@ class AdaptiveImageBuilder extends StatelessWidget {
       image: AdaptiveImageProvider(url),
       fit: BoxFit.cover,
       errorBuilder: (context, child, s) {
-        return errorWidget ??
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.info,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-                SizedBox(height: 5),
-                Text(
-                  "Failed to load image",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-              ],
-            );
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.info,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+            SizedBox(height: 5),
+            Text(
+              "Failed to load image",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ],
+        );
       },
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         if (wasSynchronouslyLoaded) {
@@ -54,11 +51,12 @@ class AdaptiveImageBuilder extends StatelessWidget {
         }
 
         return Center(
-            child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(
-            Theme.of(context).colorScheme.onPrimary,
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(
+              Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-        ));
+        );
       },
     );
   }
