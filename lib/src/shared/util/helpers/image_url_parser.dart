@@ -3,7 +3,7 @@ String parseImageUrl(
   ImageDimensions imageDimensions = ImageDimensions.MEDIUM,
 ]) {
   return imageUrl.replaceAll(
-    RegExp(r'/\.([0-9a-z]+)(?:[?#]|$)/i'),
+    RegExp(r'\.([0-9a-z]+)(?:[?#]|$)', caseSensitive: false),
     imageDimensions.getDimensions,
   );
 }

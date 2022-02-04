@@ -20,8 +20,8 @@ class DonutClapButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ClapFAB.image(
       trailing: (counter) => Text(
-        chase.votes.toString(),
-        style: Theme.of(context).textTheme.headline5!.copyWith(
+        chase.votes.toString() + " donuts",
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: Theme.of(context).colorScheme.onBackground,
             ),
       ),
