@@ -77,7 +77,7 @@ class CheckPermissionsView extends StatelessWidget {
             PermissionRow(
               icon: Icons.bluetooth_connected,
               title: "Bluetooth",
-              subTitle: "Bluetooth permissions.",
+              subTitle: "Bluetooth permissions for bluetooth activities.",
             ),
             Divider(),
             PermissionRow(
