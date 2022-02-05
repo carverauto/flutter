@@ -16,23 +16,7 @@ class AdaptiveImageBuilder extends StatelessWidget {
       image: AdaptiveImageProvider(url),
       fit: BoxFit.cover,
       errorBuilder: (context, child, s) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.info,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            SizedBox(height: 5),
-            Text(
-              "Failed to load image",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-          ],
-        );
+        return ImageLoadErrorWidget();
       },
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         if (wasSynchronouslyLoaded) {
@@ -58,6 +42,33 @@ class AdaptiveImageBuilder extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class ImageLoadErrorWidget extends StatelessWidget {
+  const ImageLoadErrorWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.info,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        SizedBox(height: 5),
+        Text(
+          "Failed to load image",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ],
     );
   }
 }
