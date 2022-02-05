@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +17,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(nodleProvider.notifier).initializeNodle();
     return MaterialApp(
       title: 'ChaseApp',
       initialRoute: '/',
@@ -36,10 +35,16 @@ Future<void> setUpServices() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle());
   FirebaseApp firebaseApp = await Firebase.initializeApp();
+  FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
   if (kDebugMode) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
+
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: Duration(seconds: 10),
+    minimumFetchInterval: Duration(hours: 12),
+  ));
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   Logger.root.onRecord.listen((record) {

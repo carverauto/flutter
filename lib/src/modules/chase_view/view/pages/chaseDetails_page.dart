@@ -3,14 +3,15 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -71,9 +72,14 @@ class ShowChase extends ConsumerWidget {
                 aspectRatio: aspectRatioStandard,
                 child: ColoredBox(
                   color: Theme.of(context).colorScheme.primaryVariant,
-                  child: AdaptiveImageBuilder(
-                    url: parseImageUrl(imageURL),
-                  ),
+                  child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                      ? AdaptiveImageBuilder(
+                          url: parseImageUrl(imageURL!),
+                        )
+                      : Image(
+                          fit: BoxFit.cover,
+                          image: AssetImage(defaultChaseImage),
+                        ),
                 ),
               ),
               Expanded(
@@ -101,6 +107,9 @@ class ShowChase extends ConsumerWidget {
                                   .headline5!
                                   .copyWith(
                                     fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                             ),
                             Divider(
@@ -111,7 +120,14 @@ class ShowChase extends ConsumerWidget {
                             Flexible(
                               child: Text(
                                 chase.desc ?? "NA",
-                                style: Theme.of(context).textTheme.bodyText1!,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -130,6 +146,7 @@ class ShowChase extends ConsumerWidget {
                         "Watch here :",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               decoration: TextDecoration.underline,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
                       Expanded(
@@ -143,38 +160,9 @@ class ShowChase extends ConsumerWidget {
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: ClapFAB.image(
-                          trailing: Text(
-                            chase.votes.toString(),
-                            style: Theme.of(context).textTheme.headline5!,
-                          ),
-                          clapFabCallback: (int counter) async {
-                            try {
-                              //TODO: Improve this handling
-                              ref.read(chaseRepoProvider).upVoteChase(chase.id);
-                            } catch (e, stk) {
-                              logger.warning(
-                                "Error while upvoting a Chase",
-                                e,
-                                stk,
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Something went wrong. Please try again later.',
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          defaultImage: donutImage,
-                          filledImage: donutImage,
-                          countCircleColor: Colors.pink,
-                          hasShadow: true,
-                          sparkleColor: Colors.red,
-                          shadowColor: Colors.pink,
-                          defaultImageColor: Colors.pink,
-                          filledImageColor: Colors.pink,
+                        child: DonutClapButton(
+                          chase: chase,
+                          logger: logger,
                         ),
                       ),
                     ],

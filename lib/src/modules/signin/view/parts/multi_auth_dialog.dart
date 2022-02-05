@@ -28,12 +28,15 @@ class MultiAuthDialog extends StatelessWidget {
               "Account exists with multiple sign in providers.",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
               textAlign: TextAlign.center,
             ),
             Text(
               "Please sign in using any one of the previously used providers to continue.",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
               textAlign: TextAlign.center,
             ),
             SizedBox(

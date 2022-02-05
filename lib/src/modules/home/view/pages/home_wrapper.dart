@@ -1,20 +1,33 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO: Update configurations for dynamic links for android and ios
 // also check for notifications configurations
 
-Future<void> handlebgmessage(RemoteMessage event) async {
-  log(event.data.toString());
-  print(
-      'this is called if app is in background no matter when user opens the app');
+Future<void> handlebgmessage(RemoteMessage message) async {
+  log("Background message arrived--->" + message.data.toString());
+
+  switch (message.data["type"]) {
+    //TODO: Add cases for notification types
+    case 'chat':
+      break;
+    case 'update':
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool should_fetch = message.data["config_state"] == "stale";
+      await prefs.setBool("should_fetch", should_fetch);
+      break;
+    default:
+  }
+
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
 }
@@ -56,20 +69,22 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     }
   }
 
-  void handlenotifications(RemoteMessage message) {
+  void handlenotifications(RemoteMessage message) async {
     log("Notification Message Arrived--->" + message.data.toString());
-    //TODO:Handle notifications message
-    // Fluttertoast.showToast(
-    //     msg: message.data.toString(),
-    //     toastLength: Toast.LENGTH_LONG,
-    //     gravity: ToastGravity.CENTER,
-    //     timeInSecForIosWeb: 1,
-    //     backgroundColor: Colors.red,
-    //     textColor: Colors.white,
-    //     fontSize: 16.0);
+
     switch (message.data["type"]) {
       //TODO: Add cases for notification types
       case 'chat':
+        break;
+      case 'update':
+        handlebgmessage(message).then(
+          (value) =>
+              ref.read(checkForUpdateStateNotifier.notifier).doRequest(true),
+        );
+
+        break;
+      case 'chase':
+        throw UnimplementedError();
         break;
       default:
     }

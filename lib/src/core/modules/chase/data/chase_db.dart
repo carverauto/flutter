@@ -2,7 +2,6 @@ import 'package:chaseapp/src/core/modules/chase/data/chase_db_ab.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChaseDatabase implements ChaseDbAB {
   ChaseDatabase();
@@ -38,11 +37,11 @@ class ChaseDatabase implements ChaseDbAB {
   }
 
   @override
-  Future<void> upVoteChase(String chaseId) async {
+  Future<void> upVoteChase(int upCount, String chaseId) async {
     final chaseDocRef = chasesCollection.doc(chaseId);
 
     await chaseDocRef.update({
-      'Votes': FieldValue.increment(1),
+      'Votes': FieldValue.increment(upCount),
     });
   }
 }

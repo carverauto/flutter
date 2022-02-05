@@ -18,6 +18,7 @@ class AdaptiveImageBuilder extends StatelessWidget {
       errorBuilder: (context, child, s) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.info,
@@ -50,11 +51,12 @@ class AdaptiveImageBuilder extends StatelessWidget {
         }
 
         return Center(
-            child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(
-            Theme.of(context).colorScheme.onPrimary,
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(
+              Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-        ));
+        );
       },
     );
   }

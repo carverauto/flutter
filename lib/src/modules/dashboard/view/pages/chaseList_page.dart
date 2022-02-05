@@ -3,6 +3,7 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
@@ -59,112 +60,161 @@ class Dashboard extends ConsumerWidget {
         },
       ),
       body: RefreshIndicator(
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
         onRefresh: () async {
           ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
         },
-        child: CustomScrollView(
-          controller: scrollController,
-          restorationId: "Chases List",
-          slivers: [
-            SliverAppBar(
-              centerTitle: true,
-              elevation: kElevation,
-              pinned: true,
-              title: Image.asset(
-                chaseAppNameImage,
-                height: kImageSizeLarge,
-              ),
-              actions: [
-                ChaseAppDropDownButton(
-                  child: CircleAvatar(
-                    radius: kImageSizeSmall,
-                    backgroundImage: CachedNetworkImageProvider(
-                      ref.watch(userStreamProvider.select(
-                              (value) => value.asData?.value.photoURL)) ??
-                          defaultPhotoURL,
+        child: Stack(
+          children: [
+            CustomScrollView(
+              controller: scrollController,
+              restorationId: "Chases List",
+              slivers: [
+                SliverAppBar(
+                  centerTitle: true,
+                  elevation: kElevation,
+                  pinned: true,
+                  title: Image.asset(
+                    chaseAppNameImage,
+                    height: kImageSizeLarge,
+                  ),
+                  actions: [
+                    ChaseAppDropDownButton(
+                      child: CircleAvatar(
+                        radius: kImageSizeSmall,
+                        backgroundImage: CachedNetworkImageProvider(
+                          ref.watch(userStreamProvider.select(
+                                  (value) => value.asData?.value.photoURL)) ??
+                              defaultPhotoURL,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: kItemsSpacingSmallConstant,
+                    ),
+                  ],
+                ),
+
+                // Error if removed (Need to report)
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: kPaddingMediumConstant,
+                  ),
+                ),
+                SliverPadding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+                  sliver: ProviderStateNotifierBuilder<List<Chase>>(
+                      watchThisStateNotifierProvider: chasesPaingationProvider,
+                      logger: logger,
+                      scrollController: scrollController,
+                      builder: (chases, controller, [Widget? bottomWidget]) {
+                        return chases.isEmpty
+                            ? SliverToBoxAdapter(
+                                child: Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(chasesPaginatedStreamProvider(
+                                                    logger)
+                                                .notifier)
+                                            .fetchFirstPage(true);
+                                      },
+                                      icon: Icon(Icons.replay),
+                                    ),
+                                    Chip(
+                                      label: Text("No Chases Found!"),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final chase = chases[index];
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: kPaddingMediumConstant,
+                                      ),
+                                      child: ChaseTile(chase: chase),
+                                    );
+                                  },
+                                  childCount: chases.length,
+                                ),
+                              );
+                      }),
+                ),
+                SliverToBoxAdapter(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Consumer(
+                      builder: (context, ref, _) {
+                        return ref.watch(chasesPaingationProvider).maybeWhen(
+                              data: (chases, canLoad) {
+                                final isFetching = ref
+                                    .read(chasesPaingationProvider.notifier)
+                                    .isFetching;
+                                final onGoingState = ref
+                                    .read(chasesPaingationProvider.notifier)
+                                    .onGoingState;
+                                return BottomWidget(
+                                  isFetching: isFetching,
+                                  onGoingState: onGoingState,
+                                  watchThisStateNotifierProvider:
+                                      chasesPaingationProvider,
+                                );
+                              },
+                              orElse: () => SizedBox.shrink(),
+                            );
+                      },
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: kItemsSpacingSmallConstant,
-                ),
               ],
             ),
-            // Error if removed (Need to report)
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: kPaddingMediumConstant,
-              ),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-              sliver: ProviderStateNotifierBuilder<List<Chase>>(
-                  watchThisStateNotifierProvider: chasesPaingationProvider,
-                  logger: logger,
-                  scrollController: scrollController,
-                  builder: (chases, controller, [Widget? bottomWidget]) {
-                    return chases.isEmpty
-                        ? SliverToBoxAdapter(
-                            child: Column(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(chasesPaginatedStreamProvider(
-                                                logger)
-                                            .notifier)
-                                        .fetchFirstPage(true);
-                                  },
-                                  icon: Icon(Icons.replay),
-                                ),
-                                Chip(
-                                  label: Text("No Chases Found!"),
-                                ),
-                              ],
-                            ),
-                          )
-                        : SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                final chase = chases[index];
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: kPaddingMediumConstant,
-                                  ),
-                                  child: ChaseTile(chase: chase),
-                                );
-                              },
-                              childCount: chases.length,
-                            ),
-                          );
-                  }),
-            ),
-            SliverToBoxAdapter(
-              child: Align(
-                alignment: Alignment.center,
-                child: Consumer(
-                  builder: (context, ref, _) {
-                    return ref.watch(chasesPaingationProvider).maybeWhen(
-                          data: (chases, canLoad) {
-                            final isFetching = ref
-                                .read(chasesPaingationProvider.notifier)
-                                .isFetching;
-                            final onGoingState = ref
-                                .read(chasesPaingationProvider.notifier)
-                                .onGoingState;
-                            return BottomWidget(
-                              isFetching: isFetching,
-                              onGoingState: onGoingState,
-                              watchThisStateNotifierProvider:
-                                  chasesPaingationProvider,
-                            );
-                          },
-                          orElse: () => SizedBox.shrink(),
+            Positioned(
+              top: MediaQuery.of(context).viewPadding.top +
+                  kToolbarHeight +
+                  kItemsSpacingSmallConstant,
+              width: MediaQuery.of(context).size.width,
+              child: Consumer(builder: (context, ref, child) {
+                final state = ref.watch(isConnected);
+                return state.maybeWhen(
+                  data: (isConnected) {
+                    return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) {
+                        return ScaleTransition(
+                          scale: animation,
+                          child: child,
                         );
+                      },
+                      child: isConnected
+                          ? SizedBox.shrink()
+                          : Chip(
+                              padding: EdgeInsets.all(kPaddingSmallConstant),
+                              elevation: 2,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              avatar: Icon(
+                                Icons.cloud_off,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              label: Text(
+                                "You're Offline!",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
+                    );
                   },
-                ),
-              ),
+                  orElse: () => SizedBox.shrink(),
+                );
+              }),
             ),
           ],
         ),

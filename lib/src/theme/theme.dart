@@ -2,21 +2,33 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData getThemeData(context) => ThemeData.from(
+ThemeData getThemeData(context) => ThemeData.dark().copyWith(
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: primaryColor,
-        // cardColor: Color(0xFF4627a0),
-        // backgroundColor: Color(0xFF4627a0),
-        cardColor: Color(0xffede7f6),
-        // errorColor: Color(0xFF8181de),
+        cardColor: Color(0xffd2d1d0),
         accentColor: Color(0xFFFF8EC6),
       ),
       textTheme: GoogleFonts.poppinsTextTheme(
         Theme.of(context).textTheme,
       ),
-    ).copyWith(
       dividerColor: primaryColor,
     );
+
+// ThemeData getThemeData(context) => ThemeData.from(
+//       colorScheme: ColorScheme.fromSwatch(
+//         primarySwatch: primaryColor,
+//         // cardColor: Color(0xFF4627a0),
+//         // backgroundColor: Color(0xFF4627a0),
+//         cardColor: Color(0xffede7f6),
+//         // errorColor: Color(0xFF8181de),
+//         accentColor: Color(0xFFFF8EC6),
+//       ),
+//       textTheme: GoogleFonts.poppinsTextTheme(
+//         Theme.of(context).textTheme,
+//       ),
+//     ).copyWith(
+//       dividerColor: primaryColor,
+//     );
 
 //  ThemeData(
 //     primarySwatch: Color(value),

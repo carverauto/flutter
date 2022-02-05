@@ -41,27 +41,52 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 0,
-          child: Text("Profile"),
+          child: Text(
+            "Profile",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         ),
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 1,
-          child: Text("About"),
+          child: Text(
+            "About",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         ),
         PopupMenuDivider(),
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 2,
-          child: Text("Privacy Policy"),
+          child: Text(
+            "Privacy Policy",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         ),
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 3,
-          child: Text("Terms of Service"),
+          child: Text(
+            "Terms of Service",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         ),
         PopupMenuDivider(),
-        const PopupMenuItem<int>(
+        PopupMenuItem<int>(
           value: 4,
-          child: Text("Log out"),
+          child: Text(
+            "Log out",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
         ),
       ],
     );

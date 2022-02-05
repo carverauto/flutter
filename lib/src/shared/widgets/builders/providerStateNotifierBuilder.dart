@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
@@ -55,7 +56,14 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
       );
     }, loading: (chases) {
       return SliverToBoxAdapter(
-        child: CircularAdaptiveProgressIndicator(),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+          padding: EdgeInsets.all(5),
+          child: CircularAdaptiveProgressIndicator(),
+        ),
       );
     });
   }
@@ -83,7 +91,7 @@ class BottomWidget extends ConsumerWidget {
               )
             : SizedBox.shrink()
         : Container(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(kPaddingSmallConstant),
             width: double.maxFinite,
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,

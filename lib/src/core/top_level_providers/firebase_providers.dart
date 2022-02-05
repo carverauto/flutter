@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +37,7 @@ final firebaseMesssagingProvider = Provider<FirebaseMessaging>((ref) {
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
-// final firebaseRemoteConfigProvider =
-//     Provider<RemoteConfig>((ref) => RemoteConfig.instance);
+final firebaseRemoteConfigProvider =
+    Provider<RemoteConfig>((ref) => RemoteConfig.instance);
 final firebaseCrashlyticsProvider =
     Provider<FirebaseCrashlytics>((ref) => FirebaseCrashlytics.instance);

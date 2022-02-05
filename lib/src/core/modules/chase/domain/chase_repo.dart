@@ -2,7 +2,6 @@ import 'package:chaseapp/src/core/modules/chase/domain/chase_repo_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 
 class ChaseRepository implements ChaseRepoAB {
   ChaseRepository({
@@ -27,7 +26,7 @@ class ChaseRepository implements ChaseRepoAB {
   }
 
   @override
-  Future<void> upVoteChase(String chaseId) {
-    return read(chaseDbProvider).upVoteChase(chaseId);
+  Future<void> upVoteChase(int upCount, String chaseId) {
+    return read(chaseDbProvider).upVoteChase(upCount, chaseId);
   }
 }
