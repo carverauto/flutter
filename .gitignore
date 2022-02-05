@@ -9,8 +9,8 @@
 .history
 .svn/
 .flutter-plugins-dependencies
-google-services.json
-GoogleService-Info.plist
+# google-services.json
+# GoogleService-Info.plist
 pubspec.lock
 
 # IntelliJ related
@@ -20,7 +20,7 @@ pubspec.lock
 .idea/
 
 # Visual Studio Code related
-.vscode/
+# .vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -30,7 +30,6 @@ pubspec.lock
 .pub-cache/
 .pub/
 /build/
-ios/Flutter/flutter_export_environment.sh
 
 # Android related
 **/android/**/gradle-wrapper.jar

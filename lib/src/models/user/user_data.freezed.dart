@@ -23,16 +23,20 @@ class _$UserDataTearOff {
 
   _UserData call(
       {required String uid,
-      required String userName,
+      String? userName,
       required String email,
       String? photoURL,
-      required int lastUpdated}) {
+      required int lastUpdated,
+      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
+      List<String>? tokens}) {
     return _UserData(
       uid: uid,
       userName: userName,
       email: email,
       photoURL: photoURL,
       lastUpdated: lastUpdated,
+      lastTokenUpdate: lastTokenUpdate,
+      tokens: tokens,
     );
   }
 
@@ -47,10 +51,13 @@ const $UserData = _$UserDataTearOff();
 /// @nodoc
 mixin _$UserData {
   String get uid => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String? get photoURL => throw _privateConstructorUsedError;
   int get lastUpdated => throw _privateConstructorUsedError;
+  @DatetimeTimestampNullableConverter()
+  DateTime? get lastTokenUpdate => throw _privateConstructorUsedError;
+  List<String>? get tokens => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,10 +71,12 @@ abstract class $UserDataCopyWith<$Res> {
       _$UserDataCopyWithImpl<$Res>;
   $Res call(
       {String uid,
-      String userName,
+      String? userName,
       String email,
       String? photoURL,
-      int lastUpdated});
+      int lastUpdated,
+      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
+      List<String>? tokens});
 }
 
 /// @nodoc
@@ -85,6 +94,8 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
     Object? email = freezed,
     Object? photoURL = freezed,
     Object? lastUpdated = freezed,
+    Object? lastTokenUpdate = freezed,
+    Object? tokens = freezed,
   }) {
     return _then(_value.copyWith(
       uid: uid == freezed
@@ -94,7 +105,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       userName: userName == freezed
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -107,6 +118,14 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
               as int,
+      lastTokenUpdate: lastTokenUpdate == freezed
+          ? _value.lastTokenUpdate
+          : lastTokenUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      tokens: tokens == freezed
+          ? _value.tokens
+          : tokens // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -118,10 +137,12 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
   @override
   $Res call(
       {String uid,
-      String userName,
+      String? userName,
       String email,
       String? photoURL,
-      int lastUpdated});
+      int lastUpdated,
+      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
+      List<String>? tokens});
 }
 
 /// @nodoc
@@ -140,6 +161,8 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     Object? email = freezed,
     Object? photoURL = freezed,
     Object? lastUpdated = freezed,
+    Object? lastTokenUpdate = freezed,
+    Object? tokens = freezed,
   }) {
     return _then(_UserData(
       uid: uid == freezed
@@ -149,7 +172,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       userName: userName == freezed
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -162,6 +185,14 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
               as int,
+      lastTokenUpdate: lastTokenUpdate == freezed
+          ? _value.lastTokenUpdate
+          : lastTokenUpdate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      tokens: tokens == freezed
+          ? _value.tokens
+          : tokens // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -172,10 +203,12 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
 class _$_UserData extends _UserData {
   const _$_UserData(
       {required this.uid,
-      required this.userName,
+      this.userName,
       required this.email,
       this.photoURL,
-      required this.lastUpdated})
+      required this.lastUpdated,
+      @DatetimeTimestampNullableConverter() this.lastTokenUpdate,
+      this.tokens})
       : super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
@@ -184,17 +217,22 @@ class _$_UserData extends _UserData {
   @override
   final String uid;
   @override
-  final String userName;
+  final String? userName;
   @override
   final String email;
   @override
   final String? photoURL;
   @override
   final int lastUpdated;
+  @override
+  @DatetimeTimestampNullableConverter()
+  final DateTime? lastTokenUpdate;
+  @override
+  final List<String>? tokens;
 
   @override
   String toString() {
-    return 'UserData(uid: $uid, userName: $userName, email: $email, photoURL: $photoURL, lastUpdated: $lastUpdated)';
+    return 'UserData(uid: $uid, userName: $userName, email: $email, photoURL: $photoURL, lastUpdated: $lastUpdated, lastTokenUpdate: $lastTokenUpdate, tokens: $tokens)';
   }
 
   @override
@@ -207,7 +245,10 @@ class _$_UserData extends _UserData {
             const DeepCollectionEquality().equals(other.email, email) &&
             const DeepCollectionEquality().equals(other.photoURL, photoURL) &&
             const DeepCollectionEquality()
-                .equals(other.lastUpdated, lastUpdated));
+                .equals(other.lastUpdated, lastUpdated) &&
+            const DeepCollectionEquality()
+                .equals(other.lastTokenUpdate, lastTokenUpdate) &&
+            const DeepCollectionEquality().equals(other.tokens, tokens));
   }
 
   @override
@@ -217,7 +258,9 @@ class _$_UserData extends _UserData {
       const DeepCollectionEquality().hash(userName),
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(photoURL),
-      const DeepCollectionEquality().hash(lastUpdated));
+      const DeepCollectionEquality().hash(lastUpdated),
+      const DeepCollectionEquality().hash(lastTokenUpdate),
+      const DeepCollectionEquality().hash(tokens));
 
   @JsonKey(ignore: true)
   @override
@@ -233,10 +276,12 @@ class _$_UserData extends _UserData {
 abstract class _UserData extends UserData {
   const factory _UserData(
       {required String uid,
-      required String userName,
+      String? userName,
       required String email,
       String? photoURL,
-      required int lastUpdated}) = _$_UserData;
+      required int lastUpdated,
+      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
+      List<String>? tokens}) = _$_UserData;
   const _UserData._() : super._();
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
@@ -244,13 +289,18 @@ abstract class _UserData extends UserData {
   @override
   String get uid;
   @override
-  String get userName;
+  String? get userName;
   @override
   String get email;
   @override
   String? get photoURL;
   @override
   int get lastUpdated;
+  @override
+  @DatetimeTimestampNullableConverter()
+  DateTime? get lastTokenUpdate;
+  @override
+  List<String>? get tokens;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>

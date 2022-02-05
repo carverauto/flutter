@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(FLAVOR_APP_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,11 +28,31 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t</string>
+				<string>com.googleusercontent.apps.949466065060-ioapse7efjsngs5m1p84eehdrtl1sjaq</string>
+				<string>social-firebase-auth://</string>
+				<string>fb392332671355922</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.carverauto.chaseapp</string>
+				<string>com.carverauto.chaseapp.cdev</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>392332671355922</string>
+	<key>FacebookClientToken</key>
+	<string>1cc32b4fe3a584021cddfa956b666f3f</string>
+	<key>FacebookDisplayName</key>
+	<string>chaseapp</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>itms-beta</string>
@@ -43,14 +65,25 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<!-- For Bluetooth Usage -->
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
+	<!-- End -->
+	<!-- For Location Usage -->
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Need for our location request</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need for our location request</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need for our location request</string>
+	<!-- End -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -70,5 +103,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://m.chaseapp.tv</string>
+		<string>https://m.chaseapp.tv/link</string>		
+	</array>
 </dict>
 </plist>

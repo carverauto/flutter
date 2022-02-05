@@ -1,207 +1,224 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
+import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
+import 'package:chaseapp/src/shared/widgets/chase/chase_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:chaseapp/src/modules/chase/view/pages/chaseDetails_page.dart';
-import 'package:chaseapp/src/shared/widgets/appbar/topbar.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
-class ChasesScreen extends StatefulWidget {
-  const ChasesScreen({Key? key}) : super(key: key);
+class Dashboard extends ConsumerWidget {
+  Dashboard({Key? key}) : super(key: key);
+
+  final ScrollController scrollController = ScrollController();
+  final Logger logger = Logger('Dashboard');
 
   @override
-  _ChasesScreenState createState() => _ChasesScreenState();
-}
-
-class _ChasesScreenState extends State<ChasesScreen> {
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: ChasesPage(
-            title: 'Loading..', analytics: analytics, observer: observer));
-  }
-}
-
-class ChasesPage extends StatefulWidget {
-  const ChasesPage(
-      {Key? key,
-      required this.title,
-      required this.analytics,
-      required this.observer})
-      : super(key: key);
-
-  final String title;
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
-
-  @override
-  _ChasesPageState createState() => _ChasesPageState(analytics, observer);
-}
-
-class _ChasesPageState extends State<ChasesPage> {
-  _ChasesPageState(this.analytics, this.observer);
-
-  final FirebaseAnalyticsObserver observer;
-  final FirebaseAnalytics analytics;
-  String _message = '';
-
-  void setMessage(String message) {
-    setState(() {
-      _message = message;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100.0),
-          child: Column(
-            children: <Widget>[TopBar()],
-          )),
-      body: _buildBody(context),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('chases')
-          .orderBy('CreatedAt', descending: true)
-          .snapshots(),
-      builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) return const LinearProgressIndicator();
-        return _buildList(context, snapshot.data.docs);
-      },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot
-          .map((data) => _buildListItem(
-              context, data as DocumentSnapshot<Map<String, dynamic>>))
-          .toList(),
-    );
-  }
-
-  Widget _buildListItem(
-      BuildContext context, DocumentSnapshot<Map<String, dynamic>> data) {
-    final chaseMap = data.data()!;
-    chaseMap["id"] = data.id;
-    final record = Chase.fromJson(chaseMap);
-    String? imageURL = '';
-
-    const String assetName = 'assets/donut2.svg';
-
-    /*
-  if (record?.ImageURL != null) {
-    if (record.ImageURL.isNotEmpty) {
-      imageURL = record.ImageURL.replaceAll(
-          RegExp(r"\.([0-9a-z]+)(?:[?#]|$)",
-            caseSensitive: false,
-            multiLine: false,
-          ), '_200x200.webp?');
-    } else {
-      imageURL = 'https://chaseapp.tv/icon.png';
-    }
-  } else {
-    imageURL = 'https://chaseapp.tv/icon.png';
-  }
-   */
-
-    var chaseDate = DateTime.parse(record.createdAt.toIso8601String());
-    var today = DateTime.now().toLocal();
-    var diff = chaseDate.difference(today);
-    // print("URLs " + record.urls.toString());
-
-    var dateMsg = '';
-
-    if (record.live) {
-      dateMsg = 'LIVE!';
-    } else if (diff.inDays.abs() == 0) {
-      // Was the chase today?
-      if (diff.inHours.abs() == 0) {
-        // Chase in last hour?
-        if (diff.inMinutes == 0) {
-          // In the last minute? show seconds
-          dateMsg = diff.inSeconds.abs().toString() + ' seconds ago';
-        } else {
-          // Otherwise show how many minutes
-          dateMsg = diff.inMinutes.abs().toString() + ' minutes ago';
-        }
-      } else if (diff.inHours.abs() == 1) {
-        // One hour ago
-        dateMsg = diff.inHours.abs().toString() + ' hour ago';
-      } else if (diff.inHours.abs() > 1) {
-        // Hours ago
-        dateMsg = diff.inHours.abs().toString() + ' hours ago';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chasesPaingationProvider = chasesPaginatedStreamProvider(logger);
+    scrollController.addListener(() {
+      double maxScroll = scrollController.position.maxScrollExtent;
+      double currentScroll = scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.width * 0.20;
+      if (maxScroll - currentScroll <= delta) {
+        ref.read(chasesPaingationProvider.notifier).fetchNextPage();
       }
-    } else {
-      // More than a day ago, just print the date
-      dateMsg = chaseDate.toIso8601String().substring(0, 10);
-    }
+    });
+    return Scaffold(
+      floatingActionButton: AnimatedBuilder(
+        animation: scrollController,
+        builder: (context, child) {
+          double scrollOffset = scrollController.offset;
+          return AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return ScaleTransition(scale: animation, child: child);
+            },
+            child: scrollOffset > Sizescaleconfig.screenheight! * 0.5
+                ? FloatingActionButton(
+                    tooltip: "Scroll to top",
+                    child: Icon(
+                      Icons.arrow_upward,
+                    ),
+                    onPressed: () async {
+                      scrollController.animateTo(
+                        0,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                  )
+                : SizedBox.shrink(),
+          );
+        },
+      ),
+      body: RefreshIndicator(
+        backgroundColor: Theme.of(context).colorScheme.onBackground,
+        onRefresh: () async {
+          ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
+        },
+        child: Stack(
+          children: [
+            CustomScrollView(
+              controller: scrollController,
+              restorationId: "Chases List",
+              slivers: [
+                SliverAppBar(
+                  centerTitle: true,
+                  elevation: kElevation,
+                  pinned: true,
+                  title: Image.asset(
+                    chaseAppNameImage,
+                    height: kImageSizeLarge,
+                  ),
+                  actions: [
+                    ChaseAppDropDownButton(
+                      child: CircleAvatar(
+                        radius: kImageSizeSmall,
+                        backgroundImage: CachedNetworkImageProvider(
+                          ref.watch(userStreamProvider.select(
+                                  (value) => value.asData?.value.photoURL)) ??
+                              defaultPhotoURL,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: kItemsSpacingSmallConstant,
+                    ),
+                  ],
+                ),
 
-    return Padding(
-      // key: ValueKey(record.Name),
-      key: ValueKey(record.id),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: ListTile(
-            /*
-          leading: CircleAvatar(
-            // child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
-            child: (imageURL!.isNotEmpty ?? true) ? _displayImageURL(imageURL) : _displayPlaceholderIcon(),
-          )
-         */
-            title: Text(record.name, style: GoogleFonts.getFont('Poppins')),
-            // subtitle: Text(record.Votes.toString() + ' donuts'),
-            subtitle: Text(dateMsg),
-            trailing: Chip(
-              avatar: CircleAvatar(
-                backgroundColor: Colors.black12,
-                child: SvgPicture.asset(assetName),
-              ),
-              label: Text(record.votes.toString()),
+                // Error if removed (Need to report)
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: kPaddingMediumConstant,
+                  ),
+                ),
+                SliverPadding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+                  sliver: ProviderStateNotifierBuilder<List<Chase>>(
+                      watchThisStateNotifierProvider: chasesPaingationProvider,
+                      logger: logger,
+                      scrollController: scrollController,
+                      builder: (chases, controller, [Widget? bottomWidget]) {
+                        return chases.isEmpty
+                            ? SliverToBoxAdapter(
+                                child: Column(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(chasesPaginatedStreamProvider(
+                                                    logger)
+                                                .notifier)
+                                            .fetchFirstPage(true);
+                                      },
+                                      icon: Icon(Icons.replay),
+                                    ),
+                                    Chip(
+                                      label: Text("No Chases Found!"),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final chase = chases[index];
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: kPaddingMediumConstant,
+                                      ),
+                                      child: ChaseTile(chase: chase),
+                                    );
+                                  },
+                                  childCount: chases.length,
+                                ),
+                              );
+                      }),
+                ),
+                SliverToBoxAdapter(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Consumer(
+                      builder: (context, ref, _) {
+                        return ref.watch(chasesPaingationProvider).maybeWhen(
+                              data: (chases, canLoad) {
+                                final isFetching = ref
+                                    .read(chasesPaingationProvider.notifier)
+                                    .isFetching;
+                                final onGoingState = ref
+                                    .read(chasesPaingationProvider.notifier)
+                                    .onGoingState;
+                                return BottomWidget(
+                                  isFetching: isFetching,
+                                  onGoingState: onGoingState,
+                                  watchThisStateNotifierProvider:
+                                      chasesPaingationProvider,
+                                );
+                              },
+                              orElse: () => SizedBox.shrink(),
+                            );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-
-            /*
-            trailing: new CircleAvatar(
-                backgroundColor: Colors.pink,
-                child: new Image(
-                  image: new AssetImage("images/donut.jpg"),
-                )),
-                */
-            onTap: () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShowChase(
-                                record: record,
-                                key: UniqueKey(),
-                              )))
-                }),
+            Positioned(
+              top: MediaQuery.of(context).viewPadding.top +
+                  kToolbarHeight +
+                  kItemsSpacingSmallConstant,
+              width: MediaQuery.of(context).size.width,
+              child: Consumer(builder: (context, ref, child) {
+                final state = ref.watch(isConnected);
+                return state.maybeWhen(
+                  data: (isConnected) {
+                    return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) {
+                        return ScaleTransition(
+                          scale: animation,
+                          child: child,
+                        );
+                      },
+                      child: isConnected
+                          ? SizedBox.shrink()
+                          : Chip(
+                              padding: EdgeInsets.all(kPaddingSmallConstant),
+                              elevation: 2,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              avatar: Icon(
+                                Icons.cloud_off,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                              label: Text(
+                                "You're Offline!",
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
+                    );
+                  },
+                  orElse: () => SizedBox.shrink(),
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-
-_displayPlaceholderIcon() {
-  return const Image(image: AssetImage("images/video.png"));
-}
-
-_displayImageURL(String imageURL) {
-  return FadeInImage.memoryNetwork(
-      placeholder: kTransparentImage, image: imageURL);
 }

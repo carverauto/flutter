@@ -1,8 +1,12 @@
 library medium_clap_flutter;
+
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// A Custom Floating Action Button (FAB) library like clapping effect on Medium.
 class ClapFAB extends StatefulWidget {
@@ -65,44 +69,48 @@ class ClapFAB extends StatefulWidget {
   /// Maximum counter value (default SHOULD_NOT_INCREMENT, which will not limit increment)
   final maxCounter;
 
-  const ClapFAB.icon(
-      {this.countCircleColor = Colors.blue,
-      this.countTextColor = Colors.white,
-      this.hasShadow = false,
-      this.shadowColor = Colors.blue,
-      this.floatingOutlineColor = Colors.white,
-      this.floatingBgColor = Colors.white,
-      this.defaultIcon = Icons.favorite_border,
-      this.defaultIconColor = Colors.blue,
-      this.sparkleColor = Colors.blue,
-      this.filledIcon = Icons.favorite,
-      this.filledIconColor = Colors.blue,
-      this.initCounter = 0,
-      this.maxCounter = NOT_LIMIT_INCREMENT,
-      this.clapFabCallback,
-      this.clapUpCallback})
-      : defaultImage = null,
+  final Widget Function(int votes) trailing;
+
+  const ClapFAB.icon({
+    this.countCircleColor = Colors.blue,
+    this.countTextColor = Colors.white,
+    this.hasShadow = false,
+    this.shadowColor = Colors.blue,
+    this.floatingOutlineColor = Colors.white,
+    this.floatingBgColor = Colors.white,
+    this.defaultIcon = Icons.favorite_border,
+    this.defaultIconColor = Colors.blue,
+    this.sparkleColor = Colors.blue,
+    this.filledIcon = Icons.favorite,
+    this.filledIconColor = Colors.blue,
+    this.initCounter = 0,
+    this.maxCounter = NOT_LIMIT_INCREMENT,
+    this.clapFabCallback,
+    this.clapUpCallback,
+    required this.trailing,
+  })  : defaultImage = null,
         defaultImageColor = null,
         filledImage = null,
         filledImageColor = null;
 
-  const ClapFAB.image(
-      {this.countCircleColor = Colors.blue,
-      this.countTextColor = Colors.white,
-      this.hasShadow = false,
-      this.shadowColor = Colors.blue,
-      this.floatingOutlineColor = Colors.white,
-      this.floatingBgColor = Colors.white,
-      this.sparkleColor = Colors.blue,
-      this.defaultImage = "images/clap.png",
-      this.defaultImageColor = Colors.blue,
-      this.filledImageColor = Colors.blue,
-      this.filledImage = "images/clap.png",
-      this.initCounter = 0,
-      this.maxCounter = NOT_LIMIT_INCREMENT,
-      this.clapFabCallback,
-      this.clapUpCallback})
-      : defaultIcon = null,
+  const ClapFAB.image({
+    this.countCircleColor = Colors.blue,
+    this.countTextColor = Colors.white,
+    this.hasShadow = false,
+    this.shadowColor = Colors.blue,
+    this.floatingOutlineColor = Colors.white,
+    this.floatingBgColor = Colors.white,
+    this.sparkleColor = Colors.blue,
+    this.defaultImage = "images/clap.png",
+    this.defaultImageColor = Colors.blue,
+    this.filledImageColor = Colors.blue,
+    this.filledImage = "images/clap.png",
+    this.initCounter = 0,
+    this.maxCounter = NOT_LIMIT_INCREMENT,
+    this.clapFabCallback,
+    this.clapUpCallback,
+    required this.trailing,
+  })  : defaultIcon = null,
         defaultIconColor = null,
         filledIcon = null,
         filledIconColor = null;
@@ -115,14 +123,16 @@ enum ScoreWidgetStatus { HIDDEN, BECOMING_VISIBLE, VISIBLE, BECOMING_INVISIBLE }
 
 class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
   int counter = 0;
+  int upCount = 0;
   double _sparklesAngle = 0.0;
   ScoreWidgetStatus _scoreWidgetStatus = ScoreWidgetStatus.HIDDEN;
   final duration = Duration(milliseconds: 400);
   final oneSecond = Duration(seconds: 1);
   late Random random;
   // Timer ?holdTimer, scoreOutETA;
-  Timer ?holdTimer;
+  Timer holdTimer = Timer(Duration(seconds: 0), () {});
   late Timer scoreOutETA;
+  bool isScoreOutTimerInitialized = false;
   late AnimationController scoreInAnimationController,
       scoreOutAnimationController,
       scoreSizeAnimationController,
@@ -179,12 +189,13 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void increment(Timer? t) {
+  void increment() {
     scoreSizeAnimationController.forward(from: 0.0);
     sparklesAnimationController.forward(from: 0.0);
 
     if (_shouldIncrement()) {
       setState(() {
+        upCount++;
         counter++;
         _sparklesAngle = random.nextDouble() * (2 * pi);
       });
@@ -196,8 +207,10 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       : counter < widget.maxCounter;
 
   void onTapDown(TapDownDetails tap) {
+    holdTimer.cancel();
+    increment();
     // User pressed the button. This can be a tap or a hold.
-    if (scoreOutETA != null) {
+    if (isScoreOutTimerInitialized) {
       scoreOutETA.cancel(); // We do not want the score to vanish!
     }
     if (_scoreWidgetStatus == ScoreWidgetStatus.BECOMING_INVISIBLE) {
@@ -208,62 +221,54 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_VISIBLE;
       scoreInAnimationController.forward(from: 0.0);
     }
-    increment(null); // Take care of tap
-    holdTimer = Timer.periodic(duration, increment); // Takes care of hold
-    if (widget.clapFabCallback != null) widget.clapFabCallback(counter);
+
+    holdTimer = Timer(Duration(milliseconds: 500), () {
+      print("message");
+      setState(() {
+        if (widget.clapFabCallback != null) widget.clapFabCallback(upCount);
+        upCount = 0;
+      });
+    }); // Takes care of hold
   }
 
   void onTapUp(TapUpDetails tap) {
     // User removed his finger from button.
+
     scoreOutETA = Timer(oneSecond, () {
       scoreOutAnimationController.forward(from: 0.0);
       _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_INVISIBLE;
     });
+    isScoreOutTimerInitialized = true;
+    setState(() {});
     if (widget.clapUpCallback != null) widget.clapUpCallback(counter);
-    holdTimer?.cancel();
+    // holdTimer.cancel();
   }
 
   Widget getClapButton() {
     // Using custom gesture detector because we want to keep increasing the claps
     // when user holds the button.
 
-    var extraSize = 0.0;
-    if (_scoreWidgetStatus == ScoreWidgetStatus.VISIBLE ||
-        _scoreWidgetStatus == ScoreWidgetStatus.BECOMING_VISIBLE) {
-      extraSize = scoreSizeAnimationController.value * 3;
-    }
     return GestureDetector(
         onTapUp: onTapUp,
         onTapDown: onTapDown,
         child: Container(
-          height: 60.0 + extraSize,
-          width: 60.0 + extraSize,
-          padding: EdgeInsets.all(10.0),
+          height: 60.0,
+          width: 60.0,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
               border:
                   Border.all(color: widget.floatingOutlineColor, width: 1.0),
-              borderRadius: BorderRadius.circular(50.0),
+              shape: BoxShape.circle,
               color: widget.floatingBgColor,
               boxShadow: [
                 widget.hasShadow
                     ? BoxShadow(color: widget.shadowColor, blurRadius: 8.0)
                     : BoxShadow()
               ]),
-          child: widget.defaultImage == null
-              ? Icon(
-                  counter > 0 ? widget.filledIcon : widget.defaultIcon,
-                  color: counter > 0
-                      ? widget.filledIconColor
-                      : widget.defaultIconColor,
-                  size: 30.0,
-                )
-              : ImageIcon(
-                  new AssetImage(
-                      counter > 0 ? widget.filledImage : widget.defaultImage),
-                  color: counter > 0
-                      ? widget.filledImageColor
-                      : widget.defaultImageColor,
-                  size: 30.0),
+          child: SvgPicture.asset(
+            donutSVG,
+            height: kIconSizeMediumConstant,
+          ),
         ));
   }
 
@@ -319,14 +324,14 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
               shape: CircleBorder(side: BorderSide.none),
               color: widget.countCircleColor,
             ),
-            child: Center(
-                child: Text(
+            alignment: Alignment.center,
+            child: Text(
               "+" + counter.toString(),
               style: TextStyle(
                   color: widget.countTextColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 15.0),
-            )))));
+            ))));
 
     var _currentWidget = Positioned(
         child: Stack(
@@ -340,16 +345,28 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20.0),
-      child: Stack(
-        alignment: FractionalOffset.center,
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          getScoreButton(),
-          getClapButton(),
-        ],
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Stack(
+          alignment: FractionalOffset.center,
+          clipBehavior: Clip.none,
+          children: <Widget>[
+            getScoreButton(),
+            getClapButton(),
+          ],
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: Theme.of(context).textTheme.headline5!.fontSize! * 4,
+          child: _scoreWidgetStatus == ScoreWidgetStatus.HIDDEN
+              ? widget.trailing(counter)
+              : SizedBox.shrink(),
+        )
+      ],
     );
   }
 }
