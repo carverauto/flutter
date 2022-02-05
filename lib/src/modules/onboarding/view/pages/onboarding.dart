@@ -44,7 +44,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               children: [
                 OnboardingPage(
                   title: Text(
-                    "Welcom To ChaseApp!",
+                    "Welcome To ChaseApp!",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline4!.copyWith(
                           fontWeight: FontWeight.bold,
