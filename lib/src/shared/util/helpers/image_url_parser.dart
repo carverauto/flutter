@@ -23,7 +23,7 @@ extension ImageDimensionParser on ImageDimensions {
       case ImageDimensions.MEDIUM:
         return "_600x600.webp?";
         break;
-      case ImageDimensions.SMALL:
+      case ImageDimensions.LARGE:
         return "_1200x600.webp?";
         break;
       default:

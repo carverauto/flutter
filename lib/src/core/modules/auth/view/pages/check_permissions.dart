@@ -31,7 +31,7 @@ class CheckPermissionsView extends StatelessWidget {
               height: kImageSizeLarge,
             ),
             SizedBox(
-              height: kItemsSpacingSmallConstant,
+              height: kItemsSpacingMediumConstant,
             ),
             Container(
               padding: EdgeInsets.all(
@@ -92,46 +92,6 @@ class CheckPermissionsView extends StatelessWidget {
             GrantAllPermissionsButton(),
             SizedBox(
               height: kItemsSpacingMedium,
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: Divider(
-                    height: 2,
-                    indent: kPaddingLargeConstant,
-                    endIndent: kPaddingLargeConstant,
-                  ),
-                ),
-                Text(
-                  "Or",
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
-                ),
-                Flexible(
-                  child: Divider(
-                    height: 2,
-                    indent: kPaddingLargeConstant,
-                    endIndent: kPaddingLargeConstant,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: kItemsSpacingMedium,
-            ),
-            Center(
-              child: ElevatedButton(
-                style: callToActionButtonStyle,
-                onPressed: () {},
-                child: Text(
-                  "Go Premium!",
-                  style: getButtonStyle(context),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: kItemsSpacingLargeConstant,
             ),
           ],
         ),

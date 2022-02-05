@@ -3,7 +3,10 @@ library medium_clap_flutter;
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// A Custom Floating Action Button (FAB) library like clapping effect on Medium.
 class ClapFAB extends StatefulWidget {
@@ -262,13 +265,9 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
                     ? BoxShadow(color: widget.shadowColor, blurRadius: 8.0)
                     : BoxShadow()
               ]),
-          child: ImageIcon(
-            new AssetImage(
-                counter > 0 ? widget.filledImage : widget.defaultImage),
-            color: counter > 0
-                ? widget.filledImageColor
-                : widget.defaultImageColor,
-            size: 40.0,
+          child: SvgPicture.asset(
+            donutSVG,
+            height: kIconSizeMediumConstant,
           ),
         ));
   }

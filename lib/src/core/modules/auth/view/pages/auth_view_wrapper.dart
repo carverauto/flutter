@@ -78,7 +78,7 @@ class AuthViewWrapper extends ConsumerWidget {
                     );
                   },
                   loading: () => Scaffold(
-                    body: CircularAdaptiveProgressIndicator(),
+                    body: CircularAdaptiveProgressIndicatorWithBg(),
                   ),
                 );
           }
@@ -90,7 +90,7 @@ class AuthViewWrapper extends ConsumerWidget {
           return const LoginOrRegister();
         },
         loading: () => Scaffold(
-              body: CircularAdaptiveProgressIndicator(),
+              body: CircularAdaptiveProgressIndicatorWithBg(),
             ),
         error: (e, stk) {
           logger.severe("Error while loading users login status.", e, stk);

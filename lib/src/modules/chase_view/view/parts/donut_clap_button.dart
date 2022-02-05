@@ -21,7 +21,7 @@ class DonutClapButton extends ConsumerWidget {
     return ClapFAB.image(
       trailing: (counter) => Text(
         chase.votes.toString() + " donuts",
-        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+        style: Theme.of(context).textTheme.headline5!.copyWith(
               color: Theme.of(context).colorScheme.onBackground,
             ),
       ),

@@ -387,18 +387,22 @@ class CustomAvatar extends StatelessWidget {
                 name.characters.first.toUpperCase(),
               ),
             ),
-            Chip(
-              backgroundColor: Colors.white.withOpacity(
-                0.6,
-              ),
-              avatar: Icon(
-                Icons.link,
-                color: starWarsCrawlTextColor,
-              ),
-              label: Text(
-                name,
-                style: textStyle.copyWith(
-                  fontWeight: FontWeight.bold,
+            Flexible(
+              child: Chip(
+                backgroundColor: Colors.white.withOpacity(
+                  0.8,
+                ),
+                avatar: Icon(
+                  Icons.link,
+                  color: starWarsCrawlTextColor,
+                ),
+                labelPadding: EdgeInsets.symmetric(horizontal: 2),
+                label: Text(
+                  name,
+                  style: textStyle.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: starWarsCrawlTextColor,
+                  ),
                 ),
               ),
             ),

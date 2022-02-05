@@ -38,7 +38,7 @@ Future<void> setUpServices() async {
   FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
   if (kDebugMode) {
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
 
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
