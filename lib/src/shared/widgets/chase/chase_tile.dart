@@ -48,6 +48,7 @@ class ChaseTile extends StatelessWidget {
                     fit: BoxFit.cover,
                     imageUrl: parseImageUrl(
                       chase.imageURL!,
+                      ImageDimensions.SMALL,
                     ),
                     placeholder: (context, value) => Center(
                       child: CircularProgressIndicator(),
