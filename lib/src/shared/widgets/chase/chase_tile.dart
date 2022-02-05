@@ -26,44 +26,47 @@ class ChaseTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant / 2),
         ),
-        leading: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            height: double.maxFinite,
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(
-                kBorderRadiusSmallConstant / 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 1,
-                  color: Theme.of(context).shadowColor,
+        leading: Hero(
+          tag: "Chase" + chase.createdAt.toString(),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              height: double.maxFinite,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(
+                  kBorderRadiusSmallConstant / 2,
                 ),
-              ],
-            ),
-            child: chase.imageURL != null && chase.imageURL!.isNotEmpty
-                ? CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: parseImageUrl(
-                      chase.imageURL!,
-                      ImageDimensions.SMALL,
-                    ),
-                    placeholder: (context, value) => Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    errorWidget: (context, value, value2) {
-                      return Icon(
-                        Icons.info,
-                        color: Theme.of(context).colorScheme.primary,
-                      );
-                    },
-                  )
-                : Image(
-                    fit: BoxFit.cover,
-                    image: AssetImage(defaultChaseImage),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 1,
+                    color: Theme.of(context).shadowColor,
                   ),
+                ],
+              ),
+              child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                  ? CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: parseImageUrl(
+                        chase.imageURL!,
+                        ImageDimensions.SMALL,
+                      ),
+                      placeholder: (context, value) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, value, value2) {
+                        return Icon(
+                          Icons.info,
+                          color: Theme.of(context).colorScheme.primary,
+                        );
+                      },
+                    )
+                  : Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage(defaultChaseImage),
+                    ),
+            ),
           ),
         ),
         title: Text(

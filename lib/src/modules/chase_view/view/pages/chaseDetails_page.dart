@@ -70,27 +70,30 @@ class ShowChase extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              AspectRatio(
-                aspectRatio: aspectRatioStandard,
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.primaryVariant,
-                  child: chase.imageURL != null && chase.imageURL!.isNotEmpty
-                      ? CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: parseImageUrl(
-                            imageURL!,
-                            ImageDimensions.LARGE,
+              Hero(
+                tag: "Chase" + chase.createdAt.toString(),
+                child: AspectRatio(
+                  aspectRatio: aspectRatioStandard,
+                  child: ColoredBox(
+                    color: Theme.of(context).colorScheme.primaryVariant,
+                    child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                        ? CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: parseImageUrl(
+                              imageURL!,
+                              ImageDimensions.LARGE,
+                            ),
+                            placeholder: (context, value) =>
+                                CircularAdaptiveProgressIndicatorWithBg(),
+                            errorWidget: (context, value, value2) {
+                              return ImageLoadErrorWidget();
+                            },
+                          )
+                        : Image(
+                            fit: BoxFit.cover,
+                            image: AssetImage(defaultChaseImage),
                           ),
-                          placeholder: (context, value) =>
-                              CircularAdaptiveProgressIndicatorWithBg(),
-                          errorWidget: (context, value, value2) {
-                            return ImageLoadErrorWidget();
-                          },
-                        )
-                      : Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(defaultChaseImage),
-                        ),
+                  ),
                 ),
               ),
               Expanded(
