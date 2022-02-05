@@ -87,38 +87,39 @@ class ShowChase extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: kPaddingMediumConstant,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Stack(
                     children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: kItemsSpacingMedium,
-                            ),
-                            Text(
-                              chase.name ?? "NA",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                            ),
-                            Divider(
-                              height: kItemsSpacingSmall,
-                              color:
-                                  Theme.of(context).colorScheme.primaryVariant,
-                            ),
-                            Flexible(
-                              child: Text(
+                      ListView(
+                        padding: EdgeInsets.all(0),
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: kItemsSpacingMedium,
+                              ),
+                              Text(
+                                chase.name ?? "NA",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                              ),
+                              Divider(
+                                height: kItemsSpacingSmall,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryVariant,
+                              ),
+                              Text(
                                 chase.desc ?? "NA",
                                 style: Theme.of(context)
                                     .textTheme
@@ -128,50 +129,52 @@ class ShowChase extends ConsumerWidget {
                                           .colorScheme
                                           .onBackground,
                                     ),
-                                maxLines: 10,
+                                maxLines: 5,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: kItemsSpacingSmall,
-                      ),
-                      Divider(
-                        height: kItemsSpacingSmall,
-                        color: Theme.of(context).colorScheme.primaryVariant,
-                      ),
-                      Text(
-                        "Watch here :",
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                              decoration: TextDecoration.underline,
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
-                      ),
-                      Expanded(
-                        child: chase.networks != null
-                            ? URLView(chase.networks as List<Map>)
-                            : const Text('Please wait..'),
-                      ),
-                      // Spacer(),
-                      SizedBox(
-                        height: kItemsSpacingMedium,
+                            ],
+                          ),
+                          SizedBox(
+                            height: kItemsSpacingSmall,
+                          ),
+                          Divider(
+                            height: kItemsSpacingSmall,
+                            color: Theme.of(context).colorScheme.primaryVariant,
+                          ),
+                          Text(
+                            "Watch here :",
+                            style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      decoration: TextDecoration.underline,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          ),
+                          chase.networks != null
+                              ? URLView(chase.networks as List<Map>)
+                              : const Text('Please wait..'),
+                          SizedBox(
+                            height: kItemsSpacingMedium,
+                          ),
+                        ],
                       ),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: DonutClapButton(
-                          chase: chase,
-                          logger: logger,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: kPaddingMediumConstant,
+                          ),
+                          child: DonutClapButton(
+                            chase: chase,
+                            logger: logger,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: kItemsSpacingMedium,
-              )
             ],
           );
         },

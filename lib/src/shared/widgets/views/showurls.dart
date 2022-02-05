@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -10,21 +11,21 @@ class URLView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: streams.length,
-      itemBuilder: (context, index) {
-        final data = streams[index];
-        return Align(
-          alignment: Alignment.centerLeft,
-          child: Chip(
-            backgroundColor: Theme.of(context).colorScheme.onBackground,
-            label: Linkify(
-              onOpen: _onOpen,
-              text: data["URL"],
-            ),
-          ),
-        );
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: streams
+          .map<Widget>((data) => Align(
+                alignment: Alignment.centerLeft,
+                child: Chip(
+                  backgroundColor: Theme.of(context).colorScheme.onBackground,
+                  label: Linkify(
+                    onOpen: _onOpen,
+                    text: data["URL"],
+                  ),
+                ),
+              ))
+          .toList(),
     );
   }
 
