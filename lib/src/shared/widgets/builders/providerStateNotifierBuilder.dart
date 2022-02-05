@@ -56,14 +56,7 @@ class ProviderStateNotifierBuilder<T> extends ConsumerWidget {
       );
     }, loading: (chases) {
       return SliverToBoxAdapter(
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-          padding: EdgeInsets.all(5),
-          child: CircularAdaptiveProgressIndicator(),
-        ),
+        child: CircularAdaptiveProgressIndicatorWithBg(),
       );
     });
   }
