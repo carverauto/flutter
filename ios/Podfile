@@ -1,6 +1,15 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '13.0'
 
+pod 'GoogleUtilities/AppDelegateSwizzler'
+pod 'GoogleUtilities/MethodSwizzler'
+pod 'GoogleUtilities/Network'
+pod 'GoogleUtilities/NSData+zlib'
+pod 'GoogleUtilities/AppDelegateSwizzler'
+pod 'GoogleUtilities/Environment'
+pod 'GoogleUtilities/Logger'
+pod 'GoogleUtilities/UserDefaults'
+pod 'GoogleUtilities/Reachability'
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
