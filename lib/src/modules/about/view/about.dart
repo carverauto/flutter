@@ -13,7 +13,7 @@ class AboutUsView extends ConsumerStatefulWidget {
   const AboutUsView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<AboutUsView> createState() => _AboutUsViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AboutUsViewState();
 }
 
 class _AboutUsViewState extends ConsumerState<AboutUsView> {
