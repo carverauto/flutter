@@ -10,7 +10,7 @@ Future<bool> checkForPermissionsStatuses() async {
       Platform.isAndroid ? await Permission.bluetoothScan.isGranted : true;
   final bluetoothConnectStatus =
       Platform.isAndroid ? await Permission.bluetoothConnect.isGranted : true;
-  final locationStatus = await Permission.location.isGranted;
+  final locationStatus = await Permission.locationWhenInUse.isGranted;
   final notificationStatus = await Permission.notification.isGranted;
 
   return bluetoothStatus &&

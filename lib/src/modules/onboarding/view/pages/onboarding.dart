@@ -141,14 +141,16 @@ class OnboardingPage extends StatelessWidget {
             SizedBox(
               height: kItemsSpacingSmall,
             ),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                )
-              ],
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: kItemsSpacingMediumConstant,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/colors.dart';
+import 'package:chaseapp/src/const/info.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dialog.dart';
@@ -53,7 +54,7 @@ class CheckPermissionsView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '''This version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
+                      '''ChaseApp requires following permissions.\nPlease grant this permissions to procceed.''',
                       style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -70,6 +71,7 @@ class CheckPermissionsView extends StatelessWidget {
               icon: Icons.location_pin,
               title: "Location",
               subTitle: "Location permissions for location tracking.",
+              info: locationUsageInfo,
             ),
             Divider(
               color: Theme.of(context).colorScheme.primary,
@@ -78,12 +80,14 @@ class CheckPermissionsView extends StatelessWidget {
               icon: Icons.bluetooth_connected,
               title: "Bluetooth",
               subTitle: "Bluetooth permissions for bluetooth activities.",
+              info: bluetoothUsageInfo,
             ),
             Divider(),
             PermissionRow(
               icon: Icons.notifications_active,
               title: "Notifications",
               subTitle: "Notifications permission for recieving notifications.",
+              info: notificationsUsageInfo,
             ),
             Divider(),
             SizedBox(

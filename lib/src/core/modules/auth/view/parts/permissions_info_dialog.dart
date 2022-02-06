@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-Future<void> showPermanentlyDeniedDialog(
-    BuildContext context, List<Permission> permissions) async {
+Future<void> showPermissionsInfoDialog(
+    BuildContext context, String permission, String permissionInfo) async {
   if (Platform.isAndroid)
     await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            title: DialogTitle(),
+            title: DialogTitle(
+              permission: permission,
+            ),
             content: DialogContent(
-              permissions: permissions,
+              permissionInfo: permissionInfo,
             ),
             actions: [
               TextButton(
@@ -33,17 +34,6 @@ Future<void> showPermanentlyDeniedDialog(
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  await openAppSettings();
-                },
-                child: Text(
-                  "Open App Settings",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-                ),
-              ),
             ],
           );
         });
@@ -52,22 +42,20 @@ Future<void> showPermanentlyDeniedDialog(
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: DialogTitle(),
+            title: DialogTitle(
+              permission: permission,
+            ),
             content: DialogContent(
-              permissions: permissions,
+              permissionInfo: permissionInfo,
             ),
             actions: [
               CupertinoDialogAction(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("Close"),
-              ),
-              CupertinoDialogAction(
-                onPressed: () async {
-                  await openAppSettings();
-                },
-                child: Text("Open Settings"),
+                child: Text(
+                  "Close",
+                ),
               ),
             ],
           );
@@ -77,12 +65,15 @@ Future<void> showPermanentlyDeniedDialog(
 class DialogTitle extends StatelessWidget {
   const DialogTitle({
     Key? key,
+    required this.permission,
   }) : super(key: key);
+
+  final String permission;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      "User Denied Permissions",
+      permission,
       style: TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
       ),
@@ -93,10 +84,10 @@ class DialogTitle extends StatelessWidget {
 class DialogContent extends StatelessWidget {
   const DialogContent({
     Key? key,
-    required this.permissions,
+    required this.permissionInfo,
   }) : super(key: key);
 
-  final List<Permission> permissions;
+  final String permissionInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -105,28 +96,11 @@ class DialogContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Following permissions are denied for the app. Please grant this permissions by allowing them in the app settings.",
+          permissionInfo,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           ),
         ),
-        ...permissions.asMap().entries.map<Widget>((e) {
-          final Permission value = e.value;
-          return TextButton.icon(
-            onPressed: null,
-            icon: Icon(
-              Icons.circle,
-              size: 10,
-            ),
-            label: Text(
-              value.toString().replaceFirst("Permission.", '').toUpperCase(),
-              style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
-          );
-        }).toList()
       ],
     );
   }
