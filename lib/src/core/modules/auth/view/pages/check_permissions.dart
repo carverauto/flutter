@@ -54,7 +54,7 @@ class CheckPermissionsView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '''ChaseApp requires following permissions.\nPlease grant this permissions to procceed.''',
+                      '''ChaseApp requires following permissions to proceed.\n''',
                       style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary,

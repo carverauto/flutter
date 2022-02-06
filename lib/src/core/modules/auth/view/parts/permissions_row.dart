@@ -41,31 +41,12 @@ class PermissionRow extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
       ),
-      // subtitle: Text(
-      //   subTitle,
-      //   style: TextStyle(
-      //     color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
-      //   ),
-      // ),
-      trailing: TextButton(
-        onPressed: () async {
-          await showPermissionsInfoDialog(context, title, info);
-        },
-        style: TextButton.styleFrom(
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-        ),
-        child: Text(
-          "Read More",
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-        ),
-      ),
-      onTap: () async {
-        await showPermissionsInfoDialog(context, title, info);
-      },
+       subtitle: Text(
+         info,
+         style: TextStyle(
+           color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
+         ),
+       ),
     );
   }
 }
