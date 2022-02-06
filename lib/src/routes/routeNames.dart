@@ -10,4 +10,5 @@ class RouteName {
   static const String CHASE_VIEW = "ChaseView";
   static const String PROFILE = "PROFILE";
   static const String ABOUT_US = "ABOUT_US";
+  static const String CREDITS = "CREDITS";
 }

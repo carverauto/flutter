@@ -1,6 +1,7 @@
 import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/check_permissions.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
+import 'package:chaseapp/src/modules/credits/view/credits.dart';
 import 'package:chaseapp/src/modules/about/view/about.dart';
 import 'package:chaseapp/src/modules/chase_view/view/pages/chaseDetails_page.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
@@ -42,6 +43,8 @@ class Routes {
                 ));
       case RouteName.PROFILE:
         return MaterialPageRoute<bool>(builder: (_) => ProfileView());
+      case RouteName.CREDITS:
+        return MaterialPageRoute<bool>(builder: (_) => CreditsView());
       case RouteName.ABOUT_US:
         return MaterialPageRoute<bool>(builder: (_) => AboutUsView());
       default:
