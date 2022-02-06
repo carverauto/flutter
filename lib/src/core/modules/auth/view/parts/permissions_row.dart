@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_info_dialog.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class PermissionRow extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.subTitle,
+    required this.info,
   }) : super(key: key);
 
   //get icon and text
@@ -15,6 +17,8 @@ class PermissionRow extends StatelessWidget {
   final String title;
 
   final String subTitle;
+
+  final String info;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +41,31 @@ class PermissionRow extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
       ),
-      subtitle: Text(
-        subTitle,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
+      // subtitle: Text(
+      //   subTitle,
+      //   style: TextStyle(
+      //     color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
+      //   ),
+      // ),
+      trailing: TextButton(
+        onPressed: () async {
+          await showPermissionsInfoDialog(context, title, info);
+        },
+        style: TextButton.styleFrom(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+        child: Text(
+          "Read More",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
         ),
       ),
-      onTap: () {},
+      onTap: () async {
+        await showPermissionsInfoDialog(context, title, info);
+      },
     );
   }
 }
