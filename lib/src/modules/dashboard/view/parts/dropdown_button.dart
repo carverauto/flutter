@@ -53,6 +53,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             ),
           ),
         ),
+        PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 1,
           child: Text(
@@ -62,7 +63,6 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             ),
           ),
         ),
-        PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 2,
           child: Text(
@@ -72,7 +72,6 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             ),
           ),
         ),
-        PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 3,
           child: Text(
