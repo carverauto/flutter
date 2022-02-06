@@ -27,7 +27,7 @@ Future<UsersPermissionStatuses> requestPermissions() async {
       Permission.bluetoothScan,
       Permission.bluetoothConnect,
     ],
-    Permission.location,
+    Permission.locationWhenInUse,
     Permission.notification,
   ].request();
 
