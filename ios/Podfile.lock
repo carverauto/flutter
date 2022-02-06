@@ -675,6 +675,14 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - GoogleUtilities/AppDelegateSwizzler
+  - GoogleUtilities/Environment
+  - GoogleUtilities/Logger
+  - GoogleUtilities/MethodSwizzler
+  - GoogleUtilities/Network
+  - "GoogleUtilities/NSData+zlib"
+  - GoogleUtilities/Reachability
+  - GoogleUtilities/UserDefaults
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - NodleSDK
@@ -865,6 +873,6 @@ SPEC CHECKSUMS:
   twitter_login: 2794db69b7640681171b17b3c2c84ad9dfb4a57f
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
 
-PODFILE CHECKSUM: 9e9c760945182deb2d7672c53779fb93e167cda5
+PODFILE CHECKSUM: b6c7dfe206060cf53f9a0a1ace530abd1304c92a
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2

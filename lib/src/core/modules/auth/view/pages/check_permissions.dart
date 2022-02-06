@@ -53,7 +53,7 @@ class CheckPermissionsView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '''Free version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
+                      '''This version of ChaseApp requires following permissions to work properly.\nPlease grant this permissions to procceed.''',
                       style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -69,7 +69,7 @@ class CheckPermissionsView extends StatelessWidget {
             PermissionRow(
               icon: Icons.location_pin,
               title: "Location",
-              subTitle: "Location permission for location tracking.",
+              subTitle: "Location permissions for location tracking.",
             ),
             Divider(
               color: Theme.of(context).colorScheme.primary,
@@ -77,13 +77,13 @@ class CheckPermissionsView extends StatelessWidget {
             PermissionRow(
               icon: Icons.bluetooth_connected,
               title: "Bluetooth",
-              subTitle: "Location permission for location tracking.",
+              subTitle: "Bluetooth permissions for bluetooth activities.",
             ),
             Divider(),
             PermissionRow(
               icon: Icons.notifications_active,
               title: "Notifications",
-              subTitle: "Location permission for location tracking.",
+              subTitle: "Notifications permission for recieving notifications.",
             ),
             Divider(),
             SizedBox(
