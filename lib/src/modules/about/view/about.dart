@@ -38,10 +38,9 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
-    final topOffset = height;
     final bottomOffset = -height * 0.8;
     crawlTextposition =
-        Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
+        Tween(begin: Offset(0, height), end: Offset(0, bottomOffset))
             .animate(_animationController);
     disappearCrawlText = Tween<double>(begin: 1.0, end: 0)
         .chain(
