@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F4E5F0A27993A2A000A8800 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F4E5F0927993A2A000A8800 /* GoogleService-Info.plist */; };
 		0F708D4E279EC578002FE2AB /* Release-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */; };
 		0F708D4F279EC578002FE2AB /* Release-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */; };
 		0F708D50279EC578002FE2AB /* Debug-dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4B279EC578002FE2AB /* Debug-dev.xcconfig */; };
@@ -30,6 +29,7 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		DA4AA68C2797D9E6007088CC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4AA68A2797D9E6007088CC /* CoreLocation.framework */; };
 		DA4AA68D2797D9E6007088CC /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4AA68B2797D9E6007088CC /* CoreBluetooth.framework */; };
+		DAFCCBA327AF5ED90038BA33 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAFCCBA227AF5ED90038BA33 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,7 +67,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0F4E5F0927993A2A000A8800 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/chaseapp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Release-prod.xcconfig"; path = "Flutter/Release-prod.xcconfig"; sourceTree = "<group>"; };
 		0F708D4B279EC578002FE2AB /* Debug-dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-dev.xcconfig"; path = "Flutter/Debug-dev.xcconfig"; sourceTree = "<group>"; };
 		0F708D4C279EC578002FE2AB /* Debug-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-prod.xcconfig"; path = "Flutter/Debug-prod.xcconfig"; sourceTree = "<group>"; };
@@ -107,6 +106,7 @@
 		DA3A068713B1837C1C8AE932 /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		DA4AA68A2797D9E6007088CC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DA4AA68B2797D9E6007088CC /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		DAFCCBA227AF5ED90038BA33 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DB56A91EAB69928EB0EB9A45 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
 		E5C0E136C2D9D7DC485B9276 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,8 +204,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				DAFCCBA227AF5ED90038BA33 /* GoogleService-Info.plist */,
 				0F70CFCB279BA3BD0075DED5 /* Runner.entitlements */,
-				0F4E5F0927993A2A000A8800 /* GoogleService-Info.plist */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -338,7 +338,7 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				0F708D52279EC578002FE2AB /* Debug-prod.xcconfig in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				0F4E5F0A27993A2A000A8800 /* GoogleService-Info.plist in Resources */,
+				DAFCCBA327AF5ED90038BA33 /* GoogleService-Info.plist in Resources */,
 				0F708D4E279EC578002FE2AB /* Release-prod.xcconfig in Resources */,
 				0F708D50279EC578002FE2AB /* Debug-dev.xcconfig in Resources */,
 			);
