@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:linkable/linkable.dart';
 
 class URLView extends StatelessWidget {
   final List<Map> streams;
@@ -19,21 +16,12 @@ class URLView extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Chip(
                   backgroundColor: Theme.of(context).colorScheme.onBackground,
-                  label: Linkify(
-                    onOpen: _onOpen,
+                  label: Linkable(
                     text: data["URL"],
                   ),
                 ),
               ))
           .toList(),
     );
-  }
-
-  Future<void> _onOpen(LinkableElement link) async {
-    if (await canLaunch(link.url)) {
-      await launch(link.url);
-    } else {
-      throw 'Could not launch $link';
-    }
   }
 }
