@@ -8,6 +8,7 @@ import 'package:chaseapp/src/models/push_tokens/push_token.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/shared/enums/device.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
+import 'package:chaseapp/src/shared/enums/token_type.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,10 +36,10 @@ class AuthDatabase implements AuthDB {
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
     final pushToken = PushToken(
-      Token: token,
-      CreatedAt: DateTime.now().millisecondsSinceEpoch,
-      Device: Platform.isAndroid ? Device.ANDROID : Device.IOS,
-      TokenType: TokenType.FCM,
+      token: token,
+      created_at: DateTime.now().millisecondsSinceEpoch,
+      device: Platform.isAndroid ? DeviceOS.ANDROID : DeviceOS.IOS,
+      type: TokenType.FCM,
     );
 
     await usersCollectionRef.doc(userId).update({

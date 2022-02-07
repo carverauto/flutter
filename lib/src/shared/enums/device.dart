@@ -1,8 +1,4 @@
-enum Device {
+enum DeviceOS {
   IOS,
   ANDROID,
-}
-
-enum TokenType {
-  FCM,
 }
