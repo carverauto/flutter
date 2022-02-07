@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
+import 'package:chaseapp/src/models/push_tokens/push_token.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
+import 'package:chaseapp/src/shared/enums/device.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,8 +34,16 @@ class AuthDatabase implements AuthDB {
   Future<void> saveTokenToDatabase(User user, String token) async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
+    final pushToken = PushToken(
+      Token: token,
+      CreatedAt: DateTime.now().millisecondsSinceEpoch,
+      Device: Platform.isAndroid ? Device.ANDROID : Device.IOS,
+      TokenType: TokenType.FCM,
+    );
+
     await usersCollectionRef.doc(userId).update({
-      'tokens': FieldValue.arrayUnion([token]),
+      'pushTokens': FieldValue.arrayUnion(<PushToken>[pushToken]),
+      'tokens': FieldValue.arrayUnion(<String>[token]),
       "photoURL": user.photoURL,
       "userName": user.displayName,
       'lastTokenUpdate': DateTime.now(),
