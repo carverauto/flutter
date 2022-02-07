@@ -528,9 +528,6 @@ PODS:
     - OrderedSet (~> 5.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - fluttertoast (0.0.2):
-    - Flutter
-    - Toast
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -612,8 +609,6 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
-  - image_picker (0.0.1):
-    - Flutter
   - launch_review (0.0.1):
     - Flutter
   - leveldb-library (1.22.1)
@@ -649,7 +644,6 @@ PODS:
   - SQLite.swift/standard (0.13.1)
   - SwiftCBOR (0.4.4)
   - SwiftProtobuf (1.18.0)
-  - Toast (4.0.0)
   - twitter_login (0.0.1):
     - Flutter
   - url_launcher_ios (0.0.1):
@@ -673,7 +667,6 @@ DEPENDENCIES:
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - GoogleUtilities/AppDelegateSwizzler
   - GoogleUtilities/Environment
@@ -683,7 +676,6 @@ DEPENDENCIES:
   - "GoogleUtilities/NSData+zlib"
   - GoogleUtilities/Reachability
   - GoogleUtilities/UserDefaults
-  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - NodleSDK
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -740,7 +732,6 @@ SPEC REPOS:
     - SQLite.swift
     - SwiftCBOR
     - SwiftProtobuf
-    - Toast
 
 EXTERNAL SOURCES:
   audioplayers:
@@ -775,12 +766,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
-  image_picker:
-    :path: ".symlinks/plugins/image_picker/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info_plus:
@@ -840,7 +827,6 @@ SPEC CHECKSUMS:
   flutter_facebook_auth: dfd6b2563406c538098e2127512d385c9ffd70ad
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: c5cecea71f3be43282263550556e311c4cc03582
   GoogleAppMeasurement: a3311dbcf3ea651e5a070fe8559b57c174ada081
@@ -851,7 +837,6 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
-  image_picker: 9aa50e1d8cdacdbed739e925b7eea16d014367e6
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -869,7 +854,6 @@ SPEC CHECKSUMS:
   SQLite.swift: 30f2cdb09627181d472e55c4bc6b3b161f28de33
   SwiftCBOR: ce5354ec8b660da2d6fc754462881119dbe1f963
   SwiftProtobuf: c3c12645230d9b09c72267e0de89468c5543bd86
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   twitter_login: 2794db69b7640681171b17b3c2c84ad9dfb4a57f
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
 
