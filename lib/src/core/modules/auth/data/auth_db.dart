@@ -43,9 +43,8 @@ class AuthDatabase implements AuthDB {
     );
 
     await usersCollectionRef.doc(userId).update({
-      'pushTokens':
+      'tokens':
           FieldValue.arrayUnion(<Map<String, dynamic>>[pushToken.toJson()]),
-      'tokens': FieldValue.arrayUnion(<String>[token]),
       "photoURL": user.photoURL,
       "userName": user.displayName,
       'lastTokenUpdate': DateTime.now(),

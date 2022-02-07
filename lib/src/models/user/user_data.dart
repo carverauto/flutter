@@ -17,8 +17,7 @@ abstract class UserData implements _$UserData {
     String? photoURL,
     required int lastUpdated,
     @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-    List<String>? tokens,
-    List<PushToken>? pushTokens,
+    List<PushToken>? tokens,
   }) = _UserData;
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
