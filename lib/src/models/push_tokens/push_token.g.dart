@@ -7,16 +7,25 @@ part of 'push_token.dart';
 // **************************************************************************
 
 _$_PushToken _$$_PushTokenFromJson(Map<String, dynamic> json) => _$_PushToken(
-      Token: json['Token'] as String,
-      CreatedAt: json['CreatedAt'] as int,
-      Device: json['Device'],
-      TokenType: json['TokenType'],
+      token: json['token'] as String,
+      created_at: json['created_at'] as int,
+      device: $enumDecode(_$DeviceOSEnumMap, json['device']),
+      type: $enumDecode(_$TokenTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$$_PushTokenToJson(_$_PushToken instance) =>
     <String, dynamic>{
-      'Token': instance.Token,
-      'CreatedAt': instance.CreatedAt,
-      'Device': instance.Device,
-      'TokenType': instance.TokenType,
+      'token': instance.token,
+      'created_at': instance.created_at,
+      'device': _$DeviceOSEnumMap[instance.device],
+      'type': _$TokenTypeEnumMap[instance.type],
     };
+
+const _$DeviceOSEnumMap = {
+  DeviceOS.IOS: 'IOS',
+  DeviceOS.ANDROID: 'ANDROID',
+};
+
+const _$TokenTypeEnumMap = {
+  TokenType.FCM: 'FCM',
+};
