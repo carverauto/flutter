@@ -79,7 +79,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  //TODO: Too big size
+                  //TODO: Too big asset size
                   Lottie.asset('assets/47816-lunar-new-year-lion-dance.json',
                       onLoaded: (composition) {
                     Timer(Duration(seconds: 3), () async {

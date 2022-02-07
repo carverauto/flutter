@@ -68,7 +68,7 @@ class LogInView extends ConsumerWidget {
                 children: <Widget>[
                   ElevatedButton.icon(
                     icon: SvgPicture.asset(
-                      "assets/icon/google.svg",
+                      SIGNINMETHOD.GOOGLE.getAssetIcon,
                       height: kIconSizeLargeConstant,
                     ),
                     style: callToActionButtonStyle,
@@ -88,7 +88,7 @@ class LogInView extends ConsumerWidget {
                   if (Platform.isIOS)
                     ElevatedButton.icon(
                       icon: SvgPicture.asset(
-                        "assets/icon/apple.svg",
+                        SIGNINMETHOD.APPLE.getAssetIcon,
                         height: kIconSizeLargeConstant,
                       ),
                       style: callToActionButtonStyle,
@@ -108,7 +108,7 @@ class LogInView extends ConsumerWidget {
                     ),
                   ElevatedButton.icon(
                     icon: SvgPicture.asset(
-                      "assets/icon/facebook.svg",
+                      SIGNINMETHOD.FACEBOOK.getAssetIcon,
                       height: kIconSizeLargeConstant,
                     ),
                     style: callToActionButtonStyle,
@@ -127,7 +127,7 @@ class LogInView extends ConsumerWidget {
                   ),
                   ElevatedButton.icon(
                     icon: SvgPicture.asset(
-                      "assets/icon/twitter.svg",
+                      SIGNINMETHOD.TWITTER.getAssetIcon,
                       height: kIconSizeLargeConstant,
                     ),
                     style: callToActionButtonStyle,

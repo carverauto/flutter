@@ -34,7 +34,7 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
     }
   }
 
-  Future<void> doRequest([bool force_fetch = false]) async {
+  Future<void> checkForUpdate([bool force_fetch = false]) async {
     //save a flag in sharedpreferances
     // depending on the flag make the decision of whether to make
     // the call on app startup or not

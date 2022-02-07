@@ -10,13 +10,18 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     required this.builder,
     required this.watchThisProvider,
     required this.logger,
+    this.errorMessage,
+    this.errorBuilder,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
   final Widget Function(T data) builder;
+  final Widget Function(Object e, StackTrace? stk)? errorBuilder;
 
   final Logger logger;
+
+  final String? errorMessage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,17 +31,23 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
           },
           error: (e, stk) {
             logger.severe(
-              'Error Loading Data',
+              errorMessage ?? 'Error Loading Data',
               e,
               stk,
             );
-            return ChaseAppErrorWidget(
-              onRefresh: () {
-                ref.refresh(watchThisProvider);
-              },
-            );
+            return errorBuilder != null
+                ? errorBuilder!(e, stk)
+                : Scaffold(
+                    body: ChaseAppErrorWidget(
+                      onRefresh: () {
+                        ref.refresh(watchThisProvider);
+                      },
+                    ),
+                  );
           },
-          loading: () => CircularAdaptiveProgressIndicator(),
+          loading: () => Scaffold(
+            body: CircularAdaptiveProgressIndicatorWithBg(),
+          ),
         );
   }
 }

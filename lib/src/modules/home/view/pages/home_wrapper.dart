@@ -10,9 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO: Update configurations for dynamic links for android and ios
-// also check for notifications configurations
-
 Future<void> handlebgmessage(RemoteMessage message) async {
   log("Background message arrived--->" + message.data.toString());
 
@@ -50,16 +47,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handledynamiclink(WidgetRef ref, BuildContext context) async {
-    // FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-    //   final Uri? deepLink = dynamicLink.link;
-
-    //   if (deepLink != null) {
-    //     await navigateToView(ref, deepLink);
-    //   }
-    // }, onError: (Object error, StackTrace stackTrace) {
-    //   log("Error while recieving message", error: error);
-    // });
-
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
@@ -78,13 +65,24 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         break;
       case 'update':
         handlebgmessage(message).then(
-          (value) =>
-              ref.read(checkForUpdateStateNotifier.notifier).doRequest(true),
+          (value) => ref
+              .read(checkForUpdateStateNotifier.notifier)
+              .checkForUpdate(true),
         );
 
         break;
       case 'chase':
-        throw UnimplementedError();
+        // TODO:Navigate to chase view
+        final String? chaseId = message.data["chaseId"] as String?;
+
+        if (chaseId != null) {
+          Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
+            "chaseId": chaseId,
+          });
+        } else {
+          log("Chase id Not Found!");
+        }
+        // throw UnimplementedError();
         break;
       default:
     }

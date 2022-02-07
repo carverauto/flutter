@@ -1,5 +1,4 @@
-// import 'package:chaseapp/helper/record.dart';
-import 'package:chaseapp/src/modules/dashboard/view/pages/chaseList_page.dart';
+import 'package:chaseapp/src/modules/dashboard/view/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
