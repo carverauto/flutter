@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/models/push_tokens/push_token.dart';
 import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,6 +18,7 @@ abstract class UserData implements _$UserData {
     required int lastUpdated,
     @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
     List<String>? tokens,
+    List<PushToken>? pushTokens,
   }) = _UserData;
   factory UserData.fromJson(Map<String, dynamic> json) =>
       _$UserDataFromJson(json);
