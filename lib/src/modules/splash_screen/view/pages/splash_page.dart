@@ -83,7 +83,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                   // TODO: Control this via Firebase remoteconfig - mfreeman
                   Lottie.asset('assets/95044-love-dog.json',
                       onLoaded: (composition) {
-                    Timer(Duration(seconds: 3), () async {
+                    // TODO: Control the timer from Firebase as well
+                    Timer(Duration(seconds: 4), () async {
                       final user = await ref.read(streamLogInStatus.future);
                       Navigator.of(context).pushReplacementNamed(
                         user != null
