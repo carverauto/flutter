@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/push_tokens/push_token.dart';
@@ -45,8 +44,6 @@ class AuthDatabase implements AuthDB {
     await usersCollectionRef.doc(userId).update({
       'tokens':
           FieldValue.arrayUnion(<Map<String, dynamic>>[pushToken.toJson()]),
-      "photoURL": user.photoURL,
-      "userName": user.displayName,
       'lastTokenUpdate': DateTime.now(),
       'lastUpdated': DateTime.now().millisecondsSinceEpoch,
     });
@@ -132,16 +129,16 @@ class AuthDatabase implements AuthDB {
   Future<UserData> createUser(User user) async {
     final DocumentReference<UserData> docRef = usersCollectionRef.doc(user.uid);
     try {
-      await docRef.set(
-        UserData(
-          uid: user.uid,
-          userName: user.displayName ?? "NA",
-          email: user.email!,
-          photoURL: user.photoURL ?? defaultPhotoURL,
-          lastUpdated: DateTime.now().millisecondsSinceEpoch,
-        ),
+      final userData = UserData(
+        uid: user.uid,
+        userName: user.displayName,
+        //TODO: Should we allow facebook login that doesn't have email?
+        email: user.email!,
+        photoURL: user.photoURL,
+        lastUpdated: DateTime.now().millisecondsSinceEpoch,
       );
-      return await fetchUser(user);
+      await docRef.set(userData);
+      return userData;
     } catch (e) {
       throw e;
     }
