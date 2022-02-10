@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
@@ -7,8 +6,8 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
+import 'package:chaseapp/src/shared/widgets/chase/donut_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ChaseTile extends StatelessWidget {
   const ChaseTile({
@@ -24,7 +23,7 @@ class ChaseTile extends StatelessWidget {
         tileColor: primaryColor.shade600,
         style: ListTileStyle.list,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant / 2),
+          borderRadius: BorderRadius.circular(kBorderRadiusStandard),
         ),
         leading: Hero(
           tag: "Chase" + chase.createdAt.toString(),
@@ -36,7 +35,7 @@ class ChaseTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(
-                  kBorderRadiusSmallConstant / 2,
+                  kBorderRadiusStandard,
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -84,16 +83,8 @@ class ChaseTile extends StatelessWidget {
             color: Theme.of(context).colorScheme.onPrimary.withAlpha(190),
           ),
         ),
-        trailing: Chip(
-          elevation: kElevation,
-          labelStyle: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          avatar: SvgPicture.asset(donutSVG),
-          label: Text(
-            chase.votes.toString(),
-          ),
+        trailing: DonutBox(
+          chase: chase,
         ),
         onTap: () {
           Navigator.pushNamed(

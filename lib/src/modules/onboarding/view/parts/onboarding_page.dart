@@ -31,7 +31,7 @@ class OnboardingPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(
-            kBorderRadiusSmallConstant,
+            kBorderRadiusStandard,
           ),
         ),
         child: Column(
