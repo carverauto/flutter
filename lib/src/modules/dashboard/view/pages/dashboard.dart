@@ -1,5 +1,7 @@
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chase_map.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_drawer.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
@@ -29,7 +31,7 @@ class Dashboard extends ConsumerWidget {
     return Scaffold(
       // floatingActionButton:
       //     ScrollToTopButton(scrollController: scrollController),
-      drawer: Drawer(),
+      drawer: ChaseAppDrawer(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
         edgeOffset: kItemsSpacingLargeConstant,
@@ -185,63 +187,6 @@ class Dashboard extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ChasesMap extends StatelessWidget {
-  const ChasesMap({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Placeholder(
-        fallbackHeight: 150,
-      ),
-    );
-  }
-}
-
-class ChaseAppBar extends StatelessWidget {
-  const ChaseAppBar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      centerTitle: true,
-      floating: true,
-      pinned: true,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      title: ShaderMask(
-        shaderCallback: (rect) {
-          return LinearGradient(colors: [
-            Colors.red,
-            Colors.blue,
-          ], stops: [
-            0.1,
-            0.6,
-          ]).createShader(rect);
-        },
-        child: Image.asset(
-          chaseAppNameImage,
-          height: kImageSizeLarge,
-          color: Colors.white,
-        ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            throw UnimplementedError();
-          },
-          icon: Icon(
-            Icons.notifications_outlined,
-          ),
-        )
-      ],
     );
   }
 }
