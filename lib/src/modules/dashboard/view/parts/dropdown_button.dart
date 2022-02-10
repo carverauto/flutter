@@ -25,15 +25,18 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             Navigator.pushNamed(context, RouteName.PROFILE);
             break;
           case 1:
-            Navigator.pushNamed(context, RouteName.ABOUT_US);
+            Navigator.pushNamed(context, RouteName.CREDITS);
             break;
           case 2:
-            await launchUrl(privacyPolicy);
+            Navigator.pushNamed(context, RouteName.ABOUT_US);
             break;
           case 3:
-            await launchUrl(tosPolicy);
+            await launchUrl(privacyPolicy);
             break;
           case 4:
+            await launchUrl(tosPolicy);
+            break;
+          case 5:
             ref.read(authRepoProvider).signOut();
 
             break;
@@ -50,8 +53,18 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             ),
           ),
         ),
+        PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 1,
+          child: Text(
+            "Credits",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 2,
           child: Text(
             "About",
             style: TextStyle(
@@ -59,9 +72,8 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             ),
           ),
         ),
-        PopupMenuDivider(),
         PopupMenuItem<int>(
-          value: 2,
+          value: 3,
           child: Text(
             "Privacy Policy",
             style: TextStyle(
@@ -70,7 +82,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
           ),
         ),
         PopupMenuItem<int>(
-          value: 3,
+          value: 4,
           child: Text(
             "Terms of Service",
             style: TextStyle(
@@ -80,7 +92,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         ),
         PopupMenuDivider(),
         PopupMenuItem<int>(
-          value: 4,
+          value: 5,
           child: Text(
             "Log out",
             style: TextStyle(

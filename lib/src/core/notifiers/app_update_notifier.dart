@@ -34,7 +34,7 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
     }
   }
 
-  Future<void> doRequest([force_fetch = false]) async {
+  Future<void> checkForUpdate([bool force_fetch = false]) async {
     //save a flag in sharedpreferances
     // depending on the flag make the decision of whether to make
     // the call on app startup or not
@@ -71,7 +71,9 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         final current_app_version = packageInfo.version;
 
         //app latest version
-        final store_url = jsonDecode(remoteConfig.getString("store_url"));
+        final Map<String, dynamic> store_url =
+            jsonDecode(remoteConfig.getString("store_url"))
+                as Map<String, dynamic>;
         final latest_app_version = remoteConfig.getString("latest_app_version");
         final force_update = remoteConfig.getBool("force_update");
 
@@ -87,10 +89,10 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         }
         _appUpdateInfo = AppUpdateInfo(
           current_app_version: current_app_version,
-          app_store: store_url['app_store'],
+          app_store: store_url['app_store'] as String,
           force_update: force_update,
           latest_app_version: latest_app_version,
-          play_store: store_url["play_store"],
+          play_store: store_url["play_store"] as String,
         );
 
         isInfoInitialized = true;

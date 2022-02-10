@@ -2,7 +2,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-ThemeData getThemeData(context) => ThemeData.dark().copyWith(
+ThemeData getThemeData(BuildContext context) => ThemeData.dark().copyWith(
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: primaryColor,
         cardColor: Color(0xffd2d1d0),

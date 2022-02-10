@@ -55,7 +55,7 @@ class ChaseTile extends StatelessWidget {
                       placeholder: (context, value) => Center(
                         child: CircularProgressIndicator(),
                       ),
-                      errorWidget: (context, value, value2) {
+                      errorWidget: (context, value, dynamic value2) {
                         return Icon(
                           Icons.info,
                           color: Theme.of(context).colorScheme.primary,

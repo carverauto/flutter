@@ -85,7 +85,7 @@ class ShowChase extends ConsumerWidget {
                             ),
                             placeholder: (context, value) =>
                                 CircularAdaptiveProgressIndicatorWithBg(),
-                            errorWidget: (context, value, value2) {
+                            errorWidget: (context, value, dynamic value2) {
                               return ImageLoadErrorWidget();
                             },
                           )

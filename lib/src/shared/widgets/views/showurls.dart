@@ -17,7 +17,7 @@ class URLView extends StatelessWidget {
                 child: Chip(
                   backgroundColor: Theme.of(context).colorScheme.onBackground,
                   label: Linkable(
-                    text: data["URL"],
+                    text: data["URL"] as String,
                   ),
                 ),
               ))

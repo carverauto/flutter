@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 Future<void> showPermissionsInfoDialog(
     BuildContext context, String permission, String permissionInfo) async {
   if (Platform.isAndroid)
-    await showDialog(
+    await showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -38,7 +38,7 @@ Future<void> showPermissionsInfoDialog(
           );
         });
   else
-    showCupertinoDialog(
+    showCupertinoDialog<void>(
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(

@@ -11,8 +11,8 @@ class NodelStateNotifier extends StateNotifier<NodleState> {
   final Logger logger = Logger('NodelStateNotifier');
 
   static const platform = MethodChannel('com.carverauto.chaseapp/nodle');
-  late final String _value;
-  String get value => _value;
+  late final String? _value;
+  String? get value => _value;
   String? status = null;
   String? nodleConfig = null;
   bool isInitialized = false;
@@ -20,7 +20,7 @@ class NodelStateNotifier extends StateNotifier<NodleState> {
   void initializeNodle() async {
     if (!isInitialized) {
       try {
-        _value = await platform.invokeMethod("init");
+        _value = await platform.invokeMethod<String?>("init");
         isInitialized = true;
         log("Nodle initialized: $_value");
       } catch (e, stk) {

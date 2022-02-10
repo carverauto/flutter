@@ -1,12 +1,11 @@
 // import 'package:chaseapp/utils/routeNames.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart' show Firebase, FirebaseApp, FirebaseOptions;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 // import 'package:chaseapp/utils/deviceSize.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -93,7 +92,7 @@ class SettingsPage extends State<Settings> {
   }
 }
 
-_launchURL() async {
+Future<void> _launchURL() async {
   const url = 'https://chaseapp.tv/privacy';
   if (await canLaunch(url)) {
     await launch(url);

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:chaseapp/src/const/sizings.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 
 Future<void> showUpdateDialog(
     BuildContext context, AppUpdateInfo appUpdateInfo) async {
-  await showDialog(
+  await showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (context) => AlertDialog(
