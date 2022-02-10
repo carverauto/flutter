@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 ThemeData getThemeData(BuildContext context) => ThemeData.dark().copyWith(
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: primaryColor,
+        backgroundColor: primaryColor.shade800,
         cardColor: Color(0xffd2d1d0),
         accentColor: Color(0xFFFF8EC6),
       ),
