@@ -8,9 +8,11 @@ class GlassButton extends StatelessWidget {
   const GlassButton({
     Key? key,
     required this.child,
+    this.padding,
   }) : super(key: key);
 
   final Widget child;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,10 @@ class GlassButton extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(
-              kPaddingSmallConstant / 2,
-            ),
+            padding: padding ??
+                const EdgeInsets.all(
+                  kPaddingSmallConstant / 2,
+                ),
             child: child,
           ),
         ),

@@ -94,7 +94,7 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
                       ),
                     );
             },
-            loading: () => CircularProgressIndicator.adaptive(),
+            loading: () => CircularAdaptiveProgressIndicatorWithBg(),
           ),
     );
   }

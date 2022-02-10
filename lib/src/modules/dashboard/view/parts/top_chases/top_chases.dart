@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chase_builder.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
@@ -40,46 +39,18 @@ class TopChasesListView extends ConsumerWidget {
                     ),
                   ],
                 )
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: kPaddingMediumConstant,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Top Chases",
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                          ),
-                        ],
-                      ),
+              : SizedBox(
+                  width: Sizescaleconfig.screenwidth,
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: Sizescaleconfig.screenheight! * 0.4,
+                      enableInfiniteScroll: false,
+                      viewportFraction: 0.9,
                     ),
-                    SizedBox(
-                      height: kItemsSpacingSmallConstant,
-                    ),
-                    SizedBox(
-                      width: Sizescaleconfig.screenwidth,
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                          height: Sizescaleconfig.screenheight! * 0.4,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.9,
-                        ),
-                        items: chases.map<Widget>((chase) {
-                          return TopChaseBuilder(chase: chase);
-                        }).toList(),
-                      ),
-                    ),
-                  ],
+                    items: chases.map<Widget>((chase) {
+                      return TopChaseBuilder(chase: chase);
+                    }).toList(),
+                  ),
                 );
         });
   }

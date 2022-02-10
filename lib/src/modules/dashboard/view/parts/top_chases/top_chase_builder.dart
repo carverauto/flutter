@@ -3,7 +3,6 @@ import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:chaseapp/src/shared/widgets/chase/donut_box.dart';
 import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
@@ -76,10 +75,7 @@ class TopChaseBuilder extends StatelessWidget {
                   children: [
                     Text(
                       chase.name ?? "NA",
-                      maxLines: Sizescaleconfig.getDeviceType ==
-                              DeviceType.SMALL_MOBILE
-                          ? 1
-                          : 2,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
