@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chases_paginatedlist_view.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +30,7 @@ class Dashboard extends ConsumerWidget {
     return Scaffold(
       floatingActionButton:
           ScrollToTopButton(scrollController: scrollController),
+      drawer: Drawer(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
         onRefresh: () async {
@@ -44,30 +42,8 @@ class Dashboard extends ConsumerWidget {
               controller: scrollController,
               restorationId: "Chases List",
               slivers: [
-                SliverAppBar(
-                  centerTitle: true,
-                  elevation: kElevation,
-                  pinned: true,
-                  title: Image.asset(
-                    chaseAppNameImage,
-                    height: kImageSizeLarge,
-                  ),
-                  actions: [
-                    ChaseAppDropDownButton(
-                      child: CircleAvatar(
-                        radius: kImageSizeSmall,
-                        backgroundImage: CachedNetworkImageProvider(
-                          ref.watch(userStreamProvider.select(
-                                  (value) => value.asData?.value.photoURL)) ??
-                              defaultPhotoURL,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: kItemsSpacingSmallConstant,
-                    ),
-                  ],
-                ),
+                // AppBar
+                ChaseAppBar(),
 
                 // Error if removed (Need to report)
                 SliverToBoxAdapter(
@@ -75,6 +51,21 @@ class Dashboard extends ConsumerWidget {
                     height: kPaddingMediumConstant,
                   ),
                 ),
+                // Chases Map
+                ChasesMap(),
+                // For Clusters
+                //  SliverToBoxAdapter(
+                //   child: SizedBox(
+                //     height: kPaddingMediumConstant,
+                //   ),
+                // ),
+
+                //Top Chases
+
+                TopChasesListView(
+                  logger: logger,
+                ),
+
                 SliverPadding(
                   padding:
                       EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
@@ -99,6 +90,63 @@ class Dashboard extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ChasesMap extends StatelessWidget {
+  const ChasesMap({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Placeholder(
+        fallbackHeight: 150,
+      ),
+    );
+  }
+}
+
+class ChaseAppBar extends StatelessWidget {
+  const ChaseAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      centerTitle: true,
+      floating: true,
+      pinned: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      title: ShaderMask(
+        shaderCallback: (rect) {
+          return LinearGradient(colors: [
+            Colors.red,
+            Colors.blue,
+          ], stops: [
+            0.1,
+            0.6,
+          ]).createShader(rect);
+        },
+        child: Image.asset(
+          chaseAppNameImage,
+          height: kImageSizeLarge,
+          color: Colors.white,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            throw UnimplementedError();
+          },
+          icon: Icon(
+            Icons.notifications_outlined,
+          ),
+        )
+      ],
     );
   }
 }
