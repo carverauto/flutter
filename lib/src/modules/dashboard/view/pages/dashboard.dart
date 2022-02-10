@@ -2,9 +2,7 @@ import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chases_paginatedlist_view.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,23 +11,23 @@ import 'package:logging/logging.dart';
 class Dashboard extends ConsumerWidget {
   Dashboard({Key? key}) : super(key: key);
 
-  final ScrollController scrollController = ScrollController();
+  // final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('Dashboard');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chasesPaingationProvider = chasesPaginatedStreamProvider(logger);
-    scrollController.addListener(() {
-      double maxScroll = scrollController.position.maxScrollExtent;
-      double currentScroll = scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.width * 0.20;
-      if (maxScroll - currentScroll <= delta) {
-        ref.read(chasesPaingationProvider.notifier).fetchNextPage();
-      }
-    });
+    // scrollController.addListener(() {
+    //   double maxScroll = scrollController.position.maxScrollExtent;
+    //   double currentScroll = scrollController.position.pixels;
+    //   double delta = MediaQuery.of(context).size.width * 0.20;
+    //   if (maxScroll - currentScroll <= delta) {
+    //     ref.read(chasesPaingationProvider.notifier).fetchNextPage();
+    //   }
+    // });
     return Scaffold(
-      floatingActionButton:
-          ScrollToTopButton(scrollController: scrollController),
+      // floatingActionButton:
+      //     ScrollToTopButton(scrollController: scrollController),
       drawer: Drawer(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
@@ -39,7 +37,7 @@ class Dashboard extends ConsumerWidget {
         child: Stack(
           children: [
             CustomScrollView(
-              controller: scrollController,
+              // controller: scrollController,
               restorationId: "Chases List",
               slivers: [
                 // AppBar
@@ -66,18 +64,14 @@ class Dashboard extends ConsumerWidget {
                   logger: logger,
                 ),
 
-                SliverPadding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-                  sliver: ChasesPaginatedListView(
-                      chasesPaingationProvider: chasesPaingationProvider,
-                      logger: logger,
-                      scrollController: scrollController),
+                ChasesPaginatedListView(
+                  chasesPaingationProvider: chasesPaingationProvider,
+                  logger: logger,
                 ),
-                SliverToBoxAdapter(
-                  child: PaginatedListBottom(
-                      chasesPaingationProvider: chasesPaingationProvider),
-                ),
+                // SliverToBoxAdapter(
+                //   child: PaginatedListBottom(
+                //       chasesPaingationProvider: chasesPaingationProvider),
+                // ),
               ],
             ),
             Positioned(

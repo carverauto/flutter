@@ -3,7 +3,6 @@ import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.d
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaginatedListBottom extends StatelessWidget {
