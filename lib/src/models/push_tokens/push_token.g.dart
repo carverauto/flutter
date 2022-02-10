@@ -22,8 +22,8 @@ Map<String, dynamic> _$$_PushTokenToJson(_$_PushToken instance) =>
     };
 
 const _$DeviceOSEnumMap = {
-  DeviceOS.IOS: 'IOS',
-  DeviceOS.ANDROID: 'ANDROID',
+  DeviceOS.ios: 'ios',
+  DeviceOS.android: 'android',
 };
 
 const _$TokenTypeEnumMap = {
