@@ -23,44 +23,27 @@ import 'package:share_plus/share_plus.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
 
-class ShowChase extends ConsumerWidget {
-  // ShowChase(this.observer);
+class ChaseDetailsView extends ConsumerWidget {
+  // ChaseDetailsView(this.observer);
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   final String chaseId;
 
-  ShowChase({Key? key, required this.chaseId}) : super(key: key);
+  ChaseDetailsView({
+    Key? key,
+    required this.chaseId,
+    required this.appBarOffsetAnimation,
+    required this.bottomListAnimation,
+  }) : super(key: key);
 
   final Logger logger = Logger("ChaseView");
+
+  final Animation<Offset> appBarOffsetAnimation;
+  final Animation<Offset> bottomListAnimation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 1.0,
-        title: Image.asset(
-          chaseAppNameImage,
-          height: kImageSizeLarge,
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () async {
-              final chase = await ref.read(streamChaseProvider(chaseId).future);
-
-              try {
-                final shareLink = await createRecordDynamicLink(chase);
-                Share.share(shareLink);
-              } catch (e) {
-                log("Wha'ts wrong?", error: e);
-              }
-
-              // //TODO:Need to share a dynamic link or web link for the chase
-              // Share.share(shareLink);
-            },
-          ),
-        ],
-      ),
+      backgroundColor: Colors.transparent,
       body: ProviderStateBuilder<Chase>(
         watchThisProvider: streamChaseProvider(chaseId),
         logger: logger,
@@ -70,118 +53,178 @@ class ShowChase extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Hero(
-                tag: "Chase" + chase.createdAt.toString(),
-                child: AspectRatio(
-                  aspectRatio: aspectRatioStandard,
-                  child: ColoredBox(
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    child: chase.imageURL != null && chase.imageURL!.isNotEmpty
-                        ? CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: parseImageUrl(
-                              imageURL!,
-                              ImageDimensions.LARGE,
-                            ),
-                            placeholder: (context, value) =>
-                                CircularAdaptiveProgressIndicatorWithBg(),
-                            errorWidget: (context, value, dynamic value2) {
-                              return ImageLoadErrorWidget();
-                            },
-                          )
-                        : Image(
-                            fit: BoxFit.cover,
-                            image: AssetImage(defaultChaseImage),
-                          ),
+              AnimatedBuilder(
+                animation: appBarOffsetAnimation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: appBarOffsetAnimation.value,
+                    child: child,
+                  );
+                },
+                child: AppBar(
+                  centerTitle: true,
+                  elevation: 1.0,
+                  title: Image.asset(
+                    chaseAppNameImage,
+                    height: kImageSizeLarge,
                   ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.share),
+                      onPressed: () async {
+                        final chase =
+                            await ref.read(streamChaseProvider(chaseId).future);
+
+                        try {
+                          final shareLink =
+                              await createRecordDynamicLink(chase);
+                          Share.share(shareLink);
+                        } catch (e) {
+                          log("Wha'ts wrong?", error: e);
+                        }
+
+                        // //TODO:Need to share a dynamic link or web link for the chase
+                        // Share.share(shareLink);
+                      },
+                    ),
+                  ],
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kPaddingMediumConstant,
-                  ),
-                  child: Stack(
+                child: AnimatedBuilder(
+                  animation: bottomListAnimation,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: bottomListAnimation.value,
+                      child: child,
+                    );
+                  },
+                  child: Column(
                     children: [
-                      ListView(
-                        padding: EdgeInsets.all(0),
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: kItemsSpacingMedium,
-                              ),
-                              Text(
-                                chase.name ?? "NA",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                              ),
-                              Divider(
-                                height: kItemsSpacingSmall,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryVariant,
-                              ),
-                              Text(
-                                chase.desc ?? "NA",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                                maxLines: 5,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: kItemsSpacingSmall,
-                          ),
-                          Divider(
-                            height: kItemsSpacingSmall,
-                            color: Theme.of(context).colorScheme.primaryVariant,
-                          ),
-                          Text(
-                            "Watch here :",
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      decoration: TextDecoration.underline,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                          ),
-                          chase.networks != null
-                              ? URLView(chase.networks as List<Map>)
-                              : const Text('Please wait..'),
-                          SizedBox(
-                            height: kItemsSpacingMedium,
-                          ),
-                        ],
+                      AspectRatio(
+                        aspectRatio: aspectRatioStandard,
+                        child: ColoredBox(
+                          color: Theme.of(context).colorScheme.primaryVariant,
+                          child: chase.imageURL != null &&
+                                  chase.imageURL!.isNotEmpty
+                              ? CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: parseImageUrl(
+                                    imageURL!,
+                                    ImageDimensions.LARGE,
+                                  ),
+                                  placeholder: (context, value) =>
+                                      CircularAdaptiveProgressIndicatorWithBg(),
+                                  errorWidget:
+                                      (context, value, dynamic value2) {
+                                    return ImageLoadErrorWidget();
+                                  },
+                                )
+                              : Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(defaultChaseImage),
+                                ),
+                        ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: kPaddingMediumConstant,
-                          ),
-                          child: DonutClapButton(
-                            chase: chase,
-                            logger: logger,
+                      Expanded(
+                        child: ColoredBox(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: kPaddingMediumConstant,
+                            ),
+                            child: Stack(
+                              children: [
+                                ListView(
+                                  padding: EdgeInsets.all(0),
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: kItemsSpacingMedium,
+                                        ),
+                                        Text(
+                                          chase.name ?? "NA",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                        ),
+                                        Divider(
+                                          height: kItemsSpacingSmall,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primaryVariant,
+                                        ),
+                                        Text(
+                                          chase.desc ?? "NA",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                          maxLines: 5,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: kItemsSpacingSmall,
+                                    ),
+                                    Divider(
+                                      height: kItemsSpacingSmall,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryVariant,
+                                    ),
+                                    Text(
+                                      "Watch here :",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .copyWith(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                          ),
+                                    ),
+                                    chase.networks != null
+                                        ? URLView(chase.networks as List<Map>)
+                                        : const Text('Please wait..'),
+                                    SizedBox(
+                                      height: kItemsSpacingMedium,
+                                    ),
+                                  ],
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: kPaddingMediumConstant,
+                                    ),
+                                    child: DonutClapButton(
+                                      chase: chase,
+                                      logger: logger,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

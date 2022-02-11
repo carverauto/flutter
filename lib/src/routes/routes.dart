@@ -43,10 +43,7 @@ class Routes {
         return MaterialPageRoute<void>(builder: (_) => HomeWrapper());
       case RouteName.CHASE_VIEW:
         final String chaseId = arguments["chaseId"] as String;
-        return MaterialPageRoute<void>(
-            builder: (_) => ShowChase(
-                  chaseId: chaseId,
-                ));
+        return _createRoute(chaseId);
       case RouteName.RECENT_CHASESS_VIEW_ALL:
         final chasesPaginationProvider = arguments["chasesPaginationProvider"]
             as StateNotifierProvider<PaginationNotifier<Chase>,
@@ -83,4 +80,47 @@ class Routes {
         );
     }
   }
+}
+
+Route<void> _createRoute(String chaseId) {
+  return PageRouteBuilder<void>(
+    transitionDuration: const Duration(milliseconds: 300),
+    reverseTransitionDuration: const Duration(milliseconds: 300),
+    pageBuilder: (context, animation, secondaryAnimation) {
+      final appbarOffsetAnimation = Tween<Offset>(
+        begin: const Offset(
+          0,
+          -kToolbarHeight,
+        ),
+        end: const Offset(0, 0),
+      )
+          .chain(
+            CurveTween(
+              curve: Curves.decelerate,
+            ),
+          )
+          .animate(animation);
+      final bottomListAnimation = Tween<Offset>(
+        begin: Offset(
+          0,
+          MediaQuery.of(context).size.height,
+        ),
+        end: const Offset(0, 0),
+      )
+          .chain(
+            CurveTween(
+              curve: Curves.decelerate,
+            ),
+          )
+          .animate(animation);
+      return ChaseDetailsView(
+        chaseId: chaseId,
+        appBarOffsetAnimation: appbarOffsetAnimation,
+        bottomListAnimation: bottomListAnimation,
+      );
+    },
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return child;
+    },
+  );
 }
