@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_info_dialog.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +32,7 @@ class PermissionRow extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+        style: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
             ? Theme.of(context).textTheme.subtitle1!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                 )
@@ -41,12 +40,12 @@ class PermissionRow extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
       ),
-       subtitle: Text(
-         info,
-         style: TextStyle(
-           color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
-         ),
-       ),
+      subtitle: Text(
+        info,
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground.withAlpha(190),
+        ),
+      ),
     );
   }
 }
