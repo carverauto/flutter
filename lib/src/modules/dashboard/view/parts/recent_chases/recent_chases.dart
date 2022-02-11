@@ -16,12 +16,14 @@ class RecentChasesList extends StatelessWidget {
   final StateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaingationProvider;
   final Logger logger;
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return ChasesPaginatedListView(
       chasesPaingationProvider: chasesPaingationProvider,
       logger: logger,
+      scrollController: scrollController,
     );
   }
 }
