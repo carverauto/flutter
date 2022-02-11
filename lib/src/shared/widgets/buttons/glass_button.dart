@@ -20,6 +20,7 @@ class GlassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       clipBehavior: Clip.hardEdge,
+      color: primaryColor.shade500.withOpacity(0.3),
       borderRadius: BorderRadius.circular(kBorderRadiusStandard),
       child: InkWell(
         onTap: onTap,
@@ -28,17 +29,12 @@ class GlassButton extends StatelessWidget {
             sigmaX: blurValue,
             sigmaY: blurValue,
           ),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: primaryColor.shade500.withOpacity(0.1),
-            ),
-            child: Padding(
-              padding: padding ??
-                  const EdgeInsets.all(
-                    kPaddingSmallConstant / 2,
-                  ),
-              child: child,
-            ),
+          child: Padding(
+            padding: padding ??
+                const EdgeInsets.all(
+                  kPaddingSmallConstant / 2,
+                ),
+            child: child,
           ),
         ),
       ),
