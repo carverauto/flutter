@@ -1,20 +1,13 @@
 import 'dart:core';
 import 'dart:developer';
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
-import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
-import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,136 +92,10 @@ class ChaseDetailsView extends ConsumerWidget {
                       child: child,
                     );
                   },
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: aspectRatioStandard,
-                        child: ColoredBox(
-                          color: Theme.of(context).colorScheme.primaryVariant,
-                          child: chase.imageURL != null &&
-                                  chase.imageURL!.isNotEmpty
-                              ? CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: parseImageUrl(
-                                    imageURL!,
-                                    ImageDimensions.LARGE,
-                                  ),
-                                  placeholder: (context, value) =>
-                                      CircularAdaptiveProgressIndicatorWithBg(),
-                                  errorWidget:
-                                      (context, value, dynamic value2) {
-                                    return ImageLoadErrorWidget();
-                                  },
-                                )
-                              : Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(defaultChaseImage),
-                                ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ColoredBox(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: kPaddingMediumConstant,
-                            ),
-                            child: Stack(
-                              children: [
-                                ListView(
-                                  padding: EdgeInsets.all(0),
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                          height: kItemsSpacingMedium,
-                                        ),
-                                        Text(
-                                          chase.name ?? "NA",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5!
-                                              .copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onBackground,
-                                              ),
-                                        ),
-                                        Divider(
-                                          height: kItemsSpacingSmall,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primaryVariant,
-                                        ),
-                                        Text(
-                                          chase.desc ?? "NA",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .copyWith(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onBackground,
-                                              ),
-                                          maxLines: 5,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: kItemsSpacingSmall,
-                                    ),
-                                    Divider(
-                                      height: kItemsSpacingSmall,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryVariant,
-                                    ),
-                                    Text(
-                                      "Watch here :",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                            decoration:
-                                                TextDecoration.underline,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onBackground,
-                                          ),
-                                    ),
-                                    chase.networks != null
-                                        ? URLView(chase.networks as List<Map>)
-                                        : const Text('Please wait..'),
-                                    SizedBox(
-                                      height: kItemsSpacingMedium,
-                                    ),
-                                  ],
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      bottom: kPaddingMediumConstant,
-                                    ),
-                                    child: DonutClapButton(
-                                      chase: chase,
-                                      logger: logger,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: ChaseDetails(
+                    chase: chase,
+                    imageURL: imageURL,
+                    logger: logger,
                   ),
                 ),
               ),
