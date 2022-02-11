@@ -1,9 +1,11 @@
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 class DonutClapButton extends ConsumerWidget {
@@ -20,9 +22,9 @@ class DonutClapButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ClapFAB.image(
       trailing: (counter) => Text(
-        chase.votes.toString() + " donuts",
-        style: Theme.of(context).textTheme.headline5!.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+        NumberFormat('#,###').format(chase.votes ?? 0),
+        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+              color: primaryColor.shade300,
             ),
       ),
       clapFabCallback: (int upCount) async {
