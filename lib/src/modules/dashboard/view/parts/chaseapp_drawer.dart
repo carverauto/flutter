@@ -2,6 +2,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,14 @@ class ChaseAppDrawer extends StatelessWidget {
                 data: (userData) {
                   final isImagePresent = userData.photoURL != null;
                   return InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      final shouldSignOut = await Navigator.pushNamed<bool>(
+                          context, RouteName.PROFILE);
+
+                      if (shouldSignOut != null && shouldSignOut) {
+                        ref.read(authRepoProvider).signOut();
+                      }
+                    },
                     child: DrawerHeader(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,7 +99,9 @@ class ChaseAppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.ABOUT_US);
+            },
             leading: Icon(
               Icons.people_outline,
               color: Theme.of(context).colorScheme.onBackground,
@@ -104,7 +114,9 @@ class ChaseAppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.CREDITS);
+            },
             leading: Icon(
               Icons.stars_outlined,
               color: Theme.of(context).colorScheme.onBackground,
