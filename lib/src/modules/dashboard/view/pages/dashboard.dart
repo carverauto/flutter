@@ -21,17 +21,8 @@ class Dashboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
-    // scrollController.addListener(() {
-    //   double maxScroll = scrollController.position.maxScrollExtent;
-    //   double currentScroll = scrollController.position.pixels;
-    //   double delta = MediaQuery.of(context).size.width * 0.20;
-    //   if (maxScroll - currentScroll <= delta) {
-    //     ref.read(chasesPaingationProvider.notifier).fetchNextPage();
-    //   }
-    // });
+
     return Scaffold(
-      // floatingActionButton:
-      //     ScrollToTopButton(scrollController: scrollController),
       drawer: ChaseAppDrawer(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
@@ -67,7 +58,6 @@ class Dashboard extends ConsumerWidget {
           children: [
             CustomScrollView(
               physics: AlwaysScrollableScrollPhysics(),
-              // controller: scrollController,
               restorationId: "Chases List",
               slivers: [
                 // AppBar
@@ -176,7 +166,7 @@ class Dashboard extends ConsumerWidget {
                 ),
 
                 RecentChasesList(
-                  chasesPaingationProvider: chasesPaginationProvider,
+                  chasesPaginationProvider: chasesPaginationProvider,
                   logger: logger,
                 ),
                 // SliverToBoxAdapter(

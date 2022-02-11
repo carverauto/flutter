@@ -21,8 +21,8 @@ class GlassButton extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: 5,
-          sigmaY: 5,
+          sigmaX: blurValue,
+          sigmaY: blurValue,
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(

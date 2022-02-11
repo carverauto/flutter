@@ -9,19 +9,19 @@ import 'package:logging/logging.dart';
 class RecentChasesList extends StatelessWidget {
   RecentChasesList({
     Key? key,
-    required this.chasesPaingationProvider,
+    required this.chasesPaginationProvider,
     required this.logger,
   }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>> chasesPaingationProvider;
+      PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return ChasesPaginatedListView(
-      chasesPaingationProvider: chasesPaingationProvider,
+      chasesPaginationProvider: chasesPaginationProvider,
       logger: logger,
       scrollController: scrollController,
     );

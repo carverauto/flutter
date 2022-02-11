@@ -54,7 +54,7 @@ class Routes {
 
         return MaterialPageRoute<void>(
           builder: (_) => RecentChasesListViewAll(
-            chasesPaingationProvider: chasesPaginationProvider,
+            chasesPaginationProvider: chasesPaginationProvider,
           ),
         );
       case RouteName.PROFILE:

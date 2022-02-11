@@ -14,21 +14,10 @@ class ChaseAppBar extends StatelessWidget {
       floating: true,
       pinned: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      title: ShaderMask(
-        shaderCallback: (rect) {
-          return LinearGradient(colors: [
-            Colors.red,
-            Colors.blue,
-          ], stops: [
-            0.1,
-            0.6,
-          ]).createShader(rect);
-        },
-        child: Image.asset(
-          chaseAppNameImage,
-          height: kImageSizeLarge,
-          color: Colors.white,
-        ),
+      title: Image.asset(
+        chaseAppNameImage,
+        height: kImageSizeLarge,
+        color: Colors.white,
       ),
       actions: [
         IconButton(

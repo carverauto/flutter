@@ -1,16 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chases_paginatedlist_view.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -18,14 +14,14 @@ import 'package:logging/logging.dart';
 class RecentChasesListViewAll extends ConsumerWidget {
   RecentChasesListViewAll({
     Key? key,
-    required this.chasesPaingationProvider,
+    required this.chasesPaginationProvider,
   }) : super(key: key);
 
   final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('RecentChasesListView');
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>> chasesPaingationProvider;
+      PaginationNotifierState<Chase>> chasesPaginationProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +31,30 @@ class RecentChasesListViewAll extends ConsumerWidget {
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
         onRefresh: () async {
-          ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
+          await ref
+              .read(chasesPaginationProvider.notifier)
+              .fetchFirstPage(true);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GlassButton(
+                    padding: EdgeInsets.all(
+                      kPaddingSmallConstant,
+                    ),
+                    child: Text("Refreshed"),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.all(30),
+            ),
+          );
         },
         child: Stack(
           children: [
@@ -44,28 +63,9 @@ class RecentChasesListViewAll extends ConsumerWidget {
               restorationId: "Recent Chases",
               slivers: [
                 SliverAppBar(
-                  centerTitle: true,
                   elevation: kElevation,
                   pinned: true,
-                  title: Image.asset(
-                    chaseAppNameImage,
-                    height: kImageSizeLarge,
-                  ),
-                  actions: [
-                    ChaseAppDropDownButton(
-                      child: CircleAvatar(
-                        radius: kImageSizeSmall,
-                        backgroundImage: CachedNetworkImageProvider(
-                          ref.watch(userStreamProvider.select(
-                                  (value) => value.asData?.value.photoURL)) ??
-                              defaultPhotoURL,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: kItemsSpacingSmallConstant,
-                    ),
-                  ],
+                  title: Text("All Chases"),
                 ),
 
                 // Error if removed (Need to report)
@@ -78,7 +78,7 @@ class RecentChasesListViewAll extends ConsumerWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
                   sliver: ChasesPaginatedListView(
-                    chasesPaingationProvider: chasesPaingationProvider,
+                    chasesPaginationProvider: chasesPaginationProvider,
                     logger: logger,
                     scrollController: scrollController,
                     axis: Axis.vertical,
@@ -86,7 +86,7 @@ class RecentChasesListViewAll extends ConsumerWidget {
                 ),
                 SliverToBoxAdapter(
                   child: PaginatedListBottom(
-                      chasesPaingationProvider: chasesPaingationProvider),
+                      chasesPaginationProvider: chasesPaginationProvider),
                 ),
               ],
             ),
