@@ -5,6 +5,7 @@ import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.d
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chase_builder.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,12 +16,16 @@ class ChasesPaginatedListView extends ConsumerWidget {
     Key? key,
     required this.chasesPaingationProvider,
     required this.logger,
+    required this.scrollController,
+    this.axis = Axis.horizontal,
   }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaingationProvider;
   final Logger logger;
-  final ScrollController scrollController = ScrollController();
+  final ScrollController scrollController;
+
+  final Axis axis;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,40 +61,55 @@ class ChasesPaginatedListView extends ConsumerWidget {
                     ],
                   ),
                 )
-              : SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 300,
-                    child: GridView.count(
-                      controller: scrollController,
-                      crossAxisCount: 1,
-                      childAspectRatio: 1.2,
-                      mainAxisSpacing: kItemsSpacingSmallConstant,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: kItemsSpacingMediumConstant),
-                      scrollDirection: Axis.horizontal,
-                      crossAxisSpacing: kItemsSpacingSmallConstant,
-                      children: chases.map((chase) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: kPaddingMediumConstant,
-                          ),
-                          child: TopChaseBuilder(
-                            chase: chase,
-                          ),
-                        );
-                      }).toList()
-                        ..add(
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: PaginatedListBottom(
-                              chasesPaingationProvider:
-                                  chasesPaingationProvider,
+              : axis == Axis.horizontal
+                  ? SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 300,
+                        child: GridView.count(
+                          controller: scrollController,
+                          crossAxisCount: axis == Axis.horizontal ? 1 : 2,
+                          childAspectRatio: 1.2,
+                          mainAxisSpacing: kItemsSpacingSmallConstant,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: kItemsSpacingMediumConstant),
+                          scrollDirection: axis,
+                          crossAxisSpacing: kItemsSpacingSmallConstant,
+                          children: chases.map((chase) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: kPaddingMediumConstant,
+                              ),
+                              child: TopChaseBuilder(
+                                chase: chase,
+                              ),
+                            );
+                          }).toList()
+                            ..add(
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: PaginatedListBottom(
+                                  chasesPaingationProvider:
+                                      chasesPaingationProvider,
+                                ),
+                              ),
                             ),
-                          ),
                         ),
-                    ),
-                  ),
-                );
+                      ),
+                    )
+                  : SliverGrid.count(
+                      crossAxisCount: Sizescaleconfig.getDeviceType.count,
+                      childAspectRatio: 1.5,
+                      children: chases
+                          .map<Widget>((chase) => Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: kPaddingMediumConstant,
+                                ),
+                                child: TopChaseBuilder(
+                                  chase: chase,
+                                ),
+                              ))
+                          .toList(),
+                    );
 
           // SliverList(
           //   delegate: SliverChildBuilderDelegate(
