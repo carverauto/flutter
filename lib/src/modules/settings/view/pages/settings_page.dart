@@ -31,7 +31,6 @@ class SettingsPage extends State<Settings> {
 
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-  // ShowChase({Key key, @required this.record}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
