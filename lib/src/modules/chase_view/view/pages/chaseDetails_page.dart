@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
@@ -54,10 +52,15 @@ class ChaseDetailsView extends ConsumerWidget {
                 child: AppBar(
                   centerTitle: true,
                   elevation: 1.0,
-                  title: Image.asset(
-                    chaseAppNameImage,
-                    height: kImageSizeLarge,
-                  ),
+                  title: Text(chase.name ?? "NA"),
+                  actions: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.more_vert_rounded,
+                      ),
+                    )
+                  ],
                 ),
               ),
               Expanded(

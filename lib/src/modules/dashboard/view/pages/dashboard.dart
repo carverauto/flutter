@@ -46,7 +46,12 @@ class Dashboard extends ConsumerWidget {
                     padding: EdgeInsets.all(
                       kPaddingSmallConstant,
                     ),
-                    child: Text("Refreshed"),
+                    child: Text(
+                      "Refreshed",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
                   ),
                 ],
               ),
