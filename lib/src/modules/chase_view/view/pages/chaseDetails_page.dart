@@ -1,18 +1,15 @@
 import 'dart:core';
-import 'dart:developer';
 
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
-import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:share_plus/share_plus.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
 
@@ -61,26 +58,6 @@ class ChaseDetailsView extends ConsumerWidget {
                     chaseAppNameImage,
                     height: kImageSizeLarge,
                   ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.share),
-                      onPressed: () async {
-                        final chase =
-                            await ref.read(streamChaseProvider(chaseId).future);
-
-                        try {
-                          final shareLink =
-                              await createRecordDynamicLink(chase);
-                          Share.share(shareLink);
-                        } catch (e) {
-                          log("Wha'ts wrong?", error: e);
-                        }
-
-                        // //TODO:Need to share a dynamic link or web link for the chase
-                        // Share.share(shareLink);
-                      },
-                    ),
-                  ],
                 ),
               ),
               Expanded(

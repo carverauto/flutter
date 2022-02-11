@@ -8,6 +8,7 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dia
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/show_chats_dialog.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
+import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
@@ -15,6 +16,7 @@ import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ChaseDetails extends StatelessWidget {
   const ChaseDetails({
@@ -136,7 +138,19 @@ class ChaseDetails extends StatelessWidget {
                             child: ButtonBar(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    try {
+                                      final shareLink =
+                                          await createChaseDynamicLink(chase);
+                                      Share.share(shareLink);
+                                    } catch (e, stk) {
+                                      logger.warning(
+                                        "Chase Sharing Failed!",
+                                        e,
+                                        stk,
+                                      );
+                                    }
+                                  },
                                   icon: Icon(
                                     Icons.share,
                                   ),
