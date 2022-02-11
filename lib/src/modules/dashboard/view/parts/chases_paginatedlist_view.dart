@@ -14,14 +14,14 @@ import 'package:logging/logging.dart';
 class ChasesPaginatedListView extends ConsumerWidget {
   ChasesPaginatedListView({
     Key? key,
-    required this.chasesPaingationProvider,
+    required this.chasesPaginationProvider,
     required this.logger,
     required this.scrollController,
     this.axis = Axis.horizontal,
   }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>> chasesPaingationProvider;
+      PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController;
 
@@ -34,11 +34,11 @@ class ChasesPaginatedListView extends ConsumerWidget {
       double currentScroll = scrollController.position.pixels;
       double delta = MediaQuery.of(context).size.width * 0.20;
       if (maxScroll - currentScroll <= delta) {
-        ref.read(chasesPaingationProvider.notifier).fetchNextPage();
+        ref.read(chasesPaginationProvider.notifier).fetchNextPage();
       }
     });
     return ProviderStateNotifierBuilder<List<Chase>>(
-        watchThisStateNotifierProvider: chasesPaingationProvider,
+        watchThisStateNotifierProvider: chasesPaginationProvider,
         logger: logger,
         scrollController: scrollController,
         builder: (chases, controller, [Widget? bottomWidget]) {
@@ -79,8 +79,18 @@ class ChasesPaginatedListView extends ConsumerWidget {
                               padding: const EdgeInsets.only(
                                 bottom: kPaddingMediumConstant,
                               ),
-                              child: TopChaseBuilder(
-                                chase: chase,
+                              child: TweenAnimationBuilder<double>(
+                                duration: Duration(milliseconds: 300),
+                                tween: Tween<double>(begin: 0.8, end: 1),
+                                builder: (context, value, child) {
+                                  return ScaleTransition(
+                                    scale: AlwaysStoppedAnimation(value),
+                                    child: child,
+                                  );
+                                },
+                                child: TopChaseBuilder(
+                                  chase: chase,
+                                ),
                               ),
                             );
                           }).toList()
@@ -88,8 +98,8 @@ class ChasesPaginatedListView extends ConsumerWidget {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: PaginatedListBottom(
-                                  chasesPaingationProvider:
-                                      chasesPaingationProvider,
+                                  chasesPaginationProvider:
+                                      chasesPaginationProvider,
                                 ),
                               ),
                             ),
@@ -104,8 +114,18 @@ class ChasesPaginatedListView extends ConsumerWidget {
                                 padding: const EdgeInsets.only(
                                   bottom: kPaddingMediumConstant,
                                 ),
-                                child: TopChaseBuilder(
-                                  chase: chase,
+                                child: TweenAnimationBuilder<double>(
+                                  duration: Duration(milliseconds: 300),
+                                  tween: Tween<double>(begin: 0.8, end: 1),
+                                  builder: (context, value, child) {
+                                    return ScaleTransition(
+                                      scale: AlwaysStoppedAnimation(value),
+                                      child: child,
+                                    );
+                                  },
+                                  child: TopChaseBuilder(
+                                    chase: chase,
+                                  ),
                                 ),
                               ))
                           .toList(),
