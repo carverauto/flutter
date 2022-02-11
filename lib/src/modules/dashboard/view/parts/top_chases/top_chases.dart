@@ -46,30 +46,48 @@ class TopChasesListView extends ConsumerWidget {
                       options: CarouselOptions(
                         height: Sizescaleconfig.screenheight! * 0.4,
                         enableInfiniteScroll: false,
-                        viewportFraction: 0.9,
+                        viewportFraction: 1,
                       ),
                       items: chases
                           .asMap()
                           .map<int, Widget>(
                             (index, chase) => MapEntry(
-                                index,
-                                Stack(
-                                  children: [
-                                    TopChaseBuilder(chase: chase),
-                                    Positioned(
-                                      right: kPaddingMediumConstant,
-                                      top: kPaddingMediumConstant,
-                                      child: Text(
-                                        "${index + 1} / ${chases.length}",
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground,
-                                        ),
-                                      ),
+                              index,
+                              TweenAnimationBuilder<double>(
+                                  key: UniqueKey(),
+                                  duration: Duration(milliseconds: 300),
+                                  tween: Tween<double>(begin: 0.8, end: 1),
+                                  builder: (context, value, child) {
+                                    return ScaleTransition(
+                                      scale: AlwaysStoppedAnimation(value),
+                                      child: child,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: kPaddingMediumConstant,
                                     ),
-                                  ],
-                                )),
+                                    child: Stack(
+                                      children: [
+                                        TopChaseBuilder(
+                                          chase: chase,
+                                        ),
+                                        Positioned(
+                                          right: kPaddingMediumConstant,
+                                          top: kPaddingMediumConstant,
+                                          child: Text(
+                                            "${index + 1} / ${chases.length}",
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
                           )
                           .values
                           .toList()),
