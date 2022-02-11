@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
@@ -34,7 +35,7 @@ class TopChaseBuilder extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: isImagePresent
-                ? NetworkImage(
+                ? CachedNetworkImageProvider(
                     chase.imageURL!,
                   )
                 : AssetImage(defaultChaseImage) as ImageProvider,
