@@ -72,16 +72,7 @@ class TopChasesListView extends ConsumerWidget {
                                 )),
                           )
                           .values
-                          .toList()
-                      // chases.map<Widget>((chase) {
-                      //   return Stack(
-                      //     children: [
-                      //       TopChaseBuilder(chase: chase),
-
-                      //     ],
-                      //   );
-                      // }).toList(),
-                      ),
+                          .toList()),
                 );
         });
   }
