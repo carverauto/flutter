@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/info.dart';
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/modules/onboarding/view/parts/onboarding_page.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
@@ -23,79 +24,100 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
+        fit: StackFit.expand,
         children: [
-          SizedBox(
-            height: kItemsSpacingLarge,
+          Container(
+            foregroundDecoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(
+                defaultChaseImage,
+              ),
+            )),
           ),
-          Image.asset(
-            chaseAppNameImage,
-            height: kImageSizeLarge,
-          ),
-          Expanded(
-            child: PageView(
-              controller: pageController,
-              padEnds: true,
-              onPageChanged: (index) {
-                setState(() {
-                  pageIndex = index;
-                  if (index == 1) activateContinueButton = true;
-                });
-              },
-              children: [
-                OnboardingPage(
-                  title: Text(
-                    "Welcome To ChaseApp!",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                  message: chaseAppMessage,
-                  onTap: () {
-                    pageController.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.linear,
-                    );
+          Column(
+            children: [
+              SizedBox(
+                height: kItemsSpacingLarge,
+              ),
+              Image.asset(
+                chaseAppNameImage,
+                height: kImageSizeLarge,
+                color: Colors.white,
+              ),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  padEnds: true,
+                  onPageChanged: (index) {
+                    setState(() {
+                      pageIndex = index;
+                      if (index == 1) activateContinueButton = true;
+                    });
                   },
-                  pageIndex: pageIndex,
-                ),
-                OnboardingPage(
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Powered by",
+                  children: [
+                    OnboardingPage(
+                      title: Text(
+                        "Welcome To ChaseApp!",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
-                      SizedBox(
-                        width: kItemsSpacingSmallConstant,
+                      message: chaseAppMessage,
+                      onTap: () {
+                        pageController.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.linear,
+                        );
+                      },
+                      pageIndex: pageIndex,
+                    ),
+                    OnboardingPage(
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Powered by",
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.headline4!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          ),
+                          SizedBox(
+                            width: kItemsSpacingSmallConstant,
+                          ),
+                          SvgPicture.asset(
+                            "assets/icon/nodle.svg",
+                            height: kIconSizeLargeConstant,
+                          ),
+                        ],
                       ),
-                      SvgPicture.asset(
-                        "assets/icon/nodle.svg",
-                        height: kIconSizeMediumConstant,
-                      ),
-                    ],
-                  ),
-                  message: nodleUsageMessage,
-                  onTap: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
-                    );
-                  },
-                  pageIndex: pageIndex,
+                      message: nodleUsageMessage,
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
+                        );
+                      },
+                      pageIndex: pageIndex,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: kItemsSpacingMedium,
+              ),
+              SizedBox(
+                height: kItemsSpacingMedium,
+              ),
+            ],
           ),
         ],
       ),
