@@ -19,7 +19,7 @@ class Dashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chasesPaingationProvider = chasesPaginatedStreamProvider(logger);
+    final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
     // scrollController.addListener(() {
     //   double maxScroll = scrollController.position.maxScrollExtent;
     //   double currentScroll = scrollController.position.pixels;
@@ -37,7 +37,7 @@ class Dashboard extends ConsumerWidget {
         edgeOffset: kItemsSpacingLargeConstant,
         onRefresh: () async {
           await ref
-              .read(chasesPaingationProvider.notifier)
+              .read(chasesPaginationProvider.notifier)
               .fetchFirstPage(true);
           await ref.refresh(topChasesStreamProvider);
 
@@ -168,7 +168,7 @@ class Dashboard extends ConsumerWidget {
                 ),
 
                 RecentChasesList(
-                  chasesPaingationProvider: chasesPaingationProvider,
+                  chasesPaingationProvider: chasesPaginationProvider,
                   logger: logger,
                 ),
                 // SliverToBoxAdapter(

@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chase_builder.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
@@ -42,15 +43,45 @@ class TopChasesListView extends ConsumerWidget {
               : SizedBox(
                   width: Sizescaleconfig.screenwidth,
                   child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: Sizescaleconfig.screenheight! * 0.4,
-                      enableInfiniteScroll: false,
-                      viewportFraction: 0.9,
-                    ),
-                    items: chases.map<Widget>((chase) {
-                      return TopChaseBuilder(chase: chase);
-                    }).toList(),
-                  ),
+                      options: CarouselOptions(
+                        height: Sizescaleconfig.screenheight! * 0.4,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 0.9,
+                      ),
+                      items: chases
+                          .asMap()
+                          .map<int, Widget>(
+                            (index, chase) => MapEntry(
+                                index,
+                                Stack(
+                                  children: [
+                                    TopChaseBuilder(chase: chase),
+                                    Positioned(
+                                      right: kPaddingMediumConstant,
+                                      top: kPaddingMediumConstant,
+                                      child: Text(
+                                        "${index + 1} / ${chases.length}",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          )
+                          .values
+                          .toList()
+                      // chases.map<Widget>((chase) {
+                      //   return Stack(
+                      //     children: [
+                      //       TopChaseBuilder(chase: chase),
+
+                      //     ],
+                      //   );
+                      // }).toList(),
+                      ),
                 );
         });
   }
