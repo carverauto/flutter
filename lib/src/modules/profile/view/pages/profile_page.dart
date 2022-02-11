@@ -23,55 +23,60 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       appBar: AppBar(
         title: Text("Profile"),
         centerTitle: false,
+        elevation: 1,
       ),
       body: ProviderStateBuilder<UserData>(
         watchThisProvider: userStreamProvider,
         logger: logger,
         builder: (user) {
           return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kPaddingMediumConstant,
-                vertical: kPaddingMediumConstant,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: kImageSizeLarge,
-                      backgroundImage: CachedNetworkImageProvider(
-                        user.photoURL ?? defaultPhotoURL,
-                      ),
+            padding: const EdgeInsets.only(
+              top: kPaddingMediumConstant,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                    radius: kImageSizeLarge,
+                    backgroundImage: CachedNetworkImageProvider(
+                      user.photoURL ?? defaultPhotoURL,
                     ),
                   ),
-                  SizedBox(
-                    height: kItemsSpacingSmallConstant,
-                  ),
-                  if (user.userName != null)
-                    Text(
-                      user.userName!,
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    ),
+                ),
+                SizedBox(
+                  height: kItemsSpacingSmallConstant,
+                ),
+                if (user.userName != null)
                   Text(
-                    user.email,
+                    user.userName!,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
-                  Spacer(),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: Text(
-                      "Log out",
+                Text(
+                  user.email,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
+                Spacer(),
+                Divider(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Text(
+                    "Log out",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
-                  )
-                ],
-              ));
+                  ),
+                )
+              ],
+            ),
+          );
         },
       ),
     );
