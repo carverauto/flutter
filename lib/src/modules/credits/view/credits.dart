@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chaseapp/src/const/colors.dart';
@@ -221,9 +220,9 @@ class CrawlContributions extends StatelessWidget {
           }
         });
       },
-      child: ListView(
-        clipBehavior: Clip.none,
-        physics: NeverScrollableScrollPhysics(),
+      child: Column(
+        // clipBehavior: Clip.none,
+        // physics: NeverScrollableScrollPhysics(),
         children: [
           Text(
             "ChaseApp Development Credits",
@@ -231,7 +230,7 @@ class CrawlContributions extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               height: 1.3,
-              fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+              fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
                   ? Theme.of(context).textTheme.subtitle1!.fontSize
                   : Theme.of(context).textTheme.headline5!.fontSize,
               color: starWarsCrawlTextColor,
@@ -301,7 +300,12 @@ class CrawlContributions extends StatelessWidget {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             crossAxisCount:
-                Sizescaleconfig.getDeviceType == DeviceType.MOBILE ? 2 : 3,
+                Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
+                    ? 2
+                    : Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+                        ? 2
+                        : 3,
+            mainAxisSpacing: kItemsSpacingSmallConstant,
             children: [
               CustomAvatar(
                 name: "Acidjazz",
@@ -337,7 +341,6 @@ class CrawlContributions extends StatelessWidget {
             overflow: TextOverflow.visible,
             textAlign: TextAlign.center,
             style: TextStyle(
-              height: 1.3,
               fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
                   ? Theme.of(context).textTheme.subtitle1!.fontSize
                   : Theme.of(context).textTheme.headline5!.fontSize,
@@ -367,7 +370,7 @@ class CustomAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(
-      fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+      fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
           ? Theme.of(context).textTheme.overline!.fontSize
           : Theme.of(context).textTheme.button!.fontSize,
     );
