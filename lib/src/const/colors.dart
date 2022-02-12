@@ -20,3 +20,5 @@ const starWarsCrawlTextColor = Color(0xffc7890a);
 
 const double blurValue = 10;
 final Color primaryButtonsColor = primaryColor.shade600;
+
+const Color sentimentColor = Color(0xff0b9f6e);

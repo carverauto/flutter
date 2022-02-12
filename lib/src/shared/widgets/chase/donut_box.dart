@@ -4,6 +4,7 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class DonutBox extends StatelessWidget {
   const DonutBox({
@@ -27,7 +28,7 @@ class DonutBox extends StatelessWidget {
           width: kItemsSpacingSmallConstant,
         ),
         Text(
-          chase.votes.toString(),
+          NumberFormat('#,###').format(chase.votes ?? 0),
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           ),
