@@ -115,99 +115,102 @@ class _LogInViewState extends ConsumerState<LogInView>
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(kPaddingMediumConstant),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ButtonScaleAnimationWidget(
-                    child: GradientAnimationChildBuilder(
-                      shouldAnimate: signinmethod == SIGNINMETHOD.GOOGLE,
-                      child: ElevatedButton.icon(
-                        icon: SvgPicture.asset(
-                          SIGNINMETHOD.GOOGLE.getAssetIcon,
-                          height: kIconSizeLargeConstant,
-                        ),
-                        style: callToActionButtonStyle,
-                        onPressed: () {
-                          signInWith(SIGNINMETHOD.GOOGLE);
-                        },
-                        label: Text(
-                          "Continue With Google",
-                          style: getButtonStyle(context),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.all(kPaddingMediumConstant),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ButtonScaleAnimationWidget(
+                      child: GradientAnimationChildBuilder(
+                        shouldAnimate: signinmethod == SIGNINMETHOD.GOOGLE,
+                        child: ElevatedButton.icon(
+                          icon: SvgPicture.asset(
+                            SIGNINMETHOD.GOOGLE.getAssetIcon,
+                            height: kIconSizeLargeConstant,
+                          ),
+                          style: callToActionButtonStyle,
+                          onPressed: () {
+                            signInWith(SIGNINMETHOD.GOOGLE);
+                          },
+                          label: Text(
+                            "Continue With Google",
+                            style: getButtonStyle(context),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: kItemsSpacingSmall,
-                  ),
-                  if (Platform.isIOS)
+                    SizedBox(
+                      height: kItemsSpacingSmall,
+                    ),
+                    if (Platform.isIOS)
+                      ButtonScaleAnimationWidget(
+                          child: GradientAnimationChildBuilder(
+                        shouldAnimate: signinmethod == SIGNINMETHOD.APPLE,
+                        child: ElevatedButton.icon(
+                          icon: SvgPicture.asset(
+                            SIGNINMETHOD.APPLE.getAssetIcon,
+                            height: kIconSizeLargeConstant,
+                          ),
+                          style: callToActionButtonStyle,
+                          onPressed: () {
+                            signInWith(SIGNINMETHOD.APPLE);
+                          },
+                          label: Text(
+                            "Continue With Apple",
+                            style: getButtonStyle(context),
+                          ),
+                        ),
+                      )),
+                    if (Platform.isIOS)
+                      SizedBox(
+                        height: kItemsSpacingSmall,
+                      ),
                     ButtonScaleAnimationWidget(
                         child: GradientAnimationChildBuilder(
-                      shouldAnimate: signinmethod == SIGNINMETHOD.APPLE,
+                      shouldAnimate: signinmethod == SIGNINMETHOD.FACEBOOK,
                       child: ElevatedButton.icon(
                         icon: SvgPicture.asset(
-                          SIGNINMETHOD.APPLE.getAssetIcon,
+                          SIGNINMETHOD.FACEBOOK.getAssetIcon,
                           height: kIconSizeLargeConstant,
                         ),
                         style: callToActionButtonStyle,
                         onPressed: () {
-                          signInWith(SIGNINMETHOD.APPLE);
+                          signInWith(SIGNINMETHOD.FACEBOOK);
                         },
                         label: Text(
-                          "Continue With Apple",
+                          "Continue With Facebook",
                           style: getButtonStyle(context),
                         ),
                       ),
                     )),
-                  if (Platform.isIOS)
                     SizedBox(
                       height: kItemsSpacingSmall,
                     ),
-                  ButtonScaleAnimationWidget(
-                      child: GradientAnimationChildBuilder(
-                    shouldAnimate: signinmethod == SIGNINMETHOD.FACEBOOK,
-                    child: ElevatedButton.icon(
-                      icon: SvgPicture.asset(
-                        SIGNINMETHOD.FACEBOOK.getAssetIcon,
-                        height: kIconSizeLargeConstant,
+                    ButtonScaleAnimationWidget(
+                        child: GradientAnimationChildBuilder(
+                      shouldAnimate: signinmethod == SIGNINMETHOD.TWITTER,
+                      child: ElevatedButton.icon(
+                        icon: SvgPicture.asset(
+                          SIGNINMETHOD.TWITTER.getAssetIcon,
+                          height: kIconSizeLargeConstant,
+                        ),
+                        style: callToActionButtonStyle,
+                        onPressed: () {
+                          signInWith(SIGNINMETHOD.TWITTER);
+                        },
+                        label: Text(
+                          "Continue With Twitter",
+                          style: getButtonStyle(context),
+                        ),
                       ),
-                      style: callToActionButtonStyle,
-                      onPressed: () {
-                        signInWith(SIGNINMETHOD.FACEBOOK);
-                      },
-                      label: Text(
-                        "Continue With Facebook",
-                        style: getButtonStyle(context),
-                      ),
-                    ),
-                  )),
-                  SizedBox(
-                    height: kItemsSpacingSmall,
-                  ),
-                  ButtonScaleAnimationWidget(
-                      child: GradientAnimationChildBuilder(
-                    shouldAnimate: signinmethod == SIGNINMETHOD.TWITTER,
-                    child: ElevatedButton.icon(
-                      icon: SvgPicture.asset(
-                        SIGNINMETHOD.TWITTER.getAssetIcon,
-                        height: kIconSizeLargeConstant,
-                      ),
-                      style: callToActionButtonStyle,
-                      onPressed: () {
-                        signInWith(SIGNINMETHOD.TWITTER);
-                      },
-                      label: Text(
-                        "Continue With Twitter",
-                        style: getButtonStyle(context),
-                      ),
-                    ),
-                  )),
-                ],
+                    )),
+                  ],
+                ),
               ),
             ),
             Spacer(),

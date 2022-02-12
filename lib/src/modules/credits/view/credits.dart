@@ -37,7 +37,9 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
-    final topOffset = height;
+    final topOffset = Sizescaleconfig.getDeviceType == DeviceType.TABLET
+        ? height * 0.8
+        : height;
     final bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/const/textstyles.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -63,6 +64,10 @@ class OnboardingPage extends StatelessWidget {
                         message,
                         style: TextStyle(
                           color: Colors.white,
+                          fontSize: Sizescaleconfig.getDeviceType ==
+                                  DeviceType.TABLET
+                              ? Theme.of(context).textTheme.headline6!.fontSize
+                              : Theme.of(context).textTheme.subtitle1!.fontSize,
                         ),
                         textAlign: TextAlign.center,
                       )
