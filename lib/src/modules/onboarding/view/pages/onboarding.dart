@@ -114,9 +114,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: kItemsSpacingMedium,
-              ),
             ],
           ),
         ],
