@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chase_map.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
@@ -61,92 +62,84 @@ class Dashboard extends ConsumerWidget {
         },
         child: Stack(
           children: [
-            CustomScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              restorationId: "Chases List",
-              slivers: [
-                // AppBar
-                ChaseAppBar(),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      primaryColor.shade800,
+                      Colors.black.withOpacity(0.37),
+                    ],
+                    stops: [
+                      0.0,
+                      0.8,
+                    ]),
+              ),
+              child: CustomScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                restorationId: "Chases List",
+                slivers: [
+                  // AppBar
+                  ChaseAppBar(),
 
-                // Error if removed (Need to report)
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kPaddingMediumConstant,
-                  ),
-                ),
-                // Chases Map
-                ChasesMap(),
-                // For Clusters
-                //  SliverToBoxAdapter(
-                //   child: SizedBox(
-                //     height: kPaddingMediumConstant,
-                //   ),
-                // ),
-
-                //Top Chases
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kItemsSpacingMediumConstant,
-                  ),
-                ),
-
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      "Top Chases",
-                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
+                  // Error if removed (Need to report)
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kPaddingMediumConstant,
                     ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kItemsSpacingSmallConstant,
-                  ),
-                ),
+                  // Chases Map
+                  ChasesMap(),
+                  // For Clusters
+                  //  SliverToBoxAdapter(
+                  //   child: SizedBox(
+                  //     height: kPaddingMediumConstant,
+                  //   ),
+                  // ),
 
-                TopChasesListView(
-                  logger: logger,
-                ),
-
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kItemsSpacingMediumConstant,
+                  //Top Chases
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingMediumConstant,
+                    ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant),
-                  sliver: SliverToBoxAdapter(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Recent",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                        ),
-                        Spacer(),
-                        TextButton.icon(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              RouteName.RECENT_CHASESS_VIEW_ALL,
-                              arguments: {
-                                "chasesPaginationProvider":
-                                    chasesPaginationProvider,
-                              },
-                            );
-                          },
-                          icon: Text(
-                            "See More",
+
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        "Top Chases",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+
+                  TopChasesListView(
+                    logger: logger,
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingMediumConstant,
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Recent",
                             style:
                                 Theme.of(context).textTheme.subtitle1!.copyWith(
                                       color: Theme.of(context)
@@ -154,31 +147,55 @@ class Dashboard extends ConsumerWidget {
                                           .onBackground,
                                     ),
                           ),
-                          label: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                        )
-                      ],
+                          Spacer(),
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.RECENT_CHASESS_VIEW_ALL,
+                                arguments: {
+                                  "chasesPaginationProvider":
+                                      chasesPaginationProvider,
+                                },
+                              );
+                            },
+                            icon: Text(
+                              "See More",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kItemsSpacingSmallConstant,
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
                   ),
-                ),
 
-                RecentChasesList(
-                  chasesPaginationProvider: chasesPaginationProvider,
-                  logger: logger,
-                ),
-                // SliverToBoxAdapter(
-                //   child: PaginatedListBottom(
-                //       chasesPaingationProvider: chasesPaingationProvider),
-                // ),
-              ],
+                  RecentChasesList(
+                    chasesPaginationProvider: chasesPaginationProvider,
+                    logger: logger,
+                  ),
+                  // SliverToBoxAdapter(
+                  //   child: PaginatedListBottom(
+                  //       chasesPaingationProvider: chasesPaingationProvider),
+                  // ),
+                ],
+              ),
             ),
             Positioned(
               top: MediaQuery.of(context).viewPadding.top +
