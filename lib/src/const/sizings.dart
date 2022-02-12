@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 
@@ -71,6 +72,7 @@ double kFontSizeMedium =
 double kFontSizeLarge = Sizescaleconfig.scaletextfactor(kFontSizeLargeConstant);
 
 final callToActionButtonStyle = ElevatedButton.styleFrom(
+  primary: primaryColor.shade600,
   maximumSize: Size(
     Sizescaleconfig.screenwidth! * 0.8,
     50,

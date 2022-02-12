@@ -24,17 +24,18 @@ class RequestPermissionsView extends StatelessWidget {
             Image.asset(
               chaseAppNameImage,
               height: kImageSizeLarge,
+              color: Colors.white,
             ),
             SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
             Container(
               padding: EdgeInsets.all(
-                kListPaddingConstant,
+                kPaddingSmallConstant,
               ),
               decoration: BoxDecoration(
-                color: primaryColor.shade500,
-                borderRadius: BorderRadius.circular(8),
+                color: primaryColor.shade700,
+                borderRadius: BorderRadius.circular(kBorderRadiusStandard),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,15 +60,15 @@ class RequestPermissionsView extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: kItemsSpacingLarge,
+              height: kItemsSpacingMediumConstant,
             ),
             PermissionsList(),
             SizedBox(
-              height: kItemsSpacingMedium,
+              height: kItemsSpacingLargeConstant,
             ),
             GrantAllPermissionsButton(),
             SizedBox(
-              height: kItemsSpacingMedium,
+              height: kItemsSpacingMediumConstant,
             ),
           ],
         ),
