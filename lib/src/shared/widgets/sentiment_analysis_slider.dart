@@ -8,28 +8,34 @@ class SentimentSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           "😬",
           style: Theme.of(context).textTheme.headline6,
         ),
-        Expanded(
-          child: Container(
-            height: 12,
-            margin: EdgeInsets.symmetric(
-              horizontal: kItemsSpacingSmallConstant,
+        Flexible(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 200,
+              minWidth: 144,
             ),
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.red,
-              gradient: LinearGradient(colors: [
-                sentimentColor,
-                primaryColor.shade600.withOpacity(0.7),
-              ], stops: [
-                0.6,
-                0.6,
-              ]),
+            child: Container(
+              height: 13,
+              margin: EdgeInsets.symmetric(
+                horizontal: kItemsSpacingSmallConstant,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.red,
+                gradient: LinearGradient(colors: [
+                  sentimentColor,
+                  primaryColor.shade600.withOpacity(0.7),
+                ], stops: [
+                  0.6,
+                  0.6,
+                ]),
+              ),
             ),
           ),
         ),

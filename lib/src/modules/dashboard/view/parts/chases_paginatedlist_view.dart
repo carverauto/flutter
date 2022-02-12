@@ -108,7 +108,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
                     )
                   : SliverGrid.count(
                       crossAxisCount: Sizescaleconfig.getDeviceType.count,
-                      childAspectRatio: 1.5,
+                      childAspectRatio: 0.8,
                       children: chases
                           .map<Widget>((chase) => Padding(
                                 padding: const EdgeInsets.only(
