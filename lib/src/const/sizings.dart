@@ -72,7 +72,7 @@ double kFontSizeMedium =
 double kFontSizeLarge = Sizescaleconfig.scaletextfactor(kFontSizeLargeConstant);
 
 final callToActionButtonStyle = ElevatedButton.styleFrom(
-  primary: primaryColor.shade600,
+  primary: primaryButtonsColor,
   maximumSize: Size(
     Sizescaleconfig.screenwidth! * 0.8,
     50,
