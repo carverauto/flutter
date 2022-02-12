@@ -6,6 +6,7 @@ ThemeData getThemeData(BuildContext context) => ThemeData.dark().copyWith(
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: primaryColor,
         cardColor: Color(0xffd2d1d0),
+        backgroundColor: primaryColor.shade800,
         accentColor: Color(0xFFFF8EC6),
       ),
       textTheme: GoogleFonts.poppinsTextTheme(

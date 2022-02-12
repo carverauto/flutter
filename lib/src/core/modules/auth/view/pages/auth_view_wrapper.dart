@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
+import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,7 +44,7 @@ class AuthViewWrapper extends ConsumerWidget {
             ref.read(checkForUpdateStateNotifier.notifier).checkForUpdate();
           });
 
-          return const LoginOrRegister();
+          return LogInView();
         }
         return ProviderStateBuilder<UserData>(
           watchThisProvider: fetchUserProvider(user),

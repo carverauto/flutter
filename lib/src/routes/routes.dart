@@ -1,5 +1,4 @@
 import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart';
-import 'package:chaseapp/src/core/modules/auth/view/pages/login_register.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/about/view/about.dart';
@@ -11,6 +10,7 @@ import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_c
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/onboarding.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
+import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 import 'package:chaseapp/src/modules/splash_screen/view/pages/splash_page.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
@@ -36,7 +36,7 @@ class Routes {
       case RouteName.AUTH_VIEW_WRAPPER:
         return MaterialPageRoute<void>(builder: (context) => AuthViewWrapper());
       case RouteName.USER_LOGIN:
-        return MaterialPageRoute<void>(builder: (_) => LoginOrRegister());
+        return MaterialPageRoute<void>(builder: (context) => LogInView());
       case RouteName.HOME_WRAPPER:
         return MaterialPageRoute<void>(builder: (_) => HomeWrapper());
       case RouteName.HOME_WRAPPER:
