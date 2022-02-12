@@ -11,9 +11,7 @@ class ChaseAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       centerTitle: true,
-      floating: true,
-      pinned: true,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Colors.transparent,
       title: Image.asset(
         chaseAppNameImage,
         height: kImageSizeLarge,
