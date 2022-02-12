@@ -68,8 +68,8 @@ class Dashboard extends ConsumerWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      primaryColor.shade800,
-                      Colors.black.withOpacity(0.37),
+                      primaryColor.shade700,
+                      primaryColor.shade900.withOpacity(0.4),
                     ],
                     stops: [
                       0.0,
