@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
@@ -25,9 +24,6 @@ class LogInView extends ConsumerStatefulWidget {
 
 class _LogInViewState extends ConsumerState<LogInView>
     with SingleTickerProviderStateMixin {
-  late final AnimationController animationController;
-  late final Animation<double> rotationAnimation;
-
   SIGNINMETHOD? signinmethod = null;
 
   void signInWith(SIGNINMETHOD method) {
@@ -41,32 +37,11 @@ class _LogInViewState extends ConsumerState<LogInView>
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    animationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    )..repeat();
-
-    rotationAnimation = Tween<double>(begin: 0, end: pi * 2).animate(
-      CurvedAnimation(
-        parent: animationController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    animationController.forward();
-
-    animationController.addListener(() {
-      if (animationController.isCompleted) {
-        animationController.repeat();
-      }
-    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    animationController.dispose();
     super.dispose();
   }
 
