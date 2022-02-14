@@ -103,17 +103,17 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     switch (loginmethods) {
-      case SIGNINMETHOD.GOOGLE:
+      case SIGNINMETHOD.Google:
         await googleLogin();
         break;
 
-      case SIGNINMETHOD.APPLE:
+      case SIGNINMETHOD.Apple:
         await appleLogin();
         break;
-      case SIGNINMETHOD.FACEBOOK:
+      case SIGNINMETHOD.Facebook:
         await facebookLogin();
         break;
-      case SIGNINMETHOD.TWITTER:
+      case SIGNINMETHOD.Twitter:
         await twitterLogin();
         break;
       default:

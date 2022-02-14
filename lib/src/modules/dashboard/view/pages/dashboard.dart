@@ -190,10 +190,6 @@ class Dashboard extends ConsumerWidget {
                     chasesPaginationProvider: chasesPaginationProvider,
                     logger: logger,
                   ),
-                  // SliverToBoxAdapter(
-                  //   child: PaginatedListBottom(
-                  //       chasesPaingationProvider: chasesPaingationProvider),
-                  // ),
                 ],
               ),
             ),

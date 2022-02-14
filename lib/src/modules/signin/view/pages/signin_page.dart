@@ -26,6 +26,13 @@ class _LogInViewState extends ConsumerState<LogInView>
     with SingleTickerProviderStateMixin {
   SIGNINMETHOD? signinmethod = null;
 
+  List<SIGNINMETHOD> get socialSigninMethods => [
+        SIGNINMETHOD.Google,
+        SIGNINMETHOD.Apple,
+        SIGNINMETHOD.Facebook,
+        SIGNINMETHOD.Twitter,
+      ];
+
   void signInWith(SIGNINMETHOD method) {
     setState(() {
       signinmethod = method;
@@ -35,13 +42,11 @@ class _LogInViewState extends ConsumerState<LogInView>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -100,90 +105,33 @@ class _LogInViewState extends ConsumerState<LogInView>
                     SizedBox(
                       height: 20,
                     ),
-                    ButtonScaleAnimationWidget(
-                      child: GradientAnimationChildBuilder(
-                        shouldAnimate: signinmethod == SIGNINMETHOD.GOOGLE,
-                        child: ElevatedButton.icon(
-                          icon: SvgPicture.asset(
-                            SIGNINMETHOD.GOOGLE.getAssetIcon,
-                            height: kIconSizeLargeConstant,
-                          ),
-                          style: callToActionButtonStyle,
-                          onPressed: () {
-                            signInWith(SIGNINMETHOD.GOOGLE);
-                          },
-                          label: Text(
-                            "Continue With Google",
-                            style: getButtonStyle(context),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: kItemsSpacingSmall,
-                    ),
-                    if (Platform.isIOS)
-                      ButtonScaleAnimationWidget(
+                    ...socialSigninMethods.map((method) {
+                      if (method == SIGNINMETHOD.Apple && Platform.isAndroid) {
+                        return SizedBox.shrink();
+                      }
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: kItemsSpacingSmall),
+                        child: ButtonScaleAnimationWidget(
                           child: GradientAnimationChildBuilder(
-                        shouldAnimate: signinmethod == SIGNINMETHOD.APPLE,
-                        child: ElevatedButton.icon(
-                          icon: SvgPicture.asset(
-                            SIGNINMETHOD.APPLE.getAssetIcon,
-                            height: kIconSizeLargeConstant,
+                            shouldAnimate: signinmethod == method,
+                            child: ElevatedButton.icon(
+                              icon: SvgPicture.asset(
+                                method.getAssetIcon,
+                                height: kIconSizeLargeConstant,
+                              ),
+                              style: callToActionButtonStyle,
+                              onPressed: () {
+                                signInWith(method);
+                              },
+                              label: Text(
+                                "Continue With ${method.name}",
+                                style: getButtonStyle(context),
+                              ),
+                            ),
                           ),
-                          style: callToActionButtonStyle,
-                          onPressed: () {
-                            signInWith(SIGNINMETHOD.APPLE);
-                          },
-                          label: Text(
-                            "Continue With Apple",
-                            style: getButtonStyle(context),
-                          ),
                         ),
-                      )),
-                    if (Platform.isIOS)
-                      SizedBox(
-                        height: kItemsSpacingSmall,
-                      ),
-                    ButtonScaleAnimationWidget(
-                        child: GradientAnimationChildBuilder(
-                      shouldAnimate: signinmethod == SIGNINMETHOD.FACEBOOK,
-                      child: ElevatedButton.icon(
-                        icon: SvgPicture.asset(
-                          SIGNINMETHOD.FACEBOOK.getAssetIcon,
-                          height: kIconSizeLargeConstant,
-                        ),
-                        style: callToActionButtonStyle,
-                        onPressed: () {
-                          signInWith(SIGNINMETHOD.FACEBOOK);
-                        },
-                        label: Text(
-                          "Continue With Facebook",
-                          style: getButtonStyle(context),
-                        ),
-                      ),
-                    )),
-                    SizedBox(
-                      height: kItemsSpacingSmall,
-                    ),
-                    ButtonScaleAnimationWidget(
-                        child: GradientAnimationChildBuilder(
-                      shouldAnimate: signinmethod == SIGNINMETHOD.TWITTER,
-                      child: ElevatedButton.icon(
-                        icon: SvgPicture.asset(
-                          SIGNINMETHOD.TWITTER.getAssetIcon,
-                          height: kIconSizeLargeConstant,
-                        ),
-                        style: callToActionButtonStyle,
-                        onPressed: () {
-                          signInWith(SIGNINMETHOD.TWITTER);
-                        },
-                        label: Text(
-                          "Continue With Twitter",
-                          style: getButtonStyle(context),
-                        ),
-                      ),
-                    )),
+                      );
+                    }),
                   ],
                 ),
               ),

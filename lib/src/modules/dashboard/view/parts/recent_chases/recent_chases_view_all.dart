@@ -66,7 +66,7 @@ class RecentChasesListViewAll extends ConsumerWidget {
           children: [
             CustomScrollView(
               controller: scrollController,
-              restorationId: "Recent Chases",
+              restorationId: "All Chases",
               slivers: [
                 SliverAppBar(
                   elevation: kElevation,

@@ -6,10 +6,10 @@ extension SocialLoginIcon on SIGNINMETHOD {
       case SIGNINMETHOD.EMAILNPASSWORD:
         throw UnimplementedError();
 
-      case SIGNINMETHOD.GOOGLE:
+      case SIGNINMETHOD.Google:
         return 'assets/icons/google.svg';
 
-      case SIGNINMETHOD.APPLE:
+      case SIGNINMETHOD.Apple:
         return 'assets/icons/apple.svg';
 
       default:

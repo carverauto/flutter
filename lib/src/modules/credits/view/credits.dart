@@ -107,6 +107,8 @@ While the Congress of the Republic endlessly debates this alarming chain of even
                 child: Image.asset(
                   'assets/galaxy.png',
                   fit: BoxFit.cover,
+                  cacheHeight: 1294,
+                  cacheWidth: 750,
                 ),
               ),
               CrawlText(
@@ -146,14 +148,7 @@ class CrawlText extends StatelessWidget {
             ? MediaQuery.of(context).size.width * 0.5
             : MediaQuery.of(context).size.width * 0.4, //370,
         child: Transform(
-          origin: Offset(
-            MediaQuery.of(context).size.width / 2 -
-                (Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-                        ? MediaQuery.of(context).size.width * 0.5
-                        : MediaQuery.of(context).size.width * 0.6) /
-                    2, //540,
-            150,
-          ),
+          alignment: Alignment.topCenter,
           transform: Matrix4.identity()
             ..setRotationX(
               pi / 2.7, //2.8, //2.5,
