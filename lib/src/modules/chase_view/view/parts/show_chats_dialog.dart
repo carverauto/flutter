@@ -1,20 +1,13 @@
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 void showChatsDialog(BuildContext context, Chase chase) {
-  final channel = client.channel(
-    'livestream',
-    id: chase.id,
-    extraData: {
-      'name': chase.name ?? "NA",
-    },
-  );
-  channel.watch();
   showModalBottomSheet<void>(
     context: context,
     // enableDrag: false,
@@ -65,33 +58,61 @@ void showChatsDialog(BuildContext context, Chase chase) {
                     ],
                   ),
                 ),
-                Divider(),
                 Expanded(
-                  child: StreamChannel(
-                    channel: channel,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: MessageListView(
-                            loadingBuilder: (context) =>
-                                CircularAdaptiveProgressIndicatorWithBg(),
-                            errorBuilder: (context, e) {
-                              return ChaseAppErrorWidget(onRefresh: () {
-                                // ref.refresh(chatChannelProvider(chase));
-                              });
+                  child: Consumer(builder: (context, ref, _) {
+                    final state = ref.watch(chatChannelProvider(chase));
+                    return state.when(
+                        data: (channel) {
+                          return TweenAnimationBuilder<Offset>(
+                            tween: Tween<Offset>(
+                                begin: Offset(
+                                    0, MediaQuery.of(context).size.height),
+                                end: Offset.zero),
+                            curve: Curves.decelerate,
+                            duration: Duration(milliseconds: 300),
+                            builder: (context, value, child) {
+                              return Transform.translate(
+                                offset: value,
+                                child: child,
+                              );
                             },
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.manual,
-                          ),
-                        ),
-                        MessageInput(
-                          disableAttachments: true,
-                        ),
-                      ],
-                    ),
-                  ),
+                            child: StreamChannel(
+                              channel: channel,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: MessageListView(
+                                      loadingBuilder: (context) =>
+                                          CircularAdaptiveProgressIndicatorWithBg(),
+                                      errorBuilder: (context, e) {
+                                        return ChaseAppErrorWidget(
+                                            onRefresh: () {
+                                          // ref.refresh(chatChannelProvider(chase));
+                                        });
+                                      },
+                                      keyboardDismissBehavior:
+                                          ScrollViewKeyboardDismissBehavior
+                                              .manual,
+                                    ),
+                                  ),
+                                  MessageInput(
+                                    disableAttachments: true,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        loading: () =>
+                            CircularAdaptiveProgressIndicatorWithBg(),
+                        error: (e, stk) {
+                          return ChaseAppErrorWidget(onRefresh: () {
+                            ref.refresh(chatChannelProvider(chase));
+                          });
+                        });
+                  }),
                 ),
               ],
             ),

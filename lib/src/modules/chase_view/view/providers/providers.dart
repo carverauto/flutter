@@ -3,7 +3,8 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-final chatChannelProvider = Provider.family<Channel, Chase>((ref, chase) {
+final chatChannelProvider =
+    FutureProvider.autoDispose.family<Channel, Chase>((ref, chase) async {
   final channel = client.channel(
     'livestream',
     id: chase.id,
@@ -11,6 +12,6 @@ final chatChannelProvider = Provider.family<Channel, Chase>((ref, chase) {
       'name': chase.name ?? "NA",
     },
   );
-
+  await channel.watch();
   return channel;
 });
