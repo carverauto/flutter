@@ -45,7 +45,6 @@ class _GradientAnimationChildBuilderState
     );
 
     animationController.addListener(() {
-      print(animationController.value);
       if (animationController.isCompleted) {
         if (mounted) animationController.repeat();
       }

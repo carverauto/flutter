@@ -86,6 +86,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
         return;
       }
       try {
+        //TODO: Replace with 3more FutureStates for OnGoingData, OnGoingLoading, OnGoingError
         onGoingState = OnGoingState.Loading;
 
         state = PaginationNotifierState.data(_items, true);
