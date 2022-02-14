@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permanently_denied_dialog.dart';
+import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/request_permissions.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 
 class GrantAllPermissionsButton extends StatefulWidget {
@@ -30,54 +30,47 @@ class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds: 300),
-      transitionBuilder: (child, animation) {
-        return ScaleTransition(
-          scale: animation,
-          child: child,
-        );
-      },
-      child: isLoading
-          ? CircularAdaptiveProgressIndicator()
-          : ElevatedButton(
-              style: callToActionButtonStyle,
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                final UsersPermissionStatuses usersPermissions =
-                    await requestPermissions();
+    return GradientAnimationChildBuilder(
+      shouldAnimate: isLoading,
+      child: ElevatedButton(
+        style: callToActionButtonStyle,
+        onPressed: () async {
+          setState(() {
+            isLoading = !isLoading;
+          });
+          await Future<void>.delayed(Duration(seconds: 1));
+          final UsersPermissionStatuses usersPermissions =
+              await requestPermissions();
 
-                setState(() {
-                  isLoading = false;
-                });
+          setState(() {
+            isLoading = !isLoading;
+          });
 
-                if (usersPermissions.status == UsersPermissionStatus.DENIED) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Please Grant All Permissions To Proceed."),
-                  ));
-                } else if (usersPermissions.status ==
-                    UsersPermissionStatus.PERMANENTLY_DENIED) {
-                  await showPermanentlyDeniedDialog(
-                    context,
-                    usersPermissions.permanentlyDeniedPermissions,
-                  );
-                } else {
-                  //All permissions granted
-                  log("All Permissions Granted");
+          if (usersPermissions.status == UsersPermissionStatus.DENIED) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Please Grant All Permissions To Proceed."),
+            ));
+          } else if (usersPermissions.status ==
+              UsersPermissionStatus.PERMANENTLY_DENIED) {
+            await showPermanentlyDeniedDialog(
+              context,
+              usersPermissions.permanentlyDeniedPermissions,
+            );
+          } else {
+            //All permissions granted
+            log("All Permissions Granted");
 
-                  Navigator.pushReplacementNamed(
-                    context,
-                    RouteName.AUTH_VIEW_WRAPPER,
-                  );
-                }
-              },
-              child: Text(
-                "Grant All Permissions",
-                style: getButtonStyle(context),
-              ),
-            ),
+            Navigator.pushReplacementNamed(
+              context,
+              RouteName.AUTH_VIEW_WRAPPER,
+            );
+          }
+        },
+        child: Text(
+          isLoading ? "Requesting..." : "Grant All Permissions",
+          style: getButtonStyle(context),
+        ),
+      ),
     );
   }
 }

@@ -51,3 +51,51 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
         );
   }
 }
+
+class SliverProviderStateBuilder<T> extends ConsumerWidget {
+  const SliverProviderStateBuilder({
+    Key? key,
+    required this.builder,
+    required this.watchThisProvider,
+    required this.logger,
+    this.errorMessage,
+    this.errorBuilder,
+  }) : super(key: key);
+
+  final ProviderBase<AsyncValue<T>> watchThisProvider;
+
+  final Widget Function(T data) builder;
+  final Widget Function(Object e, StackTrace? stk)? errorBuilder;
+
+  final Logger logger;
+
+  final String? errorMessage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SliverToBoxAdapter(
+      child: ref.watch(watchThisProvider).when(
+            data: (data) {
+              return builder(data);
+            },
+            error: (e, stk) {
+              logger.severe(
+                errorMessage ?? 'Error Loading Data',
+                e,
+                stk,
+              );
+              return errorBuilder != null
+                  ? errorBuilder!(e, stk)
+                  : Scaffold(
+                      body: ChaseAppErrorWidget(
+                        onRefresh: () {
+                          ref.refresh(watchThisProvider);
+                        },
+                      ),
+                    );
+            },
+            loading: () => CircularAdaptiveProgressIndicatorWithBg(),
+          ),
+    );
+  }
+}

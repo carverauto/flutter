@@ -68,6 +68,7 @@ class BottomWidget extends ConsumerWidget {
     required this.isFetching,
     required this.onGoingState,
     required this.watchThisStateNotifierProvider,
+    // required this.axis,
   }) : super(key: key);
 
   final bool isFetching;
@@ -75,35 +76,37 @@ class BottomWidget extends ConsumerWidget {
   final StateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> watchThisStateNotifierProvider;
 
+  // final Axis axis;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return onGoingState == OnGoingState.Data
         ? ref.watch(watchThisStateNotifierProvider.notifier).noMoreChases
             ? Chip(
-                label: Text("No more Chases Found."),
+                label: Text("No More Chases Found."),
               )
             : SizedBox.shrink()
         : Container(
             padding: const EdgeInsets.all(kPaddingSmallConstant),
-            width: double.maxFinite,
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                border: BorderDirectional(
-                  top: BorderSide(
-                      color: Theme.of(context).colorScheme.primaryVariant),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 3),
-                    blurRadius: 8,
-                    spreadRadius: 0.5,
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                  )
-                ]),
+            // width: double.maxFinite,
+            // decoration:  BoxDecoration(
+            //     color: Theme.of(context).colorScheme.surface,
+            //     border: BorderDirectional(
+            //       top: BorderSide(
+            //           color: Theme.of(context).colorScheme.primaryVariant),
+            //     ),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         offset: Offset(0, 3),
+            //         blurRadius: 8,
+            //         spreadRadius: 0.5,
+            //         color: Theme.of(context).colorScheme.primaryVariant,
+            //       )
+            //     ]),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (isFetching) CircularAdaptiveProgressIndicator(),
+                if (isFetching) CircularAdaptiveProgressIndicatorWithBg(),
                 if (onGoingState == OnGoingState.Error)
                   ChaseAppErrorWidget(onRefresh: () {
                     ref

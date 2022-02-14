@@ -1,11 +1,11 @@
 const permissionsTitle =
-    '''ChaseApp requires the following permissions to proceed.\n''';
+    '''ChaseApp requires the following permissions to proceed.''';
 
 const locationUsageInfo =
-    """Device location data is captured at regular intervals when the app is in use. When the app is closed or not in use, location data may be captured in the background.\n""";
+    """Device location data is captured at regular intervals when the app is in use. When it'is closed or not in use, location data may be captured in the background.""";
 
 const bluetoothUsageInfo =
-    """Bluetooth scan data is captured at regular intervals when the app is in use. When the app is closed or not in use, bluetooth scan data may be captured in the background \n""";
+    """Bluetooth scan data is captured at regular intervals when the app is in use. When it'is closed or not in use, bluetooth scan data may be captured in the background""";
 
 const notificationsUsageInfo =
     """Needed for receiving notifications about live police pursuits and other events.""";

@@ -1,9 +1,9 @@
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/info.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/grant_permissions_button.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_list.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
 import 'package:flutter/material.dart';
 
 class RequestPermissionsView extends StatelessWidget {
@@ -21,20 +21,17 @@ class RequestPermissionsView extends StatelessWidget {
             SizedBox(
               height: kItemsSpacingSmallConstant,
             ),
-            Image.asset(
-              chaseAppNameImage,
-              height: kImageSizeLarge,
-            ),
+            ChaseAppLogoImage(),
             SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
             Container(
               padding: EdgeInsets.all(
-                kListPaddingConstant,
+                kPaddingSmallConstant,
               ),
               decoration: BoxDecoration(
-                color: primaryColor.shade500,
-                borderRadius: BorderRadius.circular(8),
+                color: primaryColor.shade700,
+                borderRadius: BorderRadius.circular(kBorderRadiusStandard),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,15 +56,15 @@ class RequestPermissionsView extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: kItemsSpacingLarge,
+              height: kItemsSpacingMediumConstant,
             ),
             PermissionsList(),
             SizedBox(
-              height: kItemsSpacingMedium,
+              height: kItemsSpacingLargeConstant,
             ),
             GrantAllPermissionsButton(),
             SizedBox(
-              height: kItemsSpacingMedium,
+              height: kItemsSpacingMediumConstant,
             ),
           ],
         ),

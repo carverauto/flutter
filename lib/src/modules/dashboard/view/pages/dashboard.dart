@@ -1,14 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chases_paginatedlist_view.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chase_map.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_drawer.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/dropdown_button.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -16,78 +16,182 @@ import 'package:logging/logging.dart';
 class Dashboard extends ConsumerWidget {
   Dashboard({Key? key}) : super(key: key);
 
-  final ScrollController scrollController = ScrollController();
+  // final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('Dashboard');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chasesPaingationProvider = chasesPaginatedStreamProvider(logger);
-    scrollController.addListener(() {
-      double maxScroll = scrollController.position.maxScrollExtent;
-      double currentScroll = scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.width * 0.20;
-      if (maxScroll - currentScroll <= delta) {
-        ref.read(chasesPaingationProvider.notifier).fetchNextPage();
-      }
-    });
+    final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
+
     return Scaffold(
-      floatingActionButton:
-          ScrollToTopButton(scrollController: scrollController),
+      drawer: ChaseAppDrawer(),
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
+        edgeOffset: kItemsSpacingLargeConstant,
         onRefresh: () async {
-          ref.read(chasesPaingationProvider.notifier).fetchFirstPage(true);
+          await ref
+              .read(chasesPaginationProvider.notifier)
+              .fetchFirstPage(true);
+          await ref.refresh(topChasesStreamProvider);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GlassButton(
+                    padding: EdgeInsets.all(
+                      kPaddingSmallConstant,
+                    ),
+                    child: Text(
+                      "Refreshed",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.all(30),
+            ),
+          );
         },
         child: Stack(
           children: [
-            CustomScrollView(
-              controller: scrollController,
-              restorationId: "Chases List",
-              slivers: [
-                SliverAppBar(
-                  centerTitle: true,
-                  elevation: kElevation,
-                  pinned: true,
-                  title: Image.asset(
-                    chaseAppNameImage,
-                    height: kImageSizeLarge,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      primaryColor.shade700,
+                      primaryColor.shade900.withOpacity(0.4),
+                    ],
+                    stops: [
+                      0.0,
+                      0.8,
+                    ]),
+              ),
+              child: CustomScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                restorationId: "Chases List",
+                slivers: [
+                  // AppBar
+                  ChaseAppBar(),
+
+                  // Error if removed (Need to report)
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kPaddingMediumConstant,
+                    ),
                   ),
-                  actions: [
-                    ChaseAppDropDownButton(
-                      child: CircleAvatar(
-                        radius: kImageSizeSmall,
-                        backgroundImage: CachedNetworkImageProvider(
-                          ref.watch(userStreamProvider.select(
-                                  (value) => value.asData?.value.photoURL)) ??
-                              defaultPhotoURL,
-                        ),
+                  // Chases Map
+                  ChasesMap(),
+                  // For Clusters
+                  //  SliverToBoxAdapter(
+                  //   child: SizedBox(
+                  //     height: kPaddingMediumConstant,
+                  //   ),
+                  // ),
+
+                  //Top Chases
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingMediumConstant,
+                    ),
+                  ),
+
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        "Top Chases",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
                       ),
                     ),
-                    SizedBox(
-                      width: kItemsSpacingSmallConstant,
-                    ),
-                  ],
-                ),
-
-                // Error if removed (Need to report)
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: kPaddingMediumConstant,
                   ),
-                ),
-                SliverPadding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-                  sliver: ChasesPaginatedListView(
-                      chasesPaingationProvider: chasesPaingationProvider,
-                      logger: logger,
-                      scrollController: scrollController),
-                ),
-                SliverToBoxAdapter(
-                  child: PaginatedListBottom(
-                      chasesPaingationProvider: chasesPaingationProvider),
-                ),
-              ],
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+
+                  TopChasesListView(
+                    logger: logger,
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingMediumConstant,
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Recent",
+                            style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          ),
+                          Spacer(),
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.RECENT_CHASESS_VIEW_ALL,
+                                arguments: {
+                                  "chasesPaginationProvider":
+                                      chasesPaginationProvider,
+                                },
+                              );
+                            },
+                            icon: Text(
+                              "See More",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+
+                  RecentChasesList(
+                    chasesPaginationProvider: chasesPaginationProvider,
+                    logger: logger,
+                  ),
+                ],
+              ),
             ),
             Positioned(
               top: MediaQuery.of(context).viewPadding.top +

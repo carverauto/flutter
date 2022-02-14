@@ -1,4 +1,4 @@
 enum DeviceOS {
-  IOS,
-  ANDROID,
+  ios,
+  android,
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chaseapp/src/const/colors.dart';
@@ -38,7 +37,9 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
-    final topOffset = height;
+    final topOffset = Sizescaleconfig.getDeviceType == DeviceType.TABLET
+        ? height * 0.8
+        : height;
     final bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
@@ -106,6 +107,8 @@ While the Congress of the Republic endlessly debates this alarming chain of even
                 child: Image.asset(
                   'assets/galaxy.png',
                   fit: BoxFit.cover,
+                  cacheHeight: 1294,
+                  cacheWidth: 750,
                 ),
               ),
               CrawlText(
@@ -145,14 +148,7 @@ class CrawlText extends StatelessWidget {
             ? MediaQuery.of(context).size.width * 0.5
             : MediaQuery.of(context).size.width * 0.4, //370,
         child: Transform(
-          origin: Offset(
-            MediaQuery.of(context).size.width / 2 -
-                (Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-                        ? MediaQuery.of(context).size.width * 0.5
-                        : MediaQuery.of(context).size.width * 0.6) /
-                    2, //540,
-            150,
-          ),
+          alignment: Alignment.topCenter,
           transform: Matrix4.identity()
             ..setRotationX(
               pi / 2.7, //2.8, //2.5,
@@ -221,9 +217,9 @@ class CrawlContributions extends StatelessWidget {
           }
         });
       },
-      child: ListView(
-        clipBehavior: Clip.none,
-        physics: NeverScrollableScrollPhysics(),
+      child: Column(
+        // clipBehavior: Clip.none,
+        // physics: NeverScrollableScrollPhysics(),
         children: [
           Text(
             "ChaseApp Development Credits",
@@ -231,7 +227,7 @@ class CrawlContributions extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               height: 1.3,
-              fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+              fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
                   ? Theme.of(context).textTheme.subtitle1!.fontSize
                   : Theme.of(context).textTheme.headline5!.fontSize,
               color: starWarsCrawlTextColor,
@@ -301,7 +297,12 @@ class CrawlContributions extends StatelessWidget {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             crossAxisCount:
-                Sizescaleconfig.getDeviceType == DeviceType.MOBILE ? 2 : 3,
+                Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
+                    ? 2
+                    : Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+                        ? 2
+                        : 3,
+            mainAxisSpacing: kItemsSpacingSmallConstant,
             children: [
               CustomAvatar(
                 name: "Acidjazz",
@@ -337,7 +338,6 @@ class CrawlContributions extends StatelessWidget {
             overflow: TextOverflow.visible,
             textAlign: TextAlign.center,
             style: TextStyle(
-              height: 1.3,
               fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
                   ? Theme.of(context).textTheme.subtitle1!.fontSize
                   : Theme.of(context).textTheme.headline5!.fontSize,
@@ -367,7 +367,7 @@ class CustomAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(
-      fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+      fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
           ? Theme.of(context).textTheme.overline!.fontSize
           : Theme.of(context).textTheme.button!.fontSize,
     );

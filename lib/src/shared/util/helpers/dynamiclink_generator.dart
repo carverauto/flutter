@@ -6,10 +6,10 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
-Future<String> createRecordDynamicLink(Chase chase) async {
+Future<String> createChaseDynamicLink(Chase chase) async {
   final fallbackUrl = Uri.parse("https://chaseapp.tv/chase/${chase.id}");
   final shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
-      ? parseImageUrl(chase.imageURL!, ImageDimensions.LARGE)
+      ? parseImageUrl(chase.imageURL!, ImageDimensions.MEDIUM)
       : defaultPhotoURL;
 
   final prodBundleId = "com.carverauto.chaseapp";

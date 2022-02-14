@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> handlebgmessage(RemoteMessage message) async {
@@ -22,6 +24,7 @@ Future<void> handlebgmessage(RemoteMessage message) async {
       final bool should_fetch = message.data["config_state"] == "stale";
       await prefs.setBool("should_fetch", should_fetch);
       break;
+
     default:
   }
 
@@ -36,6 +39,7 @@ class HomeWrapper extends ConsumerStatefulWidget {
 
 class _HomeWrapperState extends ConsumerState<HomeWrapper>
     with WidgetsBindingObserver {
+  final Logger logger = Logger("HomeWrapper");
   Timer? _timerLink;
 
   Future<void> navigateToView(WidgetRef ref, Uri deepLink) async {
@@ -72,6 +76,13 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
         break;
       case 'chase':
+        final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
+
+        //Fetch new chases when user opens chase notification
+        // Top chases are streamed from the database so they'll get updated
+        // if any updates happen in the chases
+        // TODO: Can we do better?
+        ref.read(chasesPaginationProvider.notifier).fetchFirstPage(true);
         // TODO:Navigate to chase view
         final String? chaseId = message.data["chaseId"] as String?;
 
@@ -109,7 +120,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-
+    // Dynamic Link Receiver Configurations
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
       log("Dynamic Link Recieved--->" + dynamicLink.link.toString());
       final Uri? deepLink = dynamicLink.link;
@@ -118,10 +129,12 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await navigateToView(ref, deepLink);
       }
     }, onError: (Object error, StackTrace stackTrace) {
-      log("Error while recieving message", error: error);
+      log("Error while recieving dynamic link", error: error);
     });
 
     handledynamiclink(ref, context);
+
+    // Notifications Receiver Configurations
     handlemessagesthatopenedtheapp(context);
     FirebaseMessaging.onMessage.listen((event) {
       if (event.data.isNotEmpty) {

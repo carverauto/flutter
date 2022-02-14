@@ -252,8 +252,8 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
         onTapUp: onTapUp,
         onTapDown: onTapDown,
         child: Container(
-          height: 60.0,
-          width: 60.0,
+          height: 50,
+          width: 50,
           alignment: Alignment.center,
           decoration: BoxDecoration(
               border:
@@ -262,7 +262,14 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
               color: widget.floatingBgColor,
               boxShadow: [
                 widget.hasShadow
-                    ? BoxShadow(color: widget.shadowColor, blurRadius: 8.0)
+                    ? BoxShadow(
+                        color: widget.shadowColor.withOpacity(0.5),
+                        blurRadius: 8,
+                        offset: Offset(
+                          0,
+                          4,
+                        ),
+                      )
                     : BoxShadow()
               ]),
           child: SvgPicture.asset(
@@ -306,6 +313,8 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
                 child: Image.asset(
                   "images/sparkles.png",
                   color: widget.sparkleColor,
+                  cacheHeight: 28,
+                  cacheWidth: 28,
                   width: 14.0,
                   height: 14.0,
                 ))),
@@ -349,6 +358,14 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        //TODO: Fix the sizing here
+        if (_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN)
+          Flexible(
+            child: widget.trailing(counter),
+          ),
+        SizedBox(
+          width: kItemsSpacingSmallConstant,
+        ),
         Stack(
           alignment: FractionalOffset.center,
           clipBehavior: Clip.none,
@@ -357,15 +374,6 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
             getClapButton(),
           ],
         ),
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          width: Theme.of(context).textTheme.headline5!.fontSize! * 4,
-          child: _scoreWidgetStatus == ScoreWidgetStatus.HIDDEN
-              ? widget.trailing(counter)
-              : SizedBox.shrink(),
-        )
       ],
     );
   }

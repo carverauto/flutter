@@ -19,3 +19,7 @@ final chasesPaginatedStreamProvider = StateNotifierProvider.family<
         return ref.read(chaseRepoProvider).streamChases(chase, offset);
       });
 });
+
+final topChasesStreamProvider = StreamProvider<List<Chase>>((ref) {
+  return ref.read(chaseRepoProvider).streamTopChases();
+});

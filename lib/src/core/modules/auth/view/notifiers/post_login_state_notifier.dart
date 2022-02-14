@@ -26,28 +26,33 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> _initFirebaseActions(User user, UserData userData) async {
     final lastTokenUpdate = userData.lastTokenUpdate;
     final tokens = userData.tokens;
-    try {
-      if (lastTokenUpdate != null && tokens != null) {
-        final today = DateTime.now();
-        final difference = today.difference(lastTokenUpdate).inDays;
-        String? token = await _read(firebaseMesssagingProvider).getToken();
-        final isTokenPresent = tokens.contains(token);
-        if (difference > 7 || !isTokenPresent) {
-          //update tokens
-          _read(authRepoProvider).saveFirebaseDeviceToken(user);
-        }
-        if (difference > 28 || !isTokenPresent) {
+    String? token = await _read(firebaseMesssagingProvider).getToken();
+
+    if (token != null) {
+      try {
+        if (lastTokenUpdate != null && tokens != null) {
+          final today = DateTime.now();
+          final difference = today.difference(lastTokenUpdate).inDays;
+          final isTokenPresent =
+              tokens.any((oldToken) => oldToken.token == token);
+
+          if (difference > 7 || !isTokenPresent) {
+            //update tokens
+            _read(authRepoProvider).saveDeviceTokenToDatabase(user, token);
+          }
+          if (difference > 28 || !isTokenPresent) {
+            _read(authRepoProvider).subscribeToTopics();
+          }
+        } else {
+          _read(authRepoProvider).saveDeviceTokenToDatabase(user, token);
           _read(authRepoProvider).subscribeToTopics();
         }
-      } else {
-        _read(authRepoProvider).saveFirebaseDeviceToken(user);
-        _read(authRepoProvider).subscribeToTopics();
-      }
 
-      _read(firebaseCrashlyticsProvider).setUserIdentifier(userData.uid);
-      _read(authRepoProvider).updateTokenWhenRefreshed(user);
-    } catch (e, stk) {
-      logger.warning("Error in initPostLogin Firebase Actions", e, stk);
+        _read(firebaseCrashlyticsProvider).setUserIdentifier(userData.uid);
+        _read(authRepoProvider).updateTokenWhenRefreshed(user);
+      } catch (e, stk) {
+        logger.warning("Error in initPostLogin Firebase Actions", e, stk);
+      }
     }
   }
 }

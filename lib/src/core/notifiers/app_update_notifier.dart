@@ -74,11 +74,17 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         final Map<String, dynamic> store_url =
             jsonDecode(remoteConfig.getString("store_url"))
                 as Map<String, dynamic>;
-        final latest_app_version = remoteConfig.getString("latest_app_version");
+        final latest_app_version_map =
+            jsonDecode(remoteConfig.getString("latest_app_version"))
+                as Map<String, dynamic>;
+        final latest_app_version = LatestAppVersion(
+          android: latest_app_version_map["android"] as String,
+          ios: latest_app_version_map["ios"] as String,
+        );
         final force_update = remoteConfig.getBool("force_update");
 
         log('current_app_version: $current_app_version');
-        log('latest_app_version: $latest_app_version');
+        log('latest_app_version: $latest_app_version_map');
         log('force_update: $force_update');
         log('store_url: $store_url');
 

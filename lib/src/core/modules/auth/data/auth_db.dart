@@ -24,20 +24,13 @@ class AuthDatabase implements AuthDB {
   });
   final Reader read;
 
-  Future<void> saveFirebaseDeviceToken(User user) async {
-    String? token = await read(firebaseMesssagingProvider).getToken();
-    if (token != null) {
-      saveTokenToDatabase(user, token);
-    }
-  }
-
-  Future<void> saveTokenToDatabase(User user, String token) async {
+  Future<void> saveDeviceTokenToDatabase(User user, String token) async {
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
     final pushToken = PushToken(
       token: token,
       created_at: DateTime.now().millisecondsSinceEpoch,
-      device: Platform.isAndroid ? DeviceOS.ANDROID : DeviceOS.IOS,
+      device: Platform.isAndroid ? DeviceOS.android : DeviceOS.ios,
       type: TokenType.FCM,
     );
 
@@ -50,8 +43,10 @@ class AuthDatabase implements AuthDB {
   }
 
   void updateTokenWhenRefreshed(User user) {
-    read(firebaseMesssagingProvider).onTokenRefresh.listen((token) {
-      saveTokenToDatabase(user, token);
+    read(firebaseMesssagingProvider)
+        .onTokenRefresh
+        .listen((refreshedToken) async {
+      saveDeviceTokenToDatabase(user, refreshedToken);
       subscribeToTopics();
     });
   }
@@ -108,17 +103,17 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> socialLogin(SIGNINMETHOD loginmethods) async {
     switch (loginmethods) {
-      case SIGNINMETHOD.GOOGLE:
+      case SIGNINMETHOD.Google:
         await googleLogin();
         break;
 
-      case SIGNINMETHOD.APPLE:
+      case SIGNINMETHOD.Apple:
         await appleLogin();
         break;
-      case SIGNINMETHOD.FACEBOOK:
+      case SIGNINMETHOD.Facebook:
         await facebookLogin();
         break;
-      case SIGNINMETHOD.TWITTER:
+      case SIGNINMETHOD.Twitter:
         await twitterLogin();
         break;
       default:

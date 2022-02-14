@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/const/info.dart';
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_row.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class PermissionsList extends StatelessWidget {
           info: locationUsageInfo,
         ),
         Divider(
-          color: Theme.of(context).colorScheme.primary,
+          height: kItemsSpacingSmallConstant,
         ),
         PermissionRow(
           icon: Icons.bluetooth_connected,
@@ -25,14 +26,18 @@ class PermissionsList extends StatelessWidget {
           subTitle: "Bluetooth permissions for bluetooth activities.",
           info: bluetoothUsageInfo,
         ),
-        Divider(),
+        Divider(
+          height: kItemsSpacingSmallConstant,
+        ),
         PermissionRow(
           icon: Icons.notifications_active,
           title: "Notifications",
           subTitle: "Notifications permission for recieving notifications.",
           info: notificationsUsageInfo,
         ),
-        Divider(),
+        Divider(
+          height: kItemsSpacingSmallConstant,
+        ),
       ],
     );
   }

@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
@@ -22,116 +21,63 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        elevation: kElevation,
-        title: Image.asset(
-          chaseAppNameImage,
-          height: kImageSizeLarge,
-        ),
+        title: Text("Profile"),
+        centerTitle: false,
+        elevation: 1,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ProviderStateBuilder<UserData>(
-              watchThisProvider: userStreamProvider,
-              logger: logger,
-              builder: (user) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant,
-                      vertical: kPaddingMediumConstant,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.center,
-                          child: CircleAvatar(
-                            radius: kImageSizeLarge,
-                            backgroundImage: CachedNetworkImageProvider(
-                              user.photoURL ?? defaultPhotoURL,
-                            ),
-                          ),
-                        ),
-                        Divider(
-                          height: kItemsSpacingMedium,
-                          color: Theme.of(context).colorScheme.primaryVariant,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Full Name :',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                            ),
-                            SizedBox(
-                              width: kItemsSpacingSmallConstant,
-                            ),
-                            Text(
-                              user.userName ?? "NA",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          height: kItemsSpacingMedium,
-                          color: Theme.of(context).colorScheme.primaryVariant,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Email :',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                            ),
-                            SizedBox(
-                              width: kItemsSpacingSmallConstant,
-                            ),
-                            Text(
-                              user.email,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                          height: kItemsSpacingLarge,
-                          color: Theme.of(context).colorScheme.primaryVariant,
-                        ),
-                      ],
-                    ));
-              },
+      body: ProviderStateBuilder<UserData>(
+        watchThisProvider: userStreamProvider,
+        logger: logger,
+        builder: (user) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              top: kPaddingMediumConstant,
             ),
-          ),
-        ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                    radius: kImageSizeLarge,
+                    backgroundImage: CachedNetworkImageProvider(
+                      user.photoURL ?? defaultPhotoURL,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: kItemsSpacingSmallConstant,
+                ),
+                if (user.userName != null)
+                  Text(
+                    user.userName!,
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
+                Text(
+                  user.email,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
+                Spacer(),
+                Divider(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Text(
+                    "Log out",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

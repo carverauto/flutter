@@ -12,8 +12,7 @@ abstract class AuthDB {
   Future<void> handleMutliProviderSignIn(
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
   Future<void> subscribeToTopics();
-  Future<void> saveFirebaseDeviceToken(User user);
-  Future<void> saveTokenToDatabase(User user, String token);
+  Future<void> saveDeviceTokenToDatabase(User user, String token);
   Future<void> googleLogin();
   Future<void> appleLogin();
   Future<void> facebookLogin();
