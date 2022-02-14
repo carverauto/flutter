@@ -55,9 +55,26 @@ class ChatsViewRow extends StatelessWidget {
             final state = ref.watch(chatChannelProvider(chase));
             return state.when(
                 data: (channel) {
-                  final lastMessage = channel.state?.messages.last;
+                  final messages = channel.state?.messages;
+                  if (messages == null || messages.isEmpty)
+                    return GestureDetector(
+                      onTap: () {
+                        showChatsDialog(context, chase);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No chats yet",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
 
-                  if (lastMessage == null) return SizedBox.shrink();
+                  final lastMessage = channel.state!.messages.last;
                   return TweenAnimationBuilder<Offset>(
                     tween: Tween<Offset>(
                         begin: Offset(0, MediaQuery.of(context).size.height),
