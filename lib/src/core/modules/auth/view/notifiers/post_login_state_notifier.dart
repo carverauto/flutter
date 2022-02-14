@@ -1,9 +1,12 @@
+import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart' as stream;
 
 class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   PostLoginStateNotifier(
@@ -19,8 +22,19 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
       await _initFirebaseActions(user, userData);
+      await connectToStream(user, userData);
       isInitialized = true;
     }
+  }
+
+  Future<void> connectToStream(User user, UserData userData) async {
+    await client.connectUser(
+      stream.User(
+          id: user.uid,
+          name: userData.userName ?? "Unknown",
+          image: userData.photoURL ?? defaultPhotoURL),
+      userToken,
+    );
   }
 
   Future<void> _initFirebaseActions(User user, UserData userData) async {

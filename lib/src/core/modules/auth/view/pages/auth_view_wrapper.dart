@@ -46,6 +46,7 @@ class AuthViewWrapper extends ConsumerWidget {
 
           return LogInView();
         }
+
         return ProviderStateBuilder<UserData>(
           watchThisProvider: fetchUserProvider(user),
           logger: logger,
