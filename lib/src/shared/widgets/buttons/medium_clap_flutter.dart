@@ -313,6 +313,8 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
                 child: Image.asset(
                   "images/sparkles.png",
                   color: widget.sparkleColor,
+                  cacheHeight: 28,
+                  cacheWidth: 28,
                   width: 14.0,
                   height: 14.0,
                 ))),

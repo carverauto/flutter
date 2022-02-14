@@ -41,7 +41,11 @@ class ChaseDetails extends StatelessWidget {
             color: Theme.of(context).colorScheme.primaryVariant,
             child: chase.imageURL != null && chase.imageURL!.isNotEmpty
                 ? CachedNetworkImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
+                    maxWidthDiskCache: 750,
+                    maxHeightDiskCache: 421,
+                    memCacheHeight: 421,
+                    memCacheWidth: 750,
                     imageUrl: parseImageUrl(
                       imageURL!,
                       ImageDimensions.LARGE,

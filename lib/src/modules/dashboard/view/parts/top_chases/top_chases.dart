@@ -20,78 +20,80 @@ class TopChasesListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverProviderStateBuilder<List<Chase>>(
-        watchThisProvider: topChasesStreamProvider,
-        logger: logger,
-        builder: (chases) {
-          return chases.isEmpty
-              ? Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        ref
-                            .read(
-                                chasesPaginatedStreamProvider(logger).notifier)
-                            .fetchFirstPage(true);
-                      },
-                      icon: Icon(Icons.replay),
-                    ),
-                    Chip(
-                      label: Text("No Chases Found!"),
-                    ),
-                  ],
-                )
-              : SizedBox(
-                  width: Sizescaleconfig.screenwidth,
-                  child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: Sizescaleconfig.screenheight! * 0.4,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 1,
-                      ),
-                      items: chases
-                          .asMap()
-                          .map<int, Widget>(
-                            (index, chase) => MapEntry(
-                              index,
-                              TweenAnimationBuilder<double>(
-                                  key: UniqueKey(),
-                                  duration: Duration(milliseconds: 300),
-                                  tween: Tween<double>(begin: 0.8, end: 1),
-                                  builder: (context, value, child) {
-                                    return ScaleTransition(
-                                      scale: AlwaysStoppedAnimation(value),
-                                      child: child,
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: kPaddingMediumConstant,
+      watchThisProvider: topChasesStreamProvider,
+      logger: logger,
+      builder: (chases) {
+        return chases.isEmpty
+            ? Column(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      ref
+                          .read(chasesPaginatedStreamProvider(logger).notifier)
+                          .fetchFirstPage(true);
+                    },
+                    icon: Icon(Icons.replay),
+                  ),
+                  Chip(
+                    label: Text("No Chases Found!"),
+                  ),
+                ],
+              )
+            : SizedBox(
+                width: Sizescaleconfig.screenwidth,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: Sizescaleconfig.screenheight! * 0.4,
+                    enableInfiniteScroll: false,
+                    viewportFraction: 1,
+                  ),
+                  items: chases
+                      .asMap()
+                      .map<int, Widget>(
+                        (index, chase) => MapEntry(
+                          index,
+                          TweenAnimationBuilder<double>(
+                            key: UniqueKey(),
+                            duration: Duration(milliseconds: 300),
+                            tween: Tween<double>(begin: 0.8, end: 1),
+                            builder: (context, value, child) {
+                              return ScaleTransition(
+                                scale: AlwaysStoppedAnimation(value),
+                                child: child,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: kPaddingMediumConstant,
+                              ),
+                              child: Stack(
+                                children: [
+                                  TopChaseBuilder(
+                                    chase: chase,
+                                  ),
+                                  Positioned(
+                                    right: kPaddingMediumConstant,
+                                    top: kPaddingMediumConstant,
+                                    child: Text(
+                                      "${index + 1} / ${chases.length}",
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                      ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        TopChaseBuilder(
-                                          chase: chase,
-                                        ),
-                                        Positioned(
-                                          right: kPaddingMediumConstant,
-                                          top: kPaddingMediumConstant,
-                                          child: Text(
-                                            "${index + 1} / ${chases.length}",
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onBackground,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
-                          .values
-                          .toList()),
-                );
-        });
+                          ),
+                        ),
+                      )
+                      .values
+                      .toList(),
+                ),
+              );
+      },
+    );
   }
 }

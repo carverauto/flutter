@@ -5,6 +5,7 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:chaseapp/src/shared/widgets/chase/donut_box.dart';
 import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
@@ -14,13 +15,17 @@ class TopChaseBuilder extends StatelessWidget {
   const TopChaseBuilder({
     Key? key,
     required this.chase,
+    this.imageDimensions = ImageDimensions.MEDIUM,
   }) : super(key: key);
 
   final Chase chase;
 
+  final ImageDimensions imageDimensions;
+
   @override
   Widget build(BuildContext context) {
     final isImagePresent = chase.imageURL != null && chase.imageURL!.isNotEmpty;
+
     return Card(
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
@@ -33,26 +38,31 @@ class TopChaseBuilder extends StatelessWidget {
         children: [
           Container(
             foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                  kBorderRadiusStandard,
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    primaryColor.shade800,
-                    Colors.transparent,
-                  ],
-                )),
+              borderRadius: BorderRadius.circular(
+                kBorderRadiusStandard,
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  primaryColor.shade900,
+                  Colors.transparent,
+                ],
+              ),
+            ),
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: isImagePresent
                     ? CachedNetworkImageProvider(
-                        chase.imageURL!,
+                        parseImageUrl(chase.imageURL!, imageDimensions),
                       )
-                    : AssetImage(
-                        defaultChaseImage,
+                    : ResizeImage(
+                        AssetImage(
+                          defaultChaseImage,
+                        ),
+                        height: 544,
+                        width: 484,
                       ) as ImageProvider,
               ),
             ),
@@ -105,11 +115,13 @@ class TopChaseBuilder extends StatelessWidget {
                               ),
                               child: SentimentSlider(),
                             ),
-                            DonutBox(chase: chase),
+                            DonutBox(
+                              chase: chase,
+                            ),
                           ],
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

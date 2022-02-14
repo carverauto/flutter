@@ -5,6 +5,7 @@ import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.d
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chase_builder.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
                                 },
                                 child: TopChaseBuilder(
                                   chase: chase,
+                                  imageDimensions: ImageDimensions.SMALL,
                                 ),
                               ),
                             );
@@ -128,6 +130,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
                                   },
                                   child: TopChaseBuilder(
                                     chase: chase,
+                                    imageDimensions: ImageDimensions.SMALL,
                                   ),
                                 ),
                               ))

@@ -1,7 +1,7 @@
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/info.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
 import 'package:chaseapp/src/modules/onboarding/view/parts/onboarding_page.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
@@ -32,23 +32,20 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               color: Colors.black.withOpacity(0.4),
             ),
             decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                defaultChaseImage,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  defaultChaseImage,
+                ),
               ),
-            )),
+            ),
           ),
           Column(
             children: [
               SizedBox(
                 height: kItemsSpacingLarge,
               ),
-              Image.asset(
-                chaseAppNameImage,
-                height: kImageSizeLarge,
-                color: Colors.white,
-              ),
+              ChaseAppLogoImage(),
               Expanded(
                 child: PageView(
                   controller: pageController,

@@ -1,5 +1,4 @@
 import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 
 class ChaseAppBar extends StatelessWidget {
@@ -12,11 +11,7 @@ class ChaseAppBar extends StatelessWidget {
     return SliverAppBar(
       centerTitle: true,
       backgroundColor: Colors.transparent,
-      title: Image.asset(
-        chaseAppNameImage,
-        height: kImageSizeLarge,
-        color: Colors.white,
-      ),
+      title: ChaseAppLogoImage(),
       actions: [
         IconButton(
           onPressed: () {
@@ -27,6 +22,20 @@ class ChaseAppBar extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class ChaseAppLogoImage extends StatelessWidget {
+  const ChaseAppLogoImage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      chaseAppNameImage,
+      color: Colors.white,
+      cacheHeight: 60,
+      cacheWidth: 478,
     );
   }
 }
