@@ -47,8 +47,8 @@ final checkForUpdateStateNotifier =
 });
 
 final apiKey = "2cfcx4vhp35x";
-final userToken =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiY2FsbS1maXJlZmx5LTIifQ.h8ZIumjFHC1CriGu4aLY8wQPUmTrf-NSWd3SxAiF39I";
+// final userToken =
+//     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiY2FsbS1maXJlZmx5LTIifQ.h8ZIumjFHC1CriGu4aLY8wQPUmTrf-NSWd3SxAiF39I";
 
 /// Create a new instance of [StreamChatClient] passing the apikey obtained from
 /// your project dashboard.

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 Spacer(),
                 Divider(),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await client.disconnectUser();
                     Navigator.pop(context, true);
                   },
                   child: Text(

@@ -84,12 +84,14 @@ void showChatsDialog(BuildContext context, Chase chase) {
                                 children: [
                                   Expanded(
                                     child: MessageListView(
+                                      // initialAlignment: 0,
                                       loadingBuilder: (context) =>
                                           CircularAdaptiveProgressIndicatorWithBg(),
                                       errorBuilder: (context, e) {
                                         return ChaseAppErrorWidget(
                                             onRefresh: () {
-                                          // ref.refresh(chatChannelProvider(chase));
+                                          ref.refresh(
+                                              chatChannelProvider(chase));
                                         });
                                       },
                                       keyboardDismissBehavior:

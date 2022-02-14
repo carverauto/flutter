@@ -28,12 +28,14 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<void> connectToStream(User user, UserData userData) async {
+    //TODO:generate token from server
+    final devToken = await client.devToken(user.uid);
     await client.connectUser(
       stream.User(
           id: user.uid,
           name: userData.userName ?? "Unknown",
-          image: userData.photoURL ?? defaultPhotoURL),
-      userToken,
+          image: userData.photoURL ?? defaultProfileURL),
+      devToken.rawValue,
     );
   }
 
