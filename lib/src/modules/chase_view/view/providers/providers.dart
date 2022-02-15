@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 final chatChannelProvider =
-    FutureProvider.family<Channel, Chase>((ref, chase) async {
+    FutureProvider.autoDispose.family<Channel, Chase>((ref, chase) async {
   final channel = client.channel(
     'livestream',
     id: chase.id,
@@ -14,4 +14,8 @@ final chatChannelProvider =
   );
   await channel.watch();
   return channel;
+});
+final chatWsConnectionStreamProvider =
+    StreamProvider.autoDispose<ConnectionStatus>((ref) {
+  return client.wsConnectionStatusStream;
 });
