@@ -35,6 +35,7 @@ class ChaseDetailsView extends ConsumerWidget {
       body: ProviderStateBuilder<Chase>(
         watchThisProvider: streamChaseProvider(chaseId),
         logger: logger,
+        showBackButton: true,
         builder: (chase) {
           String? imageURL = chase.imageURL;
 

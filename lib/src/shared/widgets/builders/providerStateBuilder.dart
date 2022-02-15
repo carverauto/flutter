@@ -12,18 +12,18 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     required this.logger,
     this.errorMessage,
     this.errorBuilder,
-    this.loadingBuilder,
+    this.showBackButton = false,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
   final Widget Function(T data) builder;
   final Widget Function(Object e, StackTrace? stk)? errorBuilder;
-  final Widget Function()? loadingBuilder;
 
   final Logger logger;
 
   final String? errorMessage;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,19 +39,33 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
           );
           return errorBuilder != null
               ? errorBuilder!(e, stk)
-              : Scaffold(
-                  body: ChaseAppErrorWidget(
-                    onRefresh: () {
-                      ref.refresh(watchThisProvider);
-                    },
+              : Material(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ChaseAppErrorWidget(
+                          onRefresh: () {
+                            ref.refresh(watchThisProvider);
+                          },
+                        ),
+                        if (showBackButton)
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.arrow_back),
+                            label: Text('Back'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                      ],
+                    ),
                   ),
                 );
         },
-        loading: () => loadingBuilder != null
-            ? loadingBuilder!()
-            : Scaffold(
-                body: CircularAdaptiveProgressIndicatorWithBg(),
-              ));
+        loading: () => Material(
+              child: CircularAdaptiveProgressIndicatorWithBg(),
+            ));
   }
 }
 

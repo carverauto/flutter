@@ -6,7 +6,6 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/show_chats_dialog.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -22,6 +21,7 @@ class ChatsViewRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +115,6 @@ class ChatsViewRow extends StatelessWidget {
               ),
             );
           },
-          loadingBuilder: () => CircularAdaptiveProgressIndicatorWithBg(),
         ),
         SizedBox(
           height: kItemsSpacingLargeConstant,
