@@ -28,15 +28,25 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<void> connectToStream(User user, UserData userData) async {
-    //TODO:generate token from server
-    final devToken = await client.devToken(user.uid);
-    await client.connectUser(
-      stream.User(
-          id: user.uid,
-          name: userData.userName ?? "Unknown",
-          image: userData.photoURL ?? defaultProfileURL),
-      devToken.rawValue,
-    );
+    try {
+      //TODO:generate token from server
+      final userToken = await client.devToken(user.uid).rawValue;
+      // final userToken =
+      //     await _read(authRepoProvider).fetchUserStreamToken(user.uid);
+
+      //TODO: Need to discuss?
+      //Shouldn't this check be done within connectUser function instead?
+      if (client.wsConnectionStatus != stream.ConnectionStatus.connected)
+        await client.connectUser(
+          stream.User(
+              id: user.uid,
+              name: userData.userName ?? "Unknown",
+              image: userData.photoURL ?? defaultProfileURL),
+          userToken,
+        );
+    } catch (e, stk) {
+      logger.severe("Error while connecting user to getStream", e, stk);
+    }
   }
 
   Future<void> _initFirebaseActions(User user, UserData userData) async {

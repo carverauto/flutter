@@ -19,4 +19,5 @@ abstract class AuthDB {
   Future<void> twitterLogin();
   Future<void> signOut();
   void updateTokenWhenRefreshed(User user);
+  Future<String> fetchUserStreamToken(String userId);
 }

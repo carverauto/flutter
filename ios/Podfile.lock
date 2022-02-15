@@ -355,6 +355,10 @@ PODS:
     - Firebase/Firestore (= 8.10.0)
     - firebase_core
     - Flutter
+  - cloud_functions (3.2.7):
+    - Firebase/Functions (= 8.10.0)
+    - firebase_core
+    - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
@@ -422,6 +426,9 @@ PODS:
   - Firebase/Firestore (8.10.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 8.10.0)
+  - Firebase/Functions (8.10.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 8.10.0)
   - Firebase/Messaging (8.10.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 8.10.0)
@@ -525,6 +532,9 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
+  - FirebaseFunctions (8.10.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
   - FirebaseInstallations (8.10.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.6)
@@ -715,6 +725,7 @@ PODS:
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Firebase/Messaging
@@ -783,6 +794,7 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseDynamicLinks
     - FirebaseFirestore
+    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseMessaging
     - FirebaseRemoteConfig
@@ -814,6 +826,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/audioplayers/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
+  cloud_functions:
+    :path: ".symlinks/plugins/cloud_functions/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   file_picker:
@@ -887,6 +901,7 @@ SPEC CHECKSUMS:
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: 03020d987c2828e9b2d87f6940d365ddb089394f
+  cloud_functions: 14b93d9218100febc841746dfcf8ff3904173d4a
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
@@ -914,6 +929,7 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 5f3e83b0a0d8759378fbd5d05661244d14dfbbb0
   FirebaseDynamicLinks: bb6ac718f763ec43560f0e2bb6b655a798b277af
   FirebaseFirestore: 0e7321a508cc9de54316ec45400caba6b5719beb
+  FirebaseFunctions: 9c406f9b2deb72719437565c106ca4a439d2a661
   FirebaseInstallations: 830327b45345ffc859eaa9c17bcd5ae893fd5425
   FirebaseMessaging: b0aeba17332ee1ee610662b4d1e02a86db82f08f
   FirebaseRemoteConfig: 84d3397887d95587f0ee7a0a3989b2756dc2bbf9

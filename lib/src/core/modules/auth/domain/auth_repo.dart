@@ -71,4 +71,10 @@ class AuthRepository implements AuthRepositoryAB {
     return read(authDbProvider)
         .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
   }
+
+  @override
+  Future<String> fetchUserStreamToken(String userId) {
+    // TODO: implement fetchUserStreamToken
+    return read(authDbProvider).fetchUserStreamToken(userId);
+  }
 }
