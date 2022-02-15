@@ -12,12 +12,14 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     required this.logger,
     this.errorMessage,
     this.errorBuilder,
+    this.loadingBuilder,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
   final Widget Function(T data) builder;
   final Widget Function(Object e, StackTrace? stk)? errorBuilder;
+  final Widget Function()? loadingBuilder;
 
   final Logger logger;
 
@@ -26,29 +28,30 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
-          data: (data) {
-            return builder(data);
-          },
-          error: (e, stk) {
-            logger.severe(
-              errorMessage ?? 'Error Loading Data',
-              e,
-              stk,
-            );
-            return errorBuilder != null
-                ? errorBuilder!(e, stk)
-                : Scaffold(
-                    body: ChaseAppErrorWidget(
-                      onRefresh: () {
-                        ref.refresh(watchThisProvider);
-                      },
-                    ),
-                  );
-          },
-          loading: () => Scaffold(
-            body: CircularAdaptiveProgressIndicatorWithBg(),
-          ),
-        );
+        data: (data) {
+          return builder(data);
+        },
+        error: (e, stk) {
+          logger.severe(
+            errorMessage ?? 'Error Loading Data',
+            e,
+            stk,
+          );
+          return errorBuilder != null
+              ? errorBuilder!(e, stk)
+              : Scaffold(
+                  body: ChaseAppErrorWidget(
+                    onRefresh: () {
+                      ref.refresh(watchThisProvider);
+                    },
+                  ),
+                );
+        },
+        loading: () => loadingBuilder != null
+            ? loadingBuilder!()
+            : Scaffold(
+                body: CircularAdaptiveProgressIndicatorWithBg(),
+              ));
   }
 }
 
