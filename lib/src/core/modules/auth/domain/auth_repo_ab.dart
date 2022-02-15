@@ -16,5 +16,4 @@ abstract class AuthRepositoryAB {
   Future<User?> getCurrentUser();
   Future<void> signOut();
   void updateTokenWhenRefreshed(User user);
-  Future<String> fetchUserStreamToken(String userId);
 }

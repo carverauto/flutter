@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
 // import 'package:device_preview/device_preview.dart';
@@ -32,7 +32,7 @@ class MyApp extends ConsumerWidget {
               accentPrimary: Color(0xFFFF8EC6),
             ),
           ),
-          client: client,
+          client: ref.read(chatsServiceStateNotifierProvider.notifier).client,
           child: child,
         );
       },

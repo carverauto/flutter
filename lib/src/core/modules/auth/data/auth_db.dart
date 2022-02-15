@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
@@ -12,7 +10,6 @@ import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:chaseapp/src/shared/enums/token_type.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -250,20 +247,5 @@ class AuthDatabase implements AuthDB {
 
     await read(firebaseAuthProvider)
         .signInWithCredential(twitterAuthCredential);
-  }
-
-  @override
-  Future<String> fetchUserStreamToken(String userId) async {
-    final getToken = read(functionsProvider).httpsCallable("GetStreamToken");
-
-    final HttpsCallableResult<dynamic> responce =
-        await getToken.call<dynamic>({"user_id": userId});
-
-    log(responce.toString());
-
-    final Map<String, dynamic> data =
-        json.decode(responce.data as String) as Map<String, dynamic>;
-
-    return data["token"] as String;
   }
 }

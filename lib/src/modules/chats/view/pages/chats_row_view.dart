@@ -3,8 +3,8 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/show_chats_dialog.dart';
-import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/chats/view/parts/show_chats_dialog.dart';
+import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
@@ -42,7 +42,7 @@ class ChatsViewRow extends ConsumerWidget {
                 child: IconButton(
                   onPressed: () async {
                     await Future<void>.delayed(Duration(milliseconds: 100));
-                    showChatsDialog(context, chase);
+                    showChatsViewBottomSheet(context, chase);
                   },
                   icon: Icon(
                     Icons.expand,
@@ -64,7 +64,7 @@ class ChatsViewRow extends ConsumerWidget {
                     if (messages == null || messages.isEmpty)
                       return GestureDetector(
                         onTap: () {
-                          showChatsDialog(context, chase);
+                          showChatsViewBottomSheet(context, chase);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +100,7 @@ class ChatsViewRow extends ConsumerWidget {
                           onTap: () async {
                             await Future<void>.delayed(
                                 Duration(milliseconds: 100));
-                            showChatsDialog(context, chase);
+                            showChatsViewBottomSheet(context, chase);
                           },
                           leading: CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider(
