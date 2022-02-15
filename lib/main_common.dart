@@ -24,9 +24,17 @@ class MyApp extends ConsumerWidget {
       initialRoute: '/',
       builder: (context, child) {
         return StreamChat(
-            streamChatThemeData: StreamChatThemeData.dark(),
-            client: client,
-            child: child);
+          streamChatThemeData: StreamChatThemeData.dark().copyWith(
+            // TODO: Need to debug why?
+            // If not added then getStream API is overriding the
+            // the user set accentColor in Custom Theme
+            colorTheme: ColorTheme.dark(
+              accentPrimary: Color(0xFFFF8EC6),
+            ),
+          ),
+          client: client,
+          child: child,
+        );
       },
       // locale: Locale('en'), // Add the locale here
       // builder: DevicePreview.appBuilder,
