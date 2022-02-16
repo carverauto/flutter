@@ -27,30 +27,34 @@ class ChatsViewRow extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Chats :",
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    //     decoration: TextDecoration.underline,
-                    color: Theme.of(context).colorScheme.onBackground,
+        Material(
+          child: InkWell(
+            onTap: () async {
+              await Future<void>.delayed(Duration(milliseconds: 100));
+              showChatsViewBottomSheet(context, chase);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: kPaddingMediumConstant,
+                vertical: kItemsSpacingSmallConstant,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Chats :",
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          //     decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
                   ),
-            ),
-            ClipOval(
-              child: Material(
-                child: IconButton(
-                  onPressed: () async {
-                    await Future<void>.delayed(Duration(milliseconds: 100));
-                    showChatsViewBottomSheet(context, chase);
-                  },
-                  icon: Icon(
+                  Icon(
                     Icons.expand,
                   ),
-                ),
+                ],
               ),
-            )
-          ],
+            ),
+          ),
         ),
         ProviderStateBuilder(
           builder: (connectionStatus) {

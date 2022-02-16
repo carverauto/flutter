@@ -51,6 +51,7 @@ double kItemsSpacingMedium =
 double kItemsSpacingLarge =
     Sizescaleconfig.scalehightfactor(kItemsSpacingLargeConstant);
 
+const double kItemsSpacingExtraSmallConstant = 5;
 const double kItemsSpacingSmallConstant = 10;
 const double kItemsSpacingMediumConstant = 20;
 const double kItemsSpacingLargeConstant = 30;
