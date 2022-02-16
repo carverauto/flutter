@@ -53,6 +53,9 @@ class ChatsView extends StatelessWidget {
                   ],
                 ),
               ),
+              Divider(
+                height: 2,
+              ),
               Expanded(
                 child: Consumer(builder: (context, ref, _) {
                   final state = ref.watch(chatChannelProvider(chase));
