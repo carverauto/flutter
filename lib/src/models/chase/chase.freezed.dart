@@ -39,7 +39,7 @@ class _$ChaseTearOff {
           required int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
-      @JsonKey(name: 'Sentiment')
+      @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
           Map<dynamic, dynamic>? wheels}) {
@@ -86,7 +86,7 @@ mixin _$Chase {
   @JsonKey(name: 'Networks')
   List<Map<String, dynamic>>? get networks =>
       throw _privateConstructorUsedError;
-  @JsonKey(name: 'Sentiment')
+  @JsonKey(name: 'sentiment')
   Map<dynamic, dynamic>? get sentiment => throw _privateConstructorUsedError;
   @JsonKey(name: 'Wheels')
   Map<dynamic, dynamic>? get wheels => throw _privateConstructorUsedError;
@@ -117,7 +117,7 @@ abstract class $ChaseCopyWith<$Res> {
           int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
-      @JsonKey(name: 'Sentiment')
+      @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
           Map<dynamic, dynamic>? wheels});
@@ -211,7 +211,7 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
           int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
-      @JsonKey(name: 'Sentiment')
+      @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
           Map<dynamic, dynamic>? wheels});
@@ -305,7 +305,7 @@ class _$_Chase extends _Chase {
           required this.votes,
       @JsonKey(name: 'Networks')
           this.networks,
-      @JsonKey(name: 'Sentiment')
+      @JsonKey(name: 'sentiment')
           this.sentiment,
       @JsonKey(name: 'Wheels')
           this.wheels})
@@ -340,7 +340,7 @@ class _$_Chase extends _Chase {
   @JsonKey(name: 'Networks')
   final List<Map<String, dynamic>>? networks;
   @override
-  @JsonKey(name: 'Sentiment')
+  @JsonKey(name: 'sentiment')
   final Map<dynamic, dynamic>? sentiment;
   @override
   @JsonKey(name: 'Wheels')
@@ -411,7 +411,7 @@ abstract class _Chase extends Chase {
           required int? votes,
       @JsonKey(name: 'Networks')
           List<Map<String, dynamic>>? networks,
-      @JsonKey(name: 'Sentiment')
+      @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
           Map<dynamic, dynamic>? wheels}) = _$_Chase;
@@ -445,7 +445,7 @@ abstract class _Chase extends Chase {
   @JsonKey(name: 'Networks')
   List<Map<String, dynamic>>? get networks;
   @override
-  @JsonKey(name: 'Sentiment')
+  @JsonKey(name: 'sentiment')
   Map<dynamic, dynamic>? get sentiment;
   @override
   @JsonKey(name: 'Wheels')
