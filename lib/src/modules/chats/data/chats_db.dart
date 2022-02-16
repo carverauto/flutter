@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
@@ -17,11 +16,10 @@ class ChatsDatabase implements ChatsDatabaseAB {
     final HttpsCallableResult<dynamic> responce =
         await getToken.call<dynamic>({"user_id": userId});
 
-    log(responce.toString());
+    log(responce.data.toString());
 
-    final Map<String, dynamic> data =
-        json.decode(responce.data as String) as Map<String, dynamic>;
+    final Map<String, dynamic> data = responce.data as Map<String, dynamic>;
 
-    return data["token"] as String;
+    return data["message"] as String;
   }
 }
