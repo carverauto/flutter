@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> handlebgmessage(RemoteMessage message) async {
@@ -130,6 +131,10 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       }
     }, onError: (Object error, StackTrace stackTrace) {
       log("Error while recieving dynamic link", error: error);
+    });
+
+    PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
+      log("Message Recieved in the foreground--->" + notification.toString());
     });
 
     handledynamiclink(ref, context);

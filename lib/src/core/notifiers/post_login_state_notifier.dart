@@ -4,6 +4,7 @@ import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 
 class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   PostLoginStateNotifier(
@@ -19,6 +20,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
       await _initFirebaseActions(user, userData);
+      await PusherBeams.instance.addDeviceInterest("chases-notifications");
       isInitialized = true;
     }
   }

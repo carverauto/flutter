@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class MyApp extends ConsumerWidget {
@@ -78,12 +77,11 @@ Future<void> setUpServices() async {
   log(firebaseApp.options.projectId);
 
   // await PusherBeams.instance.start('36B6DDABE108628BE2413C4CA2A04288465FB979B2BAE81E373A22AE076BB520');
+  // await PusherBeams.instance.start('d1af4c7f-16b4-43b0-98ec-2eb2200e43bc');
+  // PusherBeams.instance.addDeviceInterest("hello");
   await PusherBeams.instance.start('d1af4c7f-16b4-43b0-98ec-2eb2200e43bc');
-  PusherBeams.instance.addDeviceInterest("hello");
 
-  // PushNotifications.start(getApplicationContext(), "d1af4c7f-16b4-43b0-98ec-2eb2200e43bc");
-  // PushNotifications.addDeviceInterest("hello");
-
+  // PusherBeams.instance.addDeviceInterest("hello");
   /*
   PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
   try {
