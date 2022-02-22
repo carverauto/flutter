@@ -96,7 +96,7 @@ dependencies:
   cloud_functions: ^3.2.7
 
   # Pusher
-  # pusher_channels_flutter: 1.0.2
+  pusher_channels_flutter: 1.0.2
   pusher_beams: 1.0.2
 
 dependency_overrides:
