@@ -129,7 +129,9 @@ class ChaseAppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.SETTINGS);
+            },
             leading: Icon(
               Icons.settings_outlined,
               color: Theme.of(context).colorScheme.onBackground,
