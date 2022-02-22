@@ -6,7 +6,7 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dialog.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/show_chats_dialog.dart';
+import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
@@ -68,15 +68,17 @@ class ChaseDetails extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.all(0),
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kPaddingMediumConstant,
-                    vertical: kPaddingSmallConstant,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                Material(
+                  child: InkWell(
+                    onTap: () {
+                      showDescriptionDialog(context, chase);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant,
+                        vertical: kPaddingSmallConstant,
+                      ),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -96,17 +98,24 @@ class ChaseDetails extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          IconButton(
-                            tooltip: "Show Description",
-                            onPressed: () {
-                              showDescriptionDialog(context, chase);
-                            },
-                            icon: Icon(
-                              Icons.expand_more,
-                            ),
-                          )
+                          Icon(
+                            Icons.expand_more,
+                          ),
                         ],
                       ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: kItemsSpacingSmallConstant,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kPaddingMediumConstant,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -129,12 +138,15 @@ class ChaseDetails extends StatelessWidget {
                         height: kItemsSpacingSmallConstant,
                       ),
                       Text(
-                        "Sentiment Analysis",
+                        "Sentiment Analysis :",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
-                      SentimentSlider(),
+                      SizedBox(
+                        height: kItemsSpacingExtraSmallConstant,
+                      ),
+                      SentimentSlider(chase: chase),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -188,45 +200,7 @@ class ChaseDetails extends StatelessWidget {
                   height: kItemsSpacingSmall,
                   color: Theme.of(context).colorScheme.primaryVariant,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kPaddingMediumConstant,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Chats :",
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      //     decoration: TextDecoration.underline,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showChatsDialog(context, chase);
-                            },
-                            icon: Icon(
-                              Icons.expand,
-                            ),
-                          )
-                        ],
-                      ),
-                      Placeholder(
-                        fallbackHeight: 50,
-                      ),
-                      SizedBox(
-                        height: kItemsSpacingLargeConstant,
-                      ),
-                    ],
-                  ),
-                )
+                ChatsViewRow(chase: chase)
               ],
             ),
           ),

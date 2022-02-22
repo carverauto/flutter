@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -17,9 +18,9 @@ final googleSignInProvider = Provider<GoogleSignIn>((ref) => GoogleSignIn());
 final facebookSignInProvider =
     Provider<FacebookAuth>((ref) => FacebookAuth.instance);
 
-// final functionsProvider = Provider<FirebaseFunctions>((ref) {
-//   return FirebaseFunctions.instanceFor(region: "us-central1");
-// });
+final functionsProvider = Provider<FirebaseFunctions>((ref) {
+  return FirebaseFunctions.instanceFor(region: "us-central1");
+});
 
 final storageProvider = Provider<FirebaseStorage>((ref) {
   return FirebaseStorage.instance;

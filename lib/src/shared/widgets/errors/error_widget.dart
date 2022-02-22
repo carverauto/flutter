@@ -25,13 +25,15 @@ class ChaseAppErrorWidget extends StatelessWidget {
               onPressed: onRefresh,
               icon: Icon(
                 Icons.replay,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
             //Chip doesn't show label properly with multiline text
             Chip(
               label: Text(
                 message ?? "Something went wrong.",
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
               ),
             ),
           ],

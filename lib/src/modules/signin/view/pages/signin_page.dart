@@ -115,16 +115,21 @@ class _LogInViewState extends ConsumerState<LogInView>
                           child: GradientAnimationChildBuilder(
                             shouldAnimate: signinmethod == method,
                             child: ElevatedButton.icon(
-                              icon: SvgPicture.asset(
-                                method.getAssetIcon,
-                                height: kIconSizeLargeConstant,
+                              icon: IconFloatingAnimation(
+                                child: SvgPicture.asset(
+                                  method.getAssetIcon,
+                                  height: kIconSizeLargeConstant,
+                                ),
+                                shouldAnimate: signinmethod == method,
                               ),
                               style: callToActionButtonStyle,
                               onPressed: () {
                                 signInWith(method);
                               },
                               label: Text(
-                                "Continue With ${method.name}",
+                                signinmethod == method
+                                    ? ""
+                                    : "Continue With ${method.name}",
                                 style: getButtonStyle(context),
                               ),
                             ),

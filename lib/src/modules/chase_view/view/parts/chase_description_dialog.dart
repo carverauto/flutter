@@ -16,12 +16,14 @@ void showDescriptionDialog(BuildContext context, Chase chase) {
     builder: (context) {
       return BottomSheet(
           onClosing: () {},
+          enableDrag: false,
           builder: (context) {
             return Padding(
               padding: const EdgeInsets.all(kPaddingMediumConstant)
                   .copyWith(bottom: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

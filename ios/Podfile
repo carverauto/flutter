@@ -10,6 +10,11 @@ pod 'GoogleUtilities/Environment'
 pod 'GoogleUtilities/Logger'
 pod 'GoogleUtilities/UserDefaults'
 pod 'GoogleUtilities/Reachability'
+
+
+# Pusher
+pod 'PushNotifications'
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 

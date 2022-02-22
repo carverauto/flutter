@@ -25,7 +25,7 @@ abstract class Chase implements _$Chase {
     @JsonKey(name: 'ImageURL') String? imageURL,
     @JsonKey(name: 'Votes') required int? votes,
     @JsonKey(name: 'Networks') List<Map<String, dynamic>>? networks,
-    @JsonKey(name: 'Sentiment') Map? sentiment,
+    @JsonKey(name: 'sentiment') Map? sentiment,
     @JsonKey(name: 'Wheels') Map? wheels,
   }) = _Chase;
 

@@ -12,6 +12,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     required this.logger,
     this.errorMessage,
     this.errorBuilder,
+    this.showBackButton = false,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
@@ -22,33 +23,49 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
   final Logger logger;
 
   final String? errorMessage;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
-          data: (data) {
-            return builder(data);
-          },
-          error: (e, stk) {
-            logger.severe(
-              errorMessage ?? 'Error Loading Data',
-              e,
-              stk,
-            );
-            return errorBuilder != null
-                ? errorBuilder!(e, stk)
-                : Scaffold(
-                    body: ChaseAppErrorWidget(
-                      onRefresh: () {
-                        ref.refresh(watchThisProvider);
-                      },
+        data: (data) {
+          return builder(data);
+        },
+        error: (e, stk) {
+          logger.severe(
+            errorMessage ?? 'Error Loading Data',
+            e,
+            stk,
+          );
+          return errorBuilder != null
+              ? errorBuilder!(e, stk)
+              : Material(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ChaseAppErrorWidget(
+                          onRefresh: () {
+                            ref.refresh(watchThisProvider);
+                          },
+                        ),
+                        if (showBackButton)
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.arrow_back),
+                            label: Text('Back'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                      ],
                     ),
-                  );
-          },
-          loading: () => Scaffold(
-            body: CircularAdaptiveProgressIndicatorWithBg(),
-          ),
-        );
+                  ),
+                );
+        },
+        loading: () => Material(
+              child: CircularAdaptiveProgressIndicatorWithBg(),
+            ));
   }
 }
 

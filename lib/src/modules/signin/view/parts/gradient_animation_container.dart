@@ -92,3 +92,70 @@ class _GradientAnimationChildBuilderState
     );
   }
 }
+
+class IconFloatingAnimation extends StatefulWidget {
+  const IconFloatingAnimation({
+    Key? key,
+    required this.child,
+    required this.shouldAnimate,
+  }) : super(key: key);
+
+  final Widget child;
+  final bool shouldAnimate;
+
+  @override
+  _IconFloatingAnimationState createState() => _IconFloatingAnimationState();
+}
+
+class _IconFloatingAnimationState extends State<IconFloatingAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
+  late final Animation<double> rotationAnimation;
+  late final Animation<double> containerPaddingAnimation;
+
+  SIGNINMETHOD? signinmethod = null;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+    animationController.addListener(() {
+      if (animationController.isCompleted) {
+        if (mounted) animationController.repeat(reverse: true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.shouldAnimate) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
+    return AnimatedBuilder(
+      animation: animationController,
+      child: widget.child,
+      builder: (context, child) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: animationController.value * 10,
+          ),
+          child: child,
+        );
+      },
+    );
+  }
+}

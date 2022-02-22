@@ -6,6 +6,7 @@ import 'package:chaseapp/src/core/top_level_providers/nodle_provider.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
+import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
@@ -46,6 +47,7 @@ class AuthViewWrapper extends ConsumerWidget {
 
           return LogInView();
         }
+
         return ProviderStateBuilder<UserData>(
           watchThisProvider: fetchUserProvider(user),
           logger: logger,
@@ -53,7 +55,9 @@ class AuthViewWrapper extends ConsumerWidget {
           builder: (userData) {
             WidgetsBinding.instance!.addPostFrameCallback((t) {
               ref.read(nodleProvider.notifier).initializeNodle();
-
+              ref
+                  .read(chatsServiceStateNotifierProvider.notifier)
+                  .connectUserToGetStream(userData);
               ref
                   .read(postLoginStateNotifierProvider.notifier)
                   .initPostLoginActions(user, userData);

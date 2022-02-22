@@ -106,14 +106,20 @@ class TopChaseBuilder extends StatelessWidget {
                                 Theme.of(context).textTheme.subtitle1!.fontSize,
                           ),
                         ),
+                        SizedBox(
+                          height: kItemsSpacingExtraSmallConstant,
+                        ),
                         Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
                                 right: kItemsSpacingMediumConstant,
                                 bottom: kItemsSpacingSmallConstant,
                               ),
-                              child: SentimentSlider(),
+                              child: SentimentSlider(
+                                chase: chase,
+                              ),
                             ),
                             DonutBox(
                               chase: chase,
