@@ -30,18 +30,11 @@ class ChasesPaginatedListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    scrollController.addListener(() {
-      double maxScroll = scrollController.position.maxScrollExtent;
-      double currentScroll = scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.width * 0.20;
-      if (maxScroll - currentScroll <= delta) {
-        ref.read(chasesPaginationProvider.notifier).fetchNextPage();
-      }
-    });
     return SliverProviderPaginatedStateNotifierBuilder<List<Chase>>(
         watchThisStateNotifierProvider: chasesPaginationProvider,
         logger: logger,
         scrollController: scrollController,
+        axis: axis,
         builder: (chases, controller, [Widget? bottomWidget]) {
           return chases.isEmpty
               ? SliverToBoxAdapter(

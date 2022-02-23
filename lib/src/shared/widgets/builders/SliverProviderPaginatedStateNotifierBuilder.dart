@@ -14,6 +14,7 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.watchThisStateNotifierProvider,
     required this.scrollController,
     required this.logger,
+    required this.axis,
   }) : super(key: key);
 
   final StateNotifierProvider<PaginationNotifier<Chase>,
@@ -23,13 +24,16 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
 
   final ScrollController scrollController;
   final Logger logger;
+  final Axis axis;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     scrollController.addListener(() {
       double maxScroll = scrollController.position.maxScrollExtent;
       double currentScroll = scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.width * 0.20;
+      double delta = axis == Axis.horizontal
+          ? MediaQuery.of(context).size.width * 0.20
+          : MediaQuery.of(context).size.height * 0.20;
       if (maxScroll - currentScroll <= delta) {
         ref.read(watchThisStateNotifierProvider.notifier).fetchNextPage();
       }
