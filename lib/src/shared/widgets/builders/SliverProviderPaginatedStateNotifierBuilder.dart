@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
-  const ProviderPaginatedStateNotifierBuilder({
+class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
+  const SliverProviderPaginatedStateNotifierBuilder({
     Key? key,
     required this.builder,
     required this.watchThisStateNotifierProvider,
@@ -43,16 +43,20 @@ class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
       },
       error: (e, stk) {
         logger.log(Level.SEVERE, "Error Fetching Data", e, stk);
-        return ChaseAppErrorWidget(
-          onRefresh: () {
-            ref
-                .read(watchThisStateNotifierProvider.notifier)
-                .fetchFirstPage(true);
-          },
+        return SliverToBoxAdapter(
+          child: ChaseAppErrorWidget(
+            onRefresh: () {
+              ref
+                  .read(watchThisStateNotifierProvider.notifier)
+                  .fetchFirstPage(true);
+            },
+          ),
         );
       },
       loading: (chases) {
-        return CircularAdaptiveProgressIndicatorWithBg();
+        return SliverToBoxAdapter(
+          child: CircularAdaptiveProgressIndicatorWithBg(),
+        );
       },
       onGoingLoading: (data) {
         return builder(
