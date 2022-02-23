@@ -51,7 +51,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     });
   }
 
-  void handledynamiclink(BuildContext context) async {
+  void handledynamiclink() async {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
@@ -100,14 +100,22 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     }
   }
 
-  void handlemessagesthatopenedtheapp(BuildContext context) async {
+  Future<void> handleMessagesFromTerminatedState() async {
     final message = await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
       handlenotifications(message);
     }
+  }
 
-    FirebaseMessaging.onBackgroundMessage(handlebgmessage);
+  Future<void> handlemessagesthatopenedtheappFromBackgroundState() async {
+    // final message = await FirebaseMessaging.instance.getInitialMessage();
+
+    // if (message != null) {
+    //   handlenotifications(message);
+    // }
+
+    // FirebaseMessaging.onBackgroundMessage(handlebgmessage);
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if (event.data.isNotEmpty) {
@@ -137,15 +145,20 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       log("Message Recieved in the foreground--->" + notification.toString());
     });
 
-    handledynamiclink(context);
+    handledynamiclink();
 
     // Notifications Receiver Configurations
-    handlemessagesthatopenedtheapp(context);
-    FirebaseMessaging.onMessage.listen((event) {
-      if (event.data.isNotEmpty) {
-        handlenotifications(event);
-      }
-    });
+    FirebaseMessaging.onBackgroundMessage(handlebgmessage);
+
+    handleMessagesFromTerminatedState();
+    handlemessagesthatopenedtheappFromBackgroundState();
+    // If we are managing all notifications with PusherBeams listener,
+    // then this listener here will be redundant.
+    // FirebaseMessaging.onMessage.listen((event) {
+    //   if (event.data.isNotEmpty) {
+    //     handlenotifications(event);
+    //   }
+    // });
   }
 
   @override
@@ -156,7 +169,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           const Duration(milliseconds: 1000),
           () {
             // handledynamiclink(ref, context);
-            handlemessagesthatopenedtheapp(context);
+            handlemessagesthatopenedtheappFromBackgroundState();
           },
         );
       }
