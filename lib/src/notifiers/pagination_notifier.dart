@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +10,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
     required this.fetchNextItems,
     required this.hitsPerPage,
     required this.logger,
-  }) : super(const PaginationNotifierState.data([], false)) {
+  }) : super(const PaginationNotifierState.loading([])) {
     init();
   }
 
@@ -18,26 +19,27 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
   final int hitsPerPage;
 
   final List<T> _items = [];
-  OnGoingState onGoingState = OnGoingState.Data;
 
-  Timer _timer = Timer(Duration(milliseconds: 500), () {});
+  Timer _timer = Timer(const Duration(milliseconds: 0), () {});
 
-  bool get isFetching => onGoingState == OnGoingState.Loading;
-
-  bool noMoreChases = false;
+  bool noMoreItems = false;
 
   void init() {
     if (_items.isEmpty) {
-      _timer.cancel();
+      // _timer.cancel();
       fetchFirstPage(true);
     }
   }
 
-  bool get _canLoadNextPage => state.maybeWhen(
-        loading: (_) => false,
-        data: (_, hasReachedMax) => !hasReachedMax,
-        orElse: () => true,
-      );
+  void updateData(List<T> result) {
+    noMoreItems = result.length < hitsPerPage;
+
+    if (result.isEmpty) {
+      state = PaginationNotifierState.data(_items);
+    } else {
+      state = PaginationNotifierState.data(_items..addAll(result));
+    }
+  }
 
   Future<void> fetchFirstPage(bool clearCurrentList) async {
     try {
@@ -51,14 +53,9 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
       if (clearCurrentList) {
         _items.clear();
       }
-      if (result.isEmpty) {
-        state = PaginationNotifierState.data(_items, true);
-      } else if (result.length < hitsPerPage) {
-        state = PaginationNotifierState.data(_items..addAll(result), true);
-      } else {
-        state = PaginationNotifierState.data(_items..addAll(result), false);
-      }
+      updateData(result);
     } catch (e, stk) {
+      logger.warning("Error fetching First page", e, stk);
       state = PaginationNotifierState.error(e, stk);
     }
   }
@@ -69,49 +66,30 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
     if (_timer.isActive && _items.isNotEmpty) {
       return;
     }
-    _timer = Timer(Duration(milliseconds: 1000), () {});
+    _timer = Timer(const Duration(milliseconds: 1000), () {});
 
     if (!mounted) {
-      logger.warning("FetchNextPage called on unmounted PaginationNotifier");
-      return;
-    }
-    if (!_canLoadNextPage) {
+      log("FetchNextPage called on unmounted PaginationNotifier");
       return;
     }
 
-    if (_items.isEmpty) {
-      await fetchFirstPage(clearCurrentList);
-    } else {
-      if (onGoingState == OnGoingState.Loading) {
-        return;
-      }
-      try {
-        //TODO: Replace with 3more FutureStates for OnGoingData, OnGoingLoading, OnGoingError
-        onGoingState = OnGoingState.Loading;
+    if (noMoreItems ||
+        state == PaginationNotifierState<T>.onGoingLoading(_items)) {
+      log("Rejected");
+      return;
+    }
 
-        state = PaginationNotifierState.data(_items, true);
-        final result = await fetchNextItems(_items.last, _items.length);
-        noMoreChases = result.length < hitsPerPage;
+    log("Passed");
 
-        if (result.isEmpty) {
-          state = PaginationNotifierState.data(_items, true);
-        } else if (result.length < hitsPerPage) {
-          state = PaginationNotifierState.data(_items..addAll(result), true);
-        } else {
-          state = PaginationNotifierState.data(_items..addAll(result), false);
-        }
-        onGoingState = OnGoingState.Data;
-      } catch (e, stk) {
-        logger.warning("Error fetching next page", e, stk);
-        state = PaginationNotifierState.data(_items, false);
-        onGoingState = OnGoingState.Error;
-      }
+    state = PaginationNotifierState.onGoingLoading(_items);
+
+    try {
+      await Future<void>.delayed(const Duration(seconds: 1));
+      final result = await fetchNextItems(_items.last, _items.length);
+      updateData(result);
+    } catch (e, stk) {
+      logger.warning("Error fetching next page", e, stk);
+      state = PaginationNotifierState.onGoingError(_items, e, stk);
     }
   }
-}
-
-enum OnGoingState {
-  Data,
-  Loading,
-  Error,
 }

@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -27,12 +26,13 @@ class ChatStateNotifier extends StateNotifier<void> {
 
       //TODO: Need to discuss?
       //Shouldn't this check be done within connectUser function instead?
-      if (client.wsConnectionStatus != stream.ConnectionStatus.connected)
+      if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected)
         await client.connectUser(
           stream.User(
-              id: userData.uid,
-              name: userData.userName ?? "Unknown",
-              image: userData.photoURL ?? defaultProfileURL),
+            id: userData.uid,
+            name: userData.userName,
+            image: userData.photoURL,
+          ),
           userToken,
         );
     } catch (e, stk) {
