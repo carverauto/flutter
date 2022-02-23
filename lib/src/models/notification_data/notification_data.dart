@@ -1,0 +1,20 @@
+import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'notification_data.freezed.dart';
+part 'notification_data.g.dart';
+
+@freezed
+abstract class NotificationData implements _$NotificationData {
+  const NotificationData._();
+  @JsonSerializable(explicitToJson: true)
+  const factory NotificationData({
+    required String id,
+    String? title,
+    String? body,
+    @DatetimeTimestampConverter() required DateTime createdAt,
+    Map<String, dynamic>? data,
+  }) = _NotificationData;
+  factory NotificationData.fromJson(Map<String, dynamic> json) =>
+      _$NotificationDataFromJson(json);
+}
