@@ -43,7 +43,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   final Logger logger = Logger("HomeWrapper");
   Timer? _timerLink;
 
-  Future<void> navigateToView(WidgetRef ref, Uri deepLink) async {
+  Future<void> navigateToView(Uri deepLink) async {
     final chaseId = deepLink.queryParameters["chaseId"];
 
     Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
@@ -51,13 +51,13 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     });
   }
 
-  void handledynamiclink(WidgetRef ref, BuildContext context) async {
+  void handledynamiclink(BuildContext context) async {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      await navigateToView(ref, deepLink);
+      await navigateToView(deepLink);
     }
   }
 
@@ -127,7 +127,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       final Uri? deepLink = dynamicLink.link;
 
       if (deepLink != null) {
-        await navigateToView(ref, deepLink);
+        await navigateToView(deepLink);
       }
     }, onError: (Object error, StackTrace stackTrace) {
       log("Error while recieving dynamic link", error: error);
@@ -137,7 +137,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       log("Message Recieved in the foreground--->" + notification.toString());
     });
 
-    handledynamiclink(ref, context);
+    handledynamiclink(context);
 
     // Notifications Receiver Configurations
     handlemessagesthatopenedtheapp(context);
