@@ -20,8 +20,10 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
       await _initFirebaseActions(user, userData);
-      await PusherBeams.instance.addDeviceInterest("chases-notifications");
-      await PusherBeams.instance.addDeviceInterest("firehose-notfiications");
+      //TODO: Update this later for official interests
+      // await PusherBeams.instance.addDeviceInterest("chases-notifications");
+      // await PusherBeams.instance.addDeviceInterest("firehose-notfiications");
+      await PusherBeams.instance.addDeviceInterest("hello");
       isInitialized = true;
     }
   }

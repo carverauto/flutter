@@ -59,7 +59,7 @@ Future<void> setUpServices() async {
   }
 
   await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: Duration(seconds: 10),
+    fetchTimeout: Duration(minutes: 1),
     minimumFetchInterval: Duration(hours: 12),
   ));
 
@@ -79,7 +79,8 @@ Future<void> setUpServices() async {
   // await PusherBeams.instance.start('36B6DDABE108628BE2413C4CA2A04288465FB979B2BAE81E373A22AE076BB520');
   // await PusherBeams.instance.start('d1af4c7f-16b4-43b0-98ec-2eb2200e43bc');
   // PusherBeams.instance.addDeviceInterest("hello");
-  await PusherBeams.instance.start('4430414d-cce4-4722-9586-f32db3d7d433');
+  //TODO: Start every new instance as we create them.
+  await PusherBeams.instance.start('0309081b-2333-42de-922b-a11508f65b41');
 
   // PusherBeams.instance.addDeviceInterest("hello");
   /*

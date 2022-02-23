@@ -136,22 +136,6 @@ class ChasesPaginatedListView extends ConsumerWidget {
                               ))
                           .toList(),
                     );
-
-          // SliverList(
-          //   delegate: SliverChildBuilderDelegate(
-          //     (context, index) {
-          //       final chase = chases[index];
-
-          //       return Padding(
-          //         padding: const EdgeInsets.only(
-          //           bottom: kPaddingMediumConstant,
-          //         ),
-          //         child: ChaseTile(chase: chase),
-          //       );
-          //     },
-          //     childCount: chases.length,
-          //   ),
-          // );
         });
   }
 }
