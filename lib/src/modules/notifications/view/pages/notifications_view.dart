@@ -2,6 +2,7 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/notifiers/post_login_state_notifier.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notifications_list.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -64,92 +65,103 @@ class _NotificationTypesState extends ConsumerState<NotificationTypes> {
   Widget build(BuildContext context) {
     final selectedValue = ref.watch(notificationInterestProvider);
 
-    return SizedBox(
-        height: 34,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (showCloseButton)
-              SizedBox(
-                width: kPaddingMediumConstant,
-              ),
-            AnimatedContainer(
-              duration: Duration(
-                milliseconds: 150,
-              ),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: showCloseButton ? Colors.white : Colors.transparent,
-                ),
-              ),
-              alignment: Alignment.center,
-              // transitionBuilder: (child, animation) {
-              //   return ScaleTransition(
-              //     scale: animation,
-              //     child: child,
-              //   );
-              // },
-              child: showCloseButton
-                  ? GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showCloseButton = false;
-                          ref
-                              .read(notificationInterestProvider.state)
-                              .update((state) => null);
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Icon(
-                          Icons.close,
-                        ),
-                      ),
-                    )
-                  : SizedBox.shrink(),
-            ),
-            AnimatedSize(
-              duration: Duration(milliseconds: 150),
-              child: SizedBox(
-                width: showCloseButton ? 20 : 0,
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.all(0).copyWith(
-                    left: showCloseButton ? 0 : 20,
+    return TweenAnimationBuilder<Offset>(
+        tween: Tween(
+            begin: Offset(Sizescaleconfig.screenwidth!, 0), end: Offset.zero),
+        duration: Duration(milliseconds: 300),
+        child: SizedBox(
+            height: 34,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (showCloseButton)
+                  SizedBox(
+                    width: kPaddingMediumConstant,
                   ),
-                  itemCount: activeInterests.length,
-                  itemBuilder: (context, index) {
-                    final interest = activeInterests[index];
-
-                    return NotificationTypeChip(
-                        value: interest.name,
-                        selectedValue: selectedValue,
-                        onTap: (value) {
-                          if (selectedValue != value) {
-                            setState(() {
-                              showCloseButton = true;
-                              ref
-                                  .read(notificationInterestProvider.state)
-                                  .update((state) => value);
-                            });
-                          } else {
+                AnimatedContainer(
+                  duration: Duration(
+                    milliseconds: 150,
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color:
+                          showCloseButton ? Colors.white : Colors.transparent,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  // transitionBuilder: (child, animation) {
+                  //   return ScaleTransition(
+                  //     scale: animation,
+                  //     child: child,
+                  //   );
+                  // },
+                  child: showCloseButton
+                      ? GestureDetector(
+                          onTap: () {
                             setState(() {
                               showCloseButton = false;
                               ref
                                   .read(notificationInterestProvider.state)
                                   .update((state) => null);
                             });
-                          }
-                        });
-                  }),
-            ),
-          ],
-        ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: Icon(
+                              Icons.close,
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                ),
+                AnimatedSize(
+                  duration: Duration(milliseconds: 150),
+                  child: SizedBox(
+                    width: showCloseButton ? 20 : 0,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.all(0).copyWith(
+                        left: showCloseButton ? 0 : 20,
+                      ),
+                      itemCount: activeInterests.length,
+                      itemBuilder: (context, index) {
+                        final interest = activeInterests[index];
+
+                        return NotificationTypeChip(
+                            value: interest.name,
+                            selectedValue: selectedValue,
+                            onTap: (value) {
+                              if (selectedValue != value) {
+                                setState(() {
+                                  showCloseButton = true;
+                                  ref
+                                      .read(notificationInterestProvider.state)
+                                      .update((state) => value);
+                                });
+                              } else {
+                                setState(() {
+                                  showCloseButton = false;
+                                  ref
+                                      .read(notificationInterestProvider.state)
+                                      .update((state) => null);
+                                });
+                              }
+                            });
+                      }),
+                ),
+              ],
+            )),
+        builder: (context, value, child) {
+          return Transform.translate(
+            offset: value,
+            child: child,
+          );
+        });
   }
 }
 
