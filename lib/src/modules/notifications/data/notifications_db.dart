@@ -12,7 +12,7 @@ class NotificationsDatabase implements NotificationsDbAB {
     if (notificationData == null) {
       final documentSnapshot = await notificationsCollectionRef
           .where("uid", isEqualTo: userId)
-          .where("typeId", isEqualTo: notificationType)
+          .where("interest", isEqualTo: notificationType)
           .orderBy("createdAt", descending: true)
           .limit(20)
           .get();
@@ -24,7 +24,7 @@ class NotificationsDatabase implements NotificationsDbAB {
     } else {
       final documentSnapshot = await notificationsCollectionRef
           .where("uid", isEqualTo: userId)
-          .where("typeId", isEqualTo: notificationType)
+          .where("interest", isEqualTo: notificationType)
           .orderBy("createdAt", descending: true)
           .startAfter([notificationData.createdAt])
           .limit(20)
