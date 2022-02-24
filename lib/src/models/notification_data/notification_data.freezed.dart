@@ -23,12 +23,14 @@ class _$NotificationDataTearOff {
   const _$NotificationDataTearOff();
 
   _NotificationData call(
-      {required String id,
+      {required String typeId,
+      required String id,
       String? title,
       String? body,
       @DatetimeTimestampConverter() required DateTime createdAt,
       Map<String, dynamic>? data}) {
     return _NotificationData(
+      typeId: typeId,
       id: id,
       title: title,
       body: body,
@@ -47,6 +49,7 @@ const $NotificationData = _$NotificationDataTearOff();
 
 /// @nodoc
 mixin _$NotificationData {
+  String get typeId => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
@@ -66,7 +69,8 @@ abstract class $NotificationDataCopyWith<$Res> {
           NotificationData value, $Res Function(NotificationData) then) =
       _$NotificationDataCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {String typeId,
+      String id,
       String? title,
       String? body,
       @DatetimeTimestampConverter() DateTime createdAt,
@@ -84,6 +88,7 @@ class _$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? typeId = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? body = freezed,
@@ -91,6 +96,10 @@ class _$NotificationDataCopyWithImpl<$Res>
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
+      typeId: typeId == freezed
+          ? _value.typeId
+          : typeId // ignore: cast_nullable_to_non_nullable
+              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -123,7 +132,8 @@ abstract class _$NotificationDataCopyWith<$Res>
       __$NotificationDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {String typeId,
+      String id,
       String? title,
       String? body,
       @DatetimeTimestampConverter() DateTime createdAt,
@@ -143,6 +153,7 @@ class __$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? typeId = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? body = freezed,
@@ -150,6 +161,10 @@ class __$NotificationDataCopyWithImpl<$Res>
     Object? data = freezed,
   }) {
     return _then(_NotificationData(
+      typeId: typeId == freezed
+          ? _value.typeId
+          : typeId // ignore: cast_nullable_to_non_nullable
+              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -179,7 +194,8 @@ class __$NotificationDataCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_NotificationData extends _NotificationData {
   const _$_NotificationData(
-      {required this.id,
+      {required this.typeId,
+      required this.id,
       this.title,
       this.body,
       @DatetimeTimestampConverter() required this.createdAt,
@@ -189,6 +205,8 @@ class _$_NotificationData extends _NotificationData {
   factory _$_NotificationData.fromJson(Map<String, dynamic> json) =>
       _$$_NotificationDataFromJson(json);
 
+  @override
+  final String typeId;
   @override
   final String id;
   @override
@@ -203,7 +221,7 @@ class _$_NotificationData extends _NotificationData {
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, title: $title, body: $body, createdAt: $createdAt, data: $data)';
+    return 'NotificationData(typeId: $typeId, id: $id, title: $title, body: $body, createdAt: $createdAt, data: $data)';
   }
 
   @override
@@ -211,6 +229,7 @@ class _$_NotificationData extends _NotificationData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NotificationData &&
+            const DeepCollectionEquality().equals(other.typeId, typeId) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
@@ -221,6 +240,7 @@ class _$_NotificationData extends _NotificationData {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(typeId),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
@@ -240,7 +260,8 @@ class _$_NotificationData extends _NotificationData {
 
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
-      {required String id,
+      {required String typeId,
+      required String id,
       String? title,
       String? body,
       @DatetimeTimestampConverter() required DateTime createdAt,
@@ -250,6 +271,8 @@ abstract class _NotificationData extends NotificationData {
   factory _NotificationData.fromJson(Map<String, dynamic> json) =
       _$_NotificationData.fromJson;
 
+  @override
+  String get typeId;
   @override
   String get id;
   @override

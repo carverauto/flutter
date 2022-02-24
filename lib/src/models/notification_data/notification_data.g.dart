@@ -8,6 +8,7 @@ part of 'notification_data.dart';
 
 _$_NotificationData _$$_NotificationDataFromJson(Map<String, dynamic> json) =>
     _$_NotificationData(
+      typeId: json['typeId'] as String,
       id: json['id'] as String,
       title: json['title'] as String?,
       body: json['body'] as String?,
@@ -18,6 +19,7 @@ _$_NotificationData _$$_NotificationDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_NotificationDataToJson(_$_NotificationData instance) =>
     <String, dynamic>{
+      'typeId': instance.typeId,
       'id': instance.id,
       'title': instance.title,
       'body': instance.body,

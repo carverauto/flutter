@@ -10,6 +10,7 @@ abstract class NotificationData implements _$NotificationData {
   const NotificationData._();
   @JsonSerializable(explicitToJson: true)
   const factory NotificationData({
+    required String typeId,
     required String id,
     String? title,
     String? body,
