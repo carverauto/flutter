@@ -91,7 +91,7 @@ class RecentChasesListViewAll extends ConsumerWidget {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: PaginatedListBottom(
+                  child: PaginatedListBottom<Chase>(
                       chasesPaginationProvider: chasesPaginationProvider),
                 ),
               ],

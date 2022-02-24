@@ -8,6 +8,7 @@ import 'package:chaseapp/src/modules/check_permissions/view/pages/request_permis
 import 'package:chaseapp/src/modules/credits/view/credits.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases_view_all.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
+import 'package:chaseapp/src/modules/notifications/view/pages/notifications_view.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/onboarding.dart';
 import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
 import 'package:chaseapp/src/modules/settings/view/pages/settings_page.dart';
@@ -63,6 +64,8 @@ class Routes {
         return MaterialPageRoute<bool>(builder: (_) => AboutUsView());
       case RouteName.SETTINGS:
         return MaterialPageRoute<bool>(builder: (_) => SettingsView());
+      case RouteName.NOTIFICATIONS:
+        return MaterialPageRoute<bool>(builder: (_) => NotificationsView());
       default:
         return MaterialPageRoute<void>(
           builder: (context) => Scaffold(

@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
@@ -17,10 +16,10 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.axis,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<Chase>,
-      PaginationNotifierState<Chase>> watchThisStateNotifierProvider;
+  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
+      watchThisStateNotifierProvider;
 
-  final Widget Function(T data, ScrollController controller) builder;
+  final Widget Function(List<T> data, ScrollController controller) builder;
 
   final ScrollController scrollController;
   final Logger logger;
@@ -41,7 +40,7 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     return ref.watch(watchThisStateNotifierProvider).when(
       data: (data) {
         return builder(
-          data as T,
+          data,
           scrollController,
         );
       },
@@ -64,13 +63,13 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
       },
       onGoingLoading: (data) {
         return builder(
-          data as T,
+          data,
           scrollController,
         );
       },
       onGoingError: (data, error, stk) {
         return builder(
-          data as T,
+          data,
           scrollController,
         );
       },

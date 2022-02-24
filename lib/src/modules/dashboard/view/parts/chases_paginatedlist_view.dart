@@ -30,7 +30,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverProviderPaginatedStateNotifierBuilder<List<Chase>>(
+    return SliverProviderPaginatedStateNotifierBuilder<Chase>(
         watchThisStateNotifierProvider: chasesPaginationProvider,
         logger: logger,
         scrollController: scrollController,

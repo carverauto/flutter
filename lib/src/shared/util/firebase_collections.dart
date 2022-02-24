@@ -10,7 +10,8 @@ final _firestore = FirebaseFirestore.instance;
 
 final CollectionReference chasesCollection = _firestore.collection('chases');
 final CollectionReference usersCollection = _firestore.collection('users');
-// final CollectionReference notificationsCollection = _firestore.collection('users');
+final CollectionReference notificationsCollection =
+    _firestore.collection('notifications');
 
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(
@@ -37,23 +38,15 @@ final CollectionReference<Chase> chasesCollectionRef =
   },
 );
 
-CollectionReference<NotificationData> notificationsCollectionRef(
-    String userId) {
-  final notificationsCollection = _firestore
-      .collection('users')
-      .doc(userId)
-      .collection('notifications')
-      .withConverter<NotificationData>(
-    fromFirestore: (data, _) {
-      final rawData = data.data()!;
-      rawData["id"] = data.id;
+final notificationsCollectionRef =
+    notificationsCollection.withConverter<NotificationData>(
+  fromFirestore: (data, _) {
+    final rawData = data.data()!;
+    rawData["id"] = data.id;
 
-      return NotificationData.fromJson(rawData);
-    },
-    toFirestore: (data, _) {
-      return data.toJson();
-    },
-  );
-
-  return notificationsCollection;
-}
+    return NotificationData.fromJson(rawData);
+  },
+  toFirestore: (data, _) {
+    return data.toJson();
+  },
+);
