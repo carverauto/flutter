@@ -15,7 +15,9 @@ class NotificationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final notificationsProvider = notificationsStreamProvider(logger);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Notifications"),
+      ),
       body: Column(
         children: [
           SizedBox(
@@ -33,31 +35,38 @@ class NotificationsView extends StatelessWidget {
   }
 }
 
-class NotificationTypes extends StatefulWidget {
+class NotificationTypes extends ConsumerStatefulWidget {
   NotificationTypes({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NotificationTypes> createState() => _NotificationTypesState();
+  ConsumerState<NotificationTypes> createState() => _NotificationTypesState();
 }
 
-class _NotificationTypesState extends State<NotificationTypes> {
+class _NotificationTypesState extends ConsumerState<NotificationTypes> {
   bool showCloseButton = false;
 
   @override
   void initState() {
     super.initState();
+    ref.refresh(notificationInterestProvider);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 34,
-      child: Consumer(builder: (context, ref, child) {
-        final selectedValue = ref.watch(notificationTypeIdProvider);
+    final selectedValue = ref.watch(notificationInterestProvider);
 
-        return Row(
+    return SizedBox(
+        height: 34,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -88,7 +97,7 @@ class _NotificationTypesState extends State<NotificationTypes> {
                         setState(() {
                           showCloseButton = false;
                           ref
-                              .read(notificationTypeIdProvider.state)
+                              .read(notificationInterestProvider.state)
                               .update((state) => null);
                         });
                       },
@@ -125,14 +134,14 @@ class _NotificationTypesState extends State<NotificationTypes> {
                             setState(() {
                               showCloseButton = true;
                               ref
-                                  .read(notificationTypeIdProvider.state)
+                                  .read(notificationInterestProvider.state)
                                   .update((state) => value);
                             });
                           } else {
                             setState(() {
                               showCloseButton = false;
                               ref
-                                  .read(notificationTypeIdProvider.state)
+                                  .read(notificationInterestProvider.state)
                                   .update((state) => null);
                             });
                           }
@@ -140,9 +149,7 @@ class _NotificationTypesState extends State<NotificationTypes> {
                   }),
             ),
           ],
-        );
-      }),
-    );
+        ));
   }
 }
 
@@ -176,7 +183,10 @@ class NotificationTypeChip extends StatelessWidget {
             height: 34,
             padding: EdgeInsets.symmetric(horizontal: kButtonPaddingMedium),
             decoration: BoxDecoration(
-              color: selectedValue == value ? Colors.green : Colors.grey,
+              color: selectedValue == value ? Colors.green : null,
+              border: Border.all(
+                color: Colors.white,
+              ),
               borderRadius: BorderRadius.circular(25),
             ),
             alignment: Alignment.center,

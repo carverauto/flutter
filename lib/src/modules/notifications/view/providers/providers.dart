@@ -9,7 +9,7 @@ import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-final notificationTypeIdProvider = StateProvider<String?>((ref) => null);
+final notificationInterestProvider = StateProvider<String?>((ref) => null);
 final notificationDbProvider =
     Provider.autoDispose<NotificationsDbAB>((ref) => NotificationsDatabase());
 final notificationRepoProvider = Provider.autoDispose<NotificationsRepoAB>(
@@ -19,7 +19,7 @@ final notificationsStreamProvider = StateNotifierProvider.family<
     PaginationNotifier<NotificationData>,
     PaginationNotifierState<NotificationData>,
     Logger>((ref, logger) {
-  final notificationType = ref.watch(notificationTypeIdProvider);
+  final notificationType = ref.watch(notificationInterestProvider);
   final user = ref.read(firebaseAuthProvider).currentUser!;
 
   return PaginationNotifier(
