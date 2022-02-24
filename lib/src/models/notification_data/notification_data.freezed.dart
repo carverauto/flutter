@@ -23,15 +23,19 @@ class _$NotificationDataTearOff {
   const _$NotificationDataTearOff();
 
   _NotificationData call(
-      {required String id,
+      {required String interest,
+      required String id,
       String? title,
       String? body,
+      String? image,
       @DatetimeTimestampConverter() required DateTime createdAt,
       Map<String, dynamic>? data}) {
     return _NotificationData(
+      interest: interest,
       id: id,
       title: title,
       body: body,
+      image: image,
       createdAt: createdAt,
       data: data,
     );
@@ -47,9 +51,11 @@ const $NotificationData = _$NotificationDataTearOff();
 
 /// @nodoc
 mixin _$NotificationData {
+  String get interest => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
+  String? get image => throw _privateConstructorUsedError;
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   Map<String, dynamic>? get data => throw _privateConstructorUsedError;
@@ -66,9 +72,11 @@ abstract class $NotificationDataCopyWith<$Res> {
           NotificationData value, $Res Function(NotificationData) then) =
       _$NotificationDataCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {String interest,
+      String id,
       String? title,
       String? body,
+      String? image,
       @DatetimeTimestampConverter() DateTime createdAt,
       Map<String, dynamic>? data});
 }
@@ -84,13 +92,19 @@ class _$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? interest = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? body = freezed,
+    Object? image = freezed,
     Object? createdAt = freezed,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
+      interest: interest == freezed
+          ? _value.interest
+          : interest // ignore: cast_nullable_to_non_nullable
+              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -102,6 +116,10 @@ class _$NotificationDataCopyWithImpl<$Res>
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -123,9 +141,11 @@ abstract class _$NotificationDataCopyWith<$Res>
       __$NotificationDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {String interest,
+      String id,
       String? title,
       String? body,
+      String? image,
       @DatetimeTimestampConverter() DateTime createdAt,
       Map<String, dynamic>? data});
 }
@@ -143,13 +163,19 @@ class __$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? interest = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? body = freezed,
+    Object? image = freezed,
     Object? createdAt = freezed,
     Object? data = freezed,
   }) {
     return _then(_NotificationData(
+      interest: interest == freezed
+          ? _value.interest
+          : interest // ignore: cast_nullable_to_non_nullable
+              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -161,6 +187,10 @@ class __$NotificationDataCopyWithImpl<$Res>
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -179,9 +209,11 @@ class __$NotificationDataCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_NotificationData extends _NotificationData {
   const _$_NotificationData(
-      {required this.id,
+      {required this.interest,
+      required this.id,
       this.title,
       this.body,
+      this.image,
       @DatetimeTimestampConverter() required this.createdAt,
       this.data})
       : super._();
@@ -190,11 +222,15 @@ class _$_NotificationData extends _NotificationData {
       _$$_NotificationDataFromJson(json);
 
   @override
+  final String interest;
+  @override
   final String id;
   @override
   final String? title;
   @override
   final String? body;
+  @override
+  final String? image;
   @override
   @DatetimeTimestampConverter()
   final DateTime createdAt;
@@ -203,7 +239,7 @@ class _$_NotificationData extends _NotificationData {
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, title: $title, body: $body, createdAt: $createdAt, data: $data)';
+    return 'NotificationData(interest: $interest, id: $id, title: $title, body: $body, image: $image, createdAt: $createdAt, data: $data)';
   }
 
   @override
@@ -211,9 +247,11 @@ class _$_NotificationData extends _NotificationData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NotificationData &&
+            const DeepCollectionEquality().equals(other.interest, interest) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
+            const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.data, data));
   }
@@ -221,9 +259,11 @@ class _$_NotificationData extends _NotificationData {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(interest),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
+      const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(data));
 
@@ -240,9 +280,11 @@ class _$_NotificationData extends _NotificationData {
 
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
-      {required String id,
+      {required String interest,
+      required String id,
       String? title,
       String? body,
+      String? image,
       @DatetimeTimestampConverter() required DateTime createdAt,
       Map<String, dynamic>? data}) = _$_NotificationData;
   const _NotificationData._() : super._();
@@ -251,11 +293,15 @@ abstract class _NotificationData extends NotificationData {
       _$_NotificationData.fromJson;
 
   @override
+  String get interest;
+  @override
   String get id;
   @override
   String? get title;
   @override
   String? get body;
+  @override
+  String? get image;
   @override
   @DatetimeTimestampConverter()
   DateTime get createdAt;

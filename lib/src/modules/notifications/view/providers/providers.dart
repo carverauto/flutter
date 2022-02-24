@@ -1,4 +1,4 @@
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db.dart';
@@ -9,17 +9,18 @@ import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-final notificationTypeIdProvider = StateProvider<String?>((ref) => null);
+final notificationInterestProvider = StateProvider<String?>((ref) => null);
 final notificationDbProvider =
-    Provider<NotificationsDbAB>((ref) => NotificationsDatabase());
-final notificationRepoProvider =
-    Provider<NotificationsRepoAB>((ref) => NotificationsRepository(ref.read));
+    Provider.autoDispose<NotificationsDbAB>((ref) => NotificationsDatabase());
+final notificationRepoProvider = Provider.autoDispose<NotificationsRepoAB>(
+    (ref) => NotificationsRepository(ref.read));
 
 final notificationsStreamProvider = StateNotifierProvider.family<
     PaginationNotifier<NotificationData>,
     PaginationNotifierState<NotificationData>,
     Logger>((ref, logger) {
-  final notificationType = ref.watch(notificationTypeIdProvider);
+  final notificationType = ref.watch(notificationInterestProvider);
+  final user = ref.read(firebaseAuthProvider).currentUser!;
 
   return PaginationNotifier(
       hitsPerPage: 20,
@@ -28,7 +29,6 @@ final notificationsStreamProvider = StateNotifierProvider.family<
         notification,
         offset,
       ) async {
-        final user = await ref.read(userStreamProvider.future);
         return ref
             .read(notificationRepoProvider)
             .fetchNotifications(notification, notificationType, user.uid);

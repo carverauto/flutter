@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:pusher_beams/pusher_beams.dart';
 
 class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   PostLoginStateNotifier(
@@ -20,8 +22,22 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
       await _initFirebaseActions(user, userData);
-      await PusherBeams.instance.addDeviceInterest("chases-notifications");
-      await PusherBeams.instance.addDeviceInterest("firehose-notifications");
+
+      // get users device interests
+      // if does not containe any compulsory interests then add them here
+      // like "chases-notifications"
+      final usersInterests =
+          await _read(pusherBeamsProvider).getDeviceInterests();
+
+      log(usersInterests.toString());
+      //TODO: Get available active interests list from firebase
+
+      for (Interest interest in activeInterests) {
+        if (interest.isCompulsory && !usersInterests.contains(interest.name)) {
+          _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+        }
+      }
+
       isInitialized = true;
     }
   }
@@ -58,4 +74,16 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
       }
     }
   }
+}
+
+List<Interest> activeInterests = [
+  Interest(name: "chases-notifications", isCompulsory: true),
+  Interest(name: "firehose-notfiications", isCompulsory: false),
+  Interest(name: "world", isCompulsory: false),
+];
+
+class Interest {
+  Interest({required this.name, required this.isCompulsory});
+  final String name;
+  final bool isCompulsory;
 }

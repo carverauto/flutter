@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
 
 class ChaseAppBar extends StatelessWidget {
@@ -15,7 +16,7 @@ class ChaseAppBar extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
-            throw UnimplementedError();
+            Navigator.pushNamed(context, RouteName.NOTIFICATIONS);
           },
           icon: Icon(
             Icons.notifications_outlined,

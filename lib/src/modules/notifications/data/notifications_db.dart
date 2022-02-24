@@ -10,9 +10,10 @@ class NotificationsDatabase implements NotificationsDbAB {
       String? notificationType,
       String userId) async {
     if (notificationData == null) {
-      final documentSnapshot = await notificationsCollectionRef(userId)
-          .where("id", isEqualTo: notificationType)
-          .orderBy("CreatedAt", descending: true)
+      final documentSnapshot = await notificationsCollectionRef
+          .where("uid", isEqualTo: userId)
+          .where("interest", isEqualTo: notificationType)
+          .orderBy("createdAt", descending: true)
           .limit(20)
           .get();
       return documentSnapshot.docs
@@ -21,9 +22,10 @@ class NotificationsDatabase implements NotificationsDbAB {
           )
           .toList();
     } else {
-      final documentSnapshot = await notificationsCollectionRef(userId)
-          .where("id", isEqualTo: notificationType)
-          .orderBy("CreatedAt", descending: true)
+      final documentSnapshot = await notificationsCollectionRef
+          .where("uid", isEqualTo: userId)
+          .where("interest", isEqualTo: notificationType)
+          .orderBy("createdAt", descending: true)
           .startAfter([notificationData.createdAt])
           .limit(20)
           .get();
