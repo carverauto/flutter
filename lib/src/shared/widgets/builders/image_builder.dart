@@ -6,9 +6,11 @@ class AdaptiveImageBuilder extends StatelessWidget {
   const AdaptiveImageBuilder({
     Key? key,
     required this.url,
+    this.showLoading = true,
   }) : super(key: key);
 
   final String url;
+  final bool showLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,15 @@ class AdaptiveImageBuilder extends StatelessWidget {
           return child;
         }
 
-        return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(
-              Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-        );
+        return showLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              )
+            : SizedBox.shrink();
       },
     );
   }
