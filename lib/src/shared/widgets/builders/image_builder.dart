@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class AdaptiveImageBuilder extends StatelessWidget {
@@ -94,9 +95,9 @@ class AdaptiveImageProvider extends ImageProvider {
         final file = File.fromUri(uri);
         return FileImage(file);
       case 'http':
-        return NetworkImage(url);
+        return CachedNetworkImageProvider(url);
       case 'https':
-        return NetworkImage(url);
+        return CachedNetworkImageProvider(url);
       default:
         throw Exception('Invalid URL: ${uri.scheme}');
     }
