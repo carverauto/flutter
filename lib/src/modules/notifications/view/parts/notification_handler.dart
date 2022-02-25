@@ -11,8 +11,8 @@ Future<void> notificationHandler(
     BuildContext context, NotificationData notificationData,
     {Reader? read}) async {
   switch (notificationData.getInterestEnumFromName) {
-    case Interests.chasesnotifications:
-      if (notificationData.data?["id"] != null)
+    case Interests.chases:
+      if (notificationData.data?["chaseId"] != null)
         Navigator.pushNamed(
           context,
           RouteName.CHASE_VIEW,
