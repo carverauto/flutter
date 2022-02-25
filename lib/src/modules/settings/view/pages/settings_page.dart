@@ -1,8 +1,8 @@
 // import 'package:chaseapp/utils/routeNames.dart';
+import 'package:chaseapp/src/modules/notifications/view/parts/notification_settings.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pusher_beams/pusher_beams.dart';
 // import 'package:chaseapp/utils/deviceSize.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -56,98 +56,6 @@ class SettingsViewPage extends State<SettingsView> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class NotificationsSettings extends StatelessWidget {
-  const NotificationsSettings({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Notifications Settings"),
-      ),
-      body: Column(
-        children: [
-          ListTile(
-            leading: Icon(
-              Icons.notifications_outlined,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Live chase notifications',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-            trailing: Switch.adaptive(
-              value: true,
-              onChanged: (value) {},
-            ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.fire_extinguisher_outlined,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Firehose notifications',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-            trailing: FirehoseNotification(),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FirehoseNotification extends StatefulWidget {
-  const FirehoseNotification({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<FirehoseNotification> createState() => _FirehoseNotificationState();
-}
-
-class _FirehoseNotificationState extends State<FirehoseNotification> {
-  bool isAdded = true;
-
-  Future<void> checkForInterests() async {
-    final userInterests = await PusherBeams.instance.getDeviceInterests();
-
-    final isAdded = userInterests.contains('firehose-notfiications');
-
-    setState(() {
-      this.isAdded = isAdded;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    checkForInterests();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Switch.adaptive(
-      value: isAdded,
-      onChanged: (value) async {
-        // if (value) {
-        //   await PusherBeams.instance
-        //       .addDeviceInterest("firehose-notfiications");
-        // } else {
-        //   await PusherBeams.instance
-        //       .removeDeviceInterest("firehose-notfiications");
-        // }
-      },
     );
   }
 }
