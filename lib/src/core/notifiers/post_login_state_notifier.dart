@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,23 +21,34 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
-      await _initFirebaseActions(user, userData);
+      try {
+        await _initFirebaseActions(user, userData);
 
-      // get users device interests
-      // if does not containe any compulsory interests then add them here
-      // like "chases-notifications"
-      final usersInterests = await _read(usersInterestsStreamProvider.future);
+        await checkUsersInterests();
 
-      log(usersInterests.toString());
-      //TODO: Get available active interests list from firebase
-
-      for (Interest interest in activeInterests) {
-        if (interest.isCompulsory && !usersInterests.contains(interest.name)) {
-          _read(pusherBeamsProvider).addDeviceInterest(interest.name);
-        }
+        isInitialized = true;
+      } catch (e, stk) {
+        logger.severe("Error initializing post login actions", e, stk);
       }
+    }
+  }
 
-      isInitialized = true;
+  Future<void> checkUsersInterests() async {
+    try {
+      final usersInterests =
+          await _read(pusherBeamsProvider).getDeviceInterests();
+      final interests = await _read(notificationRepoProvider).fetchInterests();
+
+      await Future.forEach<Interest>(interests, (interest) async {
+        if (interest.isCompulsory) {
+          if (!usersInterests.contains(interest.name)) {
+            await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+          }
+        }
+      });
+    } catch (e, stk) {
+      logger.warning("Error checking users interests", e, stk);
+      rethrow;
     }
   }
 
@@ -71,19 +81,21 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
         _read(authRepoProvider).updateTokenWhenRefreshed(user);
       } catch (e, stk) {
         logger.warning("Error in initPostLogin Firebase Actions", e, stk);
+
+        rethrow;
       }
     }
   }
 }
 
-List<Interest> activeInterests = [
-  Interest(name: "chases-notifications", isCompulsory: true),
-  Interest(name: "firehose-notfiications", isCompulsory: false),
-  Interest(name: "world", isCompulsory: false),
-];
+// List<Interest> activeInterests = [
+//   Interest(name: "Chases", isCompulsory: true),
+//   Interest(name: "firehose-notfiications", isCompulsory: false),
+//   Interest(name: "world", isCompulsory: false),
+// ];
 
-class Interest {
-  Interest({required this.name, required this.isCompulsory});
-  final String name;
-  final bool isCompulsory;
-}
+// class Interest {
+//   Interest({required this.name, required this.isCompulsory});
+//   final String name;
+//   final bool isCompulsory;
+// }
