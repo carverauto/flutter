@@ -83,7 +83,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin {
                 children: <Widget>[
                   //TODO: Too big size
                   // TODO: Control this via Firebase remoteconfig - mfreeman
-                  Lottie.asset('assets/95044-love-dog.json',
+                  Lottie.asset('assets/egg-basket.json',
                       onLoaded: (composition) {
                     // TODO: Control the timer from Firebase as well
                     Timer(Duration(seconds: 4), () async {
