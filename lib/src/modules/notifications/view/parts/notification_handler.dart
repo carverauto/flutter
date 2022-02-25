@@ -7,6 +7,7 @@ import 'package:chaseapp/src/shared/widgets/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Used to responce to notification taps anywhere in the app and take proper actions.
 Future<void> notificationHandler(
     BuildContext context, NotificationData notificationData,
     {Reader? read}) async {
