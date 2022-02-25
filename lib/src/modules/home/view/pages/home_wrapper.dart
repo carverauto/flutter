@@ -96,7 +96,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           title: notification["title"] as String,
           body: notification["body"] as String?,
           data: data,
-          image: notification["image"] as String?,
+          image: data["image"] as String?,
           createdAt: notification["createdAt"] as DateTime?,
         );
         notificationHandler(context, notificationData);

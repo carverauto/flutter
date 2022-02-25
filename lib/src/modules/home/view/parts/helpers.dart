@@ -18,7 +18,7 @@ NotificationData getNotificationDataFromMessage(RemoteMessage message) {
     interest: data["interest"] as String,
     title: message.notification?.title ?? "NA",
     body: message.notification?.body ?? "NA",
-    image: imageUrl,
+    image: data["image"] as String?,
     data: data,
     id: data["id"] as String?,
     createdAt: data["createdAt"] as DateTime?,
