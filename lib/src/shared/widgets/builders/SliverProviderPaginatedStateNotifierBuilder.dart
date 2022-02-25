@@ -1,5 +1,5 @@
+import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';

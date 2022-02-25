@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
@@ -7,7 +8,6 @@ import 'package:chaseapp/src/modules/notifications/data/notifications_db.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db_ab.dart';
 import 'package:chaseapp/src/modules/notifications/domain/notifications_repo.dart';
 import 'package:chaseapp/src/modules/notifications/domain/notifications_repo_ab.dart';
-import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
