@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db_ab.dart';
 import 'package:chaseapp/src/shared/util/firebase_collections.dart';
@@ -35,5 +36,12 @@ class NotificationsDatabase implements NotificationsDbAB {
           )
           .toList();
     }
+  }
+
+  @override
+  Future<List<Interest>> fetchInterests() async {
+    final documentSnapshots = await interestsCollectionRef.get();
+
+    return documentSnapshots.docs.map((doc) => doc.data()).toList();
   }
 }

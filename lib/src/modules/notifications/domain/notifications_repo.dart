@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/notifications/domain/notifications_repo_ab.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
@@ -14,5 +15,11 @@ class NotificationsRepository implements NotificationsRepoAB {
       String userId) {
     return read(notificationDbProvider)
         .fetchNotifications(notificationData, notificationType, userId);
+  }
+
+  @override
+  Future<List<Interest>> fetchInterests() {
+    // TODO: implement fetchInterests
+    return read(notificationDbProvider).fetchInterests();
   }
 }
