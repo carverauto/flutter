@@ -41,10 +41,6 @@ final usersInterestsStreamProvider =
     FutureProvider.autoDispose<List<String?>>((ref) async {
   final usersInterests =
       await ref.read(pusherBeamsProvider).getDeviceInterests();
-  // ref.watch(pusherBeamsProvider).onInterestChanges((interests) async* {
-  //   log("Interests Changed");
-  //   yield interests;
-  // });
   return usersInterests;
 });
 
