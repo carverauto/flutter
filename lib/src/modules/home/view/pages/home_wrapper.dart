@@ -15,18 +15,42 @@ import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> handlebgmessage(NotificationData notificationData) async {
-  log("Background message arrived--->" + notificationData.data.toString());
+NotificationData getNotificationDataFromMessage(RemoteMessage message) {
+  final data = message.data;
 
-  switch (notificationData.getInterestEnumFromName) {
-    case Interests.appUpdates:
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final bool should_fetch =
-          notificationData.data?["config_state"] == "stale";
-      await prefs.setBool("should_fetch", should_fetch);
-      break;
+  final imageUrl = Platform.isAndroid
+      ? message.notification?.android?.imageUrl
+      : message.notification?.apple?.imageUrl;
 
-    default:
+  final notificationData = NotificationData(
+    interest: data["interest"] as String,
+    title: message.notification?.title ?? "NA",
+    body: message.notification?.body ?? "NA",
+    image: imageUrl,
+    data: data,
+    id: data["id"] as String?,
+    createdAt: data["createdAt"] as DateTime?,
+  );
+
+  return notificationData;
+}
+
+Future<void> handlebgmessage(RemoteMessage message) async {
+  if (message.data["interest"] != null) {
+    final notificationData = getNotificationDataFromMessage(message);
+    //   handlebgmessage(notificationData);
+    log("Background message arrived--->" + notificationData.data.toString());
+
+    switch (notificationData.getInterestEnumFromName) {
+      case Interests.appUpdates:
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final bool should_fetch =
+            notificationData.data?["config_state"] == "stale";
+        await prefs.setBool("should_fetch", should_fetch);
+        break;
+
+      default:
+    }
   }
 
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -59,26 +83,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     if (deepLink != null) {
       await navigateToView(deepLink);
     }
-  }
-
-  NotificationData getNotificationDataFromMessage(RemoteMessage message) {
-    final data = message.data;
-
-    final imageUrl = Platform.isAndroid
-        ? message.notification?.android?.imageUrl
-        : message.notification?.apple?.imageUrl;
-
-    final notificationData = NotificationData(
-      interest: data["interest"] as String,
-      title: message.notification?.title ?? "NA",
-      body: message.notification?.body ?? "NA",
-      image: imageUrl,
-      data: data,
-      id: data["id"] as String?,
-      createdAt: data["createdAt"] as DateTime?,
-    );
-
-    return notificationData;
   }
 
   void handlenotifications(RemoteMessage message) async {
@@ -195,14 +199,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handledynamiclink();
 
     // Notifications Receiver Configurations
-    FirebaseMessaging.onBackgroundMessage((message) async {
-      if (message.data["interest"] != null) {
-        final notificationData = getNotificationDataFromMessage(message);
-        handlebgmessage(notificationData);
-      } else {
-        logger.warning("Notification data didn't contained interest field");
-      }
-    });
+    FirebaseMessaging.onBackgroundMessage(handlebgmessage);
 
     handleMessagesFromTerminatedState();
     handlemessagesthatopenedtheappFromBackgroundState();
