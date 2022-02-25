@@ -27,7 +27,8 @@ class Routes {
         : Map<String, dynamic>();
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute<void>(builder: (context) => const Splash());
+        return MaterialPageRoute<void>(
+            builder: (context) => const SplashView());
       case RouteName.ONBOARDING_VIEW:
         return MaterialPageRoute<void>(builder: (context) => OnBoardingView());
       case RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER:
