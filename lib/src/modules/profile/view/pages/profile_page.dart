@@ -6,17 +6,16 @@ import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-class ProfileView extends ConsumerStatefulWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ProfileView> createState() => _ProfileViewState();
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends ConsumerState<ProfileView> {
+class _ProfileViewState extends State<ProfileView> {
   final Logger logger = Logger("Profile");
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       body: ProviderStateBuilder<UserData>(
         watchThisProvider: userStreamProvider,
         logger: logger,
-        builder: (user) {
+        builder: (user, ref) {
           return Padding(
             padding: const EdgeInsets.only(
               top: kPaddingMediumConstant,

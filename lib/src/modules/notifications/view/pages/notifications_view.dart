@@ -19,26 +19,26 @@ class NotificationsView extends StatelessWidget {
       appBar: AppBar(
         title: Text("Notifications"),
       ),
-      body: ProviderStateBuilder<List<String?>>(
-        watchThisProvider: usersInterestsStreamProvider,
-        logger: logger,
-        builder: (userInterests) {
-          return Column(
-            children: [
-              SizedBox(
-                height: kItemsSpacingMediumConstant,
-              ),
-              NotificationTypes(
+      body: Column(
+        children: [
+          SizedBox(
+            height: kItemsSpacingMediumConstant,
+          ),
+          ProviderStateBuilder<List<String?>>(
+            watchThisProvider: usersInterestsStreamProvider,
+            logger: logger,
+            builder: (userInterests, ref) {
+              return NotificationTypes(
                 userInterests: userInterests,
-              ),
-              Expanded(
-                child: NotificationsViewAll(
-                  chasesPaginationProvider: notificationsProvider,
-                ),
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+          Expanded(
+            child: NotificationsViewAll(
+              chasesPaginationProvider: notificationsProvider,
+            ),
+          )
+        ],
       ),
     );
   }

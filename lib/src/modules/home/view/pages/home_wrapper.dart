@@ -176,7 +176,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     }, onError: (Object error, StackTrace stackTrace) {
       log("Error while recieving dynamic link", error: error);
     });
-
+    // Pusher doesn't seem to have proper Bg message handlers
+    // Till we figure that out, we can use firebase for sending background/silent notifications
     PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
       log("Pusher Message Recieved in the foreground--->" +
           notification.toString());

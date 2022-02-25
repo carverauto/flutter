@@ -17,7 +17,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
-  final Widget Function(T data) builder;
+  final Widget Function(T data, WidgetRef ref) builder;
   final Widget Function(Object e, StackTrace? stk)? errorBuilder;
 
   final Logger logger;
@@ -29,7 +29,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
         data: (data) {
-          return builder(data);
+          return builder(data, ref);
         },
         error: (e, stk) {
           logger.severe(

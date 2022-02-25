@@ -58,13 +58,13 @@ class ChatsViewRow extends ConsumerWidget {
           ),
         ),
         ProviderStateBuilder(
-          builder: (connectionStatus) {
+          builder: (connectionStatus, ref) {
             switch (connectionStatus) {
               case ConnectionStatus.connected:
                 return ProviderStateBuilder<Channel>(
                   watchThisProvider: chatChannelProvider(chase),
                   logger: logger,
-                  builder: (channel) {
+                  builder: (channel, ref) {
                     final messages = channel.state?.messages;
                     if (messages == null || messages.isEmpty)
                       return GestureDetector(
