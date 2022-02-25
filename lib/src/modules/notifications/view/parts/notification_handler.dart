@@ -1,6 +1,5 @@
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_dialog.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
@@ -22,11 +21,13 @@ Future<void> notificationHandler(
       );
       break;
     case Interests.appUpdates:
-      handlebgmessage(notificationData).then<void>(
-        (value) => read != null
-            ? read(checkForUpdateStateNotifier.notifier).checkForUpdate(true)
-            : null,
-      );
+      if (read != null)
+        read(checkForUpdateStateNotifier.notifier).checkForUpdate(true);
+      // handlebgmessage(notificationData).then<void>(
+      //   (value) => read != null
+      //       ? read(checkForUpdateStateNotifier.notifier).checkForUpdate(true)
+      //       : null,
+      // );
       break;
 
     default:
