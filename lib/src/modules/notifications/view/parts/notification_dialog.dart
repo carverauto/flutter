@@ -25,7 +25,7 @@ class NotificationDialog extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: Hero(
-                tag: notificationData.id,
+                tag: notificationData.id ?? "NA",
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     boxShadow: [

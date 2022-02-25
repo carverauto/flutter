@@ -5,14 +5,17 @@ Interests getInterestEnumFromString(String interest) {
   switch (interest) {
     case "chases-notifications":
       return Interests.chasesnotifications;
+    case "appUpdates":
+      return Interests.appUpdates;
     default:
-      return Interests.OTHER;
+      return Interests.other;
   }
 }
 
 enum Interests {
   chasesnotifications,
-  OTHER,
+  appUpdates,
+  other,
 }
 
 extension InterestEnum on Interest {
@@ -20,8 +23,10 @@ extension InterestEnum on Interest {
     switch (this.name) {
       case "chases-notifications":
         return Interests.chasesnotifications;
+      case "appUpdates":
+        return Interests.appUpdates;
       default:
-        return Interests.OTHER;
+        return Interests.other;
     }
   }
 }
@@ -31,8 +36,10 @@ extension NotificationInterestEnum on NotificationData {
     switch (this.interest) {
       case "chases-notifications":
         return Interests.chasesnotifications;
+      case "appUpdates":
+        return Interests.appUpdates;
       default:
-        return Interests.OTHER;
+        return Interests.other;
     }
   }
 }
