@@ -24,11 +24,11 @@ class _$NotificationDataTearOff {
 
   _NotificationData call(
       {required String interest,
-      required String id,
+      String? id,
       String? title,
       String? body,
       String? image,
-      @DatetimeTimestampConverter() required DateTime createdAt,
+      @DatetimeTimestampNullableConverter() DateTime? createdAt,
       Map<String, dynamic>? data}) {
     return _NotificationData(
       interest: interest,
@@ -52,12 +52,12 @@ const $NotificationData = _$NotificationDataTearOff();
 /// @nodoc
 mixin _$NotificationData {
   String get interest => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get body => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
-  @DatetimeTimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  @DatetimeTimestampNullableConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   Map<String, dynamic>? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -73,11 +73,11 @@ abstract class $NotificationDataCopyWith<$Res> {
       _$NotificationDataCopyWithImpl<$Res>;
   $Res call(
       {String interest,
-      String id,
+      String? id,
       String? title,
       String? body,
       String? image,
-      @DatetimeTimestampConverter() DateTime createdAt,
+      @DatetimeTimestampNullableConverter() DateTime? createdAt,
       Map<String, dynamic>? data});
 }
 
@@ -108,7 +108,7 @@ class _$NotificationDataCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -124,7 +124,7 @@ class _$NotificationDataCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -142,11 +142,11 @@ abstract class _$NotificationDataCopyWith<$Res>
   @override
   $Res call(
       {String interest,
-      String id,
+      String? id,
       String? title,
       String? body,
       String? image,
-      @DatetimeTimestampConverter() DateTime createdAt,
+      @DatetimeTimestampNullableConverter() DateTime? createdAt,
       Map<String, dynamic>? data});
 }
 
@@ -179,7 +179,7 @@ class __$NotificationDataCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -195,7 +195,7 @@ class __$NotificationDataCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -210,11 +210,11 @@ class __$NotificationDataCopyWithImpl<$Res>
 class _$_NotificationData extends _NotificationData {
   const _$_NotificationData(
       {required this.interest,
-      required this.id,
+      this.id,
       this.title,
       this.body,
       this.image,
-      @DatetimeTimestampConverter() required this.createdAt,
+      @DatetimeTimestampNullableConverter() this.createdAt,
       this.data})
       : super._();
 
@@ -224,7 +224,7 @@ class _$_NotificationData extends _NotificationData {
   @override
   final String interest;
   @override
-  final String id;
+  final String? id;
   @override
   final String? title;
   @override
@@ -232,8 +232,8 @@ class _$_NotificationData extends _NotificationData {
   @override
   final String? image;
   @override
-  @DatetimeTimestampConverter()
-  final DateTime createdAt;
+  @DatetimeTimestampNullableConverter()
+  final DateTime? createdAt;
   @override
   final Map<String, dynamic>? data;
 
@@ -281,11 +281,11 @@ class _$_NotificationData extends _NotificationData {
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
       {required String interest,
-      required String id,
+      String? id,
       String? title,
       String? body,
       String? image,
-      @DatetimeTimestampConverter() required DateTime createdAt,
+      @DatetimeTimestampNullableConverter() DateTime? createdAt,
       Map<String, dynamic>? data}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
@@ -295,7 +295,7 @@ abstract class _NotificationData extends NotificationData {
   @override
   String get interest;
   @override
-  String get id;
+  String? get id;
   @override
   String? get title;
   @override
@@ -303,8 +303,8 @@ abstract class _NotificationData extends NotificationData {
   @override
   String? get image;
   @override
-  @DatetimeTimestampConverter()
-  DateTime get createdAt;
+  @DatetimeTimestampNullableConverter()
+  DateTime? get createdAt;
   @override
   Map<String, dynamic>? get data;
   @override

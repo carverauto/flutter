@@ -1,6 +1,6 @@
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
+import 'package:chaseapp/src/modules/notifications/view/parts/notification_tile.dart';
 import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
@@ -48,20 +48,8 @@ class NotificationsPaginatedListView extends ConsumerWidget {
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            notifications[index].image ?? defaultPhotoURL,
-                          ),
-                        ),
-                        title: Text(notifications[index].title ?? "NA",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            )),
-                        subtitle: Text(notifications[index].body ?? "NA",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            )),
+                      return NotificationTIle(
+                        notificationData: notifications[index],
                       );
                     },
                     childCount: notifications.length,

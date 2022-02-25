@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
-import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
+import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
+import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +15,42 @@ import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+NotificationData getNotificationDataFromMessage(RemoteMessage message) {
+  final data = message.data;
+
+  final imageUrl = Platform.isAndroid
+      ? message.notification?.android?.imageUrl
+      : message.notification?.apple?.imageUrl;
+
+  final notificationData = NotificationData(
+    interest: data["interest"] as String,
+    title: message.notification?.title ?? "NA",
+    body: message.notification?.body ?? "NA",
+    image: imageUrl,
+    data: data,
+    id: data["id"] as String?,
+    createdAt: data["createdAt"] as DateTime?,
+  );
+
+  return notificationData;
+}
+
 Future<void> handlebgmessage(RemoteMessage message) async {
-  log("Background message arrived--->" + message.data.toString());
+  if (message.data["interest"] != null) {
+    final notificationData = getNotificationDataFromMessage(message);
+    //   handlebgmessage(notificationData);
+    log("Background message arrived--->" + notificationData.data.toString());
 
-  switch (message.data["type"]) {
-    //TODO: Add cases for notification types
-    case 'chat':
-      break;
-    case 'update':
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final bool should_fetch = message.data["config_state"] == "stale";
-      await prefs.setBool("should_fetch", should_fetch);
-      break;
+    switch (notificationData.getInterestEnumFromName) {
+      case Interests.appUpdates:
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final bool should_fetch =
+            notificationData.data?["config_state"] == "stale";
+        await prefs.setBool("should_fetch", should_fetch);
+        break;
 
-    default:
+      default:
+    }
   }
 
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -64,39 +88,51 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   void handlenotifications(RemoteMessage message) async {
     log("Notification Message Arrived--->" + message.data.toString());
 
-    switch (message.data["type"]) {
-      //TODO: Add cases for notification types
-      case 'chat':
-        break;
-      case 'update':
-        handlebgmessage(message).then(
-          (value) => ref
-              .read(checkForUpdateStateNotifier.notifier)
-              .checkForUpdate(true),
-        );
+    final data = message.data;
+    // final imageUrl = Platform.isAndroid
+    //     ? message.notification?.android?.imageUrl
+    //     : message.notification?.apple?.imageUrl;
 
-        break;
-      case 'chase':
-        final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
+    if (data["interest"] != null) {
+      final notificationData = getNotificationDataFromMessage(message);
 
-        //Fetch new chases when user opens chase notification
-        // Top chases are streamed from the database so they'll get updated
-        // if any updates happen in the chases
-        // TODO: Can we do better?
-        ref.read(chasesPaginationProvider.notifier).fetchFirstPage(true);
-        // TODO:Navigate to chase view
-        final String? chaseId = message.data["chaseId"] as String?;
+      notificationHandler(context, notificationData, read: ref.read);
+      // switch (message.data["type"]) {
+      //   //TODO: Add cases for notification types
+      //   case 'chat':
+      //     break;
+      //   case 'update':
+      //     handlebgmessage(message).then(
+      //       (value) => ref
+      //           .read(checkForUpdateStateNotifier.notifier)
+      //           .checkForUpdate(true),
+      //     );
 
-        if (chaseId != null) {
-          Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
-            "chaseId": chaseId,
-          });
-        } else {
-          log("Chase id Not Found!");
-        }
-        // throw UnimplementedError();
-        break;
-      default:
+      //     break;
+      //   case 'chase':
+      //     // final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
+
+      //     //Fetch new chases when user opens chase notification
+      //     // Top chases are streamed from the database so they'll get updated
+      //     // if any updates happen in the chases
+      //     // TODO: Can we do better?
+      //     // ref.read(chasesPaginationProvider.notifier).fetchFirstPage(true);
+      //     // TODO:Navigate to chase view
+      //     final String? chaseId = message.data["chaseId"] as String?;
+
+      //     if (chaseId != null) {
+      //       Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
+      //         "chaseId": chaseId,
+      //       });
+      //     } else {
+      //       log("Chase id Not Found!");
+      //     }
+      //     // throw UnimplementedError();
+      //     break;
+      //   default:
+      // }
+    } else {
+      logger.warning("Notification data didn't contained interest field");
     }
   }
 
@@ -142,7 +178,22 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     });
 
     PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
-      log("Message Recieved in the foreground--->" + notification.toString());
+      log("Pusher Message Recieved in the foreground--->" +
+          notification.toString());
+      final data = notification["data"] as Map<String, dynamic>?;
+      if (data?["interest"] != null) {
+        final notificationData = NotificationData(
+          interest: data!["interest"] as String,
+          title: notification["title"] as String,
+          body: notification["body"] as String?,
+          data: data,
+          image: notification["image"] as String?,
+          createdAt: notification["createdAt"] as DateTime?,
+        );
+        notificationHandler(context, notificationData);
+      } else {
+        logger.warning("Notification data didn't contained interest field");
+      }
     });
 
     handledynamiclink();

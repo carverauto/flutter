@@ -1,8 +1,8 @@
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/notifiers/post_login_state_notifier.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notifications_list.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -19,18 +19,26 @@ class NotificationsView extends StatelessWidget {
       appBar: AppBar(
         title: Text("Notifications"),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: kItemsSpacingMediumConstant,
-          ),
-          NotificationTypes(),
-          Expanded(
-            child: NotificationsViewAll(
-              chasesPaginationProvider: notificationsProvider,
-            ),
-          ),
-        ],
+      body: ProviderStateBuilder<List<String?>>(
+        watchThisProvider: usersInterestsStreamProvider,
+        logger: logger,
+        builder: (userInterests) {
+          return Column(
+            children: [
+              SizedBox(
+                height: kItemsSpacingMediumConstant,
+              ),
+              NotificationTypes(
+                userInterests: userInterests,
+              ),
+              Expanded(
+                child: NotificationsViewAll(
+                  chasesPaginationProvider: notificationsProvider,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -39,7 +47,10 @@ class NotificationsView extends StatelessWidget {
 class NotificationTypes extends ConsumerStatefulWidget {
   NotificationTypes({
     Key? key,
+    required this.userInterests,
   }) : super(key: key);
+
+  final List<String?> userInterests;
 
   @override
   ConsumerState<NotificationTypes> createState() => _NotificationTypesState();
@@ -128,12 +139,12 @@ class _NotificationTypesState extends ConsumerState<NotificationTypes> {
                       padding: EdgeInsets.all(0).copyWith(
                         left: showCloseButton ? 0 : 20,
                       ),
-                      itemCount: activeInterests.length,
+                      itemCount: widget.userInterests.length,
                       itemBuilder: (context, index) {
-                        final interest = activeInterests[index];
+                        final interest = widget.userInterests[index];
 
                         return NotificationTypeChip(
-                            value: interest.name,
+                            value: interest ?? "NA",
                             selectedValue: selectedValue,
                             onTap: (value) {
                               if (selectedValue != value) {

@@ -52,7 +52,7 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         final remoteConfig = read(firebaseRemoteConfigProvider);
 
         late final bool updated;
-        if (shouldFetch) {
+        if (shouldFetch || force_fetch) {
           await remoteConfig.setConfigSettings(RemoteConfigSettings(
             fetchTimeout: Duration(seconds: 10),
             minimumFetchInterval: Duration(hours: 0),

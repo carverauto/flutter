@@ -11,11 +11,11 @@ abstract class NotificationData implements _$NotificationData {
   @JsonSerializable(explicitToJson: true)
   const factory NotificationData({
     required String interest,
-    required String id,
+    String? id,
     String? title,
     String? body,
     String? image,
-    @DatetimeTimestampConverter() required DateTime createdAt,
+    @DatetimeTimestampNullableConverter() DateTime? createdAt,
     Map<String, dynamic>? data,
   }) = _NotificationData;
   factory NotificationData.fromJson(Map<String, dynamic> json) =>

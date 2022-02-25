@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
+import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db.dart';
@@ -33,4 +34,14 @@ final notificationsStreamProvider = StateNotifierProvider.family<
             .read(notificationRepoProvider)
             .fetchNotifications(notification, notificationType, user.uid);
       });
+});
+
+final usersInterestsStreamProvider =
+    StreamProvider<List<String?>>((ref) async* {
+  final usersInterests =
+      await ref.watch(pusherBeamsProvider).getDeviceInterests();
+  ref.watch(pusherBeamsProvider).onInterestChanges((interests) async* {
+    yield interests;
+  });
+  yield usersInterests;
 });
