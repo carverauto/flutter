@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
@@ -102,7 +103,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: Curves.decelerate,
+              curve: primaryCurve,
             ),
           )
           .animate(animation);
@@ -115,7 +116,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: Curves.decelerate,
+              curve: primaryCurve,
             ),
           )
           .animate(animation);

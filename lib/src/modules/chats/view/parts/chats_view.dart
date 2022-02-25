@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
@@ -66,7 +67,7 @@ class ChatsView extends StatelessWidget {
                               begin:
                                   Offset(0, MediaQuery.of(context).size.height),
                               end: Offset.zero),
-                          curve: Curves.decelerate,
+                          curve: primaryCurve,
                           duration: Duration(milliseconds: 300),
                           builder: (context, value, child) {
                             return Transform.translate(
