@@ -180,10 +180,11 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
       log("Pusher Message Recieved in the foreground--->" +
           notification.toString());
-      final data = notification["data"] as Map<String, dynamic>?;
-      if (data?["interest"] != null) {
+      final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
+          notification["data"] as Map<dynamic, dynamic>);
+      if (data["interest"] != null) {
         final notificationData = NotificationData(
-          interest: data!["interest"] as String,
+          interest: data["interest"] as String,
           title: notification["title"] as String,
           body: notification["body"] as String?,
           data: data,

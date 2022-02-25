@@ -12,13 +12,14 @@ Future<void> notificationHandler(
     {Reader? read}) async {
   switch (notificationData.getInterestEnumFromName) {
     case Interests.chasesnotifications:
-      Navigator.pushNamed(
-        context,
-        RouteName.CHASE_VIEW,
-        arguments: <String, dynamic>{
-          "chaseId": notificationData.data?["id"],
-        },
-      );
+      if (notificationData.data?["id"] != null)
+        Navigator.pushNamed(
+          context,
+          RouteName.CHASE_VIEW,
+          arguments: <String, dynamic>{
+            "chaseId": notificationData.data!["chaseId"],
+          },
+        );
       break;
     case Interests.appUpdates:
       if (read != null)
