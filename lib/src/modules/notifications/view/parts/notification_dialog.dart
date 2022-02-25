@@ -2,6 +2,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,10 @@ class NotificationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
-                      url: notificationData.image ?? defaultPhotoURL,
+                      url: parseImageUrl(
+                        notificationData.image ?? defaultPhotoURL,
+                        ImageDimensions.LARGE,
+                      ),
                       showLoading: false,
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
+import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/hero_dialog_route.dart';
@@ -80,13 +81,6 @@ class NotificationsPaginatedListView extends ConsumerWidget {
                                   },
                                 ),
                               );
-                            // showDialog<void>(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return NotificationDialog(
-                            //         notificationData: notifications[index],
-                            //       );
-                            //     });
                           }
                         },
                         leading: AspectRatio(
@@ -110,8 +104,13 @@ class NotificationsPaginatedListView extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(4),
                                   clipBehavior: Clip.hardEdge,
                                   child: AdaptiveImageBuilder(
-                                    url: notifications[index].image ??
-                                        defaultPhotoURL,
+                                    url: parseImageUrl(
+                                      notifications[index].image ??
+                                          defaultPhotoURL,
+                                      ImageDimensions.SMALL,
+                                    ),
+                                    //  notifications[index].image ??
+                                    //     defaultPhotoURL,
                                     showLoading: false,
                                   ),
                                 ),
