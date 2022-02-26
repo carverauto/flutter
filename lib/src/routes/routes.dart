@@ -104,7 +104,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: primaryCurve,
+              curve: kPrimaryCurve,
             ),
           )
           .animate(animation);
@@ -117,7 +117,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: primaryCurve,
+              curve: kPrimaryCurve,
             ),
           )
           .animate(animation);

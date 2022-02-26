@@ -83,8 +83,11 @@ class AdaptiveImageProvider extends ImageProvider {
   final ImageProvider _delegate;
 
   static ImageProvider _resolve(String url) {
+    final isAssetImage = url.startsWith('assets/');
+
     final uri = Uri.parse(url);
-    switch (uri.scheme) {
+    final scheme = !isAssetImage ? uri.scheme : "asset";
+    switch (scheme) {
       case 'asset':
         final path = uri.toString().replaceFirst('asset://', '');
         return AssetImage(path);

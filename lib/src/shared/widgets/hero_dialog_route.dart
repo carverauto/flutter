@@ -27,7 +27,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
     return new FadeTransition(
       opacity: new CurvedAnimation(
         parent: animation,
-        curve: primaryCurve,
+        curve: kPrimaryCurve,
       ),
       child: child,
     );

@@ -67,7 +67,7 @@ class ChatsView extends StatelessWidget {
                       tween: Tween<Offset>(
                           begin: Offset(0, MediaQuery.of(context).size.height),
                           end: Offset.zero),
-                      curve: primaryCurve,
+                      curve: kPrimaryCurve,
                       duration: Duration(milliseconds: 300),
                       builder: (context, value, child) {
                         return Transform.translate(
