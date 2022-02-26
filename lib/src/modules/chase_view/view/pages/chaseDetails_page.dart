@@ -28,6 +28,8 @@ class ChaseDetailsView extends ConsumerWidget {
   final Animation<Offset> appBarOffsetAnimation;
   final Animation<Offset> bottomListAnimation;
 
+  final bool expandChats = false;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -36,7 +38,7 @@ class ChaseDetailsView extends ConsumerWidget {
         watchThisProvider: streamChaseProvider(chaseId),
         logger: logger,
         showBackButton: true,
-        builder: (chase) {
+        builder: (chase, ref) {
           String? imageURL = chase.imageURL;
 
           return Column(

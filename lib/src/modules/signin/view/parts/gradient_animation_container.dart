@@ -41,7 +41,7 @@ class _GradientAnimationChildBuilderState
     rotationAnimation = Tween<double>(begin: 0, end: pi * 2).animate(
       CurvedAnimation(
         parent: animationController,
-        curve: primaryCurve,
+        curve: kPrimaryCurve,
       ),
     );
 

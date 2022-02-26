@@ -4,7 +4,6 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -43,10 +42,12 @@ class NotificationTIle extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 clipBehavior: Clip.hardEdge,
                 child: AdaptiveImageBuilder(
-                  url: parseImageUrl(
-                    notificationData.image ?? defaultPhotoURL,
-                    ImageDimensions.SMALL,
-                  ),
+                  url: notificationData.image ?? defaultChaseImage,
+                  //TODO: update later with parser
+                  //  parseImageUrl(
+                  //   notificationData.image ?? defaultPhotoURL,
+                  //   ImageDimensions.SMALL,
+                  // ),
                   showLoading: false,
                 ),
               ),

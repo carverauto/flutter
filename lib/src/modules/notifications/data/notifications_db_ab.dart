@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 
 abstract class NotificationsDbAB {
@@ -5,4 +6,6 @@ abstract class NotificationsDbAB {
       NotificationData? notificationData,
       String? notificationType,
       String userId);
+
+  Future<List<Interest>> fetchInterests();
 }

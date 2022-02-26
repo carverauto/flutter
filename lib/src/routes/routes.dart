@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/core/modules/auth/view/pages/auth_view_wrapper.dart';
+import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/about/view/about.dart';
@@ -15,7 +16,6 @@ import 'package:chaseapp/src/modules/profile/view/pages/profile_page.dart';
 import 'package:chaseapp/src/modules/settings/view/pages/settings_page.dart';
 import 'package:chaseapp/src/modules/signin/view/pages/signin_page.dart';
 import 'package:chaseapp/src/modules/splash_screen/view/pages/splash_page.dart';
-import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +27,8 @@ class Routes {
         : Map<String, dynamic>();
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute<void>(builder: (context) => const Splash());
+        return MaterialPageRoute<void>(
+            builder: (context) => const SplashView());
       case RouteName.ONBOARDING_VIEW:
         return MaterialPageRoute<void>(builder: (context) => OnBoardingView());
       case RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER:
@@ -103,7 +104,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: primaryCurve,
+              curve: kPrimaryCurve,
             ),
           )
           .animate(animation);
@@ -116,7 +117,7 @@ Route<void> _createRoute(String chaseId) {
       )
           .chain(
             CurveTween(
-              curve: primaryCurve,
+              curve: kPrimaryCurve,
             ),
           )
           .animate(animation);

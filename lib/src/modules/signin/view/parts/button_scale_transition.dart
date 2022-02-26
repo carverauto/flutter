@@ -14,7 +14,7 @@ class ButtonScaleAnimationWidget extends StatelessWidget {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.7, end: 1),
       duration: Duration(milliseconds: 300),
-      curve: primaryCurve,
+      curve: kPrimaryCurve,
       child: child,
       builder: (context, animation, child) {
         return Transform.scale(

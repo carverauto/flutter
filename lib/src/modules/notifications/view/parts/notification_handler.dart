@@ -7,18 +7,22 @@ import 'package:chaseapp/src/shared/widgets/hero_dialog_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Used to responce to notification taps anywhere in the app and take proper actions.
 Future<void> notificationHandler(
     BuildContext context, NotificationData notificationData,
     {Reader? read}) async {
   switch (notificationData.getInterestEnumFromName) {
-    case Interests.chasesnotifications:
-      Navigator.pushNamed(
-        context,
-        RouteName.CHASE_VIEW,
-        arguments: <String, dynamic>{
-          "chaseId": notificationData.data?["id"],
-        },
-      );
+    case Interests.chases:
+      if (notificationData.data?["id"] != null ||
+          notificationData.data?["chase"]["id"] != null)
+        Navigator.pushNamed(
+          context,
+          RouteName.CHASE_VIEW,
+          arguments: <String, dynamic>{
+            "chaseId": notificationData.data?["id"] ??
+                notificationData.data?["chase"]["id"],
+          },
+        );
       break;
     case Interests.appUpdates:
       if (read != null)

@@ -1,12 +1,13 @@
+import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
+import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db_ab.dart';
 import 'package:chaseapp/src/modules/notifications/domain/notifications_repo.dart';
 import 'package:chaseapp/src/modules/notifications/domain/notifications_repo_ab.dart';
-import 'package:chaseapp/src/notifiers/pagination_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -37,11 +38,16 @@ final notificationsStreamProvider = StateNotifierProvider.family<
 });
 
 final usersInterestsStreamProvider =
-    StreamProvider<List<String?>>((ref) async* {
+    FutureProvider.autoDispose<List<String?>>((ref) async {
   final usersInterests =
-      await ref.watch(pusherBeamsProvider).getDeviceInterests();
-  ref.watch(pusherBeamsProvider).onInterestChanges((interests) async* {
-    yield interests;
-  });
-  yield usersInterests;
+      await ref.read(pusherBeamsProvider).getDeviceInterests();
+  usersInterests
+      .sort((a, b) => a?.toLowerCase().compareTo(b?.toLowerCase() ?? "") ?? -1);
+
+  return usersInterests;
+});
+
+final interestsProvider =
+    FutureProvider.autoDispose<List<Interest>>((ref) async {
+  return ref.read(notificationRepoProvider).fetchInterests();
 });

@@ -2,7 +2,6 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +16,7 @@ class NotificationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: Column(
@@ -28,6 +28,7 @@ class NotificationDialog extends StatelessWidget {
                 tag: notificationData.id ?? "NA",
                 child: DecoratedBox(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     boxShadow: [
                       BoxShadow(
                         color: primaryShadowColor,
@@ -38,13 +39,15 @@ class NotificationDialog extends StatelessWidget {
                     color: Theme.of(context).cardColor,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
-                      url: parseImageUrl(
-                        notificationData.image ?? defaultPhotoURL,
-                        ImageDimensions.LARGE,
-                      ),
+                      url: notificationData.image ?? defaultChaseImage,
+                      //TODO: update later with parser
+                      //  parseImageUrl(
+                      //   notificationData.image ?? defaultPhotoURL,
+                      //   ImageDimensions.LARGE,
+                      // ),
                       showLoading: false,
                     ),
                   ),
@@ -58,7 +61,6 @@ class NotificationDialog extends StatelessWidget {
               notificationData.title ?? "NA",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -68,27 +70,18 @@ class NotificationDialog extends StatelessWidget {
             Text(
               notificationData.body ?? "NA",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
               height: kItemsSpacingLargeConstant,
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                  padding: EdgeInsets.all(0),
-                  side: BorderSide(
-                    color: Colors.white,
-                  )),
+            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: Text(
                 "Close",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               ),
             )
           ],

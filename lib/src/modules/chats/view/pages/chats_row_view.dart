@@ -58,13 +58,13 @@ class ChatsViewRow extends ConsumerWidget {
           ),
         ),
         ProviderStateBuilder(
-          builder: (connectionStatus) {
+          builder: (connectionStatus, ref) {
             switch (connectionStatus) {
               case ConnectionStatus.connected:
                 return ProviderStateBuilder<Channel>(
                   watchThisProvider: chatChannelProvider(chase),
                   logger: logger,
-                  builder: (channel) {
+                  builder: (channel, ref) {
                     final messages = channel.state?.messages;
                     if (messages == null || messages.isEmpty)
                       return GestureDetector(
@@ -90,7 +90,7 @@ class ChatsViewRow extends ConsumerWidget {
                       tween: Tween<Offset>(
                           begin: Offset(0, MediaQuery.of(context).size.height),
                           end: Offset.zero),
-                      curve: primaryCurve,
+                      curve: kPrimaryCurve,
                       duration: Duration(milliseconds: 300),
                       builder: (context, value, child) {
                         return Transform.translate(
