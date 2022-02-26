@@ -83,9 +83,11 @@ Future<void> setUpServices() async {
   //TODO: Start every new instance as we create them.
 
   if (F.appFlavor == Flavor.DEV) {
+    // TODO: this should say Dev_Pusher_Beams_Instance_Id
     const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
     await PusherBeams.instance.start(instanceId);
   } else {
+    // TODO: this should say Prod_Pusher_Beams_Instance_Id
     const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
 
     await PusherBeams.instance.start(instanceId);
