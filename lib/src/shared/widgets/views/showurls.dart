@@ -1,5 +1,7 @@
+import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
-import 'package:linkable/linkable.dart';
 
 class URLView extends StatelessWidget {
   final List<Map> streams;
@@ -8,20 +10,24 @@ class URLView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: streams
-          .map<Widget>((data) => Align(
-                alignment: Alignment.centerLeft,
-                child: Chip(
-                  backgroundColor: Theme.of(context).colorScheme.onBackground,
-                  label: Linkable(
-                    text: data["URL"],
-                  ),
-                ),
-              ))
-          .toList(),
+    return Wrap(
+      spacing: kItemsSpacingSmallConstant,
+      runSpacing: kItemsSpacingSmallConstant,
+      children: streams.map<Widget>((data) {
+        final String url = data["URL"] as String;
+        return GlassButton(
+          padding: EdgeInsets.all(kPaddingSmallConstant),
+          onTap: () {
+            launchUrl(url);
+          },
+          child: Text(
+            Uri.parse(url).host.replaceFirst("www.", ""),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

@@ -44,4 +44,16 @@ class ChaseDatabase implements ChaseDbAB {
       'Votes': FieldValue.increment(upCount),
     });
   }
+
+  @override
+  Stream<List<Chase>> streamTopChases() {
+    // TODO: implement streamTopChases
+    return chasesCollectionRef
+        .orderBy("CreatedAt", descending: true)
+        .limit(3)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map<Chase>((chase) => chase.data()).toList();
+    });
+  }
 }

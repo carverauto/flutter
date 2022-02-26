@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'user_data.dart';
@@ -28,7 +29,7 @@ class _$UserDataTearOff {
       String? photoURL,
       required int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<String>? tokens}) {
+      List<PushToken>? tokens}) {
     return _UserData(
       uid: uid,
       userName: userName,
@@ -57,7 +58,7 @@ mixin _$UserData {
   int get lastUpdated => throw _privateConstructorUsedError;
   @DatetimeTimestampNullableConverter()
   DateTime? get lastTokenUpdate => throw _privateConstructorUsedError;
-  List<String>? get tokens => throw _privateConstructorUsedError;
+  List<PushToken>? get tokens => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -76,7 +77,7 @@ abstract class $UserDataCopyWith<$Res> {
       String? photoURL,
       int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<String>? tokens});
+      List<PushToken>? tokens});
 }
 
 /// @nodoc
@@ -125,7 +126,7 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
       tokens: tokens == freezed
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<PushToken>?,
     ));
   }
 }
@@ -142,7 +143,7 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
       String? photoURL,
       int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<String>? tokens});
+      List<PushToken>? tokens});
 }
 
 /// @nodoc
@@ -192,7 +193,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
       tokens: tokens == freezed
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<PushToken>?,
     ));
   }
 }
@@ -228,7 +229,7 @@ class _$_UserData extends _UserData {
   @DatetimeTimestampNullableConverter()
   final DateTime? lastTokenUpdate;
   @override
-  final List<String>? tokens;
+  final List<PushToken>? tokens;
 
   @override
   String toString() {
@@ -281,7 +282,7 @@ abstract class _UserData extends UserData {
       String? photoURL,
       required int lastUpdated,
       @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<String>? tokens}) = _$_UserData;
+      List<PushToken>? tokens}) = _$_UserData;
   const _UserData._() : super._();
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
@@ -300,7 +301,7 @@ abstract class _UserData extends UserData {
   @DatetimeTimestampNullableConverter()
   DateTime? get lastTokenUpdate;
   @override
-  List<String>? get tokens;
+  List<PushToken>? get tokens;
   @override
   @JsonKey(ignore: true)
   _$UserDataCopyWith<_UserData> get copyWith =>

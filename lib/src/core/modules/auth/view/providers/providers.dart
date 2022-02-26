@@ -2,7 +2,7 @@ import 'package:chaseapp/src/core/modules/auth/data/auth_db.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/modules/auth/domain/auth_repo.dart';
 import 'package:chaseapp/src/core/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/core/modules/auth/view/notifiers/post_login_state_notifier.dart';
+import 'package:chaseapp/src/core/notifiers/post_login_state_notifier.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = MaterialColor(
-  0xff525150,
+  0xff343332,
   {
     50: Color(0xfff9f7f6),
     100: Color(0xfff0eeed),
@@ -17,3 +17,11 @@ const primaryColor = MaterialColor(
 );
 
 const starWarsCrawlTextColor = Color(0xffc7890a);
+
+const double blurValue = 5;
+
+final Color primaryButtonsColor = primaryColor.shade600;
+
+const Color primaryShadowColor = Colors.black26;
+
+const Color sentimentColor = Color(0xff0b9f6e);

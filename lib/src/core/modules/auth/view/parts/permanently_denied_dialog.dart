@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 Future<void> showPermanentlyDeniedDialog(
     BuildContext context, List<Permission> permissions) async {
   if (Platform.isAndroid)
-    await showDialog(
+    await showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -48,7 +48,7 @@ Future<void> showPermanentlyDeniedDialog(
           );
         });
   else
-    showCupertinoDialog(
+    showCupertinoDialog<void>(
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(

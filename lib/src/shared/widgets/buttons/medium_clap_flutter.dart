@@ -13,61 +13,61 @@ class ClapFAB extends StatefulWidget {
   static const int NOT_LIMIT_INCREMENT = -1;
 
   /// The color of count's circle background
-  final countCircleColor;
+  final Color countCircleColor;
 
   /// The color of count's circle text
-  final countTextColor;
+  final Color countTextColor;
 
   /// Whether to have shadow or not around ClapFab button
-  final hasShadow;
+  final bool hasShadow;
 
   /// The color of the shadow
-  final shadowColor;
+  final Color shadowColor;
 
   /// The outline color/ border color of the ClabFab button
-  final floatingOutlineColor;
+  final Color floatingOutlineColor;
 
   /// The Background color of the ClabFab button
-  final floatingBgColor;
+  final Color floatingBgColor;
 
   /// The color of sparkels around the count
-  final sparkleColor;
+  final Color sparkleColor;
 
   /// The default icon of the ClapFab button
-  final defaultIcon;
+  final IconData? defaultIcon;
 
   /// The color of default icon of the ClapFab button
-  final defaultIconColor;
+  final Color? defaultIconColor;
 
   /// The filled icon after clapping of the ClapFab button
-  final filledIcon;
+  final IconData? filledIcon;
 
   /// The filled icon color after clapping of the ClapFab button
-  final filledIconColor;
+  final Color? filledIconColor;
 
   /// On Tap Down callback
-  final clapFabCallback;
+  final void Function(int upCount) clapFabCallback;
 
   /// On Tap Up callback
-  final clapUpCallback;
+  final Function(int upCount)? clapUpCallback;
 
   /// The default image of the ClapFab button
-  final defaultImage;
+  final String? defaultImage;
 
   /// The color of default image of the ClapFab button
-  final defaultImageColor;
+  final Color? defaultImageColor;
 
   /// The filled image after clapping of the ClapFab button
-  final filledImage;
+  final String? filledImage;
 
   /// The color of filled image of the ClapFab button
-  final filledImageColor;
+  final Color? filledImageColor;
 
   /// Starting counter value (default 0)
-  final initCounter;
+  final int initCounter;
 
   /// Maximum counter value (default SHOULD_NOT_INCREMENT, which will not limit increment)
-  final maxCounter;
+  final int maxCounter;
 
   final Widget Function(int votes) trailing;
 
@@ -85,7 +85,7 @@ class ClapFAB extends StatefulWidget {
     this.filledIconColor = Colors.blue,
     this.initCounter = 0,
     this.maxCounter = NOT_LIMIT_INCREMENT,
-    this.clapFabCallback,
+    required this.clapFabCallback,
     this.clapUpCallback,
     required this.trailing,
   })  : defaultImage = null,
@@ -107,7 +107,7 @@ class ClapFAB extends StatefulWidget {
     this.filledImage = "images/clap.png",
     this.initCounter = 0,
     this.maxCounter = NOT_LIMIT_INCREMENT,
-    this.clapFabCallback,
+    required this.clapFabCallback,
     this.clapUpCallback,
     required this.trailing,
   })  : defaultIcon = null,
@@ -137,7 +137,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       scoreOutAnimationController,
       scoreSizeAnimationController,
       sparklesAnimationController;
-  late Animation scoreOutPositionAnimation, sparklesAnimation;
+  late Animation<double> scoreOutPositionAnimation, sparklesAnimation;
 
   initState() {
     super.initState();
@@ -225,7 +225,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     holdTimer = Timer(Duration(milliseconds: 500), () {
       print("message");
       setState(() {
-        if (widget.clapFabCallback != null) widget.clapFabCallback(upCount);
+        widget.clapFabCallback(upCount);
         upCount = 0;
       });
     }); // Takes care of hold
@@ -240,7 +240,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     });
     isScoreOutTimerInitialized = true;
     setState(() {});
-    if (widget.clapUpCallback != null) widget.clapUpCallback(counter);
+    if (widget.clapUpCallback != null) widget.clapUpCallback!(counter);
     // holdTimer.cancel();
   }
 
@@ -252,8 +252,8 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
         onTapUp: onTapUp,
         onTapDown: onTapDown,
         child: Container(
-          height: 60.0,
-          width: 60.0,
+          height: 50,
+          width: 50,
           alignment: Alignment.center,
           decoration: BoxDecoration(
               border:
@@ -262,7 +262,14 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
               color: widget.floatingBgColor,
               boxShadow: [
                 widget.hasShadow
-                    ? BoxShadow(color: widget.shadowColor, blurRadius: 8.0)
+                    ? BoxShadow(
+                        color: widget.shadowColor.withOpacity(0.5),
+                        blurRadius: 8,
+                        offset: Offset(
+                          0,
+                          4,
+                        ),
+                      )
                     : BoxShadow()
               ]),
           child: SvgPicture.asset(
@@ -302,10 +309,12 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
         child: Transform.rotate(
             angle: currentAngle - pi / 2,
             child: Opacity(
-                opacity: sparklesOpacity as double,
+                opacity: sparklesOpacity,
                 child: Image.asset(
                   "images/sparkles.png",
                   color: widget.sparkleColor,
+                  cacheHeight: 28,
+                  cacheWidth: 28,
                   width: 14.0,
                   height: 14.0,
                 ))),
@@ -349,6 +358,14 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        //TODO: Fix the sizing here
+        if (_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN)
+          Flexible(
+            child: widget.trailing(counter),
+          ),
+        SizedBox(
+          width: kItemsSpacingSmallConstant,
+        ),
         Stack(
           alignment: FractionalOffset.center,
           clipBehavior: Clip.none,
@@ -357,15 +374,6 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
             getClapButton(),
           ],
         ),
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-          width: Theme.of(context).textTheme.headline5!.fontSize! * 4,
-          child: _scoreWidgetStatus == ScoreWidgetStatus.HIDDEN
-              ? widget.trailing(counter)
-              : SizedBox.shrink(),
-        )
       ],
     );
   }

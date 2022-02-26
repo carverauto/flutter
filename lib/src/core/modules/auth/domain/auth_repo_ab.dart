@@ -10,7 +10,7 @@ abstract class AuthRepositoryAB {
   Stream<User?> streamLogInStatus();
   Stream<UserData> streamUserData(String uid);
   Future<void> subscribeToTopics();
-  Future<void> saveFirebaseDeviceToken(User user);
+  Future<void> saveDeviceTokenToDatabase(User user, String token);
   Future<void> sendEmailVerification();
   Future<bool> isEmailVerified();
   Future<User?> getCurrentUser();
