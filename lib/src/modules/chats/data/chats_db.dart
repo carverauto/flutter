@@ -14,7 +14,7 @@ class ChatsDatabase implements ChatsDatabaseAB {
     final getToken = read(functionsProvider).httpsCallable("GetStreamToken");
 
     final HttpsCallableResult<dynamic> responce =
-        await getToken.call<dynamic>({"user_id": userId});
+        await getToken.call<Map<String, dynamic>>({"user_id": userId});
 
     log(responce.data.toString());
 
