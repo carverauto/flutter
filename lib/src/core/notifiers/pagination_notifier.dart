@@ -34,6 +34,11 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
   void updateData(List<T> result) {
     noMoreItems = result.length < hitsPerPage;
 
+    if (!mounted) {
+      log('PaginationNotifier not mounted');
+      return;
+    }
+
     if (result.isEmpty) {
       state = PaginationNotifierState.data(_items);
     } else {
@@ -42,6 +47,10 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
   }
 
   Future<void> fetchFirstPage(bool clearCurrentList) async {
+    if (!mounted) {
+      log("FetchNextPage called on unmounted PaginationNotifier");
+      return;
+    }
     try {
       state = PaginationNotifierState.loading(_items);
       final List<T> result = _items.isEmpty || clearCurrentList
