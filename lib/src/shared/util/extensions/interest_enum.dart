@@ -3,7 +3,7 @@ import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 
 Interests getInterestEnumFromString(String interest) {
   switch (interest) {
-    case "Chases":
+    case "chases-notifications":
       return Interests.chases;
     case "AppUpdates":
       return Interests.appUpdates;
@@ -21,7 +21,7 @@ enum Interests {
 extension InterestEnum on Interest {
   Interests get getInterestEnum {
     switch (this.name) {
-      case "Chases":
+      case "chases-notifications":
         return Interests.chases;
       case "AppUpdates":
         return Interests.appUpdates;
@@ -34,7 +34,7 @@ extension InterestEnum on Interest {
 extension NotificationInterestEnum on NotificationData {
   Interests get getInterestEnumFromName {
     switch (this.interest) {
-      case "Chases":
+      case "chases-notifications":
         return Interests.chases;
       case "AppUpdates":
         return Interests.appUpdates;
