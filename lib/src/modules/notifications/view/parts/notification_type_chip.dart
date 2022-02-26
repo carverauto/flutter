@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NotificationTypeChip extends StatelessWidget {
   const NotificationTypeChip({
@@ -15,6 +16,8 @@ class NotificationTypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayName = toBeginningOfSentenceCase(value.split("-")[0])!;
+
     return GestureDetector(
       onTap: () {
         onTap(value);
@@ -39,8 +42,8 @@ class NotificationTypeChip extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: Text(
-              value.substring(0, 1).toUpperCase() +
-                  value.substring(1).toLowerCase(),
+              // following the naming convention of interests names,
+              displayName,
               style: TextStyle(
                 color: selectedValue == null || selectedValue == value
                     ? Colors.white

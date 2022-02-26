@@ -2,6 +2,7 @@ import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class NotificationSettingTile extends StatelessWidget {
   const NotificationSettingTile({
@@ -15,13 +16,11 @@ class NotificationSettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayName = toBeginningOfSentenceCase(interest.name.split("-")[0])!;
+
     return ListTile(
-      leading: Icon(
-        Icons.local_police,
-        color: Theme.of(context).primaryColorLight,
-      ),
       title: Text(
-        interest.name,
+        displayName,
         style: TextStyle(
           color: Colors.white,
         ),

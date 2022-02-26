@@ -41,6 +41,9 @@ final usersInterestsStreamProvider =
     FutureProvider.autoDispose<List<String?>>((ref) async {
   final usersInterests =
       await ref.read(pusherBeamsProvider).getDeviceInterests();
+  usersInterests
+      .sort((a, b) => a?.toLowerCase().compareTo(b?.toLowerCase() ?? "") ?? -1);
+
   return usersInterests;
 });
 
