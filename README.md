@@ -33,3 +33,22 @@ https://docs.mapbox.com/android/maps/guides/install/
 Add
 
 `MAPBOX_DOWNLOAD_TOKEN=<token>`
+
+## Appcircle
+
+### Custom Script
+
+We need to change the Java version:
+
+https://docs.appcircle.io/integrations/working-with-custom-scripts/custom-script-samples/
+
+Create a custom script above the android build step with the shell script:
+
+```shell
+echo "Default JAVA "$JAVA_HOME
+echo "OpenJDK 8 "$JAVA_HOME_8_X64
+echo "OpenJDK 11 "$JAVA_HOME_11_X64
+
+# Change JAVA_HOME to OPENJDK 11
+echo "JAVA_HOME=$JAVA_HOME_11_X64" >> $AC_ENV_FILE_PATH
+```
