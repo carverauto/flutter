@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chaseapp/flavors.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
@@ -80,7 +81,15 @@ Future<void> setUpServices() async {
   // await PusherBeams.instance.start('d1af4c7f-16b4-43b0-98ec-2eb2200e43bc');
   // PusherBeams.instance.addDeviceInterest("hello");
   //TODO: Start every new instance as we create them.
-  await PusherBeams.instance.start('0309081b-2333-42de-922b-a11508f65b41');
+
+  if (F.appFlavor == Flavor.DEV) {
+    const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
+    await PusherBeams.instance.start(instanceId);
+  } else {
+    const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
+
+    await PusherBeams.instance.start(instanceId);
+  }
 
   // PusherBeams.instance.addDeviceInterest("hello");
   /*

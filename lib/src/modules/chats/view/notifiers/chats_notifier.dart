@@ -1,3 +1,4 @@
+import 'package:chaseapp/flavors.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -11,9 +12,19 @@ class ChatStateNotifier extends StateNotifier<void> {
   final Logger logger = Logger("ChatsServiceStateNotifier");
 
   final _client = stream.StreamChatClient(
-    "uq7mwraum8nu",
+    _getChatApiKey,
     logLevel: Level.INFO,
   );
+
+  static String get _getChatApiKey {
+    if (F.appFlavor == Flavor.DEV) {
+      const apiKey = String.fromEnvironment("Dev_GetStream_Chat_Api_Key");
+      return apiKey;
+    } else {
+      const apiKey = String.fromEnvironment("Prod_GetStream_Chat_Api_Key");
+      return apiKey;
+    }
+  }
 
   stream.StreamChatClient get client => _client;
 
