@@ -21,6 +21,13 @@ final CollectionReference<UserData> usersCollectionRef =
   fromFirestore: (data, _) {
     final rawData = data.data()!;
 
+    if (rawData["tokens"] != null) {
+      final tokens = rawData["tokens"] as List<dynamic>;
+      if (tokens[0] is String) {
+        rawData["tokens"] = null;
+      }
+    }
+
     return UserData.fromJson(rawData);
   },
   toFirestore: (data, _) {
