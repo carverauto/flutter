@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:chaseapp/src/const/colors.dart';
@@ -40,6 +41,24 @@ class NotificationPopUpBanner extends StatefulWidget {
 }
 
 class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
+  late Timer timer;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    timer = Timer(Duration(seconds: 5), () {
+      Navigator.of(context).pop();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<Offset>(
@@ -108,6 +127,7 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
             ),
             trailing: ElevatedButton(
               onPressed: () {
+                timer.cancel();
                 Navigator.pop(context);
                 notificationHandler(context, widget.notificationData);
               },
