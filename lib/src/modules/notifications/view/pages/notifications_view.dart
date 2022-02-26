@@ -14,6 +14,7 @@ class NotificationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationsProvider = notificationsStreamProvider(logger);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Notifications"),

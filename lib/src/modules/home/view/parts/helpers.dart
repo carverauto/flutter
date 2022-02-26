@@ -29,6 +29,7 @@ NotificationData getNotificationDataFromMessage(RemoteMessage message) {
 
 Future<void> handlebgmessage(RemoteMessage message) async {
   if (message.data["interest"] != null) {
+    updateNotificationsPresentStatus(true);
     final notificationData = getNotificationDataFromMessage(message);
 
     log("Background message arrived--->" + notificationData.data.toString());
@@ -44,4 +45,10 @@ Future<void> handlebgmessage(RemoteMessage message) async {
       default:
     }
   }
+}
+
+void updateNotificationsPresentStatus(bool isPresent) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  prefs.setBool("newNotificationsPresent", isPresent);
 }
