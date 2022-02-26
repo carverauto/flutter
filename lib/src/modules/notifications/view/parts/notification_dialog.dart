@@ -16,6 +16,7 @@ class NotificationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: Column(
@@ -27,6 +28,7 @@ class NotificationDialog extends StatelessWidget {
                 tag: notificationData.id ?? "NA",
                 child: DecoratedBox(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     boxShadow: [
                       BoxShadow(
                         color: primaryShadowColor,
@@ -37,7 +39,7 @@ class NotificationDialog extends StatelessWidget {
                     color: Theme.of(context).cardColor,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
                       url: notificationData.image ?? defaultChaseImage,
@@ -59,7 +61,6 @@ class NotificationDialog extends StatelessWidget {
               notificationData.title ?? "NA",
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -69,27 +70,18 @@ class NotificationDialog extends StatelessWidget {
             Text(
               notificationData.body ?? "NA",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(
               height: kItemsSpacingLargeConstant,
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                  padding: EdgeInsets.all(0),
-                  side: BorderSide(
-                    color: Colors.white,
-                  )),
+            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: Text(
                 "Close",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               ),
             )
           ],

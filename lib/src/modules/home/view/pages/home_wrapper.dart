@@ -5,6 +5,7 @@ import 'package:chaseapp/src/models/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
+import 'package:chaseapp/src/modules/notifications/view/parts/notification_pop_up_banner.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -99,7 +100,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           image: data["image"] as String?,
           createdAt: notification["createdAt"] as DateTime?,
         );
-        notificationHandler(context, notificationData);
+
+        showNotificationBanner(context, notificationData);
       } else {
         logger.warning("Notification data didn't contained interest field");
       }

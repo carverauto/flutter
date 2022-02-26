@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-const primaryCurve = Curves.decelerate;
+const kPrimaryCurve = Curves.decelerate;
