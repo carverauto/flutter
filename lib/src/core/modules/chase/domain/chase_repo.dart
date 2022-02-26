@@ -29,4 +29,10 @@ class ChaseRepository implements ChaseRepoAB {
   Future<void> upVoteChase(int upCount, String chaseId) {
     return read(chaseDbProvider).upVoteChase(upCount, chaseId);
   }
+
+  @override
+  Stream<List<Chase>> streamTopChases() {
+    // TODO: implement streamTopChases
+    return read(chaseDbProvider).streamTopChases();
+  }
 }

@@ -12,7 +12,7 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
     required this.read,
   }) : super(LogInState.data());
 
-  final read;
+  final Reader read;
 
   final Logger logger = Logger("LogInView");
 

@@ -1,21 +1,21 @@
-# include: package:very_good_analysis/analysis_options.yaml
+include: package:very_good_analysis/analysis_options.yaml
 
-# linter:
-#   rules:
-#     public_member_api_docs: false;
-#     positional_after_named_argument: false;
-#     missing_identifier: false;
+linter:
+  rules:
+    public_member_api_docs: false;
+    positional_after_named_argument: false;
+    missing_identifier: false;
     
 
-# analyzer:
-#   exclude:
-#     - lib/app/models/personal_info/personal_info.g.dart
-#     - "**/*.g.dart"
-#     - "**/*.freezed.dart"
-#   plugins:
-#     - dart_code_metrics
-#   # errors:
-      # invalid_annotation_target: ignore
+analyzer:
+  exclude:
+    - lib/app/models/personal_info/personal_info.g.dart
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  plugins:
+    - dart_code_metrics
+  errors:
+      invalid_annotation_target: ignore
 
 
 

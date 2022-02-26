@@ -7,13 +7,17 @@ class Sizescaleconfig {
   static late double widthscaleratio;
   static late double textscalefactor;
 
+  static final extraSmallMobileBreakpoint = 380;
   static final mobileBreakpoint = 480;
   static final tabletBreakpoint = 900;
 
   static DeviceType get getDeviceType {
-    if (screenwidth! <= 480) {
+    if (screenwidth! <= extraSmallMobileBreakpoint) {
+      return DeviceType.SMALL_MOBILE;
+    } else if (screenwidth! <= mobileBreakpoint) {
       return DeviceType.MOBILE;
-    } else if (screenwidth! > 480 && screenwidth! <= 900) {
+    } else if (screenwidth! > mobileBreakpoint &&
+        screenwidth! <= tabletBreakpoint) {
       return DeviceType.TABLET;
     } else {
       return DeviceType.DESKTOP;
@@ -69,7 +73,29 @@ class Sizescaleconfig {
 }
 
 enum DeviceType {
+  SMALL_MOBILE,
   MOBILE,
   TABLET,
   DESKTOP,
+}
+
+extension GetGridCount on DeviceType {
+  int get count {
+    switch (this) {
+      case DeviceType.SMALL_MOBILE:
+        return 1;
+        break;
+      case DeviceType.MOBILE:
+        return 2;
+        break;
+      case DeviceType.TABLET:
+        return 3;
+        break;
+      case DeviceType.DESKTOP:
+        return 5;
+        break;
+      default:
+        return 2;
+    }
+  }
 }

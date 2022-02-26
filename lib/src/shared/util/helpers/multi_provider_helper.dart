@@ -3,16 +3,16 @@ import 'package:chaseapp/src/shared/enums/social_logins.dart';
 SIGNINMETHOD getSignInProviderHelper(String unKnownProvider) {
   switch (unKnownProvider) {
     case "apple.com":
-      return SIGNINMETHOD.APPLE;
+      return SIGNINMETHOD.Apple;
 
     case "google.com":
-      return SIGNINMETHOD.GOOGLE;
+      return SIGNINMETHOD.Google;
 
     case "facebook.com":
-      return SIGNINMETHOD.FACEBOOK;
+      return SIGNINMETHOD.Facebook;
 
     case "twitter.com":
-      return SIGNINMETHOD.TWITTER;
+      return SIGNINMETHOD.Twitter;
 
     default:
       throw Exception("Unknown provider: $unKnownProvider");

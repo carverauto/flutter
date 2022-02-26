@@ -5,6 +5,7 @@ abstract class ChaseDbAB {
     Chase? chase,
     int offset,
   );
+  Stream<List<Chase>> streamTopChases();
   Stream<Chase> streamChase(String chaseId);
   Future<void> upVoteChase(int upCount, String chaseId);
 }

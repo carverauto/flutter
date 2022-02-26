@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
 import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 
 Future<void> showUpdateDialog(
     BuildContext context, AppUpdateInfo appUpdateInfo) async {
-  await showDialog(
+  await showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (context) => AlertDialog(
@@ -24,33 +25,31 @@ Future<void> showUpdateDialog(
             width: kItemsSpacingSmallConstant,
           ),
           Flexible(
-            child: Text('Update Required!'),
+            child: Text(
+              'Update Required!',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
           ),
         ],
       ),
       content: Text(
         'A new version of the ChaseApp is available. Please update the app to continue.',
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
       ),
       actions: [
-        //TODO: make it negation of force update for release
-        //!widget.forceUpdate
-        // if (!appUpdateInfo.forceUpdate)
-        //   TextButton(
-        //     child: Text('Cancel'),
-        //     style: OutlinedButton.styleFrom(
-        //       padding: EdgeInsets.all(kButtonPaddingMedium),
-        //       side: BorderSide(color: Theme.of(context).primaryColor),
-        //     ),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //   ),
-        // SizedBox(
-        //   width: kVerticalSizeMedium,
-        // ),
         ElevatedButton(
-          child: Text('Update'),
+          child: Text(
+            'Update',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
           style: OutlinedButton.styleFrom(
+            backgroundColor: primaryButtonsColor,
             padding: EdgeInsets.all(kButtonPaddingMedium),
           ),
           onPressed: () async {
@@ -58,8 +57,6 @@ Future<void> showUpdateDialog(
                 ? appUpdateInfo.play_store
                 : appUpdateInfo.app_store;
             await launchUrl(storeUrl);
-
-            //  Navigator.of(context).pop();
           },
         ),
       ],

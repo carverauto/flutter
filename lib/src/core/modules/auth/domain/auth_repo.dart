@@ -46,8 +46,8 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Future<void> saveFirebaseDeviceToken(User user) {
-    return read(authDbProvider).saveFirebaseDeviceToken(user);
+  Future<void> saveDeviceTokenToDatabase(User user, String token) {
+    return read(authDbProvider).saveDeviceTokenToDatabase(user, token);
   }
 
   @override
