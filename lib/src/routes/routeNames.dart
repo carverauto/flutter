@@ -12,4 +12,6 @@ class RouteName {
   static const String PROFILE = "PROFILE";
   static const String ABOUT_US = "ABOUT_US";
   static const String CREDITS = "CREDITS";
+  static const String SETTINGS = "SETTINGS";
+  static const String NOTIFICATIONS = "NOTIFICATIONS";
 }

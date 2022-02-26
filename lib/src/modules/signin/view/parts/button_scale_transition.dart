@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/other.dart';
 import 'package:flutter/material.dart';
 
 class ButtonScaleAnimationWidget extends StatelessWidget {
@@ -13,7 +14,7 @@ class ButtonScaleAnimationWidget extends StatelessWidget {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.7, end: 1),
       duration: Duration(milliseconds: 300),
-      curve: Curves.decelerate,
+      curve: kPrimaryCurve,
       child: child,
       builder: (context, animation, child) {
         return Transform.scale(

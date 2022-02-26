@@ -39,12 +39,11 @@ class AuthViewWrapper extends ConsumerWidget {
       watchThisProvider: streamLogInStatus,
       logger: logger,
       errorMessage: "Error while loading users login status.",
-      builder: (user) {
+      builder: (user, ref) {
+        WidgetsBinding.instance!.addPostFrameCallback((t) {
+          ref.read(checkForUpdateStateNotifier.notifier).checkForUpdate();
+        });
         if (user == null) {
-          WidgetsBinding.instance!.addPostFrameCallback((t) {
-            ref.read(checkForUpdateStateNotifier.notifier).checkForUpdate();
-          });
-
           return LogInView();
         }
 
@@ -52,7 +51,7 @@ class AuthViewWrapper extends ConsumerWidget {
           watchThisProvider: fetchUserProvider(user),
           logger: logger,
           errorMessage: "Error while loading users data.",
-          builder: (userData) {
+          builder: (userData, ref) {
             WidgetsBinding.instance!.addPostFrameCallback((t) {
               ref.read(nodleProvider.notifier).initializeNodle();
               ref
@@ -61,7 +60,6 @@ class AuthViewWrapper extends ConsumerWidget {
               ref
                   .read(postLoginStateNotifierProvider.notifier)
                   .initPostLoginActions(user, userData);
-              ref.read(checkForUpdateStateNotifier.notifier).checkForUpdate();
             });
 
             return HomeWrapper();

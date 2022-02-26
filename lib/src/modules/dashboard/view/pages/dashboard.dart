@@ -90,7 +90,7 @@ class Dashboard extends ConsumerWidget {
                     ),
                   ),
                   // Chases Map
-                  ChasesMap(),
+                  // ChasesMap(),
                   // For Clusters
                   //  SliverToBoxAdapter(
                   //   child: SizedBox(

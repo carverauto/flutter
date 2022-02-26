@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _GradientAnimationChildBuilderState
     rotationAnimation = Tween<double>(begin: 0, end: pi * 2).animate(
       CurvedAnimation(
         parent: animationController,
-        curve: Curves.decelerate,
+        curve: kPrimaryCurve,
       ),
     );
 

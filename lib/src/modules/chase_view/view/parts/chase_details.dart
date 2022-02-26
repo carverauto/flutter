@@ -6,6 +6,7 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dialog.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
+import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
@@ -15,11 +16,12 @@ import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ChaseDetails extends StatelessWidget {
-  const ChaseDetails({
+class ChaseDetails extends ConsumerWidget {
+  ChaseDetails({
     Key? key,
     required this.imageURL,
     required this.logger,
@@ -29,9 +31,19 @@ class ChaseDetails extends StatelessWidget {
   final String? imageURL;
   final Logger logger;
   final Chase chase;
+  final GlobalKey chaseDetailsKey = GlobalKey();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final renderbox =
+          chaseDetailsKey.currentContext!.findRenderObject() as RenderBox;
+      final height = renderbox.size.height;
+      final finalHeight = ref.read(chaseDetailsHeightProvider);
+      if (finalHeight == null) {
+        ref.read(chaseDetailsHeightProvider.state).update((state) => height);
+      }
+    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,6 +75,7 @@ class ChaseDetails extends StatelessWidget {
           ),
         ),
         Expanded(
+          key: chaseDetailsKey,
           child: ColoredBox(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: ListView(

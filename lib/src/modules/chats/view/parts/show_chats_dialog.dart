@@ -9,8 +9,9 @@ void showChatsViewBottomSheet(BuildContext context, Chase chase) {
     // enableDrag: false,
     elevation: 1,
     isScrollControlled: true,
-    clipBehavior: Clip.hardEdge,
+
     backgroundColor: Colors.transparent,
+    barrierColor: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(
         kBorderRadiusStandard,
