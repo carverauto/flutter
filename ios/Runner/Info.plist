@@ -70,6 +70,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSLocationUsageDescription</key>
+	<string>Need for our location request</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need for our location request</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need for our location request</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>

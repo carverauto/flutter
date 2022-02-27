@@ -46,9 +46,9 @@ target 'Runner' do
   # use_modular_headers!
 
   pod 'NodleSDK'
-  pod 'SQLite.swift', '~> 0.13.0'
-  pod 'SwiftCBOR'
-  pod 'SwiftProtobuf', '~> 1.0'
+  pod 'SQLite.swift', '~> 0.13.2'
+  pod 'SwiftCBOR', '~> 0.4.4'
+  pod 'SwiftProtobuf', '~> 1.18.0'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end

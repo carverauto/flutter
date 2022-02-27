@@ -777,9 +777,9 @@ DEPENDENCIES:
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - SQLite.swift (~> 0.13.0)
-  - SwiftCBOR
-  - SwiftProtobuf (~> 1.0)
+  - SQLite.swift (~> 0.13.2)
+  - SwiftCBOR (~> 0.4.4)
+  - SwiftProtobuf (~> 1.18.0)
   - twitter_login (from `.symlinks/plugins/twitter_login/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_compress (from `.symlinks/plugins/video_compress/ios`)
@@ -1006,6 +1006,6 @@ SPEC CHECKSUMS:
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: 6fca59acd5d9cc8d7e52ae8fba4d43101f3fbc03
+PODFILE CHECKSUM: ae416cd6c516bed85abb4b4d81ea8c9b7b462d04
 
 COCOAPODS: 1.11.2
