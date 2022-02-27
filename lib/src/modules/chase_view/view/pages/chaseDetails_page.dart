@@ -57,12 +57,12 @@ class ChaseDetailsView extends ConsumerWidget {
                   elevation: 1.0,
                   title: Text(chase.name ?? "NA"),
                   actions: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.more_vert_rounded,
-                      ),
-                    )
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(
+                    //     Icons.more_vert_rounded,
+                    //   ),
+                    // )
                   ],
                 ),
               ),
