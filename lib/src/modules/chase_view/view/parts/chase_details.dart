@@ -184,12 +184,12 @@ class ChaseDetails extends ConsumerWidget {
                                     Icons.share,
                                   ),
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.bookmark_border,
-                                  ),
-                                ),
+                                // IconButton(
+                                //   onPressed: () {},
+                                //   icon: Icon(
+                                //     Icons.bookmark_border,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

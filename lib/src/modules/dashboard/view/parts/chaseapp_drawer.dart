@@ -85,19 +85,19 @@ class ChaseAppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            onTap: () {},
-            leading: Icon(
-              Icons.bookmark_outline,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              "Bookmaked",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {},
+          //   leading: Icon(
+          //     Icons.bookmark_outline,
+          //     color: Theme.of(context).colorScheme.onBackground,
+          //   ),
+          //   title: Text(
+          //     "Bookmaked",
+          //     style: TextStyle(
+          //       color: Theme.of(context).colorScheme.onBackground,
+          //     ),
+          //   ),
+          // ),
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, RouteName.ABOUT_US);
