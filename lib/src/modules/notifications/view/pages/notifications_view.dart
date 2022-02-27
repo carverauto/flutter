@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/const/sizings.dart';
+import 'package:chaseapp/src/modules/notifications/view/parts/notification_settings.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_types_list.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notifications_list.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
@@ -16,9 +17,19 @@ class NotificationsView extends StatelessWidget {
     final notificationsProvider = notificationsStreamProvider(logger);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Notifications"),
-      ),
+      appBar: AppBar(title: Text("Notifications"), actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NotificationsSettings(),
+              ),
+            );
+          },
+          icon: Icon(Icons.edit_notifications),
+        )
+      ]),
       body: Column(
         children: [
           SizedBox(
