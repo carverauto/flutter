@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:chaseapp/flavors.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class MyApp extends ConsumerWidget {
@@ -82,16 +80,16 @@ Future<void> setUpServices() async {
   // PusherBeams.instance.addDeviceInterest("hello");
   //TODO: Start every new instance as we create them.
 
-  if (F.appFlavor == Flavor.DEV) {
-    // TODO: this should say Dev_Pusher_Beams_Instance_Id
-    const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
-    await PusherBeams.instance.start(instanceId);
-  } else {
-    // TODO: this should say Prod_Pusher_Beams_Instance_Id
-    const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
+  // if (F.appFlavor == Flavor.DEV) {
+  //   // TODO: this should say Dev_Pusher_Beams_Instance_Id
+  //   const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
+  //   await PusherBeams.instance.start(instanceId);
+  // } else {
+  //   // TODO: this should say Prod_Pusher_Beams_Instance_Id
+  //   const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
 
-    await PusherBeams.instance.start(instanceId);
-  }
+  //   await PusherBeams.instance.start(instanceId);
+  // }
 
   // PusherBeams.instance.addDeviceInterest("hello");
   /*
