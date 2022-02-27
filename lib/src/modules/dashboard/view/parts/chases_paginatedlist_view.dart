@@ -68,7 +68,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
                               horizontal: kItemsSpacingMediumConstant),
                           scrollDirection: axis,
                           crossAxisSpacing: kItemsSpacingSmallConstant,
-                          children: chases.map((chase) {
+                          children: chases.sublist(3).map((chase) {
                             return Padding(
                               padding: const EdgeInsets.only(
                                 bottom: kPaddingMediumConstant,
