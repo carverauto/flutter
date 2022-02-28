@@ -29,7 +29,7 @@
 			<array>
 				<string>com.googleusercontent.apps.1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t</string>
 				<string>com.googleusercontent.apps.949466065060-ioapse7efjsngs5m1p84eehdrtl1sjaq</string>
-				<string>social-firebase-auth://</string>
+				<string>social-firebase-auth</string>
 				<string>fb392332671355922</string>
 			</array>
 		</dict>
@@ -46,7 +46,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>FacebookAppID</key>
 	<string>392332671355922</string>
 	<key>FacebookClientToken</key>
@@ -70,6 +72,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need for profile picture</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Need for our location request</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need for our location request</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need for our location request</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
