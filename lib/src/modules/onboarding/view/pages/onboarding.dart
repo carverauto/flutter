@@ -35,7 +35,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage(
-                  defaultChaseImage,
+                  defaultAssetChaseImage,
                 ),
               ),
             ),

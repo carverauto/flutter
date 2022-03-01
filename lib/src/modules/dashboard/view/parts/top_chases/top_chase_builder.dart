@@ -59,7 +59,7 @@ class TopChaseBuilder extends StatelessWidget {
                       )
                     : ResizeImage(
                         AssetImage(
-                          defaultChaseImage,
+                          defaultAssetChaseImage,
                         ),
                         height: 544,
                         width: 484,

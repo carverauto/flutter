@@ -106,7 +106,8 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
                   borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                   clipBehavior: Clip.hardEdge,
                   child: AdaptiveImageBuilder(
-                    url: widget.notificationData.image ?? defaultChaseImage,
+                    url:
+                        widget.notificationData.image ?? defaultAssetChaseImage,
                     //  //     TODO: update later with parser
                     //        parseImageUrl(
                     //         notificationData.image ?? defaultPhotoURL,

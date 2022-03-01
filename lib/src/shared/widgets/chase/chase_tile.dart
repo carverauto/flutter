@@ -63,7 +63,7 @@ class ChaseTile extends StatelessWidget {
                     )
                   : Image(
                       fit: BoxFit.cover,
-                      image: AssetImage(defaultChaseImage),
+                      image: AssetImage(defaultAssetChaseImage),
                     ),
             ),
           ),

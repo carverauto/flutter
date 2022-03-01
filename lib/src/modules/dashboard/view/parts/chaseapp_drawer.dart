@@ -41,10 +41,9 @@ class ChaseAppDrawer extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundColor: primaryColor.shade800,
-                            backgroundImage: isImagePresent
-                                ? NetworkImage(userData.photoURL!)
-                                    as ImageProvider
-                                : AssetImage(defaultPhotoURL),
+                            backgroundImage: NetworkImage(
+                              userData.photoURL ?? defaultPhotoURL,
+                            ),
                           ),
                           SizedBox(
                             width: kItemsSpacingSmallConstant,

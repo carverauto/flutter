@@ -50,7 +50,7 @@ class ChaseDetails extends ConsumerWidget {
         AspectRatio(
           aspectRatio: aspectRatioStandard,
           child: ColoredBox(
-            color: Theme.of(context).colorScheme.primaryVariant,
+            color: Theme.of(context).colorScheme.primaryContainer,
             child: chase.imageURL != null && chase.imageURL!.isNotEmpty
                 ? CachedNetworkImage(
                     fit: BoxFit.fill,
@@ -70,7 +70,7 @@ class ChaseDetails extends ConsumerWidget {
                   )
                 : Image(
                     fit: BoxFit.cover,
-                    image: AssetImage(defaultChaseImage),
+                    image: AssetImage(defaultAssetChaseImage),
                   ),
           ),
         ),
@@ -206,12 +206,12 @@ class ChaseDetails extends ConsumerWidget {
                 ),
                 Divider(
                   height: kItemsSpacingSmall,
-                  color: Theme.of(context).colorScheme.primaryVariant,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 WatchHereLinksWrapper(chase: chase),
                 Divider(
                   height: kItemsSpacingSmall,
-                  color: Theme.of(context).colorScheme.primaryVariant,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
                 ChatsViewRow(chase: chase)
               ],

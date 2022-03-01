@@ -40,7 +40,7 @@ class _SplashViewState extends State<SplashView>
         SvgPicture.asset("assets/icon/twitter.svg").pictureProvider, context);
     precachePicture(
         SvgPicture.asset("assets/icon/nodle.svg").pictureProvider, context);
-    precacheImage(AssetImage(defaultChaseImage), context, onError: (e, s) {
+    precacheImage(AssetImage(defaultAssetChaseImage), context, onError: (e, s) {
       log("Catching Error", error: e);
     });
     precacheImage(AssetImage(chaseAppNameImage), context);
