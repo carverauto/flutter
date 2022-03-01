@@ -51,3 +51,5 @@ final interestsProvider =
     FutureProvider.autoDispose<List<Interest>>((ref) async {
   return ref.read(notificationRepoProvider).fetchInterests();
 });
+
+final newNotificationsPresentProvider = StateProvider<bool>((ref) => false);

@@ -50,7 +50,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     final data = message.data;
 
     if (data["interest"] != null) {
-      updateNotificationsPresentStatus(true);
+      updateNotificationsPresentStatus(ref, true);
       final notificationData = getNotificationDataFromMessage(message);
 
       notificationHandler(context, notificationData, read: ref.read);
@@ -105,7 +105,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           image: data["image"] as String?,
           createdAt: notification["createdAt"] as DateTime?,
         );
-        updateNotificationsPresentStatus(true);
+        updateNotificationsPresentStatus(ref, true);
 
         showNotificationBanner(context, notificationData);
       } else {
