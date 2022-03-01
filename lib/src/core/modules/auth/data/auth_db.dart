@@ -116,6 +116,9 @@ class AuthDatabase implements AuthDB {
       case SIGNINMETHOD.Twitter:
         await twitterLogin();
         break;
+      // case SIGNINMETHOD.Email:
+      //   await emailLogin();
+      //   break;
       default:
     }
   }
@@ -247,5 +250,27 @@ class AuthDatabase implements AuthDB {
 
     await read(firebaseAuthProvider)
         .signInWithCredential(twitterAuthCredential);
+  }
+
+  @override
+  Future<void> sendSignInLinkToEmail(String email) async {
+    //TODO:update for production as well
+    await FirebaseAuth.instance.sendSignInLinkToEmail(
+      email: email,
+      actionCodeSettings: ActionCodeSettings(
+        url: "https://carverauto.page.link/",
+        handleCodeInApp: true,
+        iOSBundleId: 'com.carverauto.chaseapp.cdev',
+        androidPackageName: 'com.carverauto.chasedev',
+        androidInstallApp: true,
+        androidMinimumVersion: "0",
+      ),
+    );
+  }
+
+  @override
+  Future<void> signInWithEmailAndLink(String email, String link) async {
+    await FirebaseAuth.instance
+        .signInWithEmailLink(email: email, emailLink: link);
   }
 }

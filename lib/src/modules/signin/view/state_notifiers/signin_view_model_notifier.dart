@@ -54,14 +54,45 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
     await read(authRepoProvider).socialLogin(signinmethod);
   }
 
+  Future<void> sendSignInLinkToEmail(String email) async {
+    await read(authRepoProvider).sendSignInLinkToEmail(email);
+  }
+
+  Future<void> signInWithEmail(String email, String link) async {
+    state = LogInState.loading();
+
+    try {
+      await read(authRepoProvider).signInWithEmailAndLink(email, link);
+
+      state = LogInState.data();
+    } on FirebaseAuthException catch (e, stk) {
+      final exception = ChaseAppCallException(
+        message: e.code.replaceAll("-", " ").toUpperCase(),
+        error: e,
+        stackTrace: stk,
+      );
+      state = LogInState.error(exception, stk);
+    } catch (e, stk) {
+      logger.severe("Error signing in", e, stk);
+      final exception = ChaseAppCallException(
+        message: "Something went wrong. Please try again.",
+        error: e,
+        stackTrace: stk,
+      );
+      state = LogInState.error(exception, stk);
+    }
+  }
+
   Future<void> handleMutliProviderSignIn(
       SIGNINMETHOD knownAuthProvider, AuthCredential credential) async {
     state = LogInState.loading();
-    await read(authRepoProvider)
-        .handleMutliProviderSignIn(knownAuthProvider, credential);
-
-    if (mounted) {
-      state = LogInState.data();
+    try {
+      await read(authRepoProvider)
+          .handleMutliProviderSignIn(knownAuthProvider, credential);
+    } catch (e) {
+      if (mounted) {
+        state = LogInState.data();
+      }
     }
   }
 }

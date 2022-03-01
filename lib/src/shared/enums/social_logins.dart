@@ -1,9 +1,9 @@
 enum SIGNINMETHOD {
-  EMAILNPASSWORD,
   Google,
   Apple,
   Facebook,
   Twitter,
+  Email,
 }
 
 extension SignInMethodIcon on SIGNINMETHOD {
@@ -24,8 +24,33 @@ extension SignInMethodIcon on SIGNINMETHOD {
         return "assets/icon/twitter.svg";
 
         break;
+        // case SIGNINMETHOD.Email:
+        //   return "assets/icon/twitter.svg";
+
+        break;
       default:
         throw UnimplementedError();
     }
+  }
+}
+
+SIGNINMETHOD getSignInProviderHelper(String unKnownProvider) {
+  switch (unKnownProvider) {
+    case "apple.com":
+      return SIGNINMETHOD.Apple;
+
+    case "google.com":
+      return SIGNINMETHOD.Google;
+
+    case "facebook.com":
+      return SIGNINMETHOD.Facebook;
+
+    case "twitter.com":
+      return SIGNINMETHOD.Twitter;
+    case "emailLink":
+      return SIGNINMETHOD.Email;
+
+    default:
+      throw Exception("Unknown provider: $unKnownProvider");
   }
 }
