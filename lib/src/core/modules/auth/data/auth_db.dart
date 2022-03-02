@@ -254,7 +254,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Future<void> sendSignInLinkToEmail(String email) async {
-    //TODO:update for production as well
     await FirebaseAuth.instance.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
