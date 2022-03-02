@@ -63,10 +63,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   }
 
   Future<void> playTrack() async {
-    // await Future<void>.delayed(Duration(milliseconds: 500));
-    // await audioPlayer.play(
-    //   "audio/about_music.mp3",
-    // );
+    await Future<void>.delayed(Duration(milliseconds: 500));
+    await audioPlayer.play(
+      "audio/about_music.mp3",
+    );
   }
 
   @override
