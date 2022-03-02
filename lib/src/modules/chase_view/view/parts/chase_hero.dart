@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/watch_youtube_video_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
@@ -35,7 +34,15 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
     final playVideo = ref.watch(playVideoProvider);
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-    log(isLandscape.toString());
+    final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
+          final url = network['URL'] as String?;
+
+          if (url != null) {
+            return url.contains("youtube.com");
+          }
+          return false;
+        }) ??
+        false;
     return AspectRatio(
       aspectRatio: aspectRatioStandard,
       child: playVideo
@@ -89,27 +96,20 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
                           image: AssetImage(defaultAssetChaseImage),
                         ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: kItemsSpacingMediumConstant,
-                  child: Tooltip(
-                    message: 'Watch Youtube Video',
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          ref
-                              .read(playVideoProvider.state)
-                              .update((state) => true);
-                        });
-                      },
-                      child: Chip(
-                        label: Icon(
-                          Icons.video_call_rounded,
-                        ),
-                      ),
-                    ),
+                if (isYoutubeUrlPresent)
+                  Positioned(
+                    bottom: kItemsSpacingSmallConstant,
+                    right: kItemsSpacingMediumConstant,
+                    child: WatchYoutubeVideo(
+                        isLive: widget.chase.live ?? false,
+                        onTap: () {
+                          setState(() {
+                            ref
+                                .read(playVideoProvider.state)
+                                .update((state) => true);
+                          });
+                        }),
                   ),
-                ),
               ],
             ),
     );
