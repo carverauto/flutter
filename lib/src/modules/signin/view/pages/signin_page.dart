@@ -2,22 +2,20 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/const/textstyles.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/login_state/login_state.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/button_scale_transition.dart';
+import 'package:chaseapp/src/modules/signin/view/parts/email_signin_bottom.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
+import 'package:chaseapp/src/modules/signin/view/parts/login_footer.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/multi_auth_dialog.dart';
 import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -277,7 +275,8 @@ class _LogInViewState extends ConsumerState<LogInView>
                                       AnimatedSwitcher(
                                     duration: Duration(milliseconds: 300),
                                     child: isLoggingWithEmail &&
-                                            signinmethod == null
+                                            signinmethod == null &&
+                                            method == SIGNINMETHOD.Email
                                         ? Padding(
                                             padding: const EdgeInsets.only(
                                               bottom: 2,
@@ -354,247 +353,5 @@ class _LogInViewState extends ConsumerState<LogInView>
         ),
       ),
     );
-  }
-}
-
-class LogInFooter extends StatelessWidget {
-  const LogInFooter({
-    Key? key,
-    required this.onTap,
-    required this.isLoggingWithEmail,
-    required this.isEmailSignInMethod,
-  }) : super(key: key);
-
-  final VoidCallback onTap;
-  final bool isLoggingWithEmail;
-  final bool isEmailSignInMethod;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds: 100),
-      transitionBuilder: (child, animation) {
-        return ScaleTransition(
-          scale: animation,
-          child: child,
-        );
-      },
-      child: isLoggingWithEmail
-          ? isEmailSignInMethod
-              ? SizedBox.shrink()
-              : TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.all(0),
-                    side: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: onTap,
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                )
-          : RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: "By signing in you agree to the",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                ),
-                TextSpan(
-                  text: " terms of service",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrl(tosPolicy);
-                    },
-                ),
-                TextSpan(
-                  text: " and ",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                ),
-                TextSpan(
-                  text: "privacy policy",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrl(privacyPolicy);
-                    },
-                ),
-              ])),
-    );
-  }
-}
-
-class ContinueWithEmailWidget extends StatelessWidget {
-  const ContinueWithEmailWidget({
-    Key? key,
-    required this.isLoggingWithEmail,
-  }) : super(key: key);
-
-  final bool isLoggingWithEmail;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds: 0),
-      transitionBuilder: (child, animation) {
-        return child;
-      },
-      child: isLoggingWithEmail
-          ? Text(
-              "Continue with your Email",
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headline4!.fontSize,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          : SizedBox.shrink(),
-    );
-  }
-}
-
-class EmailSignInBottom extends StatefulWidget {
-  const EmailSignInBottom({
-    Key? key,
-    required TextEditingController textEditingController,
-    required this.onTap,
-    required this.isLoggingInWithEmail,
-  })  : _textEditingController = textEditingController,
-        super(key: key);
-
-  final TextEditingController _textEditingController;
-  final Future<void> Function() onTap;
-  final bool isLoggingInWithEmail;
-
-  @override
-  State<EmailSignInBottom> createState() => _EmailSignInBottomState();
-}
-
-class _EmailSignInBottomState extends State<EmailSignInBottom> {
-  bool isSending = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return isSending
-        ? CircularAdaptiveProgressIndicatorWithBg()
-        : widget.isLoggingInWithEmail
-            ? SizedBox.shrink()
-            : AnimatedBuilder(
-                animation: widget._textEditingController,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    Navigator.of(context).focusScopeNode.unfocus();
-                    try {
-                      setState(() {
-                        isSending = true;
-                      });
-                      await widget.onTap();
-                      setState(() {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Row(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: kItemsSpacingSmallConstant,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "Log in link has been sent to your email. Please check.",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      });
-                    } on FirebaseAuthException catch (e) {
-                      //TODO:logger log this
-                      final message = e.code == "invalid-email"
-                          ? "Invalid email address."
-                          : "Something went wrong!";
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              Icon(
-                                Icons.info,
-                                color: Colors.red,
-                              ),
-                              SizedBox(
-                                width: kItemsSpacingSmallConstant,
-                              ),
-                              Text(
-                                message,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } catch (e) {
-                      //TODO:logger log this
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              Icon(
-                                Icons.info,
-                                color: Colors.red,
-                              ),
-                              SizedBox(
-                                width: kItemsSpacingSmallConstant,
-                              ),
-                              Text(
-                                "Something went wrong. Please try agin later.",
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    } finally {
-                      setState(() {
-                        isSending = false;
-                      });
-                    }
-                  },
-                  child: Text(
-                    "Send",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                builder: (context, child) {
-                  return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      );
-                    },
-                    child: widget._textEditingController.text.isNotEmpty
-                        ? child!
-                        : SizedBox.shrink(),
-                  );
-                },
-              );
   }
 }
