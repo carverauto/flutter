@@ -61,7 +61,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
                         height: 300,
                         child: GridView.count(
                           controller: scrollController,
-                          crossAxisCount: axis == Axis.horizontal ? 1 : 2,
+                          crossAxisCount: 1,
                           childAspectRatio: 1.2,
                           mainAxisSpacing: kItemsSpacingSmallConstant,
                           padding: EdgeInsets.symmetric(

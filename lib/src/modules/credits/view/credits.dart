@@ -37,9 +37,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
-    final topOffset = Sizescaleconfig.getDeviceType == DeviceType.TABLET
-        ? height * 0.8
-        : height;
+    final topOffset =
+        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
+            ? height * 0.8
+            : height / 1.5;
     final bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
@@ -62,10 +63,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   }
 
   Future<void> playTrack() async {
-    await Future<void>.delayed(Duration(milliseconds: 500));
-    await audioPlayer.play(
-      "audio/about_music.mp3",
-    );
+    // await Future<void>.delayed(Duration(milliseconds: 500));
+    // await audioPlayer.play(
+    //   "audio/about_music.mp3",
+    // );
   }
 
   @override

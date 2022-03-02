@@ -70,6 +70,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
               ],
             )
           : Stack(
+              fit: StackFit.expand,
               children: [
                 ColoredBox(
                   color: Theme.of(context).colorScheme.primaryContainer,
