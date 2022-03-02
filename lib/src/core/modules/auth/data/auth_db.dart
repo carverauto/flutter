@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:chaseapp/src/const/app_bundle_info.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/push_tokens/push_token.dart';
@@ -257,10 +258,13 @@ class AuthDatabase implements AuthDB {
     await FirebaseAuth.instance.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
-        url: "https://carverauto.page.link/",
+        url: AppBundleInfo
+            .dynamicLinkHostUrl, // "https://carverauto.page.link/",
         handleCodeInApp: true,
-        iOSBundleId: 'com.carverauto.chaseapp.cdev',
-        androidPackageName: 'com.carverauto.chasedev',
+        iOSBundleId:
+            AppBundleInfo.iosBundleId, //'com.carverauto.chaseapp.cdev',
+        androidPackageName:
+            AppBundleInfo.androidBundleId, // 'com.carverauto.chasedev',
         androidInstallApp: true,
         androidMinimumVersion: "0",
       ),

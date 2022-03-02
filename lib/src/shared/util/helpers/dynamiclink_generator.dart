@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chaseapp/flavors.dart';
+import 'package:chaseapp/src/const/app_bundle_info.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
@@ -12,16 +13,9 @@ Future<String> createChaseDynamicLink(Chase chase) async {
       ? parseImageUrl(chase.imageURL!, ImageDimensions.MEDIUM)
       : defaultPhotoURL;
 
-  final prodBundleId = "com.carverauto.chaseapp";
+  final uriPrefix = AppBundleInfo.dynamicLinkHostUrl;
 
-  final devAndroidBundleId = 'com.carverauto.chasedev';
-  final devIosBundleId = 'com.carverauto.chaseapp.cdev';
-
-  final uriPrefix = F.appFlavor == Flavor.DEV
-      ? "https://carverauto.page.link"
-      : "https://m.chaseapp.tv";
-  final linkPrefix =
-      F.appFlavor == Flavor.DEV ? "carverauto.com" : "chaseapp.tv";
+  final linkPrefix = F.appFlavor == AppBundleInfo.dynamicLinkPrefix;
 
   final link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
   //Dynamic link generalization
@@ -29,16 +23,15 @@ Future<String> createChaseDynamicLink(Chase chase) async {
     uriPrefix: uriPrefix,
     link: link,
     androidParameters: AndroidParameters(
-      packageName:
-          F.appFlavor == Flavor.DEV ? devAndroidBundleId : prodBundleId,
+      packageName: AppBundleInfo.androidBundleId,
       minimumVersion: 0,
       fallbackUrl: fallbackUrl,
     ),
     iosParameters: IOSParameters(
       minimumVersion: '0',
-      bundleId: F.appFlavor == Flavor.DEV ? devIosBundleId : prodBundleId,
+      bundleId: AppBundleInfo.iosBundleId,
       fallbackUrl: fallbackUrl,
-      appStoreId: "1462719760",
+      appStoreId: AppBundleInfo.appstoreId,
     ),
     socialMetaTagParameters: SocialMetaTagParameters(
       title: chase.name,
