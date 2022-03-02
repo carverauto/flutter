@@ -7,8 +7,10 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dar
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
+import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
+import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,12 +118,31 @@ class ChaseDetails extends ConsumerWidget {
                           SizedBox(
                             width: kItemsSpacingSmallConstant / 2,
                           ),
-                          Text(
-                            dateAdded(chase),
-                            style: TextStyle(
-                              color: primaryColor.shade300,
+                          if (chase.live ?? false)
+                            GradientAnimationChildBuilder(
+                              shouldAnimate: true,
+                              padding: EdgeInsets.all(0),
+                              child: GlassButton(
+                                child: Text(
+                                  "Live!",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          else
+                            GlassButton(
+                              child: Text(
+                                dateAdded(chase),
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
+                              ),
                             ),
-                          ),
                         ],
                       ),
                       SizedBox(

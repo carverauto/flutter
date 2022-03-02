@@ -10,10 +10,12 @@ class GradientAnimationChildBuilder extends StatefulWidget {
     Key? key,
     required this.child,
     required this.shouldAnimate,
+    this.padding,
   }) : super(key: key);
 
   final Widget child;
   final bool shouldAnimate;
+  final EdgeInsets? padding;
 
   @override
   _GradientAnimationChildBuilderState createState() =>
@@ -69,7 +71,8 @@ class _GradientAnimationChildBuilderState
       child: widget.child,
       builder: (context, child) {
         return Container(
-          padding: EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
+          padding:
+              widget.padding ?? EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
           decoration: BoxDecoration(
             boxShadow: kElevationToShadow["12"],
             gradient: widget.shouldAnimate
