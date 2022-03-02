@@ -33,12 +33,14 @@ class ChaseDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      final renderbox =
-          chaseDetailsKey.currentContext!.findRenderObject() as RenderBox;
-      final height = renderbox.size.height;
-      final finalHeight = ref.read(chaseDetailsHeightProvider);
-      if (finalHeight == null) {
-        ref.read(chaseDetailsHeightProvider.state).update((state) => height);
+      if (chaseDetailsKey.currentContext != null) {
+        final renderbox =
+            chaseDetailsKey.currentContext!.findRenderObject() as RenderBox;
+        final height = renderbox.size.height;
+        final finalHeight = ref.read(chaseDetailsHeightProvider);
+        if (finalHeight == null) {
+          ref.read(chaseDetailsHeightProvider.state).update((state) => height);
+        }
       }
     });
     return Column(

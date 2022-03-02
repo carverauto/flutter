@@ -5,7 +5,6 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -13,10 +12,10 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
 
-class ChaseDetailsView extends ConsumerWidget {
-  // ChaseDetailsView(this.observer);
-  final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+class ChaseDetailsView extends ConsumerStatefulWidget {
   final String chaseId;
+  final Animation<Offset> appBarOffsetAnimation;
+  final Animation<Offset> bottomListAnimation;
 
   ChaseDetailsView({
     Key? key,
@@ -25,22 +24,41 @@ class ChaseDetailsView extends ConsumerWidget {
     required this.bottomListAnimation,
   }) : super(key: key);
 
-  final Logger logger = Logger("ChaseView");
+  @override
+  ConsumerState<ChaseDetailsView> createState() => _ChaseDetailsViewState();
+}
 
-  final Animation<Offset> appBarOffsetAnimation;
-  final Animation<Offset> bottomListAnimation;
+class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
+  final Logger logger = Logger("ChaseView");
 
   final bool expandChats = false;
 
-  YoutubePlayerController _controller = YoutubePlayerController(
-    initialVideoId: 'iLnmTe5Q2Qw',
-    flags: YoutubePlayerFlags(
-      autoPlay: true,
-      mute: true,
-    ),
-  );
+  late YoutubePlayerController _controller;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: 'nMqCFWgoO7g',
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chaseId = widget.chaseId;
+    final appBarOffsetAnimation = widget.appBarOffsetAnimation;
+    final bottomListAnimation = widget.bottomListAnimation;
     ref.watch(playVideoProvider);
 
     return YoutubePlayerBuilder(
