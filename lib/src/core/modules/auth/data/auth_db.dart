@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:chaseapp/src/const/app_bundle_info.dart';
 import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/push_tokens/push_token.dart';
@@ -66,7 +67,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Stream<User?> streamLogInStatus() {
-    // TODO: implement streamLogInStatus
     return read(firebaseAuthProvider).authStateChanges();
   }
 
@@ -116,6 +116,9 @@ class AuthDatabase implements AuthDB {
       case SIGNINMETHOD.Twitter:
         await twitterLogin();
         break;
+      // case SIGNINMETHOD.Email:
+      //   await emailLogin();
+      //   break;
       default:
     }
   }
@@ -247,5 +250,29 @@ class AuthDatabase implements AuthDB {
 
     await read(firebaseAuthProvider)
         .signInWithCredential(twitterAuthCredential);
+  }
+
+  @override
+  Future<void> sendSignInLinkToEmail(String email) async {
+    await FirebaseAuth.instance.sendSignInLinkToEmail(
+      email: email,
+      actionCodeSettings: ActionCodeSettings(
+        url: AppBundleInfo
+            .dynamicLinkHostUrl, // "https://carverauto.page.link/",
+        handleCodeInApp: true,
+        iOSBundleId:
+            AppBundleInfo.iosBundleId, //'com.carverauto.chaseapp.cdev',
+        androidPackageName:
+            AppBundleInfo.androidBundleId, // 'com.carverauto.chasedev',
+        androidInstallApp: true,
+        androidMinimumVersion: "0",
+      ),
+    );
+  }
+
+  @override
+  Future<void> signInWithEmailAndLink(String email, String link) async {
+    await FirebaseAuth.instance
+        .signInWithEmailLink(email: email, emailLink: link);
   }
 }

@@ -29,7 +29,6 @@ class DonutClapButton extends ConsumerWidget {
       ),
       clapFabCallback: (int upCount) async {
         try {
-          //TODO: Improve this handling
           ref.read(chaseRepoProvider).upVoteChase(upCount, chase.id);
         } catch (e, stk) {
           logger.warning(

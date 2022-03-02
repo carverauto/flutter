@@ -43,27 +43,22 @@ class SentimentSlider extends StatelessWidget {
                     maxWidth: 200,
                     minWidth: 144,
                   ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        height: 13,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: kItemsSpacingSmallConstant,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: primaryColor.shade600.withOpacity(0.7),
-                          gradient: LinearGradient(colors: [
-                            sentimentColor,
-                            primaryColor.shade600.withOpacity(0.7),
-                          ], stops: [
-                            value.abs().toDouble(),
-                            value.abs().toDouble(),
-                          ]),
-                        ),
-                      ),
-                    ],
+                  child: Container(
+                    height: 14,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: kItemsSpacingSmallConstant,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: primaryColor.shade600.withOpacity(0.7),
+                      gradient: LinearGradient(colors: [
+                        sentimentColor,
+                        primaryColor.shade600.withOpacity(0.7),
+                      ], stops: [
+                        value.abs().toDouble(),
+                        value.abs().toDouble(),
+                      ]),
+                    ),
                   ),
                 ),
               ),

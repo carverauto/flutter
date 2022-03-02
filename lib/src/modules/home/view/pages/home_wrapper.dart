@@ -37,8 +37,10 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
-    if (deepLink != null) {
-      await navigateToView(deepLink);
+    if (deepLink?.path != "/__/auth/action") {
+      if (deepLink != null) {
+        await navigateToView(deepLink);
+      }
     }
   }
 
@@ -48,7 +50,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     final data = message.data;
 
     if (data["interest"] != null) {
-      updateNotificationsPresentStatus(true);
+      updateNotificationsPresentStatus(ref, true);
       final notificationData = getNotificationDataFromMessage(message);
 
       notificationHandler(context, notificationData, read: ref.read);
@@ -78,8 +80,10 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       log("Dynamic Link Recieved--->" + dynamicLink.link.toString());
       final Uri? deepLink = dynamicLink.link;
 
-      if (deepLink != null) {
-        await navigateToView(deepLink);
+      if (deepLink?.path != "/__/auth/action") {
+        if (deepLink != null) {
+          await navigateToView(deepLink);
+        }
       }
     }, onError: (Object error, StackTrace stackTrace) {
       log("Error while recieving dynamic link", error: error);
@@ -101,7 +105,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           image: data["image"] as String?,
           createdAt: notification["createdAt"] as DateTime?,
         );
-        updateNotificationsPresentStatus(true);
+        updateNotificationsPresentStatus(ref, true);
 
         showNotificationBanner(context, notificationData);
       } else {
@@ -137,9 +141,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       if (state == AppLifecycleState.resumed) {
         _timerLink = new Timer(
           const Duration(milliseconds: 1000),
-          () {
-            //  handlemessagesthatopenedtheappFromBackgroundState();
-          },
+          () {},
         );
       }
     }

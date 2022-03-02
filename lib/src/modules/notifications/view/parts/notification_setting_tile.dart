@@ -28,6 +28,7 @@ class NotificationSettingTile extends StatelessWidget {
       trailing: NotificationSettingTileSwitch(
         interest: interest,
         isUsersInterest: isUsersInterest,
+        displayName: displayName,
       ),
     );
   }
@@ -38,10 +39,12 @@ class NotificationSettingTileSwitch extends ConsumerStatefulWidget {
     Key? key,
     required this.interest,
     required this.isUsersInterest,
+    required this.displayName,
   }) : super(key: key);
 
   final Interest interest;
   final bool isUsersInterest;
+  final String displayName;
 
   @override
   ConsumerState<NotificationSettingTileSwitch> createState() =>
@@ -54,7 +57,6 @@ class _NotificationSettingTileSwitchState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isEnabled = widget.interest.isCompulsory || widget.isUsersInterest;
   }
@@ -70,10 +72,24 @@ class _NotificationSettingTileSwitchState
                 await ref
                     .read(pusherBeamsProvider)
                     .addDeviceInterest(widget.interest.name);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Subscribed to ${widget.displayName} notifications.",
+                    ),
+                  ),
+                );
               } else {
                 await ref
                     .read(pusherBeamsProvider)
                     .removeDeviceInterest(widget.interest.name);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "UnSubscribed from ${widget.displayName} notifications.",
+                    ),
+                  ),
+                );
               }
               setState(() {
                 isEnabled = value;

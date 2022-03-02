@@ -6,8 +6,7 @@ class HelperFunctions {
   static String sharedPreferenceUserLoggedInKey = "ISLOGGEDIN";
   static String sharedPreferenceUserNameKey = "USERNAMEKEY";
   static String sharedPreferenceUserEmailKey = "USEREMAILKEY";
-  //TODO: Provide SharedPreferences Singleton through provider & pass a ref to read it here
-  // saving data to sharedpreference
+
   static Future<bool> saveUserLoggedInSharedPreference(
       bool isUserLoggedIn) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();

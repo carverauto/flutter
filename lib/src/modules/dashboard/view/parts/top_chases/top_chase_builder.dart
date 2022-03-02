@@ -3,6 +3,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
@@ -59,7 +60,7 @@ class TopChaseBuilder extends StatelessWidget {
                       )
                     : ResizeImage(
                         AssetImage(
-                          defaultChaseImage,
+                          defaultAssetChaseImage,
                         ),
                         height: 544,
                         width: 484,
@@ -83,14 +84,29 @@ class TopChaseBuilder extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GlassButton(
-                      child: Text(
-                        dateAdded(chase),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
+                    if (chase.live ?? false)
+                      GradientAnimationChildBuilder(
+                        shouldAnimate: true,
+                        padding: EdgeInsets.all(0),
+                        child: GlassButton(
+                          child: Text(
+                            "Live!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      GlassButton(
+                        child: Text(
+                          dateAdded(chase),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
                         ),
                       ),
-                    ),
                     Spacer(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

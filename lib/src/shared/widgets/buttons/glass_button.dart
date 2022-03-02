@@ -10,18 +10,22 @@ class GlassButton extends StatelessWidget {
     required this.child,
     this.padding,
     this.onTap,
+    this.shape,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
+  final ShapeBorder? shape;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       clipBehavior: Clip.hardEdge,
       color: primaryColor.shade500.withOpacity(0.3),
-      borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+      shape: shape,
+      borderRadius:
+          shape != null ? null : BorderRadius.circular(kBorderRadiusStandard),
       child: InkWell(
         onTap: onTap,
         child: BackdropFilter(

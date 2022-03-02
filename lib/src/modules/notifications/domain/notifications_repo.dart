@@ -19,7 +19,6 @@ class NotificationsRepository implements NotificationsRepoAB {
 
   @override
   Future<List<Interest>> fetchInterests() {
-    // TODO: implement fetchInterests
     return read(notificationDbProvider).fetchInterests();
   }
 }

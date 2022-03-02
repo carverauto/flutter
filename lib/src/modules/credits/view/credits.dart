@@ -37,9 +37,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   void playAnimation() async {
     final height = MediaQuery.of(context).size.height;
-    final topOffset = Sizescaleconfig.getDeviceType == DeviceType.TABLET
-        ? height * 0.8
-        : height;
+    final topOffset =
+        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
+            ? height * 0.8
+            : height / 1.5;
     final bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
@@ -70,7 +71,6 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _animationController = AnimationController(
@@ -84,13 +84,12 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   void didChangeDependencies() {
     playAnimation();
 
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    _animationController.dispose(); // TODO: implement dispose
+    _animationController.dispose();
     audioPlayer.fixedPlayer!.dispose();
     super.dispose();
   }

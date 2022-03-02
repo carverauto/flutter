@@ -28,7 +28,7 @@ class NotificationsPaginatedListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     WidgetsBinding.instance!.addPostFrameCallback((t) {
-      updateNotificationsPresentStatus(false);
+      updateNotificationsPresentStatus(ref, false);
     });
     return SliverProviderPaginatedStateNotifierBuilder<NotificationData>(
         watchThisStateNotifierProvider: chasesPaginationProvider,
@@ -41,10 +41,15 @@ class NotificationsPaginatedListView extends ConsumerWidget {
                   child: Column(
                     children: [
                       Icon(
-                        Icons.notifications_none_outlined,
+                        Icons.notifications_none_rounded,
                       ),
                       Chip(
-                        label: Text("No Notifications!"),
+                        label: Text(
+                          "No New Notifications!",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
                       ),
                     ],
                   ),

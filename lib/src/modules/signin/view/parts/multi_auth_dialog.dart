@@ -1,6 +1,5 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/shared/enums/social_logins.dart';
-import 'package:chaseapp/src/shared/util/helpers/multi_provider_helper.dart';
 import 'package:flutter/material.dart';
 
 class MultiAuthDialog extends StatelessWidget {

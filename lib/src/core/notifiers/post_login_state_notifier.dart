@@ -1,4 +1,3 @@
-import 'package:chaseapp/flavors.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
@@ -36,16 +35,6 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Future<void> checkUsersInterests() async {
     try {
-      if (F.appFlavor == Flavor.DEV) {
-        // TODO: this should say Dev_Pusher_Beams_Instance_Id
-        const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
-        await _read(pusherBeamsProvider).start(instanceId);
-      } else {
-        // TODO: this should say Prod_Pusher_Beams_Instance_Id
-        const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
-
-        await _read(pusherBeamsProvider).start(instanceId);
-      }
       final usersInterests =
           await _read(pusherBeamsProvider).getDeviceInterests();
       final interests = await _read(notificationRepoProvider).fetchInterests();

@@ -17,6 +17,8 @@ abstract class AuthDB {
   Future<void> appleLogin();
   Future<void> facebookLogin();
   Future<void> twitterLogin();
+  Future<void> sendSignInLinkToEmail(String email);
+  Future<void> signInWithEmailAndLink(String email, String link);
   Future<void> signOut();
   void updateTokenWhenRefreshed(User user);
 }

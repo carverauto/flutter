@@ -39,6 +39,6 @@ final firestoreProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
 final firebaseRemoteConfigProvider =
-    Provider<RemoteConfig>((ref) => RemoteConfig.instance);
+    Provider<FirebaseRemoteConfig>((ref) => FirebaseRemoteConfig.instance);
 final firebaseCrashlyticsProvider =
     Provider<FirebaseCrashlytics>((ref) => FirebaseCrashlytics.instance);

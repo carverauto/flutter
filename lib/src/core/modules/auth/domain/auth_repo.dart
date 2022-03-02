@@ -25,10 +25,10 @@ class AuthRepository implements AuthRepositoryAB {
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> sendEmailVerification() {
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<void> sendEmailVerification() {
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<void> signOut() {
@@ -70,5 +70,15 @@ class AuthRepository implements AuthRepositoryAB {
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) {
     return read(authDbProvider)
         .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
+  }
+
+  @override
+  Future<void> sendSignInLinkToEmail(String email) {
+    return read(authDbProvider).sendSignInLinkToEmail(email);
+  }
+
+  @override
+  Future<void> signInWithEmailAndLink(String email, String link) {
+    return read(authDbProvider).signInWithEmailAndLink(email, link);
   }
 }

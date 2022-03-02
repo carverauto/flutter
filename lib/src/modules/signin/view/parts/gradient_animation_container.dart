@@ -10,10 +10,12 @@ class GradientAnimationChildBuilder extends StatefulWidget {
     Key? key,
     required this.child,
     required this.shouldAnimate,
+    this.padding,
   }) : super(key: key);
 
   final Widget child;
   final bool shouldAnimate;
+  final EdgeInsets? padding;
 
   @override
   _GradientAnimationChildBuilderState createState() =>
@@ -30,7 +32,6 @@ class _GradientAnimationChildBuilderState
   SIGNINMETHOD? signinmethod = null;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
@@ -54,7 +55,6 @@ class _GradientAnimationChildBuilderState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
@@ -71,7 +71,8 @@ class _GradientAnimationChildBuilderState
       child: widget.child,
       builder: (context, child) {
         return Container(
-          padding: EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
+          padding:
+              widget.padding ?? EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
           decoration: BoxDecoration(
             boxShadow: kElevationToShadow["12"],
             gradient: widget.shouldAnimate
@@ -117,7 +118,6 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
   SIGNINMETHOD? signinmethod = null;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
@@ -134,7 +134,6 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
