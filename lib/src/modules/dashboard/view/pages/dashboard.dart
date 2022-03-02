@@ -1,6 +1,5 @@
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chase_map.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_drawer.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';

@@ -358,7 +358,6 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        //TODO: Fix the sizing here
         if (_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN)
           Flexible(
             child: widget.trailing(counter),

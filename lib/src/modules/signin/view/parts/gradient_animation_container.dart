@@ -30,7 +30,6 @@ class _GradientAnimationChildBuilderState
   SIGNINMETHOD? signinmethod = null;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
@@ -54,7 +53,6 @@ class _GradientAnimationChildBuilderState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
@@ -117,7 +115,6 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
   SIGNINMETHOD? signinmethod = null;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
@@ -134,7 +131,6 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }

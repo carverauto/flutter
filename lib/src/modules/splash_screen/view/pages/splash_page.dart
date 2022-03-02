@@ -28,7 +28,6 @@ class _SplashViewState extends State<SplashView>
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     precachePicture(
         SvgPicture.asset("assets/icon/google.svg").pictureProvider, context);

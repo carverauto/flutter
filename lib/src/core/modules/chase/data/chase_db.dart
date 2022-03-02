@@ -8,7 +8,6 @@ class ChaseDatabase implements ChaseDbAB {
 
   @override
   Stream<Chase> streamChase(String chaseId) {
-    // TODO: implement streamChase
     return chasesCollectionRef
         .doc(chaseId)
         .snapshots()
@@ -47,7 +46,6 @@ class ChaseDatabase implements ChaseDbAB {
 
   @override
   Stream<List<Chase>> streamTopChases() {
-    // TODO: implement streamTopChases
     return chasesCollectionRef
         .orderBy("CreatedAt", descending: true)
         .limit(3)

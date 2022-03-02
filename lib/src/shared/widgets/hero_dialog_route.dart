@@ -40,6 +40,5 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   }
 
   @override
-  // TODO: implement barrierLabel
   String? get barrierLabel => "Dismissable Dialog";
 }

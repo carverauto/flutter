@@ -23,7 +23,6 @@ class _GrantAllPermissionsButtonState extends State<GrantAllPermissionsButton> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isLoading = false;
   }

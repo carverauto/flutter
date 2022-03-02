@@ -1,6 +1,3 @@
-//TODO: Add all firebase collections here with convertors and refer this
-// declarations for using collections
-
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
 import 'package:chaseapp/src/models/notification_data/notification_data.dart';

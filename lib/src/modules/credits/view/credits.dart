@@ -70,7 +70,6 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _animationController = AnimationController(
@@ -84,13 +83,12 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   void didChangeDependencies() {
     playAnimation();
 
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    _animationController.dispose(); // TODO: implement dispose
+    _animationController.dispose();
     audioPlayer.fixedPlayer!.dispose();
     super.dispose();
   }

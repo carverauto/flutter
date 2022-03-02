@@ -74,13 +74,11 @@ class AuthRepository implements AuthRepositoryAB {
 
   @override
   Future<void> sendSignInLinkToEmail(String email) {
-    // TODO: implement sendSignInLinkToEmail
     return read(authDbProvider).sendSignInLinkToEmail(email);
   }
 
   @override
   Future<void> signInWithEmailAndLink(String email, String link) {
-    // TODO: implement signInWithEmailAndLink
     return read(authDbProvider).signInWithEmailAndLink(email, link);
   }
 }

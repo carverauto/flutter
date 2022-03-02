@@ -44,7 +44,6 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
   late Timer timer;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     timer = Timer(Duration(seconds: 5), () {
@@ -54,7 +53,6 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     timer.cancel();
     super.dispose();
   }

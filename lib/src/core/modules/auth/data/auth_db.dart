@@ -66,7 +66,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Stream<User?> streamLogInStatus() {
-    // TODO: implement streamLogInStatus
     return read(firebaseAuthProvider).authStateChanges();
   }
 

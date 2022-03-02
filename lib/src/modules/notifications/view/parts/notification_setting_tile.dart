@@ -57,7 +57,6 @@ class _NotificationSettingTileSwitchState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     isEnabled = widget.interest.isCompulsory || widget.isUsersInterest;
   }

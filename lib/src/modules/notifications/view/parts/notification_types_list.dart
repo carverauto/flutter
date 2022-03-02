@@ -28,8 +28,6 @@ class _NotificationTypesState extends ConsumerState<NotificationTypes> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     super.dispose();
   }
 

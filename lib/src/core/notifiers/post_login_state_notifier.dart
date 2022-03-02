@@ -37,11 +37,9 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> checkUsersInterests() async {
     try {
       if (F.appFlavor == Flavor.DEV) {
-        // TODO: this should say Dev_Pusher_Beams_Instance_Id
         const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
         await _read(pusherBeamsProvider).start(instanceId);
       } else {
-        // TODO: this should say Prod_Pusher_Beams_Instance_Id
         const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
 
         await _read(pusherBeamsProvider).start(instanceId);

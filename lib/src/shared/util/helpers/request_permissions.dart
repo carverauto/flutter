@@ -56,19 +56,6 @@ Future<UsersPermissionStatuses> requestPermissions() async {
     }
   }
 
-  // FirebaseMessaging messaging = FirebaseMessaging.instance;
-  //TODO: Is this required now? I don't think so.
-  // Already granted when asked for notifications permission above.
-  // NotificationSettings settings = await messaging.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
-
   return UsersPermissionStatuses(
     permanentlyDeniedPermissions.isNotEmpty
         ? UsersPermissionStatus.PERMANENTLY_DENIED

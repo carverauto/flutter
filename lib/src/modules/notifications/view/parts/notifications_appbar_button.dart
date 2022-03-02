@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,6 @@ class NotificationsAppbarButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final newNotificationsPresent = ref
-            .read(sharedPreferancesProvider)
-            .getBool("newNotificationsPresent") ??
-        false;
-
     final notificationsPresent = ref.watch(newNotificationsPresentProvider);
     return GestureDetector(
       onTap: () {

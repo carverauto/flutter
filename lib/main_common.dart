@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routes.dart';
 import 'package:chaseapp/src/theme/theme.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logging/logging.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class MyApp extends ConsumerWidget {
@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
             // If not added then getStream API is overriding the
             // the user set accentColor in Custom Theme
             colorTheme: ColorTheme.dark(
-              accentPrimary: Color(0xFFFF8EC6),
+              accentPrimary: kPrimaryAccent,
             ),
           ),
           client: ref.read(chatsServiceStateNotifierProvider.notifier).client,

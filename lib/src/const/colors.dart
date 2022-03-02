@@ -17,6 +17,7 @@ const primaryColor = MaterialColor(
 );
 
 const starWarsCrawlTextColor = Color(0xffc7890a);
+const kPrimaryAccent = Color(0xFFFF8EC6);
 
 const double blurValue = 5;
 
