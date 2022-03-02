@@ -15,13 +15,14 @@ class URLView extends StatelessWidget {
       runSpacing: kItemsSpacingSmallConstant,
       children: streams.map<Widget>((data) {
         final String url = data["URL"] as String;
+        final String name = data["Name"] as String;
         return GlassButton(
           padding: EdgeInsets.all(kPaddingSmallConstant),
           onTap: () {
             launchUrl(url);
           },
           child: Text(
-            Uri.parse(url).host.replaceFirst("www.", ""),
+            name,
             style: TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
             ),
