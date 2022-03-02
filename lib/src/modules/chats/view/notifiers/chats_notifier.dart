@@ -31,18 +31,14 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
-      //TODO:generate token from server
-      //   final userToken = await client.devToken(userData.uid).rawValue;
       final userToken =
           await read(chatsRepoProvider).getUserToken(userData.uid);
 
-      //TODO: Need to discuss?
-      //Shouldn't this check be done within connectUser function instead?
       if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected)
         await client.connectUser(
           stream.User(
             id: userData.uid,
-            name: userData.userName,
+            name: userData.userName?.split(" ")[0] ?? "Unknown",
             image: userData.photoURL,
           ),
           userToken,

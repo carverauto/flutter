@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -24,21 +23,21 @@ class ChatsViewRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Material(
-          child: InkWell(
-            onTap: () async {
-              await Future<void>.delayed(Duration(milliseconds: 100));
-              showChatsViewBottomSheet(context, chase);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kPaddingMediumConstant,
-                vertical: kItemsSpacingSmallConstant,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kPaddingMediumConstant,
+        vertical: kItemsSpacingSmallConstant,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Material(
+            child: InkWell(
+              onTap: () async {
+                await Future<void>.delayed(Duration(milliseconds: 100));
+                showChatsViewBottomSheet(context, chase);
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -56,119 +55,135 @@ class ChatsViewRow extends ConsumerWidget {
               ),
             ),
           ),
-        ),
-        ProviderStateBuilder(
-          builder: (connectionStatus, ref) {
-            switch (connectionStatus) {
-              case ConnectionStatus.connected:
-                return ProviderStateBuilder<Channel>(
-                  watchThisProvider: chatChannelProvider(chase),
-                  logger: logger,
-                  builder: (channel, ref) {
-                    final messages = channel.state?.messages;
-                    if (messages == null || messages.isEmpty)
-                      return GestureDetector(
-                        onTap: () {
-                          showChatsViewBottomSheet(context, chase);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "No chats yet",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-
-                    final lastMessage = channel.state!.messages.last;
-                    return TweenAnimationBuilder<Offset>(
-                      tween: Tween<Offset>(
-                          begin: Offset(0, MediaQuery.of(context).size.height),
-                          end: Offset.zero),
-                      curve: kPrimaryCurve,
-                      duration: Duration(milliseconds: 300),
-                      builder: (context, value, child) {
-                        return Transform.translate(
-                          offset: value,
-                          child: child,
-                        );
-                      },
-                      child: StreamChannel(
-                        channel: channel,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          onTap: () async {
-                            await Future<void>.delayed(
-                                Duration(milliseconds: 100));
+          ProviderStateBuilder(
+            builder: (connectionStatus, ref) {
+              switch (connectionStatus) {
+                case ConnectionStatus.connected:
+                  return ProviderStateBuilder<Channel>(
+                    watchThisProvider: chatChannelProvider(chase),
+                    logger: logger,
+                    builder: (channel, ref) {
+                      final messages = channel.state?.messages;
+                      if (messages == null || messages.isEmpty)
+                        return GestureDetector(
+                          onTap: () {
                             showChatsViewBottomSheet(context, chase);
                           },
-                          leading: CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                                lastMessage.user!.image ?? defaultProfileURL),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "No chats yet",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
+                              ),
+                            ],
                           ),
-                          title: Text(
-                            lastMessage.user!.name,
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
+                        );
+
+                      final lastMessage = channel.state!.messages.last;
+                      return TweenAnimationBuilder<Offset>(
+                        tween: Tween<Offset>(
+                            begin:
+                                Offset(0, MediaQuery.of(context).size.height),
+                            end: Offset.zero),
+                        curve: kPrimaryCurve,
+                        duration: Duration(milliseconds: 300),
+                        builder: (context, value, child) {
+                          return Transform.translate(
+                            offset: value,
+                            child: child,
+                          );
+                        },
+                        child: StreamChannel(
+                          channel: channel,
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            onTap: () async {
+                              await Future<void>.delayed(
+                                  Duration(milliseconds: 100));
+                              showChatsViewBottomSheet(context, chase);
+                            },
+                            leading: CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorLight,
+                              backgroundImage: lastMessage.user!.image == null
+                                  ? null
+                                  : CachedNetworkImageProvider(
+                                      lastMessage.user!.image!,
                                     ),
+                              child: Text(
+                                lastMessage.user?.name[0].toUpperCase() ?? "U",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              lastMessage.user!.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                            ),
+                            subtitle: lastMessage.text != null
+                                ? Text(
+                                    lastMessage.text!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(
+                                          color: primaryColor.shade300,
+                                        ),
+                                  )
+                                : SizedBox.shrink(),
                           ),
-                          subtitle: lastMessage.text != null
-                              ? Text(
-                                  lastMessage.text!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2!
-                                      .copyWith(
-                                        color: primaryColor.shade300,
-                                      ),
-                                )
-                              : SizedBox.shrink(),
+                        ),
+                      );
+                    },
+                  );
+                  break;
+                case ConnectionStatus.connecting:
+                  return Column(
+                    children: [
+                      Text(
+                        "Connecting...",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                       ),
-                    );
-                  },
-                );
-                break;
-              case ConnectionStatus.connecting:
-                return Column(
-                  children: [
-                    Text(
-                      "Connecting...",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
+                      SizedBox(
+                        height: kItemsSpacingSmallConstant,
                       ),
-                    ),
-                    SizedBox(
-                      height: kItemsSpacingSmallConstant,
-                    ),
-                    CircularAdaptiveProgressIndicatorWithBg(),
-                  ],
-                );
-              case ConnectionStatus.disconnected:
-                return ChaseAppErrorWidget(
-                    message: "Unable to connect chats. Try again.",
-                    onRefresh: () {
-                      ref.refresh(chatChannelProvider(chase));
-                    });
-              default:
-                return CircularAdaptiveProgressIndicatorWithBg();
-            }
-          },
-          watchThisProvider: chatWsConnectionStreamProvider,
-          logger: logger,
-        ),
-        SizedBox(
-          height: kItemsSpacingLargeConstant,
-        ),
-      ],
+                      CircularAdaptiveProgressIndicatorWithBg(),
+                    ],
+                  );
+                case ConnectionStatus.disconnected:
+                  return ChaseAppErrorWidget(
+                      message: "Unable to connect chats. Try again.",
+                      onRefresh: () {
+                        ref.refresh(chatChannelProvider(chase));
+                      });
+                default:
+                  return CircularAdaptiveProgressIndicatorWithBg();
+              }
+            },
+            watchThisProvider: chatWsConnectionStreamProvider,
+            logger: logger,
+          ),
+          SizedBox(
+            height: kItemsSpacingLargeConstant,
+          ),
+        ],
+      ),
     );
   }
 }
