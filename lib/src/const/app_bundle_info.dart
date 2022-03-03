@@ -15,7 +15,7 @@ class AppBundleInfo {
 
 // Production
 
-  static const prodDynamicLinkHostUrl = "https://m.chaseapp.tv";
+  static const prodDynamicLinkHostUrl = "https://m.chaseapp.tv/";
 
   static const prodAndroidBundleId = 'com.carverauto.chaseapp';
 
