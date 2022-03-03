@@ -33,6 +33,8 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
     final playVideo = ref.watch(playVideoProvider);
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    final isKeyboardVisible = bottomPadding > 0;
     final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
           final url = network['URL'] as String?;
 
@@ -74,7 +76,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
                 child: widget.chase.imageURL != null &&
                         widget.chase.imageURL!.isNotEmpty
                     ? CachedNetworkImage(
-                        fit: BoxFit.fill,
+                        fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
                         maxWidthDiskCache: 750,
                         maxHeightDiskCache: 421,
                         memCacheHeight: 421,
