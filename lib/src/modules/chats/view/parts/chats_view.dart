@@ -21,10 +21,11 @@ class ChatsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    final showButton = bottomPadding > 0;
     return AnimatedPadding(
       duration: Duration(milliseconds: 300),
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(bottom: bottomPadding),
       child: DecoratedBox(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(kBorderRadiusStandard),
@@ -37,11 +38,15 @@ class ChatsView extends ConsumerWidget {
             ]),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(kPaddingMediumConstant)
-                  .copyWith(bottom: 0),
+            AnimatedPadding(
+              duration: Duration(milliseconds: 300),
+              padding: const EdgeInsets.all(kPaddingMediumConstant).copyWith(
+                  bottom: 0,
+                  top: showButton
+                      ? kPaddingSmallConstant
+                      : kPaddingMediumConstant),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     "Chats",
@@ -49,6 +54,27 @@ class ChatsView extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
+                  ),
+                  Spacer(),
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: showButton
+                        ? IconButton(
+                            onPressed: () {
+                              Navigator.of(context).focusScopeNode.unfocus();
+                              // Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_downward_outlined,
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ),
                   IconButton(
                     onPressed: () {

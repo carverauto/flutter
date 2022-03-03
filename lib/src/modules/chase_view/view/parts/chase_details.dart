@@ -4,6 +4,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dialog.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/chase_hero.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
@@ -42,24 +43,12 @@ class ChaseDetails extends ConsumerStatefulWidget {
 class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-    //   if (chaseDetailsKey.currentContext != null) {
-    //     final renderbox =
-    //         chaseDetailsKey.currentContext!.findRenderObject() as RenderBox;
-    //     final height = renderbox.size.height;
-    //     final finalHeight = ref.read(chaseDetailsHeightProvider);
-    //     if (finalHeight == null) {
-    //       ref.read(chaseDetailsHeightProvider.state).update((state) => height);
-    //     }
-    //   }
-    // });
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Builder(builder: (context) {
           final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
-              ? MediaQuery.of(context).size.height * 0.1
+              ? MediaQuery.of(context).size.height * 0.15
               : 0;
           log('bottomPadding: $bottomPadding');
           return AnimatedContainer(
@@ -67,8 +56,10 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                 MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
             width: double.maxFinite,
             duration: Duration(milliseconds: 500),
-            child: Container(
-              color: Colors.blue,
+            child: ChaseHeroSection(
+              chase: widget.chase,
+              imageURL: widget.imageURL,
+              youtubeVideo: widget.youtubeVideo,
             ),
           );
         }),

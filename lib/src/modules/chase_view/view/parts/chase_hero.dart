@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/aspect_ratio.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -43,76 +42,73 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
           return false;
         }) ??
         false;
-    return AspectRatio(
-      aspectRatio: aspectRatioStandard,
-      child: playVideo
-          ? Stack(
-              children: [
-                widget.youtubeVideo,
-                Positioned(
-                  top: kItemsSpacingMediumConstant,
-                  right: kItemsSpacingMediumConstant,
-                  child: GlassButton(
-                    shape: CircleBorder(),
-                    onTap: () {
-                      setState(() {
-                        ref
-                            .read(playVideoProvider.state)
-                            .update((state) => false);
-                      });
-                    },
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
+    return playVideo
+        ? Stack(
+            children: [
+              widget.youtubeVideo,
+              Positioned(
+                top: kItemsSpacingMediumConstant,
+                right: kItemsSpacingMediumConstant,
+                child: GlassButton(
+                  shape: CircleBorder(),
+                  onTap: () {
+                    setState(() {
+                      ref
+                          .read(playVideoProvider.state)
+                          .update((state) => false);
+                    });
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
                   ),
                 ),
-              ],
-            )
-          : Stack(
-              fit: StackFit.expand,
-              children: [
-                ColoredBox(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: widget.chase.imageURL != null &&
-                          widget.chase.imageURL!.isNotEmpty
-                      ? CachedNetworkImage(
-                          fit: BoxFit.fill,
-                          maxWidthDiskCache: 750,
-                          maxHeightDiskCache: 421,
-                          memCacheHeight: 421,
-                          memCacheWidth: 750,
-                          imageUrl: parseImageUrl(
-                            widget.imageURL!,
-                            ImageDimensions.LARGE,
-                          ),
-                          placeholder: (context, value) =>
-                              CircularAdaptiveProgressIndicatorWithBg(),
-                          errorWidget: (context, value, dynamic value2) {
-                            return ImageLoadErrorWidget();
-                          },
-                        )
-                      : Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage(defaultAssetChaseImage),
+              ),
+            ],
+          )
+        : Stack(
+            fit: StackFit.expand,
+            children: [
+              ColoredBox(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: widget.chase.imageURL != null &&
+                        widget.chase.imageURL!.isNotEmpty
+                    ? CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        maxWidthDiskCache: 750,
+                        maxHeightDiskCache: 421,
+                        memCacheHeight: 421,
+                        memCacheWidth: 750,
+                        imageUrl: parseImageUrl(
+                          widget.imageURL!,
+                          ImageDimensions.LARGE,
                         ),
+                        placeholder: (context, value) =>
+                            CircularAdaptiveProgressIndicatorWithBg(),
+                        errorWidget: (context, value, dynamic value2) {
+                          return ImageLoadErrorWidget();
+                        },
+                      )
+                    : Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(defaultAssetChaseImage),
+                      ),
+              ),
+              if (isYoutubeUrlPresent)
+                Positioned(
+                  bottom: kItemsSpacingSmallConstant,
+                  right: kItemsSpacingMediumConstant,
+                  child: WatchYoutubeVideo(
+                      isLive: widget.chase.live ?? false,
+                      onTap: () {
+                        setState(() {
+                          ref
+                              .read(playVideoProvider.state)
+                              .update((state) => true);
+                        });
+                      }),
                 ),
-                if (isYoutubeUrlPresent)
-                  Positioned(
-                    bottom: kItemsSpacingSmallConstant,
-                    right: kItemsSpacingMediumConstant,
-                    child: WatchYoutubeVideo(
-                        isLive: widget.chase.live ?? false,
-                        onTap: () {
-                          setState(() {
-                            ref
-                                .read(playVideoProvider.state)
-                                .update((state) => true);
-                          });
-                        }),
-                  ),
-              ],
-            ),
-    );
+            ],
+          );
   }
 }
