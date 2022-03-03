@@ -49,7 +49,7 @@ class ChatsView extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Chats",
+                    "Live chat",
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onBackground,
