@@ -2,12 +2,14 @@ import 'dart:core';
 
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
+import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class ChaseDetailsInternal extends StatefulWidget {
+class ChaseDetailsInternal extends ConsumerStatefulWidget {
   const ChaseDetailsInternal({
     Key? key,
     required this.chase,
@@ -21,24 +23,31 @@ class ChaseDetailsInternal extends StatefulWidget {
   final Logger logger;
 
   @override
-  State<ChaseDetailsInternal> createState() => _ChaseDetailsInternalState();
+  ConsumerState<ChaseDetailsInternal> createState() =>
+      _ChaseDetailsInternalState();
 }
 
-class _ChaseDetailsInternalState extends State<ChaseDetailsInternal> {
+class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   final bool expandChats = false;
 
   late YoutubePlayerController _controller;
 
-  YoutubePlayerController initializeVideoController() {
-    final network = widget.chase.networks?.singleWhereOrNull((network) {
-      final String? url = network["URL"] as String?;
+  YoutubePlayerController initializeVideoController({String? youtubeUrl}) {
+    late final String? url;
+    if (youtubeUrl == null) {
+      final network = widget.chase.networks?.firstWhereOrNull((network) {
+        final String? url = network["URL"] as String?;
 
-      if (url != null) {
-        return url.contains("youtube.com");
-      }
-      return false;
-    });
-    final String? url = network?["URL"] as String?;
+        if (url != null) {
+          return url.contains("youtube.com");
+        }
+        return false;
+      });
+      url = network?["URL"] as String?;
+    } else {
+      url = youtubeUrl;
+    }
+
     late String? videoId;
     if (url != null) {
       final uri = Uri.parse(url);
@@ -53,8 +62,18 @@ class _ChaseDetailsInternalState extends State<ChaseDetailsInternal> {
         autoPlay: true,
       ),
     );
+    setState(() {});
 
     return _controller;
+  }
+
+  void changeYoutubeVideo(String url) async {
+    initializeVideoController(
+      youtubeUrl: url,
+    );
+    ref.read(playVideoProvider.state).update((state) => false);
+    await Future<void>.delayed(Duration(milliseconds: 300));
+    ref.read(playVideoProvider.state).update((state) => true);
   }
 
   @override
@@ -117,6 +136,7 @@ class _ChaseDetailsInternalState extends State<ChaseDetailsInternal> {
                     imageURL: chase.imageURL,
                     logger: widget.logger,
                     youtubeVideo: video,
+                    onYoutubeNetworkTap: changeYoutubeVideo,
                   ),
                 ),
               ),

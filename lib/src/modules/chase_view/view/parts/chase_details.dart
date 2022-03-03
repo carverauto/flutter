@@ -24,6 +24,7 @@ class ChaseDetails extends ConsumerWidget {
     required this.logger,
     required this.chase,
     required this.youtubeVideo,
+    required this.onYoutubeNetworkTap,
   }) : super(key: key);
 
   final String? imageURL;
@@ -31,6 +32,7 @@ class ChaseDetails extends ConsumerWidget {
   final Chase chase;
   final Widget youtubeVideo;
   final GlobalKey chaseDetailsKey = GlobalKey();
+  final void Function(String url) onYoutubeNetworkTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -206,7 +208,10 @@ class ChaseDetails extends ConsumerWidget {
                   height: kItemsSpacingSmall,
                   color: Theme.of(context).colorScheme.primaryContainer,
                 ),
-                WatchHereLinksWrapper(chase: chase),
+                WatchHereLinksWrapper(
+                  chase: chase,
+                  onYoutubeNetworkTap: onYoutubeNetworkTap,
+                ),
                 Divider(
                   height: kItemsSpacingSmall,
                   color: Theme.of(context).colorScheme.primaryContainer,

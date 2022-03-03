@@ -7,12 +7,27 @@ class WatchHereLinksWrapper extends StatelessWidget {
   const WatchHereLinksWrapper({
     Key? key,
     required this.chase,
+    required this.onYoutubeNetworkTap,
   }) : super(key: key);
 
   final Chase chase;
+  final void Function(String url) onYoutubeNetworkTap;
 
   @override
   Widget build(BuildContext context) {
+    final youtubeNetworks = chase.networks?.where((network) {
+      final String? url = network["URL"] as String;
+      final bool isYoutube = url?.contains("youtube.com") ?? false;
+      return isYoutube;
+    }).toList();
+
+    final otherNetworks = chase.networks?.where((network) {
+      final String? url = network["URL"] as String;
+
+      final bool isYoutube = url?.contains("youtube.com") ?? false;
+      return !isYoutube;
+    }).toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: kPaddingMediumConstant,
@@ -21,21 +36,59 @@ class WatchHereLinksWrapper extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Watch here :",
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  //  decoration: TextDecoration.underline,
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
+          NetworksList(
+            isYoutubeNetworks: true,
+            networks: youtubeNetworks,
+            onYoutubeNetworkTap: onYoutubeNetworkTap,
           ),
           SizedBox(
             height: kItemsSpacingSmallConstant,
           ),
-          chase.networks != null
-              ? URLView(chase.networks as List<Map>)
-              : const Text('Please wait..'),
+          NetworksList(
+            isYoutubeNetworks: false,
+            networks: otherNetworks,
+            onYoutubeNetworkTap: onYoutubeNetworkTap,
+          ),
         ],
       ),
     );
+  }
+}
+
+class NetworksList extends StatelessWidget {
+  const NetworksList({
+    Key? key,
+    required this.networks,
+    required this.isYoutubeNetworks,
+    required this.onYoutubeNetworkTap,
+  }) : super(key: key);
+
+  final List<Map<String, dynamic>>? networks;
+  final bool isYoutubeNetworks;
+  final void Function(String url) onYoutubeNetworkTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return networks == null || networks!.isEmpty
+        ? SizedBox.shrink()
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${isYoutubeNetworks ? "Youtube" : "Other"} :",
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      //  decoration: TextDecoration.underline,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
+              SizedBox(
+                height: kItemsSpacingSmallConstant,
+              ),
+              networks != null
+                  ? URLView(networks!, onYoutubeNetworkTap)
+                  : const Text('Please wait..'),
+            ],
+          );
   }
 }
