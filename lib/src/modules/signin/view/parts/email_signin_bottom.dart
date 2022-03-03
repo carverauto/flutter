@@ -4,9 +4,10 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 class EmailSignInBottom extends StatefulWidget {
-  const EmailSignInBottom({
+  EmailSignInBottom({
     Key? key,
     required TextEditingController textEditingController,
     required this.onTap,
@@ -24,6 +25,7 @@ class EmailSignInBottom extends StatefulWidget {
 
 class _EmailSignInBottomState extends State<EmailSignInBottom> {
   bool isSending = false;
+  final Logger logger = Logger('EmailSignIn');
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                       setState(() {
                         isSending = true;
                       });
+
                       await widget.onTap();
                       setState(() {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -63,8 +66,13 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                           ),
                         );
                       });
-                    } on FirebaseAuthException catch (e) {
+                    } on FirebaseAuthException catch (e, stk) {
                       //TODO:logger log this
+                      if (e.code != "invalid-email") {
+                        logger.severe(
+                            "Failed To Send Email Signin Link", e, stk);
+                      }
+
                       final message = e.code == "invalid-email"
                           ? "Invalid email address."
                           : "Something went wrong!";
@@ -87,8 +95,9 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                           ),
                         ),
                       );
-                    } catch (e) {
+                    } catch (e, stk) {
                       //TODO:logger log this
+                      logger.severe("Failed To Send Email Signin Link", e, stk);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -101,8 +110,10 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                               SizedBox(
                                 width: kItemsSpacingSmallConstant,
                               ),
-                              Text(
-                                "Something went wrong. Please try agin later.",
+                              Expanded(
+                                child: Text(
+                                  "Something went wrong. Please try again later.",
+                                ),
                               ),
                             ],
                           ),
