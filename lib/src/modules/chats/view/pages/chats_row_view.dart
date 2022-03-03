@@ -36,7 +36,9 @@ class ChatsViewRow extends ConsumerWidget {
             child: InkWell(
               onTap: () async {
                 await Future<void>.delayed(Duration(milliseconds: 100));
-                ref.read(showChatsWindowProvider.state).update((state) => true);
+                ref
+                    .read(isShowingChatsWindowProvide.state)
+                    .update((state) => true);
                 // showChatsViewBottomSheet(context, chase);
               },
               child: Row(
@@ -69,7 +71,7 @@ class ChatsViewRow extends ConsumerWidget {
                         return GestureDetector(
                           onTap: () {
                             ref
-                                .read(showChatsWindowProvider.state)
+                                .read(isShowingChatsWindowProvide.state)
                                 .update((state) => true);
 
                             // showChatsViewBottomSheet(context, chase);
@@ -111,7 +113,7 @@ class ChatsViewRow extends ConsumerWidget {
                               await Future<void>.delayed(
                                   Duration(milliseconds: 100));
                               ref
-                                  .read(showChatsWindowProvider.state)
+                                  .read(isShowingChatsWindowProvide.state)
                                   .update((state) => true);
                             },
                             leading: CircleAvatar(

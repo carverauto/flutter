@@ -79,7 +79,7 @@ class ChatsView extends ConsumerWidget {
                   IconButton(
                     onPressed: () {
                       ref
-                          .read(showChatsWindowProvider.state)
+                          .read(isShowingChatsWindowProvide.state)
                           .update((state) => false);
                       // Navigator.pop(context);
                     },

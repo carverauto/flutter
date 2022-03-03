@@ -65,7 +65,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
         }),
 
         // Consumer(builder: ((context, ref, child) {
-        //   final showChatsWindow = ref.watch(showChatsWindowProvider);
+        //   final showChatsWindow = ref.watch(isShowingChatsWindowProvide);
         //   final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         //   log(bottomPadding.toString());
         //   return AnimatedContainer(
@@ -264,7 +264,8 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                   chase: widget.chase,
                 ),
                 builder: ((context, ref, child) {
-                  final showChatsWindow = ref.watch(showChatsWindowProvider);
+                  final showChatsWindow =
+                      ref.watch(isShowingChatsWindowProvide);
                   return AnimatedSwitcher(
                     duration: Duration(milliseconds: 300),
                     transitionBuilder: (child, animation) {
