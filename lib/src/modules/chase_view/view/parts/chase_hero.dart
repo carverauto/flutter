@@ -31,8 +31,6 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
   @override
   Widget build(BuildContext context) {
     final playVideo = ref.watch(playVideoProvider);
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardVisible = bottomPadding > 0;
     final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
