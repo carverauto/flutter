@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:chaseapp/flavors.dart';
 import 'package:chaseapp/src/const/app_bundle_info.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -15,7 +14,7 @@ Future<String> createChaseDynamicLink(Chase chase) async {
 
   final uriPrefix = AppBundleInfo.dynamicLinkHostUrl;
 
-  final linkPrefix = F.appFlavor == AppBundleInfo.dynamicLinkPrefix;
+  final linkPrefix = AppBundleInfo.dynamicLinkPrefix;
 
   final link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
   //Dynamic link generalization
