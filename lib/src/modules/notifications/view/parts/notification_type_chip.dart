@@ -11,30 +11,33 @@ class NotificationTypeChip extends StatelessWidget {
   }) : super(key: key);
 
   final String? selectedValue;
-  final String value;
-  final Function(String value) onTap;
+  final String? value;
+  final Function(String? value) onTap;
 
   @override
   Widget build(BuildContext context) {
-    final displayName = toBeginningOfSentenceCase(value.split("-")[0])!;
+    final displayName = toBeginningOfSentenceCase(value?.split("-")[0]);
 
     return GestureDetector(
       onTap: () {
         onTap(value);
       },
       child: Opacity(
-        opacity: selectedValue == null || selectedValue == value ? 1 : 0,
+        opacity: 1, //selectedValue == null || selectedValue == value ? 1 : 0,
         child: Tooltip(
-          message: value,
+          message: value ?? "All notifications you are subscribed to.",
           child: AnimatedContainer(
             duration:
                 Duration(milliseconds: selectedValue == value ? 300 : 150),
             margin: EdgeInsets.only(right: kItemsSpacingExtraSmallConstant),
-            width: selectedValue == null || selectedValue == value ? 100 : 0,
+            width:
+                100, //selectedValue == null || selectedValue == value ? 100 : 0,
             height: 34,
             padding: EdgeInsets.symmetric(horizontal: kButtonPaddingMedium),
             decoration: BoxDecoration(
-              color: selectedValue == value ? Colors.green : null,
+              color: selectedValue == value
+                  ? Theme.of(context).primaryColorLight
+                  : null,
               border: Border.all(
                 color: Colors.white,
               ),
@@ -43,11 +46,12 @@ class NotificationTypeChip extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               // following the naming convention of interests names,
-              displayName,
+              displayName ?? "All",
               style: TextStyle(
-                color: selectedValue == null || selectedValue == value
-                    ? Colors.white
-                    : Colors.black,
+                color: Colors.white,
+                //  selectedValue == null || selectedValue == value
+                //     ? Colors.white
+                //     : Colors.black,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

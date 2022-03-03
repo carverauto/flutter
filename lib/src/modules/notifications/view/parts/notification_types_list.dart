@@ -47,84 +47,36 @@ class _NotificationTypesState extends ConsumerState<NotificationTypes> {
       },
       child: SizedBox(
           height: 34,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (showCloseButton)
-                SizedBox(
-                  width: kPaddingMediumConstant,
-                ),
-              AnimatedContainer(
-                duration: Duration(
-                  milliseconds: 150,
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: showCloseButton ? Colors.white : Colors.transparent,
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: showCloseButton
-                    ? GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showCloseButton = false;
-                            ref
-                                .read(notificationInterestProvider.state)
-                                .update((state) => null);
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: Icon(
-                            Icons.close,
-                          ),
-                        ),
-                      )
-                    : SizedBox.shrink(),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(
+                horizontal: kPaddingMediumConstant,
               ),
-              AnimatedSize(
-                duration: Duration(milliseconds: 150),
-                child: SizedBox(
-                  width: showCloseButton ? 20 : 0,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.all(0).copyWith(
-                      left: showCloseButton ? 0 : 20,
-                    ),
-                    itemCount: widget.userInterests.length,
-                    itemBuilder: (context, index) {
-                      final interest = widget.userInterests[index];
+              itemCount: widget.userInterests.length,
+              itemBuilder: (context, index) {
+                final interest = widget.userInterests[index];
 
-                      return NotificationTypeChip(
-                          value: interest ?? "NA",
-                          selectedValue: selectedValue,
-                          onTap: (value) {
-                            if (selectedValue != value) {
-                              setState(() {
-                                showCloseButton = true;
-                                ref
-                                    .read(notificationInterestProvider.state)
-                                    .update((state) => value);
-                              });
-                            } else {
-                              setState(() {
-                                showCloseButton = false;
-                                ref
-                                    .read(notificationInterestProvider.state)
-                                    .update((state) => null);
-                              });
-                            }
-                          });
-                    }),
-              ),
-            ],
-          )),
+                return NotificationTypeChip(
+                    value: interest,
+                    selectedValue: selectedValue,
+                    onTap: (value) {
+                      if (selectedValue != value) {
+                        setState(() {
+                          showCloseButton = true;
+                          ref
+                              .read(notificationInterestProvider.state)
+                              .update((state) => value);
+                        });
+                      } else {
+                        setState(() {
+                          showCloseButton = false;
+                          ref
+                              .read(notificationInterestProvider.state)
+                              .update((state) => null);
+                        });
+                      }
+                    });
+              })),
     );
   }
 }
