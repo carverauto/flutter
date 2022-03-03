@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
+import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,7 @@ class NotificationSettingTile extends StatelessWidget {
     final displayName = toBeginningOfSentenceCase(interest.name.split("-")[0])!;
 
     return ListTile(
+      contentPadding: EdgeInsets.all(0),
       title: Text(
         displayName,
         style: TextStyle(
@@ -93,6 +95,7 @@ class _NotificationSettingTileSwitchState
               }
               setState(() {
                 isEnabled = value;
+                ref.refresh(usersInterestsStreamProvider);
               });
             },
     );

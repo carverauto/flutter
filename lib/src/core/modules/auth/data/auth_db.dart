@@ -257,8 +257,8 @@ class AuthDatabase implements AuthDB {
     await FirebaseAuth.instance.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
-        url: AppBundleInfo
-            .dynamicLinkHostUrl, // "https://carverauto.page.link/",
+        url: AppBundleInfo.dynamicLinkHostUrl(
+            true), // "https://carverauto.page.link/",
         handleCodeInApp: true,
         iOSBundleId:
             AppBundleInfo.iosBundleId, //'com.carverauto.chaseapp.cdev',

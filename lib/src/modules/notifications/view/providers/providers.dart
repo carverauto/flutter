@@ -43,8 +43,9 @@ final usersInterestsStreamProvider =
       await ref.read(pusherBeamsProvider).getDeviceInterests();
   usersInterests
       .sort((a, b) => a?.toLowerCase().compareTo(b?.toLowerCase() ?? "") ?? -1);
-
-  return usersInterests;
+  // For "All"
+  final finalList = List<String?>.from(usersInterests)..insert(0, null);
+  return finalList;
 });
 
 final interestsProvider =

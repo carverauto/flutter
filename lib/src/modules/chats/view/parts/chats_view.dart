@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
@@ -23,102 +21,126 @@ class ChatsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final height = ref.read(chaseDetailsHeightProvider);
-    log(height.toString());
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    final showButton = bottomPadding > 0;
     return AnimatedPadding(
       duration: Duration(milliseconds: 300),
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: SizedBox(
-        height: height,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-              color: Theme.of(context).colorScheme.background,
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: blurValue,
-                  color: primaryShadowColor,
-                )
-              ]),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(kPaddingMediumConstant)
-                    .copyWith(bottom: 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Chats",
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.close_rounded,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Divider(
-                height: 2,
-              ),
-              Expanded(
-                child: ProviderStateBuilder<Channel>(
-                  watchThisProvider: chatChannelProvider(chase),
-                  logger: logger,
-                  builder: (channel, ref) {
-                    return TweenAnimationBuilder<Offset>(
-                      tween: Tween<Offset>(
-                          begin: Offset(0, MediaQuery.of(context).size.height),
-                          end: Offset.zero),
-                      curve: kPrimaryCurve,
-                      duration: Duration(milliseconds: 300),
-                      builder: (context, value, child) {
-                        return Transform.translate(
-                          offset: value,
-                          child: child,
-                        );
-                      },
-                      child: StreamChannel(
-                        channel: channel,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: MessageListView(
-                                // initialAlignment: 0,
-                                loadingBuilder: (context) =>
-                                    CircularAdaptiveProgressIndicatorWithBg(),
-                                errorBuilder: (context, e) {
-                                  return ChaseAppErrorWidget(onRefresh: () {
-                                    ref.refresh(chatChannelProvider(chase));
-                                  });
-                                },
-                                keyboardDismissBehavior:
-                                    ScrollViewKeyboardDismissBehavior.manual,
-                              ),
-                            ),
-                            MessageInput(
-                              disableAttachments: true,
-                            ),
-                          ],
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+            color: Theme.of(context).colorScheme.background,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: blurValue,
+                color: primaryShadowColor,
+              )
+            ]),
+        child: Column(
+          children: [
+            AnimatedPadding(
+              duration: Duration(milliseconds: 300),
+              padding: const EdgeInsets.all(kPaddingMediumConstant).copyWith(
+                  bottom: 0,
+                  top: showButton
+                      ? kPaddingSmallConstant
+                      : kPaddingMediumConstant),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Chats",
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
-                      ),
-                    );
-                  },
-                ),
+                  ),
+                  Spacer(),
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: showButton
+                        ? IconButton(
+                            onPressed: () {
+                              Navigator.of(context).focusScopeNode.unfocus();
+                              // Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_downward_outlined,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      ref
+                          .read(isShowingChatsWindowProvide.state)
+                          .update((state) => false);
+                      // Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.close_rounded,
+                    ),
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+            Divider(
+              height: 2,
+            ),
+            Expanded(
+              child: ProviderStateBuilder<Channel>(
+                watchThisProvider: chatChannelProvider(chase),
+                logger: logger,
+                builder: (channel, ref) {
+                  return TweenAnimationBuilder<Offset>(
+                    tween: Tween<Offset>(
+                        begin: Offset(0, MediaQuery.of(context).size.height),
+                        end: Offset.zero),
+                    curve: kPrimaryCurve,
+                    duration: Duration(milliseconds: 300),
+                    builder: (context, value, child) {
+                      return Transform.translate(
+                        offset: value,
+                        child: child,
+                      );
+                    },
+                    child: StreamChannel(
+                      channel: channel,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: MessageListView(
+                              // initialAlignment: 0,
+                              loadingBuilder: (context) =>
+                                  CircularAdaptiveProgressIndicatorWithBg(),
+                              errorBuilder: (context, e) {
+                                return ChaseAppErrorWidget(onRefresh: () {
+                                  ref.refresh(chatChannelProvider(chase));
+                                });
+                              },
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.manual,
+                            ),
+                          ),
+                          MessageInput(
+                            disableAttachments: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

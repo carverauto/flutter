@@ -12,7 +12,7 @@ Future<String> createChaseDynamicLink(Chase chase) async {
       ? parseImageUrl(chase.imageURL!, ImageDimensions.MEDIUM)
       : defaultPhotoURL;
 
-  final uriPrefix = AppBundleInfo.dynamicLinkHostUrl;
+  final uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
 
   final linkPrefix = AppBundleInfo.dynamicLinkPrefix;
 
@@ -41,6 +41,7 @@ Future<String> createChaseDynamicLink(Chase chase) async {
   //TODO:Need to report
   //Proper link is not generated if creating for custom domains using .buildLink()?
   //This is serious issue.
+  log('message');
   final ShortDynamicLink shortDynamicLink =
       await FirebaseDynamicLinks.instance.buildShortLink(parameters);
   log(parameters.uriPrefix.toString());

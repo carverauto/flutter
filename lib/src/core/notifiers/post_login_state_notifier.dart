@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
@@ -43,6 +45,14 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
         if (interest.isCompulsory) {
           if (!usersInterests.contains(interest.name)) {
             await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+          }
+        } else if (interest.isDefault) {
+          final wasAdded =
+              _read(sharedPreferancesProvider).getBool(interest.name) ?? false;
+          log("was added: $wasAdded");
+          if (!wasAdded) {
+            await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+            _read(sharedPreferancesProvider).setBool(interest.name, true);
           }
         }
       });

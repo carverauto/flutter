@@ -1,11 +1,12 @@
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -66,6 +67,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
     await Future<void>.delayed(Duration(milliseconds: 500));
     await audioPlayer.play(
       "audio/about_music.mp3",
+      volume: 0.01,
     );
   }
 
@@ -117,8 +119,97 @@ While the Congress of the Republic endlessly debates this alarming chain of even
                 disappearCrawlText: disappearCrawlText,
               ),
               BackButton(),
+              // add mute button and vertical slider for volume in bottom right corner
+              Positioned(
+                bottom: kPaddingMediumConstant,
+                right: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    VolumeController(
+                      audioController: audioPlayer,
+                    ),
+                  ],
+                ),
+              ),
             ],
           )),
+    );
+  }
+}
+
+class VolumeController extends StatefulWidget {
+  const VolumeController({
+    Key? key,
+    required this.audioController,
+  }) : super(key: key);
+
+  final AudioCache audioController;
+
+  @override
+  State<VolumeController> createState() => _VolumeControllerState();
+}
+
+class _VolumeControllerState extends State<VolumeController> {
+  double _volume = 0.02;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        RotatedBox(
+          quarterTurns: -1,
+          child: Container(
+            width: 200,
+            height: 70,
+            child: Platform.isAndroid
+                ? Slider(
+                    value: _volume,
+                    activeColor: starWarsCrawlTextColor,
+                    inactiveColor: Colors.white.withOpacity(0.5),
+                    thumbColor: starWarsCrawlTextColor,
+                    onChanged: (volume) {
+                      setState(() {
+                        widget.audioController.fixedPlayer!.setVolume(volume);
+                        _volume = volume;
+                      });
+                    },
+                  )
+                : CupertinoSlider(
+                    value: _volume,
+                    activeColor: starWarsCrawlTextColor,
+                    thumbColor: starWarsCrawlTextColor,
+                    onChanged: (volume) {
+                      setState(() {
+                        widget.audioController.fixedPlayer!.setVolume(volume);
+                        _volume = volume;
+                      });
+                    },
+                  ),
+          ),
+        ),
+        SizedBox(
+          height: kItemsSpacingExtraSmallConstant,
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+            primary: starWarsCrawlTextColor,
+          ),
+          onPressed: () {
+            setState(() {
+              if (_volume == 0.0) {
+                _volume = 0.02;
+                widget.audioController.fixedPlayer!.setVolume(_volume);
+              } else {
+                _volume = 0.0;
+                widget.audioController.fixedPlayer!.setVolume(_volume);
+              }
+            });
+          },
+          child:
+              _volume == 0.0 ? Icon(Icons.volume_off) : Icon(Icons.volume_up),
+        ),
+      ],
     );
   }
 }
@@ -150,7 +241,7 @@ class CrawlText extends StatelessWidget {
           alignment: Alignment.topCenter,
           transform: Matrix4.identity()
             ..setRotationX(
-              pi / 2.7, //2.8, //2.5,
+              math.pi / 2.7, //2.8, //2.5,
             )
             ..setEntry(
               3,
