@@ -98,7 +98,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
     return WillPopScope(
       onWillPop: () async {
-        ref.read(isShowingChatsWindowProvide);
         if (ref.read(isShowingChatsWindowProvide)) {
           ref.read(isShowingChatsWindowProvide.state).update((state) => false);
           return false;
