@@ -104,6 +104,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       builder: (context, video) {
         return Scaffold(
           backgroundColor: Colors.transparent,
+          resizeToAvoidBottomInset: false,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

@@ -3,7 +3,7 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/chats/view/parts/show_chats_dialog.dart';
+import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
@@ -36,7 +36,8 @@ class ChatsViewRow extends ConsumerWidget {
             child: InkWell(
               onTap: () async {
                 await Future<void>.delayed(Duration(milliseconds: 100));
-                showChatsViewBottomSheet(context, chase);
+                ref.read(showChatsWindowProvider.state).update((state) => true);
+                // showChatsViewBottomSheet(context, chase);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,7 +68,11 @@ class ChatsViewRow extends ConsumerWidget {
                       if (messages == null || messages.isEmpty)
                         return GestureDetector(
                           onTap: () {
-                            showChatsViewBottomSheet(context, chase);
+                            ref
+                                .read(showChatsWindowProvider.state)
+                                .update((state) => true);
+
+                            // showChatsViewBottomSheet(context, chase);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +110,9 @@ class ChatsViewRow extends ConsumerWidget {
                             onTap: () async {
                               await Future<void>.delayed(
                                   Duration(milliseconds: 100));
-                              showChatsViewBottomSheet(context, chase);
+                              ref
+                                  .read(showChatsWindowProvider.state)
+                                  .update((state) => true);
                             },
                             leading: CircleAvatar(
                               backgroundColor:
