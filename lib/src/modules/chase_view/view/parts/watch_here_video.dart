@@ -86,7 +86,8 @@ class NetworksList extends StatelessWidget {
                 height: kItemsSpacingSmallConstant,
               ),
               networks != null
-                  ? URLView(networks!, onYoutubeNetworkTap)
+                  ? URLView(
+                      networks!, isYoutubeNetworks ? onYoutubeNetworkTap : null)
                   : const Text('Please wait..'),
             ],
           );
