@@ -307,138 +307,143 @@ class CrawlContributions extends StatelessWidget {
           }
         });
       },
-      child: Column(
-        // clipBehavior: Clip.none,
-        // physics: NeverScrollableScrollPhysics(),
-        children: [
-          Text(
-            "ChaseApp Development Credits",
-            overflow: TextOverflow.visible,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              height: 1.3,
-              fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
-                  ? Theme.of(context).textTheme.subtitle1!.fontSize
-                  : Theme.of(context).textTheme.headline5!.fontSize,
-              color: starWarsCrawlTextColor,
-              fontFamily: "Crawl",
+      child: SingleChildScrollView(
+        clipBehavior: Clip.none,
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
+          // clipBehavior: Clip.none,
+          // physics: NeverScrollableScrollPhysics(),
+          children: [
+            Text(
+              "ChaseApp Development Credits",
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                height: 1.3,
+                fontSize:
+                    Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
+                        ? Theme.of(context).textTheme.subtitle1!.fontSize
+                        : Theme.of(context).textTheme.headline5!.fontSize,
+                color: starWarsCrawlTextColor,
+                fontFamily: "Crawl",
+              ),
             ),
-          ),
-          Divider(
-            height: kItemsSpacingMediumConstant,
-            color: Colors.white,
-            indent: kPaddingSmallConstant,
-            endIndent: kPaddingSmallConstant,
-            thickness: 1,
-          ),
-          Text(
-            "A special thank you goes out to all those that have helped contribute code, ideas, and with the overall care and feeding of the system, we salute you.",
-            overflow: TextOverflow.visible,
-            textAlign: TextAlign.center,
-            style: crawlBodyTextStyle,
-          ),
-          SizedBox(
-            height: kItemsSpacingSmallConstant,
-          ),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(children: [
-              TextSpan(
-                text: "# ",
-                style: crawlBodyTextStyle.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              TextSpan(
-                text: "Chases IRC team",
-                style: crawlBodyTextStyle.copyWith(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.white,
-                  decorationThickness: 10,
-                  decorationStyle: TextDecorationStyle.solid,
-                ),
-              ),
-            ]),
-          ),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(children: [
-              TextSpan(
-                text: "# ",
-                style: crawlBodyTextStyle.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              TextSpan(
-                text: "Chases Private Channel",
-                style: crawlBodyTextStyle.copyWith(
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.white,
-                  decorationThickness: 10,
-                  decorationStyle: TextDecorationStyle.solid,
-                ),
-              ),
-            ]),
-          ),
-          SizedBox(
-            height: kItemsSpacingMediumConstant,
-          ),
-          GridView.count(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            crossAxisCount:
-                Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
-                    ? 2
-                    : Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-                        ? 2
-                        : 3,
-            mainAxisSpacing: kItemsSpacingSmallConstant,
-            children: [
-              CustomAvatar(
-                name: "Acidjazz",
-                link: "https://github.com/acidjazz",
-              ),
-              CustomAvatar(
-                name: "Rutvik",
-                link: "https://github.com/rutvik110",
-              ),
-              CustomAvatar(
-                name: "Michael",
-                link: "https://github.com/mfreeman451",
-              ),
-              CustomAvatar(
-                name: "Cottongin",
-                link: "https://github.com/cottongin",
-              ),
-              CustomAvatar(
-                name: "Pilate",
-                link: "https://github.com/pilate",
-              ),
-            ],
-          ),
-          Divider(
-            height: kItemsSpacingMediumConstant,
-            color: Colors.white,
-            thickness: 1,
-            indent: kPaddingSmallConstant,
-            endIndent: kPaddingSmallConstant,
-          ),
-          Text(
-            "Thank You!",
-            overflow: TextOverflow.visible,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-                  ? Theme.of(context).textTheme.subtitle1!.fontSize
-                  : Theme.of(context).textTheme.headline5!.fontSize,
-              color: starWarsCrawlTextColor,
-              fontFamily: "Crawl",
+            Divider(
+              height: kItemsSpacingMediumConstant,
+              color: Colors.white,
+              indent: kPaddingSmallConstant,
+              endIndent: kPaddingSmallConstant,
+              thickness: 1,
             ),
-          ),
-          SizedBox(
-            height: kItemsSpacingMediumConstant,
-          ),
-        ],
+            Text(
+              "A special thank you goes out to all those that have helped contribute code, ideas, and with the overall care and feeding of the system, we salute you.",
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.center,
+              style: crawlBodyTextStyle,
+            ),
+            SizedBox(
+              height: kItemsSpacingSmallConstant,
+            ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(children: [
+                TextSpan(
+                  text: "# ",
+                  style: crawlBodyTextStyle.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                TextSpan(
+                  text: "Chases IRC team",
+                  style: crawlBodyTextStyle.copyWith(
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                    decorationThickness: 10,
+                    decorationStyle: TextDecorationStyle.solid,
+                  ),
+                ),
+              ]),
+            ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(children: [
+                TextSpan(
+                  text: "# ",
+                  style: crawlBodyTextStyle.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                TextSpan(
+                  text: "Chases Private Channel",
+                  style: crawlBodyTextStyle.copyWith(
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                    decorationThickness: 10,
+                    decorationStyle: TextDecorationStyle.solid,
+                  ),
+                ),
+              ]),
+            ),
+            SizedBox(
+              height: kItemsSpacingMediumConstant,
+            ),
+            GridView.count(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount:
+                  Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
+                      ? 2
+                      : Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+                          ? 2
+                          : 3,
+              mainAxisSpacing: kItemsSpacingSmallConstant,
+              children: [
+                CustomAvatar(
+                  name: "Acidjazz",
+                  link: "https://github.com/acidjazz",
+                ),
+                CustomAvatar(
+                  name: "Rutvik",
+                  link: "https://github.com/rutvik110",
+                ),
+                CustomAvatar(
+                  name: "Michael",
+                  link: "https://github.com/mfreeman451",
+                ),
+                CustomAvatar(
+                  name: "Cottongin",
+                  link: "https://github.com/cottongin",
+                ),
+                CustomAvatar(
+                  name: "Pilate",
+                  link: "https://github.com/pilate",
+                ),
+              ],
+            ),
+            Divider(
+              height: kItemsSpacingMediumConstant,
+              color: Colors.white,
+              thickness: 1,
+              indent: kPaddingSmallConstant,
+              endIndent: kPaddingSmallConstant,
+            ),
+            Text(
+              "Thank You!",
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
+                    ? Theme.of(context).textTheme.subtitle1!.fontSize
+                    : Theme.of(context).textTheme.headline5!.fontSize,
+                color: starWarsCrawlTextColor,
+                fontFamily: "Crawl",
+              ),
+            ),
+            SizedBox(
+              height: kItemsSpacingMediumConstant,
+            ),
+          ],
+        ),
       ),
     );
   }
