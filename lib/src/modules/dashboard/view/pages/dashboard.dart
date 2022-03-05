@@ -133,6 +133,58 @@ class Dashboard extends ConsumerWidget {
                       height: kItemsSpacingMediumConstant,
                     ),
                   ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Firehose",
+                            style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          ),
+                          Spacer(),
+                          TextButton.icon(
+                            onPressed: () {
+                              // Navigator.pushNamed(
+                              //   context,
+                              //   RouteName.RECENT_CHASESS_VIEW_ALL,
+                              //   arguments: {
+                              //     "chasesPaginationProvider":
+                              //         chasesPaginationProvider,
+                              //   },
+                              // );
+                            },
+                            icon: Text(
+                              "See More",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
                   FireHoseView(),
                   SliverToBoxAdapter(
                     child: SizedBox(
