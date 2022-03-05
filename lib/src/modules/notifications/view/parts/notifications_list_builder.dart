@@ -1,5 +1,5 @@
 import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_tile.dart';
@@ -18,8 +18,8 @@ class NotificationsPaginatedListView extends ConsumerWidget {
     this.axis = Axis.horizontal,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<NotificationData>,
-      PaginationNotifierState<NotificationData>> chasesPaginationProvider;
+  final StateNotifierProvider<PaginationNotifier<ChaseAppNotification>,
+      PaginationNotifierState<ChaseAppNotification>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController;
 
@@ -30,7 +30,7 @@ class NotificationsPaginatedListView extends ConsumerWidget {
     WidgetsBinding.instance!.addPostFrameCallback((t) {
       updateNotificationsPresentStatus(ref, false);
     });
-    return SliverProviderPaginatedStateNotifierBuilder<NotificationData>(
+    return SliverProviderPaginatedStateNotifierBuilder<ChaseAppNotification>(
         watchThisStateNotifierProvider: chasesPaginationProvider,
         logger: logger,
         scrollController: scrollController,

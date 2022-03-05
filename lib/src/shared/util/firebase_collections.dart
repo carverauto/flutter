@@ -1,6 +1,6 @@
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -46,12 +46,12 @@ final CollectionReference<Chase> chasesCollectionRef =
 );
 
 final notificationsCollectionRef =
-    notificationsCollection.withConverter<NotificationData>(
+    notificationsCollection.withConverter<ChaseAppNotification>(
   fromFirestore: (data, _) {
     final rawData = data.data()!;
     rawData["id"] = data.id;
 
-    return NotificationData.fromJson(rawData);
+    return ChaseAppNotification.fromJson(rawData);
   },
   toFirestore: (data, _) {
     return data.toJson();

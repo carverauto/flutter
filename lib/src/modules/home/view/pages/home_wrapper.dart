@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
+import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
@@ -45,7 +46,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handlenotifications(RemoteMessage message) async {
-    log("Notification Message Arrived--->" + message.data.toString());
+    log("ChaseAppNotification Message Arrived--->" + message.data.toString());
 
     final data = message.data;
 
@@ -55,7 +56,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
       notificationHandler(context, notificationData, read: ref.read);
     } else {
-      logger.warning("Notification data didn't contained interest field");
+      logger
+          .warning("ChaseAppNotification data didn't contained interest field");
     }
   }
 
@@ -95,13 +97,14 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       log("Pusher Message Recieved in the foreground--->" +
           notification.toString());
       final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
-          notification["data"] as Map<dynamic, dynamic>);
+          notification["data"] as Map<String, dynamic>);
+
       if (data["interest"] != null) {
-        final notificationData = NotificationData(
+        final notificationData = ChaseAppNotification(
           interest: data["interest"] as String,
           title: notification["title"] as String,
           body: notification["body"] as String?,
-          data: data,
+          data: NotificationData.fromJson(data),
           image: data["image"] as String?,
           createdAt: notification["createdAt"] as DateTime?,
         );
@@ -109,7 +112,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
         showNotificationBanner(context, notificationData);
       } else {
-        logger.warning("Notification data didn't contained interest field");
+        logger.warning(
+            "ChaseAppNotification data didn't contained interest field");
       }
     });
   }

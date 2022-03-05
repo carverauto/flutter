@@ -1,17 +1,17 @@
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
 
 class NotificationDialog extends StatelessWidget {
   const NotificationDialog({
     Key? key,
-    required this.notificationData,
+    required this.notification,
   }) : super(key: key);
 
-  final NotificationData notificationData;
+  final ChaseAppNotification notification;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class NotificationDialog extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: Hero(
-                tag: notificationData.id ?? "NA",
+                tag: notification.id ?? "NA",
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),
@@ -42,10 +42,10 @@ class NotificationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
-                      url: notificationData.image ?? defaultAssetChaseImage,
+                      url: notification.image ?? defaultAssetChaseImage,
                       //TODO: update later with parser
                       //  parseImageUrl(
-                      //   notificationData.image ?? defaultPhotoURL,
+                      //   notification.image ?? defaultPhotoURL,
                       //   ImageDimensions.LARGE,
                       // ),
                       showLoading: false,
@@ -58,7 +58,7 @@ class NotificationDialog extends StatelessWidget {
               height: kItemsSpacingMediumConstant,
             ),
             Text(
-              notificationData.title ?? "NA",
+              notification.title ?? "NA",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class NotificationDialog extends StatelessWidget {
               height: kItemsSpacingSmallConstant,
             ),
             Text(
-              notificationData.body ?? "NA",
+              notification.body ?? "NA",
               textAlign: TextAlign.center,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,

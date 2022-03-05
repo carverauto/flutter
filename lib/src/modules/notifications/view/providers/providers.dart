@@ -2,7 +2,7 @@ import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
 import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db.dart';
 import 'package:chaseapp/src/modules/notifications/data/notifications_db_ab.dart';
@@ -18,8 +18,8 @@ final notificationRepoProvider = Provider.autoDispose<NotificationsRepoAB>(
     (ref) => NotificationsRepository(ref.read));
 
 final notificationsStreamProvider = StateNotifierProvider.family<
-    PaginationNotifier<NotificationData>,
-    PaginationNotifierState<NotificationData>,
+    PaginationNotifier<ChaseAppNotification>,
+    PaginationNotifierState<ChaseAppNotification>,
     Logger>((ref, logger) {
   final notificationType = ref.watch(notificationInterestProvider);
   final user = ref.read(firebaseAuthProvider).currentUser!;

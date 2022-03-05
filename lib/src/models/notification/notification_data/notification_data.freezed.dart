@@ -23,21 +23,15 @@ class _$NotificationDataTearOff {
   const _$NotificationDataTearOff();
 
   _NotificationData call(
-      {required String interest,
-      String? id,
-      String? title,
-      String? body,
-      String? image,
-      @DatetimeTimestampNullableConverter() DateTime? createdAt,
-      Map<String, dynamic>? data}) {
+      {@JsonKey(name: 'Id') String? id,
+      @JsonKey(name: 'Image') String? image,
+      @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'ConfigState') String? configState}) {
     return _NotificationData(
-      interest: interest,
       id: id,
-      title: title,
-      body: body,
       image: image,
-      createdAt: createdAt,
-      data: data,
+      tweetId: tweetId,
+      configState: configState,
     );
   }
 
@@ -51,14 +45,14 @@ const $NotificationData = _$NotificationDataTearOff();
 
 /// @nodoc
 mixin _$NotificationData {
-  String get interest => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Id')
   String? get id => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  String? get body => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Image')
   String? get image => throw _privateConstructorUsedError;
-  @DatetimeTimestampNullableConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get data => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Tweetid')
+  String? get tweetId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ConfigState')
+  String? get configState => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -72,13 +66,10 @@ abstract class $NotificationDataCopyWith<$Res> {
           NotificationData value, $Res Function(NotificationData) then) =
       _$NotificationDataCopyWithImpl<$Res>;
   $Res call(
-      {String interest,
-      String? id,
-      String? title,
-      String? body,
-      String? image,
-      @DatetimeTimestampNullableConverter() DateTime? createdAt,
-      Map<String, dynamic>? data});
+      {@JsonKey(name: 'Id') String? id,
+      @JsonKey(name: 'Image') String? image,
+      @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'ConfigState') String? configState});
 }
 
 /// @nodoc
@@ -92,43 +83,28 @@ class _$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? interest = freezed,
     Object? id = freezed,
-    Object? title = freezed,
-    Object? body = freezed,
     Object? image = freezed,
-    Object? createdAt = freezed,
-    Object? data = freezed,
+    Object? tweetId = freezed,
+    Object? configState = freezed,
   }) {
     return _then(_value.copyWith(
-      interest: interest == freezed
-          ? _value.interest
-          : interest // ignore: cast_nullable_to_non_nullable
-              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      body: body == freezed
-          ? _value.body
-          : body // ignore: cast_nullable_to_non_nullable
               as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      data: data == freezed
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+      tweetId: tweetId == freezed
+          ? _value.tweetId
+          : tweetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      configState: configState == freezed
+          ? _value.configState
+          : configState // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -141,13 +117,10 @@ abstract class _$NotificationDataCopyWith<$Res>
       __$NotificationDataCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String interest,
-      String? id,
-      String? title,
-      String? body,
-      String? image,
-      @DatetimeTimestampNullableConverter() DateTime? createdAt,
-      Map<String, dynamic>? data});
+      {@JsonKey(name: 'Id') String? id,
+      @JsonKey(name: 'Image') String? image,
+      @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'ConfigState') String? configState});
 }
 
 /// @nodoc
@@ -163,43 +136,28 @@ class __$NotificationDataCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? interest = freezed,
     Object? id = freezed,
-    Object? title = freezed,
-    Object? body = freezed,
     Object? image = freezed,
-    Object? createdAt = freezed,
-    Object? data = freezed,
+    Object? tweetId = freezed,
+    Object? configState = freezed,
   }) {
     return _then(_NotificationData(
-      interest: interest == freezed
-          ? _value.interest
-          : interest // ignore: cast_nullable_to_non_nullable
-              as String,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      body: body == freezed
-          ? _value.body
-          : body // ignore: cast_nullable_to_non_nullable
               as String?,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      data: data == freezed
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+      tweetId: tweetId == freezed
+          ? _value.tweetId
+          : tweetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      configState: configState == freezed
+          ? _value.configState
+          : configState // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -209,37 +167,31 @@ class __$NotificationDataCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_NotificationData extends _NotificationData {
   const _$_NotificationData(
-      {required this.interest,
-      this.id,
-      this.title,
-      this.body,
-      this.image,
-      @DatetimeTimestampNullableConverter() this.createdAt,
-      this.data})
+      {@JsonKey(name: 'Id') this.id,
+      @JsonKey(name: 'Image') this.image,
+      @JsonKey(name: 'Tweetid') this.tweetId,
+      @JsonKey(name: 'ConfigState') this.configState})
       : super._();
 
   factory _$_NotificationData.fromJson(Map<String, dynamic> json) =>
       _$$_NotificationDataFromJson(json);
 
   @override
-  final String interest;
-  @override
+  @JsonKey(name: 'Id')
   final String? id;
   @override
-  final String? title;
-  @override
-  final String? body;
-  @override
+  @JsonKey(name: 'Image')
   final String? image;
   @override
-  @DatetimeTimestampNullableConverter()
-  final DateTime? createdAt;
+  @JsonKey(name: 'Tweetid')
+  final String? tweetId;
   @override
-  final Map<String, dynamic>? data;
+  @JsonKey(name: 'ConfigState')
+  final String? configState;
 
   @override
   String toString() {
-    return 'NotificationData(interest: $interest, id: $id, title: $title, body: $body, image: $image, createdAt: $createdAt, data: $data)';
+    return 'NotificationData(id: $id, image: $image, tweetId: $tweetId, configState: $configState)';
   }
 
   @override
@@ -247,25 +199,20 @@ class _$_NotificationData extends _NotificationData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _NotificationData &&
-            const DeepCollectionEquality().equals(other.interest, interest) &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality().equals(other.image, image) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.data, data));
+            const DeepCollectionEquality().equals(other.tweetId, tweetId) &&
+            const DeepCollectionEquality()
+                .equals(other.configState, configState));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(interest),
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(body),
       const DeepCollectionEquality().hash(image),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(data));
+      const DeepCollectionEquality().hash(tweetId),
+      const DeepCollectionEquality().hash(configState));
 
   @JsonKey(ignore: true)
   @override
@@ -280,33 +227,27 @@ class _$_NotificationData extends _NotificationData {
 
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
-      {required String interest,
-      String? id,
-      String? title,
-      String? body,
-      String? image,
-      @DatetimeTimestampNullableConverter() DateTime? createdAt,
-      Map<String, dynamic>? data}) = _$_NotificationData;
+      {@JsonKey(name: 'Id') String? id,
+      @JsonKey(name: 'Image') String? image,
+      @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'ConfigState') String? configState}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
   factory _NotificationData.fromJson(Map<String, dynamic> json) =
       _$_NotificationData.fromJson;
 
   @override
-  String get interest;
-  @override
+  @JsonKey(name: 'Id')
   String? get id;
   @override
-  String? get title;
-  @override
-  String? get body;
-  @override
+  @JsonKey(name: 'Image')
   String? get image;
   @override
-  @DatetimeTimestampNullableConverter()
-  DateTime? get createdAt;
+  @JsonKey(name: 'Tweetid')
+  String? get tweetId;
   @override
-  Map<String, dynamic>? get data;
+  @JsonKey(name: 'ConfigState')
+  String? get configState;
   @override
   @JsonKey(ignore: true)
   _$NotificationDataCopyWith<_NotificationData> get copyWith =>

@@ -1,7 +1,7 @@
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
@@ -13,7 +13,7 @@ class NotificationTIle extends StatelessWidget {
     required this.notificationData,
   }) : super(key: key);
 
-  final NotificationData notificationData;
+  final ChaseAppNotification notificationData;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 
 Interests getInterestEnumFromString(String interest) {
   switch (interest) {
@@ -31,7 +31,7 @@ extension InterestEnum on Interest {
   }
 }
 
-extension NotificationInterestEnum on NotificationData {
+extension NotificationInterestEnum on ChaseAppNotification {
   Interests get getInterestEnumFromName {
     switch (this.interest) {
       case "chases-notifications":
