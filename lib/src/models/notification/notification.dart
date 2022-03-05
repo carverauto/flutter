@@ -19,7 +19,7 @@ abstract class ChaseAppNotification implements _$ChaseAppNotification {
     @JsonKey(name: 'CreatedAt')
     @DatetimeTimestampNullableConverter()
         DateTime? createdAt,
-    NotificationData? data,
+    @JsonKey(name: 'Data') NotificationData? data,
   }) = _ChaseAppNotification;
   factory ChaseAppNotification.fromJson(Map<String, dynamic> json) =>
       _$ChaseAppNotificationFromJson(json);

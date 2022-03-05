@@ -26,11 +26,13 @@ class _$NotificationDataTearOff {
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ConfigState') String? configState}) {
     return _NotificationData(
       id: id,
       image: image,
       tweetId: tweetId,
+      youtubeId: youtubeId,
       configState: configState,
     );
   }
@@ -51,6 +53,8 @@ mixin _$NotificationData {
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'Tweetid')
   String? get tweetId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'YoutubeId')
+  String? get youtubeId => throw _privateConstructorUsedError;
   @JsonKey(name: 'ConfigState')
   String? get configState => throw _privateConstructorUsedError;
 
@@ -69,6 +73,7 @@ abstract class $NotificationDataCopyWith<$Res> {
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ConfigState') String? configState});
 }
 
@@ -86,6 +91,7 @@ class _$NotificationDataCopyWithImpl<$Res>
     Object? id = freezed,
     Object? image = freezed,
     Object? tweetId = freezed,
+    Object? youtubeId = freezed,
     Object? configState = freezed,
   }) {
     return _then(_value.copyWith(
@@ -100,6 +106,10 @@ class _$NotificationDataCopyWithImpl<$Res>
       tweetId: tweetId == freezed
           ? _value.tweetId
           : tweetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeId: youtubeId == freezed
+          ? _value.youtubeId
+          : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
       configState: configState == freezed
           ? _value.configState
@@ -120,6 +130,7 @@ abstract class _$NotificationDataCopyWith<$Res>
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ConfigState') String? configState});
 }
 
@@ -139,6 +150,7 @@ class __$NotificationDataCopyWithImpl<$Res>
     Object? id = freezed,
     Object? image = freezed,
     Object? tweetId = freezed,
+    Object? youtubeId = freezed,
     Object? configState = freezed,
   }) {
     return _then(_NotificationData(
@@ -153,6 +165,10 @@ class __$NotificationDataCopyWithImpl<$Res>
       tweetId: tweetId == freezed
           ? _value.tweetId
           : tweetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeId: youtubeId == freezed
+          ? _value.youtubeId
+          : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
       configState: configState == freezed
           ? _value.configState
@@ -170,6 +186,7 @@ class _$_NotificationData extends _NotificationData {
       {@JsonKey(name: 'Id') this.id,
       @JsonKey(name: 'Image') this.image,
       @JsonKey(name: 'Tweetid') this.tweetId,
+      @JsonKey(name: 'YoutubeId') this.youtubeId,
       @JsonKey(name: 'ConfigState') this.configState})
       : super._();
 
@@ -186,12 +203,15 @@ class _$_NotificationData extends _NotificationData {
   @JsonKey(name: 'Tweetid')
   final String? tweetId;
   @override
+  @JsonKey(name: 'YoutubeId')
+  final String? youtubeId;
+  @override
   @JsonKey(name: 'ConfigState')
   final String? configState;
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, image: $image, tweetId: $tweetId, configState: $configState)';
+    return 'NotificationData(id: $id, image: $image, tweetId: $tweetId, youtubeId: $youtubeId, configState: $configState)';
   }
 
   @override
@@ -202,6 +222,7 @@ class _$_NotificationData extends _NotificationData {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.tweetId, tweetId) &&
+            const DeepCollectionEquality().equals(other.youtubeId, youtubeId) &&
             const DeepCollectionEquality()
                 .equals(other.configState, configState));
   }
@@ -212,6 +233,7 @@ class _$_NotificationData extends _NotificationData {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(tweetId),
+      const DeepCollectionEquality().hash(youtubeId),
       const DeepCollectionEquality().hash(configState));
 
   @JsonKey(ignore: true)
@@ -230,6 +252,7 @@ abstract class _NotificationData extends NotificationData {
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
+      @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ConfigState') String? configState}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
@@ -245,6 +268,9 @@ abstract class _NotificationData extends NotificationData {
   @override
   @JsonKey(name: 'Tweetid')
   String? get tweetId;
+  @override
+  @JsonKey(name: 'YoutubeId')
+  String? get youtubeId;
   @override
   @JsonKey(name: 'ConfigState')
   String? get configState;

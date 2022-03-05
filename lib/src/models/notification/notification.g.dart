@@ -16,9 +16,9 @@ _$_ChaseAppNotification _$$_ChaseAppNotificationFromJson(
       image: json['Image'] as String?,
       createdAt: const DatetimeTimestampNullableConverter()
           .fromJson(json['CreatedAt'] as Timestamp?),
-      data: json['data'] == null
+      data: json['Data'] == null
           ? null
-          : NotificationData.fromJson(json['data'] as Map<String, dynamic>),
+          : NotificationData.fromJson(json['Data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ChaseAppNotificationToJson(
@@ -31,5 +31,5 @@ Map<String, dynamic> _$$_ChaseAppNotificationToJson(
       'Image': instance.image,
       'CreatedAt':
           const DatetimeTimestampNullableConverter().toJson(instance.createdAt),
-      'data': instance.data?.toJson(),
+      'Data': instance.data?.toJson(),
     };

@@ -35,7 +35,8 @@ class _$ChaseAppNotificationTearOff {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
-      NotificationData? data}) {
+      @JsonKey(name: 'Data')
+          NotificationData? data}) {
     return _ChaseAppNotification(
       interest: interest,
       id: id,
@@ -69,6 +70,7 @@ mixin _$ChaseAppNotification {
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampNullableConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Data')
   NotificationData? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -95,7 +97,8 @@ abstract class $ChaseAppNotificationCopyWith<$Res> {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
-      NotificationData? data});
+      @JsonKey(name: 'Data')
+          NotificationData? data});
 
   $NotificationDataCopyWith<$Res>? get data;
 }
@@ -183,7 +186,8 @@ abstract class _$ChaseAppNotificationCopyWith<$Res>
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
-      NotificationData? data});
+      @JsonKey(name: 'Data')
+          NotificationData? data});
 
   @override
   $NotificationDataCopyWith<$Res>? get data;
@@ -260,7 +264,8 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           this.createdAt,
-      this.data})
+      @JsonKey(name: 'Data')
+          this.data})
       : super._();
 
   factory _$_ChaseAppNotification.fromJson(Map<String, dynamic> json) =>
@@ -285,6 +290,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   @DatetimeTimestampNullableConverter()
   final DateTime? createdAt;
   @override
+  @JsonKey(name: 'Data')
   final NotificationData? data;
 
   @override
@@ -343,7 +349,8 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
-      NotificationData? data}) = _$_ChaseAppNotification;
+      @JsonKey(name: 'Data')
+          NotificationData? data}) = _$_ChaseAppNotification;
   const _ChaseAppNotification._() : super._();
 
   factory _ChaseAppNotification.fromJson(Map<String, dynamic> json) =
@@ -368,6 +375,7 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   @DatetimeTimestampNullableConverter()
   DateTime? get createdAt;
   @override
+  @JsonKey(name: 'Data')
   NotificationData? get data;
   @override
   @JsonKey(ignore: true)
