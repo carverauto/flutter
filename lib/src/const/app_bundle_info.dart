@@ -21,12 +21,13 @@ class AppBundleInfo {
 
   static const prodIosBundleId = "com.carverauto.chaseapp";
 
-  static String  dynamicLinkHostUrl(bool forEmail) {
-    final String url =  F.appFlavor == Flavor.DEV
-      ? devDynamicLinkHostUrl
-      : prodDynamicLinkHostUrl;
-    return forEmail ? url + "/" : url;  
+  static String dynamicLinkHostUrl(bool forEmail) {
+    final String url = F.appFlavor == Flavor.DEV
+        ? devDynamicLinkHostUrl
+        : prodDynamicLinkHostUrl;
+    return forEmail ? url + "/" : url;
   }
+
   static String get dynamicLinkPrefix =>
       F.appFlavor == Flavor.DEV ? "carverauto.com" : "chaseapp.tv";
 
@@ -61,4 +62,8 @@ class AppBundleInfo {
       return prodIosBundleId;
     }
   }
+}
+
+class EnvVaribales {
+  static const twitterToken = String.fromEnvironment("Twitter_Token");
 }
