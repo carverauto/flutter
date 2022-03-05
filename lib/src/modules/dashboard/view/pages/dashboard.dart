@@ -6,6 +6,7 @@ import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.da
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/firehose/view/pages/firehose.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
@@ -116,6 +117,7 @@ class Dashboard extends ConsumerWidget {
                       ),
                     ),
                   ),
+
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: kItemsSpacingSmallConstant,
@@ -131,6 +133,13 @@ class Dashboard extends ConsumerWidget {
                       height: kItemsSpacingMediumConstant,
                     ),
                   ),
+                  FireHoseView(),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: kPaddingMediumConstant),
