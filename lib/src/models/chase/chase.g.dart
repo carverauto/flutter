@@ -16,7 +16,7 @@ _$_Chase _$$_ChaseFromJson(Map<String, dynamic> json) => _$_Chase(
       imageURL: json['ImageURL'] as String?,
       votes: json['Votes'] as int?,
       networks: (json['Networks'] as List<dynamic>?)
-          ?.map((e) => e as Map<String, dynamic>)
+          ?.map((e) => ChaseNetwork.fromJson(e as Map<String, dynamic>))
           .toList(),
       sentiment: json['sentiment'] as Map<String, dynamic>?,
       wheels: json['Wheels'] as Map<String, dynamic>?,
@@ -31,7 +31,7 @@ Map<String, dynamic> _$$_ChaseToJson(_$_Chase instance) => <String, dynamic>{
       'Desc': instance.desc,
       'ImageURL': instance.imageURL,
       'Votes': instance.votes,
-      'Networks': instance.networks,
+      'Networks': instance.networks?.map((e) => e.toJson()).toList(),
       'sentiment': instance.sentiment,
       'Wheels': instance.wheels,
     };

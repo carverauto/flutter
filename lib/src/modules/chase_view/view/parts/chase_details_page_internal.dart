@@ -36,14 +36,14 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     late final String? url;
     if (youtubeUrl == null) {
       final network = widget.chase.networks?.firstWhereOrNull((network) {
-        final String? url = network["URL"] as String?;
+        final String? url = network.url;
 
         if (url != null) {
           return url.contains("youtube.com");
         }
         return false;
       });
-      url = network?["URL"] as String?;
+      url = network?.url;
     } else {
       url = youtubeUrl;
     }

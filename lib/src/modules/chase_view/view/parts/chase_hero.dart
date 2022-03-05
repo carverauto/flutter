@@ -34,7 +34,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardVisible = bottomPadding > 0;
     final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
-          final url = network['URL'] as String?;
+          final url = network.url;
 
           if (url != null) {
             return url.contains("youtube.com");

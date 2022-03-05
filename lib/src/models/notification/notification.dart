@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
 import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notification.freezed.dart';

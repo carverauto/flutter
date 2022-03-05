@@ -38,7 +38,7 @@ class _$ChaseTearOff {
       @JsonKey(name: 'Votes')
           required int? votes,
       @JsonKey(name: 'Networks')
-          List<Map<String, dynamic>>? networks,
+          List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
@@ -84,8 +84,7 @@ mixin _$Chase {
   @JsonKey(name: 'Votes')
   int? get votes => throw _privateConstructorUsedError;
   @JsonKey(name: 'Networks')
-  List<Map<String, dynamic>>? get networks =>
-      throw _privateConstructorUsedError;
+  List<ChaseNetwork>? get networks => throw _privateConstructorUsedError;
   @JsonKey(name: 'sentiment')
   Map<dynamic, dynamic>? get sentiment => throw _privateConstructorUsedError;
   @JsonKey(name: 'Wheels')
@@ -116,7 +115,7 @@ abstract class $ChaseCopyWith<$Res> {
       @JsonKey(name: 'Votes')
           int? votes,
       @JsonKey(name: 'Networks')
-          List<Map<String, dynamic>>? networks,
+          List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
@@ -176,7 +175,7 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>?,
+              as List<ChaseNetwork>?,
       sentiment: sentiment == freezed
           ? _value.sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
@@ -210,7 +209,7 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
       @JsonKey(name: 'Votes')
           int? votes,
       @JsonKey(name: 'Networks')
-          List<Map<String, dynamic>>? networks,
+          List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
@@ -271,7 +270,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       networks: networks == freezed
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>?,
+              as List<ChaseNetwork>?,
       sentiment: sentiment == freezed
           ? _value.sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
@@ -338,7 +337,7 @@ class _$_Chase extends _Chase {
   final int? votes;
   @override
   @JsonKey(name: 'Networks')
-  final List<Map<String, dynamic>>? networks;
+  final List<ChaseNetwork>? networks;
   @override
   @JsonKey(name: 'sentiment')
   final Map<dynamic, dynamic>? sentiment;
@@ -410,7 +409,7 @@ abstract class _Chase extends Chase {
       @JsonKey(name: 'Votes')
           required int? votes,
       @JsonKey(name: 'Networks')
-          List<Map<String, dynamic>>? networks,
+          List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
@@ -443,7 +442,7 @@ abstract class _Chase extends Chase {
   int? get votes;
   @override
   @JsonKey(name: 'Networks')
-  List<Map<String, dynamic>>? get networks;
+  List<ChaseNetwork>? get networks;
   @override
   @JsonKey(name: 'sentiment')
   Map<dynamic, dynamic>? get sentiment;
