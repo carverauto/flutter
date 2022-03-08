@@ -29,6 +29,12 @@ final chatChannelProvider =
   return channel;
 });
 
+final watcherCountProvider =
+    FutureProvider.autoDispose.family<int, Channel>((ref, channel) async {
+  final watchState = await channel.watch();
+  return watchState.watcherCount ?? 0;
+});
+
 final chatWsConnectionStreamProvider =
     StreamProvider.autoDispose<ConnectionStatus>((ref) {
   final client = ref.read(chatsServiceStateNotifierProvider.notifier).client;

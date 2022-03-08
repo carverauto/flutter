@@ -55,6 +55,10 @@ class ChatsView extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
+                  SizedBox(
+                    width: kItemsSpacingSmallConstant,
+                  ),
+                  UsersPresentCount(chase: chase, logger: logger),
                   Spacer(),
                   AnimatedSwitcher(
                     duration: Duration(milliseconds: 300),
@@ -143,6 +147,49 @@ class ChatsView extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class UsersPresentCount extends ConsumerWidget {
+  const UsersPresentCount({
+    Key? key,
+    required this.chase,
+    required this.logger,
+  }) : super(key: key);
+
+  final Chase chase;
+  final Logger logger;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Chip(
+      avatar: Icon(
+        Icons.remove_red_eye_rounded,
+        size: 18,
+      ),
+      label: ProviderStateBuilder<Channel>(
+          watchThisProvider: chatChannelProvider(chase),
+          logger: logger,
+          loadingBuilder: () => SizedBox.shrink(),
+          errorBuilder: (e, stk) => Text("NA"),
+          builder: (channel, ref) {
+            return ProviderStateBuilder(
+              loadingBuilder: () => SizedBox.shrink(),
+              errorBuilder: (e, stk) => Text("NA"),
+              builder: (count, ref) {
+                return Text(
+                  count.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+              watchThisProvider: watcherCountProvider(channel),
+              logger: logger,
+            );
+          }),
     );
   }
 }

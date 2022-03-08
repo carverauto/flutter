@@ -4,6 +4,7 @@ import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/chats/view/parts/chats_view.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
@@ -42,15 +43,20 @@ class ChatsViewRow extends ConsumerWidget {
                 // showChatsViewBottomSheet(context, chase);
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Chats :",
+                    "Chats",
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           //     decoration: TextDecoration.underline,
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
+                  SizedBox(
+                    width: kItemsSpacingSmallConstant,
+                  ),
+                  UsersPresentCount(chase: chase, logger: logger),
+                  Spacer(),
                   Icon(
                     Icons.expand,
                   ),
