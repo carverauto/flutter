@@ -130,6 +130,7 @@ class _FirehoseNotificationListTile extends StatelessWidget {
       tileColor: Colors.white70,
       leading: CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(imageUrl),
+        backgroundColor: Colors.white,
       ),
       title: Text(
         body,

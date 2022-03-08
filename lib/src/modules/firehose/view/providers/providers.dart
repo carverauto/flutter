@@ -2,21 +2,31 @@ import 'dart:convert';
 
 import 'package:chaseapp/src/const/app_bundle_info.dart';
 import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
-import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/firehose/data/firehose_db.dart';
+import 'package:chaseapp/src/modules/firehose/data/firehose_db_ab.dart';
+import 'package:chaseapp/src/modules/firehose/domain/firehose_repo.dart';
+import 'package:chaseapp/src/modules/firehose/domain/firehose_repo_ab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
+
+final firehoseDbProvider = Provider<FirehoseNotificationsDbAB>(
+    (ref) => FirehoseNotificationsDatabase());
+final firehoseRepoProvider =
+    Provider<FirehoseRepoAB>((ref) => FirehoseRepository(ref.read));
+
+final latestFirehoseNotificationsProvider =
+    StreamProvider<List<ChaseAppNotification>>((ref) {
+  return ref.read(firehoseRepoProvider).streamFirehoseNotifications();
+});
 
 final firehoseNotificationsStreamProvider = StateNotifierProvider.family<
     PaginationNotifier<ChaseAppNotification>,
     PaginationNotifierState<ChaseAppNotification>,
     Logger>((ref, logger) {
-  final user = ref.read(firebaseAuthProvider).currentUser!;
-
   return PaginationNotifier(
       hitsPerPage: 20,
       logger: logger,
@@ -24,10 +34,8 @@ final firehoseNotificationsStreamProvider = StateNotifierProvider.family<
         notification,
         offset,
       ) async {
-        return ref.read(notificationRepoProvider).fetchNotifications(
+        return ref.read(firehoseRepoProvider).fetchNotifications(
               notification,
-              "firehose-notifications",
-              user.uid,
             );
       });
 });
@@ -50,7 +58,6 @@ final fetchTweetAlongUserData =
     ),
     headers: {
       "Authorization": "Bearer ${EnvVaribales.twitterToken}",
-      //  "Content-Type": "application/x-www-form-urlencoded"
     },
   );
   final result = jsonDecode(responce.body) as Map<String, dynamic>;
