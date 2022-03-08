@@ -256,6 +256,31 @@ class Dashboard extends ConsumerWidget {
               width: MediaQuery.of(context).size.width,
               child: ConnectivityStatus(),
             ),
+            // Positioned.fill(
+            //   bottom: 0,
+            //   child:
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: IgnorePointer(
+            //     ignoring: true,
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         gradient: LinearGradient(
+            //             begin: Alignment.bottomCenter,
+            //             end: Alignment.topCenter,
+            //             colors: [
+            //               Color.fromARGB(255, 34, 33, 32),
+            //               Colors.transparent,
+            //             ],
+            //             stops: [
+            //               0.0,
+            //               0.2,
+            //             ]),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // ),
           ],
         ),
       ),
