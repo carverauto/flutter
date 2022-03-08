@@ -39,43 +39,22 @@ class FirehoseNotificationTile extends ConsumerWidget {
               notification: notification,
               body: tweetData.text,
               imageUrl: tweetData.profileImageUrl,
-              leading: SizedBox(
-                width: 120,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              title: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(
-                        tweetData.profileImageUrl,
+                    TextSpan(
+                      text: tweetData.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 16,
                       ),
                     ),
-                    SizedBox(width: kItemsSpacingExtraSmallConstant),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            tweetData.name * 4,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            "@" + tweetData.userName,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
+                    TextSpan(text: " "),
+                    TextSpan(
+                      text: "@" + tweetData.userName,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -92,6 +71,14 @@ class FirehoseNotificationTile extends ConsumerWidget {
     } else if (notification.title == "streams") {
       return _FirehoseNotificationListTile(
         notification: notification,
+        title: Text(
+          "Youtube",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
         body: notification.body,
         imageUrl: notification.data!.image!,
         trailing: Icon(
@@ -150,6 +137,7 @@ class _FirehoseNotificationListTile extends StatelessWidget {
   const _FirehoseNotificationListTile({
     Key? key,
     required this.notification,
+    required this.title,
     required this.body,
     required this.trailing,
     required this.imageUrl,
@@ -157,6 +145,8 @@ class _FirehoseNotificationListTile extends StatelessWidget {
   }) : super(key: key);
 
   final ChaseAppNotification notification;
+  final Widget title;
+
   final String body;
   final Widget trailing;
   final String imageUrl;
@@ -171,13 +161,23 @@ class _FirehoseNotificationListTile extends StatelessWidget {
       onTap: () {
         showFirehosePreview(notification, context);
       },
+      isThreeLine: true,
       tileColor: Color.fromARGB(255, 94, 94, 94),
       leading: leading ??
           CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(imageUrl),
             backgroundColor: Colors.white,
           ),
-      title: Text(
+      title: title,
+      //  Text(
+      //   title,
+      //   maxLines: 1,
+      //   overflow: TextOverflow.ellipsis,
+      //   style: TextStyle(
+      //     color: Theme.of(context).colorScheme.onBackground,
+      //   ),
+      // ),
+      subtitle: Text(
         body,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
