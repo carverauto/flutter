@@ -11,11 +11,11 @@ _$_ChaseAppNotification _$$_ChaseAppNotificationFromJson(
     _$_ChaseAppNotification(
       interest: json['Interest'] as String,
       id: json['id'] as String?,
-      title: json['Title'] as String?,
-      body: json['Body'] as String?,
+      title: json['Title'] as String,
+      body: json['Body'] as String,
       image: json['Image'] as String?,
-      createdAt: const DatetimeTimestampNullableConverter()
-          .fromJson(json['CreatedAt'] as Timestamp?),
+      createdAt: const DatetimeTimestampConverter()
+          .fromJson(json['CreatedAt'] as Timestamp),
       data: json['Data'] == null
           ? null
           : NotificationData.fromJson(json['Data'] as Map<String, dynamic>),
@@ -30,6 +30,6 @@ Map<String, dynamic> _$$_ChaseAppNotificationToJson(
       'Body': instance.body,
       'Image': instance.image,
       'CreatedAt':
-          const DatetimeTimestampNullableConverter().toJson(instance.createdAt),
+          const DatetimeTimestampConverter().toJson(instance.createdAt),
       'Data': instance.data?.toJson(),
     };

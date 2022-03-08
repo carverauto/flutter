@@ -13,12 +13,12 @@ abstract class ChaseAppNotification implements _$ChaseAppNotification {
   const factory ChaseAppNotification({
     @JsonKey(name: 'Interest') required String interest,
     String? id,
-    @JsonKey(name: 'Title') String? title,
-    @JsonKey(name: 'Body') String? body,
+    @JsonKey(name: 'Title') required String title,
+    @JsonKey(name: 'Body') required String body,
     @JsonKey(name: 'Image') String? image,
     @JsonKey(name: 'CreatedAt')
-    @DatetimeTimestampNullableConverter()
-        DateTime? createdAt,
+    @DatetimeTimestampConverter()
+        required DateTime createdAt,
     @JsonKey(name: 'Data') NotificationData? data,
   }) = _ChaseAppNotification;
   factory ChaseAppNotification.fromJson(Map<String, dynamic> json) =>

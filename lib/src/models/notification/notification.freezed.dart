@@ -27,14 +27,14 @@ class _$ChaseAppNotificationTearOff {
           required String interest,
       String? id,
       @JsonKey(name: 'Title')
-          String? title,
+          required String title,
       @JsonKey(name: 'Body')
-          String? body,
+          required String body,
       @JsonKey(name: 'Image')
           String? image,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          DateTime? createdAt,
+      @DatetimeTimestampConverter()
+          required DateTime createdAt,
       @JsonKey(name: 'Data')
           NotificationData? data}) {
     return _ChaseAppNotification(
@@ -62,14 +62,14 @@ mixin _$ChaseAppNotification {
   String get interest => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'Title')
-  String? get title => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'Body')
-  String? get body => throw _privateConstructorUsedError;
+  String get body => throw _privateConstructorUsedError;
   @JsonKey(name: 'Image')
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampNullableConverter()
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @DatetimeTimestampConverter()
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'Data')
   NotificationData? get data => throw _privateConstructorUsedError;
 
@@ -89,14 +89,14 @@ abstract class $ChaseAppNotificationCopyWith<$Res> {
           String interest,
       String? id,
       @JsonKey(name: 'Title')
-          String? title,
+          String title,
       @JsonKey(name: 'Body')
-          String? body,
+          String body,
       @JsonKey(name: 'Image')
           String? image,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          DateTime? createdAt,
+      @DatetimeTimestampConverter()
+          DateTime createdAt,
       @JsonKey(name: 'Data')
           NotificationData? data});
 
@@ -134,11 +134,11 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -146,7 +146,7 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -178,14 +178,14 @@ abstract class _$ChaseAppNotificationCopyWith<$Res>
           String interest,
       String? id,
       @JsonKey(name: 'Title')
-          String? title,
+          String title,
       @JsonKey(name: 'Body')
-          String? body,
+          String body,
       @JsonKey(name: 'Image')
           String? image,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          DateTime? createdAt,
+      @DatetimeTimestampConverter()
+          DateTime createdAt,
       @JsonKey(name: 'Data')
           NotificationData? data});
 
@@ -226,11 +226,11 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       body: body == freezed
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -238,7 +238,7 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -256,14 +256,14 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
           required this.interest,
       this.id,
       @JsonKey(name: 'Title')
-          this.title,
+          required this.title,
       @JsonKey(name: 'Body')
-          this.body,
+          required this.body,
       @JsonKey(name: 'Image')
           this.image,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          this.createdAt,
+      @DatetimeTimestampConverter()
+          required this.createdAt,
       @JsonKey(name: 'Data')
           this.data})
       : super._();
@@ -278,17 +278,17 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   final String? id;
   @override
   @JsonKey(name: 'Title')
-  final String? title;
+  final String title;
   @override
   @JsonKey(name: 'Body')
-  final String? body;
+  final String body;
   @override
   @JsonKey(name: 'Image')
   final String? image;
   @override
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampNullableConverter()
-  final DateTime? createdAt;
+  @DatetimeTimestampConverter()
+  final DateTime createdAt;
   @override
   @JsonKey(name: 'Data')
   final NotificationData? data;
@@ -341,14 +341,14 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
           required String interest,
       String? id,
       @JsonKey(name: 'Title')
-          String? title,
+          required String title,
       @JsonKey(name: 'Body')
-          String? body,
+          required String body,
       @JsonKey(name: 'Image')
           String? image,
       @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          DateTime? createdAt,
+      @DatetimeTimestampConverter()
+          required DateTime createdAt,
       @JsonKey(name: 'Data')
           NotificationData? data}) = _$_ChaseAppNotification;
   const _ChaseAppNotification._() : super._();
@@ -363,17 +363,17 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   String? get id;
   @override
   @JsonKey(name: 'Title')
-  String? get title;
+  String get title;
   @override
   @JsonKey(name: 'Body')
-  String? get body;
+  String get body;
   @override
   @JsonKey(name: 'Image')
   String? get image;
   @override
   @JsonKey(name: 'CreatedAt')
-  @DatetimeTimestampNullableConverter()
-  DateTime? get createdAt;
+  @DatetimeTimestampConverter()
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'Data')
   NotificationData? get data;
