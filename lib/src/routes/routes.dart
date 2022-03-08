@@ -9,7 +9,7 @@ import 'package:chaseapp/src/modules/check_permissions/view/pages/check_permissi
 import 'package:chaseapp/src/modules/check_permissions/view/pages/request_permissions.dart';
 import 'package:chaseapp/src/modules/credits/view/credits.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases_view_all.dart';
-import 'package:chaseapp/src/modules/firehose/view/parts/firehose_view_all.dart';
+import 'package:chaseapp/src/modules/firehose/view/pages/firehose_view_all.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/notifications/view/pages/notifications_view.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/onboarding.dart';
