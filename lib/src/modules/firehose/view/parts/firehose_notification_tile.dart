@@ -62,6 +62,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
     } else {
       return Container(
         color: Colors.green,
+        height: 50,
       );
     }
   }
@@ -127,9 +128,10 @@ class _FirehoseNotificationListTile extends StatelessWidget {
       onTap: () {
         showFirehosePreview(notification, context);
       },
-      tileColor: Colors.white70,
+      tileColor: Color.fromARGB(255, 94, 94, 94),
       leading: CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(imageUrl),
+        backgroundColor: Colors.white,
       ),
       title: Text(
         body,
