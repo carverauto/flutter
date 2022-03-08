@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -8,7 +6,6 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/chase_hero.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
 import 'package:chaseapp/src/modules/chats/view/parts/chats_view.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
@@ -28,12 +25,14 @@ class ChaseDetails extends ConsumerStatefulWidget {
     required this.chase,
     required this.youtubeVideo,
     required this.onYoutubeNetworkTap,
+    required this.chatsRow,
   }) : super(key: key);
 
   final String? imageURL;
   final Logger logger;
   final Chase chase;
   final Widget youtubeVideo;
+  final Widget chatsRow;
   final void Function(String url) onYoutubeNetworkTap;
 
   @override
@@ -51,7 +50,6 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
             final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
                 ? MediaQuery.of(context).size.height * 0.15
                 : 0;
-            log('bottomPadding: $bottomPadding');
             return AnimatedContainer(
               height:
                   MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
@@ -65,33 +63,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
             );
           }),
         ),
-
-        // Consumer(builder: ((context, ref, child) {
-        //   final showChatsWindow = ref.watch(isShowingChatsWindowProvide);
-        //   final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-        //   log(bottomPadding.toString());
-        //   return AnimatedContainer(
-        //     // aspectRatio:  16 / 9,
-        //     // scale: showChatsWindow ? 0.8 : 1,
-        //     height:
-        //         MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
-        //     width: double.maxFinite,
-        //     duration: Duration(milliseconds: 500),
-        //     child: AspectRatio(
-        //       aspectRatio: 16 / 9,
-        //       child: Container(
-        //         color: Colors.blue,
-        //       ),
-        //     ),
-        //   );
-        // })),
-        // ChaseHeroSection(
-        //   chase: widget.chase,
-        //   imageURL: widget.imageURL,
-        //   youtubeVideo: widget.youtubeVideo,
-        // ),
         Expanded(
-          // key: chaseDetailsKey,
           child: Stack(
             children: [
               ColoredBox(
@@ -257,13 +229,13 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                       height: kItemsSpacingSmall,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    ChatsViewRow(chase: widget.chase)
+                    widget.chatsRow,
                   ],
                 ),
               ),
               Consumer(
                 child: ChatsView(
-                  chase: widget.chase,
+                  chaseId: widget.chase.id,
                 ),
                 builder: ((context, ref, child) {
                   final showChatsWindow =

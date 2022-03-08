@@ -77,7 +77,7 @@ class NetworksList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${isYoutubeNetworks ? "Youtube" : "Other"} :",
+                "${isYoutubeNetworks ? "Streams" : "Other"} :",
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       //  decoration: TextDecoration.underline,
                       color: Theme.of(context).colorScheme.onBackground,

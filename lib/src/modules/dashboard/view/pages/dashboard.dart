@@ -246,6 +246,11 @@ class Dashboard extends ConsumerWidget {
                     chasesPaginationProvider: chasesPaginationProvider,
                     logger: logger,
                   ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingLargeConstant * 3,
+                    ),
+                  ),
                 ],
               ),
             ),

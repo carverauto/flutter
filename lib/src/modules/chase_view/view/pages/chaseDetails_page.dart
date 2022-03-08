@@ -4,6 +4,7 @@ import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details_page_internal.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,12 +40,14 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
       watchThisProvider: streamChaseProvider(chaseId),
       logger: logger,
       showBackButton: true,
-      builder: (chase, ref) {
+      child: ChatsViewRow(chaseId: chaseId),
+      builder: (chase, ref, child) {
         return ChaseDetailsInternal(
           chase: chase,
           appBarOffsetAnimation: widget.appBarOffsetAnimation,
           bottomListAnimation: widget.bottomListAnimation,
           logger: logger,
+          chatsRow: child!,
         );
       },
     );

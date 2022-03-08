@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chats/data/chats_db.dart';
 import 'package:chaseapp/src/modules/chats/domain/chats_repo.dart';
 import 'package:chaseapp/src/modules/chats/view/notifiers/chats_notifier.dart';
@@ -16,14 +15,14 @@ final chatsServiceStateNotifierProvider =
         (ref) => ChatStateNotifier(ref.read));
 
 final chatChannelProvider =
-    FutureProvider.autoDispose.family<Channel, Chase>((ref, chase) async {
+    FutureProvider.autoDispose.family<Channel, String>((ref, chaseId) async {
   final client = ref.read(chatsServiceStateNotifierProvider.notifier).client;
   final channel = client.channel(
     'livestream',
-    id: chase.id,
-    extraData: {
-      'name': chase.name ?? "NA",
-    },
+    id: chaseId,
+    // extraData: {
+    //   'name': chase.name ?? "NA",
+    // },
   );
   await channel.watch();
   return channel;

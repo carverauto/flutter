@@ -43,7 +43,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
                         fetchTweetAlongUserData(notification.data!.tweetId!));
                   });
             },
-            builder: (tweetData, ref) {
+            builder: (tweetData, ref, child) {
               return _FirehoseNotificationListTile(
                 notification: notification,
                 body: tweetData.text,

@@ -13,7 +13,7 @@ class CheckPermissionsViewWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderStateBuilder<bool>(
-      builder: (isGrantedPermissions, ref) {
+      builder: (isGrantedPermissions, ref, child) {
         return isGrantedPermissions
             ? AuthViewWrapper()
             : RequestPermissionsView();

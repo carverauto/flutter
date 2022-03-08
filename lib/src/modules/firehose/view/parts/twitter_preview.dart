@@ -14,7 +14,7 @@ class TweetPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderStateBuilder<Map<String, dynamic>>(
-      builder: (data, ref) {
+      builder: (data, ref, child) {
         // Replace with custom preview
         return ConstrainedBox(
           constraints: BoxConstraints(

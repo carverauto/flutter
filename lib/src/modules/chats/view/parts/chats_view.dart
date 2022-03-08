@@ -1,7 +1,6 @@
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
@@ -14,9 +13,9 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 class ChatsView extends ConsumerWidget {
   ChatsView({
     Key? key,
-    required this.chase,
+    required this.chaseId,
   }) : super(key: key);
-  final Chase chase;
+  final String chaseId;
   final Logger logger = Logger('ChatsView');
 
   @override
@@ -58,7 +57,7 @@ class ChatsView extends ConsumerWidget {
                   SizedBox(
                     width: kItemsSpacingSmallConstant,
                   ),
-                  UsersPresentCount(chase: chase, logger: logger),
+                  UsersPresentCount(chaseId: chaseId, logger: logger),
                   Spacer(),
                   AnimatedSwitcher(
                     duration: Duration(milliseconds: 300),
@@ -99,9 +98,9 @@ class ChatsView extends ConsumerWidget {
             ),
             Expanded(
               child: ProviderStateBuilder<Channel>(
-                watchThisProvider: chatChannelProvider(chase),
+                watchThisProvider: chatChannelProvider(chaseId),
                 logger: logger,
-                builder: (channel, ref) {
+                builder: (channel, ref, child) {
                   return TweenAnimationBuilder<Offset>(
                     tween: Tween<Offset>(
                         begin: Offset(0, MediaQuery.of(context).size.height),
@@ -127,7 +126,7 @@ class ChatsView extends ConsumerWidget {
                                   CircularAdaptiveProgressIndicatorWithBg(),
                               errorBuilder: (context, e) {
                                 return ChaseAppErrorWidget(onRefresh: () {
-                                  ref.refresh(chatChannelProvider(chase));
+                                  ref.refresh(chatChannelProvider(chaseId));
                                 });
                               },
                               keyboardDismissBehavior:
@@ -154,11 +153,11 @@ class ChatsView extends ConsumerWidget {
 class UsersPresentCount extends ConsumerWidget {
   const UsersPresentCount({
     Key? key,
-    required this.chase,
+    required this.chaseId,
     required this.logger,
   }) : super(key: key);
 
-  final Chase chase;
+  final String chaseId;
   final Logger logger;
 
   @override
@@ -169,15 +168,15 @@ class UsersPresentCount extends ConsumerWidget {
         size: 18,
       ),
       label: ProviderStateBuilder<Channel>(
-          watchThisProvider: chatChannelProvider(chase),
+          watchThisProvider: chatChannelProvider(chaseId),
           logger: logger,
           loadingBuilder: () => SizedBox.shrink(),
           errorBuilder: (e, stk) => Text("NA"),
-          builder: (channel, ref) {
+          builder: (channel, ref, child) {
             return ProviderStateBuilder(
               loadingBuilder: () => SizedBox.shrink(),
               errorBuilder: (e, stk) => Text("NA"),
-              builder: (count, ref) {
+              builder: (count, ref, child) {
                 return Text(
                   count.toString(),
                   style: TextStyle(

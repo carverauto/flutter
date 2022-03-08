@@ -19,9 +19,9 @@ class NotificationsSettings extends StatelessWidget {
         elevation: 0,
       ),
       body: ProviderStateBuilder<List<Interest>>(
-        builder: (interests, ref) {
+        builder: (interests, ref, child) {
           return ProviderStateBuilder<List<String?>>(
-              builder: (usersInterests, ref) {
+              builder: (usersInterests, ref, child) {
                 final defaultInterests =
                     interests.where((interest) => interest.isDefault).toList();
                 final optionalInterests =
