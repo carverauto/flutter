@@ -24,7 +24,10 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
   final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
       itemsPaginationProvider;
   final String title;
-  final Widget Function(ScrollController scrollController) builder;
+  final Widget Function(
+      ScrollController scrollController,
+      StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
+          itemsPaginationProvider) builder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,12 +70,12 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
           children: [
             CustomScrollView(
               controller: scrollController,
-              restorationId: "All Chases",
+              restorationId: title,
               slivers: [
                 SliverAppBar(
                   elevation: kElevation,
                   pinned: true,
-                  title: Text("All Chases"),
+                  title: Text(title),
                 ),
 
                 // Error if removed (Need to report)
@@ -84,13 +87,7 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
                 SliverPadding(
                   padding:
                       EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-                  sliver: builder(scrollController),
-                  //  ChasesPaginatedListView(
-                  //   chasesPaginationProvider: itemsPaginationProvider,
-                  //   logger: logger,
-                  //   scrollController: scrollController,
-                  //   axis: Axis.vertical,
-                  // ),
+                  sliver: builder(scrollController, itemsPaginationProvider),
                 ),
                 SliverToBoxAdapter(
                   child: PaginatedListBottom<T>(

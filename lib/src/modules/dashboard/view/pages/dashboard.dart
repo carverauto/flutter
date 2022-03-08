@@ -151,17 +151,13 @@ class Dashboard extends ConsumerWidget {
                           Spacer(),
                           TextButton.icon(
                             onPressed: () {
-                              // Navigator.pushNamed(
-                              //   context,
-                              //   RouteName.RECENT_CHASESS_VIEW_ALL,
-                              //   arguments: {
-                              //     "chasesPaginationProvider":
-                              //         chasesPaginationProvider,
-                              //   },
-                              // );
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.FIREHOSE_VIEW_ALL,
+                              );
                             },
                             icon: Text(
-                              "See More",
+                              "View All",
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle1!

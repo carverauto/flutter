@@ -1,3 +1,4 @@
+import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/firehose/view/parts/firehose_short_view.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
@@ -17,8 +18,10 @@ class FireHoseView extends ConsumerWidget {
       scrollController: ScrollController(),
       axis: Axis.vertical,
       builder: (notifications, ref) {
-        return SliverToBoxAdapter(
-          child: FirehoseShortView(
+        return SliverPadding(
+          padding:
+              EdgeInsets.symmetric(horizontal: kItemsSpacingMediumConstant),
+          sliver: FirehoseShortView(
             notifications: notifications,
           ),
         );

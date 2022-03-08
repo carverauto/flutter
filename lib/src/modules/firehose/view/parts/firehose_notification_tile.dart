@@ -32,7 +32,7 @@ class FirehoseNotificationTile extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                 ),
-                tileColor: Colors.white,
+                tileColor: Colors.white.withOpacity(0.5),
                 onTap: () {
                   showFirehosePreview(notification, context);
                 },
@@ -70,7 +70,7 @@ class FirehoseNotificationTile extends StatelessWidget {
           onTap: () {
             showFirehosePreview(notification, context);
           },
-          tileColor: Colors.white,
+          tileColor: Colors.white.withOpacity(0.5),
           leading: CircleAvatar(
             backgroundImage:
                 CachedNetworkImageProvider(notification.data!.image!),
