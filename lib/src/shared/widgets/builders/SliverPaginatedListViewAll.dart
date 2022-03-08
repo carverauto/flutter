@@ -21,12 +21,13 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
   final ScrollController scrollController = ScrollController();
   final Logger logger;
 
-  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
-      itemsPaginationProvider;
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+      PaginationNotifierState<T>> itemsPaginationProvider;
   final String title;
   final Widget Function(
       ScrollController scrollController,
-      StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
+      AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+              PaginationNotifierState<T>>
           itemsPaginationProvider) builder;
 
   @override

@@ -17,7 +17,7 @@ final notificationDbProvider =
 final notificationRepoProvider = Provider.autoDispose<NotificationsRepoAB>(
     (ref) => NotificationsRepository(ref.read));
 
-final notificationsStreamProvider = StateNotifierProvider.family<
+final notificationsStreamProvider = StateNotifierProvider.autoDispose.family<
     PaginationNotifier<ChaseAppNotification>,
     PaginationNotifierState<ChaseAppNotification>,
     Logger>((ref, logger) {

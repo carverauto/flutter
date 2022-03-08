@@ -18,7 +18,8 @@ class NotificationsViewAll extends ConsumerWidget {
   final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('RecentChasesListView');
 
-  final StateNotifierProvider<PaginationNotifier<ChaseAppNotification>,
+  final AutoDisposeStateNotifierProvider<
+      PaginationNotifier<ChaseAppNotification>,
       PaginationNotifierState<ChaseAppNotification>> chasesPaginationProvider;
 
   @override

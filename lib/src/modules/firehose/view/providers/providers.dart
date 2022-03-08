@@ -19,14 +19,13 @@ final firehoseRepoProvider =
     Provider<FirehoseRepoAB>((ref) => FirehoseRepository(ref.read));
 
 final latestFirehoseNotificationsProvider =
-    StreamProvider<List<ChaseAppNotification>>((ref) {
+    StreamProvider.autoDispose<List<ChaseAppNotification>>((ref) {
   return ref.read(firehoseRepoProvider).streamFirehoseNotifications();
 });
 
-final firehoseNotificationsStreamProvider = StateNotifierProvider.family<
-    PaginationNotifier<ChaseAppNotification>,
-    PaginationNotifierState<ChaseAppNotification>,
-    Logger>((ref, logger) {
+final firehoseNotificationsStreamProvider = StateNotifierProvider.autoDispose
+    .family<PaginationNotifier<ChaseAppNotification>,
+        PaginationNotifierState<ChaseAppNotification>, Logger>((ref, logger) {
   return PaginationNotifier(
       hitsPerPage: 20,
       logger: logger,

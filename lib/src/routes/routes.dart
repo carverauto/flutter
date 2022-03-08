@@ -51,7 +51,7 @@ class Routes {
         return _createRoute(chaseId);
       case RouteName.RECENT_CHASESS_VIEW_ALL:
         final chasesPaginationProvider = arguments["chasesPaginationProvider"]
-            as StateNotifierProvider<PaginationNotifier<Chase>,
+            as AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
                 PaginationNotifierState<Chase>>;
 
         return MaterialPageRoute<void>(

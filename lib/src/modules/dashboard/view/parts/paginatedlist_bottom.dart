@@ -11,8 +11,8 @@ class PaginatedListBottom<T> extends StatelessWidget {
     required this.chasesPaginationProvider,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
-      chasesPaginationProvider;
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+      PaginationNotifierState<T>> chasesPaginationProvider;
 
   @override
   Widget build(BuildContext context) {

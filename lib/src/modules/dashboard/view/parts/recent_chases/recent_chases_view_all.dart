@@ -15,7 +15,7 @@ class RecentChasesListViewAll extends ConsumerWidget {
 
   final Logger logger = Logger('RecentChasesListView');
 
-  final StateNotifierProvider<PaginationNotifier<Chase>,
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
 
   @override
