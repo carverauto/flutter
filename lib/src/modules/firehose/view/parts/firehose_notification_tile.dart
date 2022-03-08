@@ -6,6 +6,7 @@ import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
 import 'package:chaseapp/src/modules/firehose/view/parts/show_preview_dialog.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/enums/firehose_notification_type.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,77 +22,107 @@ class FirehoseNotificationTile extends ConsumerWidget {
 
   final Logger logger = Logger('FirehoseNotificationTile');
 
+  final titleStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (notification.title == "twitter") {
-      return ProviderStateBuilder<TweetData>(
-          loadingBuilder: () => LoadingListTile(),
-          errorBuilder: (e, stk) {
-            return FirehoseErrorTile(
+    final notificationType =
+        getFirehoseNotificationTypeFromString(notification.title);
+    switch (notificationType) {
+      case FirehoseNotificationType.twitter:
+        return ProviderStateBuilder<TweetData>(
+            loadingBuilder: () => LoadingListTile(),
+            errorBuilder: (e, stk) {
+              return FirehoseErrorTile(
+                  notification: notification,
+                  onRefesh: () {
+                    ref.refresh(
+                        fetchTweetAlongUserData(notification.data!.tweetId!));
+                  });
+            },
+            builder: (tweetData, ref) {
+              return _FirehoseNotificationListTile(
                 notification: notification,
-                onRefesh: () {
-                  ref.refresh(
-                      fetchTweetAlongUserData(notification.data!.tweetId!));
-                });
-          },
-          builder: (tweetData, ref) {
-            return _FirehoseNotificationListTile(
-              notification: notification,
-              body: tweetData.text,
-              imageUrl: tweetData.profileImageUrl,
-              title: RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: tweetData.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 16,
+                body: tweetData.text,
+                imageUrl: tweetData.profileImageUrl,
+                title: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: tweetData.name,
+                        style: titleStyle,
                       ),
-                    ),
-                    TextSpan(text: " "),
-                    TextSpan(
-                      text: "@" + tweetData.userName,
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ],
+                      TextSpan(text: " "),
+                      TextSpan(
+                        text: "@" + tweetData.userName,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              trailing: ImageIcon(
-                CachedNetworkImageProvider(notification.data!.image!),
-                color: Colors.blue,
-              ),
-            );
-          },
-          watchThisProvider:
-              fetchTweetAlongUserData(notification.data!.tweetId!),
-          logger: logger);
-    } else if (notification.title == "streams") {
-      return _FirehoseNotificationListTile(
-        notification: notification,
-        title: Text(
-          "Youtube",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
+                trailing: ImageIcon(
+                  CachedNetworkImageProvider(notification.data!.image!),
+                  color: Colors.blue,
+                ),
+              );
+            },
+            watchThisProvider:
+                fetchTweetAlongUserData(notification.data!.tweetId!),
+            logger: logger);
+        break;
+      case FirehoseNotificationType.streams:
+        return _FirehoseNotificationListTile(
+          notification: notification,
+          title: Text(
+            "Youtube",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
           ),
-        ),
-        body: notification.body,
-        imageUrl: notification.data!.image!,
-        trailing: Icon(
-          Icons.play_arrow_rounded,
-          color: Colors.red,
-          size: kIconSizeMediumConstant,
-        ),
-      );
-    } else {
-      return Container(
-        color: Colors.green,
-        height: 50,
-      );
+          body: notification.body,
+          imageUrl: notification.data!.image!,
+          trailing: Icon(
+            Icons.play_arrow_rounded,
+            color: Colors.red,
+            size: kIconSizeMediumConstant,
+          ),
+        );
+      case FirehoseNotificationType.live_on_patrol:
+        return _FirehoseNotificationListTile(
+          notification: notification,
+          title: Text(
+            notification.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
+          ),
+          body: notification.body,
+          trailing: ShaderMask(
+            shaderCallback: (bounds) {
+              return LinearGradient(
+                colors: [
+                  Colors.blue,
+                  Colors.red,
+                ],
+              ).createShader(bounds);
+            },
+            child: Icon(
+              Icons.local_police_rounded,
+              color: Colors.white,
+            ),
+          ),
+          //  ImageIcon(
+          //   AssetImage(defaultAssetChaseImage,),
+          //   size: 24,
+          // ),
+          imageUrl: notification.data!.image!,
+        );
+      default:
+        return SizedBox.shrink();
     }
   }
 }
