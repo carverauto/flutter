@@ -39,6 +39,47 @@ class FirehoseNotificationTile extends ConsumerWidget {
               notification: notification,
               body: tweetData.text,
               imageUrl: tweetData.profileImageUrl,
+              leading: SizedBox(
+                width: 120,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                        tweetData.profileImageUrl,
+                      ),
+                    ),
+                    SizedBox(width: kItemsSpacingExtraSmallConstant),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            tweetData.name * 4,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Text(
+                            "@" + tweetData.userName,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               trailing: ImageIcon(
                 CachedNetworkImageProvider(notification.data!.image!),
                 color: Colors.blue,
@@ -112,12 +153,14 @@ class _FirehoseNotificationListTile extends StatelessWidget {
     required this.body,
     required this.trailing,
     required this.imageUrl,
+    this.leading,
   }) : super(key: key);
 
   final ChaseAppNotification notification;
   final String body;
   final Widget trailing;
   final String imageUrl;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +172,11 @@ class _FirehoseNotificationListTile extends StatelessWidget {
         showFirehosePreview(notification, context);
       },
       tileColor: Color.fromARGB(255, 94, 94, 94),
-      leading: CircleAvatar(
-        backgroundImage: CachedNetworkImageProvider(imageUrl),
-        backgroundColor: Colors.white,
-      ),
+      leading: leading ??
+          CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(imageUrl),
+            backgroundColor: Colors.white,
+          ),
       title: Text(
         body,
         maxLines: 2,
