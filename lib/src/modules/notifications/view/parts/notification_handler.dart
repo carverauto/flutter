@@ -2,6 +2,7 @@ import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_dialog.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/enums/interest_enum.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:chaseapp/src/shared/widgets/hero_dialog_route.dart';
 import 'package:flutter/material.dart';

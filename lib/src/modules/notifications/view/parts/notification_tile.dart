@@ -55,7 +55,7 @@ class NotificationTIle extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(notificationData.title ?? "NA",
+      title: Text(notificationData.title,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           )),
@@ -63,7 +63,7 @@ class NotificationTIle extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              notificationData.body ?? "NA",
+              notificationData.body,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryColor.shade300,
@@ -75,7 +75,7 @@ class NotificationTIle extends StatelessWidget {
           ),
           Text(
             notificationData.createdAt != null
-                ? elapsedTimeForDate(notificationData.createdAt!)
+                ? elapsedTimeForDate(notificationData.createdAt)
                 : "NA",
             style: TextStyle(
               color: primaryColor.shade300,

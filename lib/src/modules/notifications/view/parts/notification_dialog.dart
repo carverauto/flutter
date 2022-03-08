@@ -58,7 +58,7 @@ class NotificationDialog extends StatelessWidget {
               height: kItemsSpacingMediumConstant,
             ),
             Text(
-              notification.title ?? "NA",
+              notification.title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class NotificationDialog extends StatelessWidget {
               height: kItemsSpacingSmallConstant,
             ),
             Text(
-              notification.body ?? "NA",
+              notification.body,
               textAlign: TextAlign.center,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,

@@ -130,7 +130,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.notification.body ?? "NA",
+                        widget.notification.body,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

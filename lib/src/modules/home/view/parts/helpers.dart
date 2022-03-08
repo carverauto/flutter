@@ -4,11 +4,13 @@ import 'dart:developer';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/enums/interest_enum.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//TODO: Update with new notification schema
 ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
   final data = message.data;
 
@@ -21,13 +23,15 @@ ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
         ? NotificationData.fromJson(data["data"] as Map<String, dynamic>)
         : null,
     id: data["id"] as String?,
-    createdAt: data["createdAt"] as DateTime?,
+    createdAt: data["createdAt"] as DateTime,
   );
 
   return notificationData;
 }
 
 Future<void> handlebgmessage(RemoteMessage message) async {
+  //TODO: Update with new notification schema
+
   if (message.data["interest"] != null) {
     // updateNotificationsPresentStatus(true);
     final notificationData = getNotificationDataFromMessage(message);

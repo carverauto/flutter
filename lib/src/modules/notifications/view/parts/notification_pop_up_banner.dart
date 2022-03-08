@@ -117,11 +117,11 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
               ),
             ),
             title: Text(
-              widget.notificationData.title ?? "NA",
+              widget.notificationData.title ,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              widget.notificationData.body ?? "NA",
+              widget.notificationData.body ,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: ElevatedButton(

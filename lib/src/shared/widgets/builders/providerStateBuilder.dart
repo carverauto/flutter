@@ -13,6 +13,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     this.errorMessage,
     this.errorBuilder,
     this.showBackButton = false,
+    this.loadingBuilder,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
@@ -24,6 +25,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
 
   final String? errorMessage;
   final bool showBackButton;
+  final Widget Function()? loadingBuilder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,9 +65,11 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
                   ),
                 );
         },
-        loading: () => Material(
-              child: CircularAdaptiveProgressIndicatorWithBg(),
-            ));
+        loading: () => loadingBuilder != null
+            ? loadingBuilder!()
+            : Material(
+                child: CircularAdaptiveProgressIndicatorWithBg(),
+              ));
   }
 }
 

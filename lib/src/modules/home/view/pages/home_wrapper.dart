@@ -49,6 +49,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     log("ChaseAppNotification Message Arrived--->" + message.data.toString());
 
     final data = message.data;
+    //TODO: Update with new notification schema
 
     if (data["interest"] != null) {
       updateNotificationsPresentStatus(ref, true);
@@ -98,15 +99,15 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           notification.toString());
       final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
           notification["data"] as Map<String, dynamic>);
-
+      //TODO: Update with new notification schema
       if (data["interest"] != null) {
         final notificationData = ChaseAppNotification(
           interest: data["interest"] as String,
           title: notification["title"] as String,
-          body: notification["body"] as String?,
+          body: notification["body"] as String,
           data: NotificationData.fromJson(data),
           image: data["image"] as String?,
-          createdAt: notification["createdAt"] as DateTime?,
+          createdAt: notification["createdAt"] as DateTime,
         );
         updateNotificationsPresentStatus(ref, true);
 
