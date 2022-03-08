@@ -102,7 +102,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                         clipBehavior: Clip.hardEdge,
                         child: Stack(
                           children: [
-                            video,
+                            RepaintBoundary(child: video),
                             Positioned(
                               top: 20,
                               left: 20,

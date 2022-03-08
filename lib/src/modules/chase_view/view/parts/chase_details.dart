@@ -46,23 +46,25 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Builder(builder: (context) {
-          final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
-              ? MediaQuery.of(context).size.height * 0.15
-              : 0;
-          log('bottomPadding: $bottomPadding');
-          return AnimatedContainer(
-            height:
-                MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
-            width: double.maxFinite,
-            duration: Duration(milliseconds: 500),
-            child: ChaseHeroSection(
-              chase: widget.chase,
-              imageURL: widget.imageURL,
-              youtubeVideo: widget.youtubeVideo,
-            ),
-          );
-        }),
+        RepaintBoundary(
+          child: Builder(builder: (context) {
+            final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
+                ? MediaQuery.of(context).size.height * 0.15
+                : 0;
+            log('bottomPadding: $bottomPadding');
+            return AnimatedContainer(
+              height:
+                  MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
+              width: double.maxFinite,
+              duration: Duration(milliseconds: 500),
+              child: ChaseHeroSection(
+                chase: widget.chase,
+                imageURL: widget.imageURL,
+                youtubeVideo: widget.youtubeVideo,
+              ),
+            );
+          }),
+        ),
 
         // Consumer(builder: ((context, ref, child) {
         //   final showChatsWindow = ref.watch(isShowingChatsWindowProvide);
