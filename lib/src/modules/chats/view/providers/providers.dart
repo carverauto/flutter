@@ -25,6 +25,9 @@ final chatChannelProvider =
     // },
   );
   await channel.watch();
+  ref.onDispose(() {
+    channel.stopWatching();
+  });
   return channel;
 });
 
