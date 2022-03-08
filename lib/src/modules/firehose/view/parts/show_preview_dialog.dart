@@ -12,7 +12,7 @@ void showFirehosePreview(
       builder: (context) {
         if (notification.title == 'streams') {
           return YoutubePreview(
-            videoId: notification.data!.youtubeId!,
+            notification: notification,
           );
         } else if (notification.title == 'twitter') {
           return Dialog(
