@@ -90,29 +90,28 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverToBoxAdapter(
-      child: ref.watch(watchThisProvider).when(
-            data: (data) {
-              return builder(data);
-            },
-            error: (e, stk) {
-              logger.severe(
-                errorMessage ?? 'Error Loading Data',
-                e,
-                stk,
-              );
-              return errorBuilder != null
+    return ref.watch(watchThisProvider).when(
+          data: (data) {
+            return builder(data);
+          },
+          error: (e, stk) {
+            logger.severe(
+              errorMessage ?? 'Error Loading Data',
+              e,
+              stk,
+            );
+            return SliverToBoxAdapter(
+              child: errorBuilder != null
                   ? errorBuilder!(e, stk)
-                  : Scaffold(
-                      body: ChaseAppErrorWidget(
-                        onRefresh: () {
-                          ref.refresh(watchThisProvider);
-                        },
-                      ),
-                    );
-            },
-            loading: () => CircularAdaptiveProgressIndicatorWithBg(),
-          ),
-    );
+                  : ChaseAppErrorWidget(
+                      onRefresh: () {
+                        ref.refresh(watchThisProvider);
+                      },
+                    ),
+            );
+          },
+          loading: () => SliverToBoxAdapter(
+              child: CircularAdaptiveProgressIndicatorWithBg()),
+        );
   }
 }
