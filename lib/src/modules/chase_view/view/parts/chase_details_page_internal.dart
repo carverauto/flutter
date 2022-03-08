@@ -17,12 +17,14 @@ class ChaseDetailsInternal extends ConsumerStatefulWidget {
     required this.bottomListAnimation,
     required this.logger,
     required this.chatsRow,
+    required this.chatsView,
   }) : super(key: key);
   final Chase chase;
   final Animation<Offset> appBarOffsetAnimation;
   final Animation<Offset> bottomListAnimation;
   final Logger logger;
   final Widget chatsRow;
+  final Widget chatsView;
 
   @override
   ConsumerState<ChaseDetailsInternal> createState() =>
@@ -149,6 +151,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                       youtubeVideo: video,
                       onYoutubeNetworkTap: changeYoutubeVideo,
                       chatsRow: widget.chatsRow,
+                      chatsView: widget.chatsView,
                     ),
                   ),
                 ),

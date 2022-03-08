@@ -5,8 +5,6 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dia
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_hero.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
-import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/chats/view/parts/chats_view.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
@@ -26,6 +24,7 @@ class ChaseDetails extends ConsumerStatefulWidget {
     required this.youtubeVideo,
     required this.onYoutubeNetworkTap,
     required this.chatsRow,
+    required this.chatsView,
   }) : super(key: key);
 
   final String? imageURL;
@@ -33,6 +32,7 @@ class ChaseDetails extends ConsumerStatefulWidget {
   final Chase chase;
   final Widget youtubeVideo;
   final Widget chatsRow;
+  final Widget chatsView;
   final void Function(String url) onYoutubeNetworkTap;
 
   @override
@@ -233,28 +233,29 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                   ],
                 ),
               ),
-              Consumer(
-                child: ChatsView(
-                  chaseId: widget.chase.id,
-                ),
-                builder: ((context, ref, child) {
-                  final showChatsWindow =
-                      ref.watch(isShowingChatsWindowProvide);
-                  return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: Offset(0, 1),
-                          end: Offset(0, 0),
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-                    child: showChatsWindow ? child : SizedBox.shrink(),
-                  );
-                }),
-              ),
+              widget.chatsView,
+              // Consumer(
+              //   child: ChatsView(
+              //     chaseId: widget.chase.id,
+              //   ),
+              //   builder: ((context, ref, child) {
+              //     final showChatsWindow =
+              //         ref.watch(isShowingChatsWindowProvide);
+              //     return AnimatedSwitcher(
+              //       duration: Duration(milliseconds: 300),
+              //       transitionBuilder: (child, animation) {
+              //         return SlideTransition(
+              //           position: Tween<Offset>(
+              //             begin: Offset(0, 1),
+              //             end: Offset(0, 0),
+              //           ).animate(animation),
+              //           child: child,
+              //         );
+              //       },
+              //       child: showChatsWindow ? child : SizedBox.shrink(),
+              //     );
+              //   }),
+              // ),
             ],
           ),
         ),
