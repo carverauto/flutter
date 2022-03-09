@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/const/colors.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';

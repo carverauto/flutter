@@ -1,4 +1,4 @@
-import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notifications_appbar_button.dart';
 import 'package:flutter/material.dart';
 

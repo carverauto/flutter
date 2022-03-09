@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:chaseapp/src/const/app_bundle_info.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';

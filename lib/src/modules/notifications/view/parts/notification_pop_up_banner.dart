@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
@@ -117,11 +117,11 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
               ),
             ),
             title: Text(
-              widget.notificationData.title ,
+              widget.notificationData.title,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              widget.notificationData.body ,
+              widget.notificationData.body,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: ElevatedButton(

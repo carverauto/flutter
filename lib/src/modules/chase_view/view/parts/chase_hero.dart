@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_youtube_video_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';

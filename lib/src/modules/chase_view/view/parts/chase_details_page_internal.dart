@@ -113,8 +113,8 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
           topActions: [
             VideoTopActions(),
           ],
-          overlay: VideoAnimationsOverlay(),
-          showVideoProgressIndicator: true,
+          overlayInBetween: VideoAnimationsOverlay(),
+          showVideoProgressIndicator: false,
         ),
         builder: (context, video) {
           return Scaffold(
