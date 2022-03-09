@@ -2,6 +2,8 @@ import 'dart:core';
 
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/video_animations_overlay.dart';
+import 'package:chaseapp/src/modules/chase_view/view/parts/video_top_actions.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,7 +99,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     final appBarOffsetAnimation = widget.appBarOffsetAnimation;
     final bottomListAnimation = widget.bottomListAnimation;
     final chase = widget.chase;
-
     return WillPopScope(
       onWillPop: () async {
         if (ref.read(isShowingChatsWindowProvide)) {
@@ -109,6 +110,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       child: YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
+          topActions: [
+            VideoTopActions(),
+          ],
+          overlay: VideoAnimationsOverlay(),
           showVideoProgressIndicator: true,
         ),
         builder: (context, video) {
