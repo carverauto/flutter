@@ -74,9 +74,7 @@ class NotificationTIle extends StatelessWidget {
             width: kItemsSpacingExtraSmallConstant,
           ),
           Text(
-            notificationData.createdAt != null
-                ? elapsedTimeForDate(notificationData.createdAt)
-                : "NA",
+            elapsedTimeForDate(notificationData.createdAt),
             style: TextStyle(
               color: primaryColor.shade300,
             ),

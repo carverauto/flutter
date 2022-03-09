@@ -73,7 +73,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
             watchThisProvider:
                 fetchTweetAlongUserData(notification.data!.tweetId!),
             logger: logger);
-        break;
+
       case FirehoseNotificationType.streams:
         return _FirehoseNotificationListTile(
           notification: notification,
@@ -234,7 +234,6 @@ class _LoadingListTileState extends State<LoadingListTile>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     animationController = AnimationController(
       vsync: this,
@@ -244,7 +243,6 @@ class _LoadingListTileState extends State<LoadingListTile>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }

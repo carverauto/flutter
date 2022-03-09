@@ -20,7 +20,6 @@ class _WatchYoutubeVideoState extends State<WatchYoutubeVideo>
   late AnimationController _controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _controller = AnimationController(
@@ -37,7 +36,6 @@ class _WatchYoutubeVideoState extends State<WatchYoutubeVideo>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }

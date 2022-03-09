@@ -82,14 +82,12 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initializeVideoController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }

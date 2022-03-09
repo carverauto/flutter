@@ -67,7 +67,6 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                         );
                       });
                     } on FirebaseAuthException catch (e, stk) {
-                      //TODO:logger log this
                       if (e.code != "invalid-email") {
                         logger.severe(
                             "Failed To Send Email Signin Link", e, stk);

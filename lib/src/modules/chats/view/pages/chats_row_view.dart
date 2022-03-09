@@ -164,7 +164,7 @@ class ChatsViewRow extends ConsumerWidget {
                       );
                     },
                   );
-                  break;
+
                 case ConnectionStatus.connecting:
                   return Column(
                     children: [

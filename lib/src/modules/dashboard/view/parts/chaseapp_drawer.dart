@@ -25,7 +25,6 @@ class ChaseAppDrawer extends StatelessWidget {
 
               return state.maybeWhen(
                 data: (userData) {
-                  final isImagePresent = userData.photoURL != null;
                   return InkWell(
                     onTap: () async {
                       final shouldSignOut = await Navigator.pushNamed<bool>(

@@ -19,13 +19,13 @@ extension ImageDimensionParser on ImageDimensions {
     switch (this) {
       case ImageDimensions.SMALL:
         return "_200x200.webp?";
-        break;
+
       case ImageDimensions.MEDIUM:
         return "_600x600.webp?";
-        break;
+
       case ImageDimensions.LARGE:
         return "_1200x600.webp?";
-        break;
+
       default:
         return "_200x200.webp?";
     }

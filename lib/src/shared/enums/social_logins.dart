@@ -11,23 +11,19 @@ extension SignInMethodIcon on SIGNINMETHOD {
     switch (this) {
       case SIGNINMETHOD.Google:
         return "assets/icon/google.svg";
-        break;
+
       case SIGNINMETHOD.Apple:
         return "assets/icon/apple.svg";
 
-        break;
       case SIGNINMETHOD.Facebook:
         return "assets/icon/facebook.svg";
 
-        break;
       case SIGNINMETHOD.Twitter:
         return "assets/icon/twitter.svg";
 
-        break;
-        // case SIGNINMETHOD.Email:
-        //   return "assets/icon/twitter.svg";
+      // case SIGNINMETHOD.Email:
+      //   return "assets/icon/twitter.svg";
 
-        break;
       default:
         throw UnimplementedError();
     }
