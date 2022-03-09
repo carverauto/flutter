@@ -15,15 +15,15 @@ ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
   final data = message.data;
 
   final notificationData = ChaseAppNotification(
-    interest: data["interest"] as String,
+    interest: data["Interest"] as String,
     title: message.notification?.title ?? "NA",
     body: message.notification?.body ?? "NA",
-    image: data["image"] as String?,
-    data: data["data"] != null
-        ? NotificationData.fromJson(data["data"] as Map<String, dynamic>)
+    image: data["Image"] as String?,
+    data: data["Data"] != null
+        ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
         : null,
-    id: data["id"] as String?,
-    createdAt: data["createdAt"] as DateTime,
+    id: data["Id"] as String?,
+    createdAt: data["CreatedAt"] as DateTime,
   );
 
   return notificationData;
@@ -32,7 +32,7 @@ ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
 Future<void> handlebgmessage(RemoteMessage message) async {
   //TODO: Update with new notification schema
 
-  if (message.data["interest"] != null) {
+  if (message.data["Interest"] != null) {
     // updateNotificationsPresentStatus(true);
     final notificationData = getNotificationDataFromMessage(message);
 
