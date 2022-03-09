@@ -1,6 +1,6 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
@@ -18,8 +18,9 @@ class NotificationsViewAll extends ConsumerWidget {
   final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('RecentChasesListView');
 
-  final StateNotifierProvider<PaginationNotifier<NotificationData>,
-      PaginationNotifierState<NotificationData>> chasesPaginationProvider;
+  final AutoDisposeStateNotifierProvider<
+      PaginationNotifier<ChaseAppNotification>,
+      PaginationNotifierState<ChaseAppNotification>> chasesPaginationProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,7 +48,7 @@ class NotificationsViewAll extends ConsumerWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: PaginatedListBottom<NotificationData>(
+            child: PaginatedListBottom<ChaseAppNotification>(
                 chasesPaginationProvider: chasesPaginationProvider),
           ),
         ],

@@ -28,7 +28,7 @@ class _ProfileViewState extends State<ProfileView> {
       body: ProviderStateBuilder<UserData>(
         watchThisProvider: userStreamProvider,
         logger: logger,
-        builder: (user, ref) {
+        builder: (user, ref, child) {
           return Padding(
             padding: const EdgeInsets.only(
               top: kPaddingMediumConstant,

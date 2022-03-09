@@ -13,7 +13,7 @@ class RecentChasesList extends StatelessWidget {
     required this.logger,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<Chase>,
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController = ScrollController();

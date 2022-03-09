@@ -16,8 +16,8 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.axis,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
-      watchThisStateNotifierProvider;
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+      PaginationNotifierState<T>> watchThisStateNotifierProvider;
 
   final Widget Function(List<T> data, ScrollController controller) builder;
 

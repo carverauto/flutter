@@ -38,7 +38,7 @@ class NotificationsView extends StatelessWidget {
           ProviderStateBuilder<List<String?>>(
             watchThisProvider: usersInterestsStreamProvider,
             logger: logger,
-            builder: (userInterests, ref) {
+            builder: (userInterests, ref, child) {
               return NotificationTypes(
                 userInterests: userInterests,
               );

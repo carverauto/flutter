@@ -1,7 +1,7 @@
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
@@ -13,7 +13,7 @@ class NotificationTIle extends StatelessWidget {
     required this.notificationData,
   }) : super(key: key);
 
-  final NotificationData notificationData;
+  final ChaseAppNotification notificationData;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class NotificationTIle extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(notificationData.title ?? "NA",
+      title: Text(notificationData.title,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
           )),
@@ -63,7 +63,7 @@ class NotificationTIle extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              notificationData.body ?? "NA",
+              notificationData.body,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: primaryColor.shade300,
@@ -75,7 +75,7 @@ class NotificationTIle extends StatelessWidget {
           ),
           Text(
             notificationData.createdAt != null
-                ? elapsedTimeForDate(notificationData.createdAt!)
+                ? elapsedTimeForDate(notificationData.createdAt)
                 : "NA",
             style: TextStyle(
               color: primaryColor.shade300,

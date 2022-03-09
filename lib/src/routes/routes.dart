@@ -9,6 +9,7 @@ import 'package:chaseapp/src/modules/check_permissions/view/pages/check_permissi
 import 'package:chaseapp/src/modules/check_permissions/view/pages/request_permissions.dart';
 import 'package:chaseapp/src/modules/credits/view/credits.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases_view_all.dart';
+import 'package:chaseapp/src/modules/firehose/view/pages/firehose_view_all.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_wrapper.dart';
 import 'package:chaseapp/src/modules/notifications/view/pages/notifications_view.dart';
 import 'package:chaseapp/src/modules/onboarding/view/pages/onboarding.dart';
@@ -50,13 +51,17 @@ class Routes {
         return _createRoute(chaseId);
       case RouteName.RECENT_CHASESS_VIEW_ALL:
         final chasesPaginationProvider = arguments["chasesPaginationProvider"]
-            as StateNotifierProvider<PaginationNotifier<Chase>,
+            as AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
                 PaginationNotifierState<Chase>>;
 
         return MaterialPageRoute<void>(
           builder: (_) => RecentChasesListViewAll(
             chasesPaginationProvider: chasesPaginationProvider,
           ),
+        );
+      case RouteName.FIREHOSE_VIEW_ALL:
+        return MaterialPageRoute<void>(
+          builder: (_) => FirehoseListViewAll(),
         );
       case RouteName.PROFILE:
         return MaterialPageRoute<bool>(builder: (_) => ProfileView());

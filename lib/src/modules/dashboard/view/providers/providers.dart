@@ -5,10 +5,9 @@ import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-final chasesPaginatedStreamProvider = StateNotifierProvider.family<
-    PaginationNotifier<Chase>,
-    PaginationNotifierState<Chase>,
-    Logger>((ref, logger) {
+final chasesPaginatedStreamProvider = StateNotifierProvider.autoDispose
+    .family<PaginationNotifier<Chase>, PaginationNotifierState<Chase>, Logger>(
+        (ref, logger) {
   return PaginationNotifier(
       hitsPerPage: 20,
       logger: logger,

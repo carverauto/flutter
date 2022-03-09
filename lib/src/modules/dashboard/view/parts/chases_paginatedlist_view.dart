@@ -21,7 +21,7 @@ class ChasesPaginatedListView extends ConsumerWidget {
     this.axis = Axis.horizontal,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<Chase>,
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController;

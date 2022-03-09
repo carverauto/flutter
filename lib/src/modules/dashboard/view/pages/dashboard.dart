@@ -6,6 +6,7 @@ import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.da
 import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
 import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/firehose/view/pages/firehose.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
@@ -116,6 +117,7 @@ class Dashboard extends ConsumerWidget {
                       ),
                     ),
                   ),
+
                   SliverToBoxAdapter(
                     child: SizedBox(
                       height: kItemsSpacingSmallConstant,
@@ -131,6 +133,61 @@ class Dashboard extends ConsumerWidget {
                       height: kItemsSpacingMediumConstant,
                     ),
                   ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPaddingMediumConstant),
+                    sliver: SliverToBoxAdapter(
+                      child: Row(
+                        children: [
+                          Text(
+                            "Firehose",
+                            style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          ),
+                          Spacer(),
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                RouteName.FIREHOSE_VIEW_ALL,
+                              );
+                            },
+                            icon: Text(
+                              "View All",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+                  FireHoseView(),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingSmallConstant,
+                    ),
+                  ),
+
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: kPaddingMediumConstant),
@@ -189,6 +246,11 @@ class Dashboard extends ConsumerWidget {
                     chasesPaginationProvider: chasesPaginationProvider,
                     logger: logger,
                   ),
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: kItemsSpacingLargeConstant * 3,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -198,6 +260,30 @@ class Dashboard extends ConsumerWidget {
                   kItemsSpacingSmallConstant,
               width: MediaQuery.of(context).size.width,
               child: ConnectivityStatus(),
+            ),
+            Positioned.fill(
+              bottom: 0,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: IgnorePointer(
+                  ignoring: true,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Color.fromARGB(255, 26, 25, 25),
+                            Colors.transparent,
+                          ],
+                          stops: [
+                            0.0,
+                            0.2,
+                          ]),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

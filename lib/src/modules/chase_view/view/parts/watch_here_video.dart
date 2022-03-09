@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
+import 'package:chaseapp/src/models/chase/network/chase_network.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:flutter/material.dart';
 
@@ -16,13 +17,13 @@ class WatchHereLinksWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final youtubeNetworks = chase.networks?.where((network) {
-      final String? url = network["URL"] as String;
+      final String? url = network.url;
       final bool isYoutube = url?.contains("youtube.com") ?? false;
       return isYoutube;
     }).toList();
 
     final otherNetworks = chase.networks?.where((network) {
-      final String? url = network["URL"] as String;
+      final String? url = network.url;
 
       final bool isYoutube = url?.contains("youtube.com") ?? false;
       return !isYoutube;
@@ -63,7 +64,7 @@ class NetworksList extends StatelessWidget {
     required this.onYoutubeNetworkTap,
   }) : super(key: key);
 
-  final List<Map<String, dynamic>>? networks;
+  final List<ChaseNetwork>? networks;
   final bool isYoutubeNetworks;
   final void Function(String url) onYoutubeNetworkTap;
 
@@ -76,7 +77,7 @@ class NetworksList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${isYoutubeNetworks ? "Youtube" : "Other"} :",
+                "${isYoutubeNetworks ? "Streams" : "Other"} :",
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       //  decoration: TextDecoration.underline,
                       color: Theme.of(context).colorScheme.onBackground,

@@ -34,7 +34,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardVisible = bottomPadding > 0;
     final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
-          final url = network['URL'] as String?;
+          final url = network.url;
 
           if (url != null) {
             return url.contains("youtube.com");
@@ -66,49 +66,48 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
               ),
             ],
           )
-        : Stack(
-            fit: StackFit.expand,
-            children: [
-              ColoredBox(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                child: widget.chase.imageURL != null &&
-                        widget.chase.imageURL!.isNotEmpty
-                    ? CachedNetworkImage(
-                        fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
-                        maxWidthDiskCache: 750,
-                        maxHeightDiskCache: 421,
-                        memCacheHeight: 421,
-                        memCacheWidth: 750,
-                        imageUrl: parseImageUrl(
-                          widget.imageURL!,
-                          ImageDimensions.LARGE,
+        : GestureDetector(
+            onTap: () {
+              setState(() {
+                ref.read(playVideoProvider.state).update((state) => true);
+              });
+            },
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ColoredBox(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: widget.chase.imageURL != null &&
+                          widget.chase.imageURL!.isNotEmpty
+                      ? CachedNetworkImage(
+                          fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
+                          maxWidthDiskCache: 750,
+                          maxHeightDiskCache: 421,
+                          memCacheHeight: 421,
+                          memCacheWidth: 750,
+                          imageUrl: parseImageUrl(
+                            widget.imageURL!,
+                            ImageDimensions.LARGE,
+                          ),
+                          placeholder: (context, value) =>
+                              CircularAdaptiveProgressIndicatorWithBg(),
+                          errorWidget: (context, value, dynamic value2) {
+                            return ImageLoadErrorWidget();
+                          },
+                        )
+                      : Image(
+                          fit: BoxFit.cover,
+                          image: AssetImage(defaultAssetChaseImage),
                         ),
-                        placeholder: (context, value) =>
-                            CircularAdaptiveProgressIndicatorWithBg(),
-                        errorWidget: (context, value, dynamic value2) {
-                          return ImageLoadErrorWidget();
-                        },
-                      )
-                    : Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage(defaultAssetChaseImage),
-                      ),
-              ),
-              if (isYoutubeUrlPresent)
-                Positioned(
-                  bottom: kItemsSpacingSmallConstant,
-                  right: kItemsSpacingMediumConstant,
-                  child: WatchYoutubeVideo(
-                      isLive: widget.chase.live ?? false,
-                      onTap: () {
-                        setState(() {
-                          ref
-                              .read(playVideoProvider.state)
-                              .update((state) => true);
-                        });
-                      }),
                 ),
-            ],
+                if (isYoutubeUrlPresent)
+                  Align(
+                    alignment: Alignment.center,
+                    child:
+                        WatchYoutubeVideo(isLive: widget.chase.live ?? false),
+                  ),
+              ],
+            ),
           );
   }
 }

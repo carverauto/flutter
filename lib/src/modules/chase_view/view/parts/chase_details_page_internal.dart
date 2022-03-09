@@ -16,11 +16,15 @@ class ChaseDetailsInternal extends ConsumerStatefulWidget {
     required this.appBarOffsetAnimation,
     required this.bottomListAnimation,
     required this.logger,
+    required this.chatsRow,
+    required this.chatsView,
   }) : super(key: key);
   final Chase chase;
   final Animation<Offset> appBarOffsetAnimation;
   final Animation<Offset> bottomListAnimation;
   final Logger logger;
+  final Widget chatsRow;
+  final Widget chatsView;
 
   @override
   ConsumerState<ChaseDetailsInternal> createState() =>
@@ -36,14 +40,14 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     late final String? url;
     if (youtubeUrl == null) {
       final network = widget.chase.networks?.firstWhereOrNull((network) {
-        final String? url = network["URL"] as String?;
+        final String? url = network.url;
 
         if (url != null) {
           return url.contains("youtube.com");
         }
         return false;
       });
-      url = network?["URL"] as String?;
+      url = network?.url;
     } else {
       url = youtubeUrl;
     }
@@ -146,6 +150,8 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                       logger: widget.logger,
                       youtubeVideo: video,
                       onYoutubeNetworkTap: changeYoutubeVideo,
+                      chatsRow: widget.chatsRow,
+                      chatsView: widget.chatsView,
                     ),
                   ),
                 ),

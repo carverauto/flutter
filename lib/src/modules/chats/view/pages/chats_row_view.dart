@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
+import 'package:chaseapp/src/modules/chats/view/parts/chats_view.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
@@ -15,10 +15,10 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 class ChatsViewRow extends ConsumerWidget {
   ChatsViewRow({
     Key? key,
-    required this.chase,
+    required this.chaseId,
   }) : super(key: key);
 
-  final Chase chase;
+  final String chaseId;
   final logger = Logger("Chats Section");
 
   @override
@@ -42,15 +42,20 @@ class ChatsViewRow extends ConsumerWidget {
                 // showChatsViewBottomSheet(context, chase);
               },
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Chats :",
+                    "Chats",
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           //     decoration: TextDecoration.underline,
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
                   ),
+                  SizedBox(
+                    width: kItemsSpacingSmallConstant,
+                  ),
+                  UsersPresentCount(chaseId: chaseId, logger: logger),
+                  Spacer(),
                   Icon(
                     Icons.expand,
                   ),
@@ -59,13 +64,13 @@ class ChatsViewRow extends ConsumerWidget {
             ),
           ),
           ProviderStateBuilder(
-            builder: (connectionStatus, ref) {
+            builder: (connectionStatus, ref, [child]) {
               switch (connectionStatus) {
                 case ConnectionStatus.connected:
                   return ProviderStateBuilder<Channel>(
-                    watchThisProvider: chatChannelProvider(chase),
+                    watchThisProvider: chatChannelProvider(chaseId),
                     logger: logger,
-                    builder: (channel, ref) {
+                    builder: (channel, ref, child) {
                       final messages = channel.state?.messages;
                       if (messages == null || messages.isEmpty)
                         return GestureDetector(
@@ -179,7 +184,7 @@ class ChatsViewRow extends ConsumerWidget {
                   return ChaseAppErrorWidget(
                       message: "Unable to connect chats. Try again.",
                       onRefresh: () {
-                        ref.refresh(chatChannelProvider(chase));
+                        ref.refresh(chatChannelProvider(chaseId));
                       });
                 default:
                   return CircularAdaptiveProgressIndicatorWithBg();

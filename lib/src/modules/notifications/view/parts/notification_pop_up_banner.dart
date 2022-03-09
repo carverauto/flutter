@@ -5,14 +5,14 @@ import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/other.dart';
 import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
 
 void showNotificationBanner(
   BuildContext context,
-  NotificationData notificationData,
+  ChaseAppNotification notificationData,
 ) async {
   showDialog<void>(
       context: context,
@@ -33,7 +33,7 @@ class NotificationPopUpBanner extends StatefulWidget {
   const NotificationPopUpBanner({Key? key, required this.notificationData})
       : super(key: key);
 
-  final NotificationData notificationData;
+  final ChaseAppNotification notificationData;
 
   @override
   State<NotificationPopUpBanner> createState() =>
@@ -117,11 +117,11 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
               ),
             ),
             title: Text(
-              widget.notificationData.title ?? "NA",
+              widget.notificationData.title ,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              widget.notificationData.body ?? "NA",
+              widget.notificationData.body ,
               overflow: TextOverflow.ellipsis,
             ),
             trailing: ElevatedButton(

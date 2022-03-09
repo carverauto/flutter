@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
@@ -7,9 +5,6 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dia
 import 'package:chaseapp/src/modules/chase_view/view/parts/chase_hero.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
-import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/chats/view/pages/chats_row_view.dart';
-import 'package:chaseapp/src/modules/chats/view/parts/chats_view.dart';
 import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
 import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
@@ -28,12 +23,16 @@ class ChaseDetails extends ConsumerStatefulWidget {
     required this.chase,
     required this.youtubeVideo,
     required this.onYoutubeNetworkTap,
+    required this.chatsRow,
+    required this.chatsView,
   }) : super(key: key);
 
   final String? imageURL;
   final Logger logger;
   final Chase chase;
   final Widget youtubeVideo;
+  final Widget chatsRow;
+  final Widget chatsView;
   final void Function(String url) onYoutubeNetworkTap;
 
   @override
@@ -46,50 +45,25 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Builder(builder: (context) {
-          final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
-              ? MediaQuery.of(context).size.height * 0.15
-              : 0;
-          log('bottomPadding: $bottomPadding');
-          return AnimatedContainer(
-            height:
-                MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
-            width: double.maxFinite,
-            duration: Duration(milliseconds: 500),
-            child: ChaseHeroSection(
-              chase: widget.chase,
-              imageURL: widget.imageURL,
-              youtubeVideo: widget.youtubeVideo,
-            ),
-          );
-        }),
-
-        // Consumer(builder: ((context, ref, child) {
-        //   final showChatsWindow = ref.watch(isShowingChatsWindowProvide);
-        //   final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-        //   log(bottomPadding.toString());
-        //   return AnimatedContainer(
-        //     // aspectRatio:  16 / 9,
-        //     // scale: showChatsWindow ? 0.8 : 1,
-        //     height:
-        //         MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
-        //     width: double.maxFinite,
-        //     duration: Duration(milliseconds: 500),
-        //     child: AspectRatio(
-        //       aspectRatio: 16 / 9,
-        //       child: Container(
-        //         color: Colors.blue,
-        //       ),
-        //     ),
-        //   );
-        // })),
-        // ChaseHeroSection(
-        //   chase: widget.chase,
-        //   imageURL: widget.imageURL,
-        //   youtubeVideo: widget.youtubeVideo,
-        // ),
+        RepaintBoundary(
+          child: Builder(builder: (context) {
+            final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
+                ? MediaQuery.of(context).size.height * 0.15
+                : 0;
+            return AnimatedContainer(
+              height:
+                  MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
+              width: double.maxFinite,
+              duration: Duration(milliseconds: 500),
+              child: ChaseHeroSection(
+                chase: widget.chase,
+                imageURL: widget.imageURL,
+                youtubeVideo: widget.youtubeVideo,
+              ),
+            );
+          }),
+        ),
         Expanded(
-          // key: chaseDetailsKey,
           child: Stack(
             children: [
               ColoredBox(
@@ -255,32 +229,33 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                       height: kItemsSpacingSmall,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    ChatsViewRow(chase: widget.chase)
+                    widget.chatsRow,
                   ],
                 ),
               ),
-              Consumer(
-                child: ChatsView(
-                  chase: widget.chase,
-                ),
-                builder: ((context, ref, child) {
-                  final showChatsWindow =
-                      ref.watch(isShowingChatsWindowProvide);
-                  return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: Offset(0, 1),
-                          end: Offset(0, 0),
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-                    child: showChatsWindow ? child : SizedBox.shrink(),
-                  );
-                }),
-              ),
+              widget.chatsView,
+              // Consumer(
+              //   child: ChatsView(
+              //     chaseId: widget.chase.id,
+              //   ),
+              //   builder: ((context, ref, child) {
+              //     final showChatsWindow =
+              //         ref.watch(isShowingChatsWindowProvide);
+              //     return AnimatedSwitcher(
+              //       duration: Duration(milliseconds: 300),
+              //       transitionBuilder: (child, animation) {
+              //         return SlideTransition(
+              //           position: Tween<Offset>(
+              //             begin: Offset(0, 1),
+              //             end: Offset(0, 0),
+              //           ).animate(animation),
+              //           child: child,
+              //         );
+              //       },
+              //       child: showChatsWindow ? child : SizedBox.shrink(),
+              //     );
+              //   }),
+              // ),
             ],
           ),
         ),
