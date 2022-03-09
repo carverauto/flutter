@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/links.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_youtube_video_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
@@ -43,29 +42,31 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         }) ??
         false;
     return playVideo
-        ? Stack(
-            children: [
-              widget.youtubeVideo,
-              Positioned(
-                top: kItemsSpacingMediumConstant,
-                right: kItemsSpacingMediumConstant,
-                child: GlassButton(
-                  shape: CircleBorder(),
-                  onTap: () {
-                    setState(() {
-                      ref
-                          .read(playVideoProvider.state)
-                          .update((state) => false);
-                    });
-                  },
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          )
+        ? widget.youtubeVideo
+
+        //  Stack(
+        //     children: [
+        //       widget.youtubeVideo,
+        //       Positioned(
+        //         top: kItemsSpacingMediumConstant,
+        //         right: kItemsSpacingMediumConstant,
+        //         child: GlassButton(
+        //           shape: CircleBorder(),
+        //           onTap: () {
+        //             setState(() {
+        //               ref
+        //                   .read(playVideoProvider.state)
+        //                   .update((state) => false);
+        //             });
+        //           },
+        //           child: Icon(
+        //             Icons.close,
+        //             color: Colors.white,
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   )
         : GestureDetector(
             onTap: () {
               setState(() {
@@ -109,5 +110,23 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
               ],
             ),
           );
+  }
+}
+
+class ClosePlayingVideo extends ConsumerWidget {
+  const ClosePlayingVideo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GlassButton(
+      shape: CircleBorder(),
+      onTap: () {
+        ref.read(playVideoProvider.state).update((state) => false);
+      },
+      child: Icon(
+        Icons.close,
+        color: Colors.white,
+      ),
+    );
   }
 }
