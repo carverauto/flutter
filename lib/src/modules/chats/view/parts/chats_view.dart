@@ -167,27 +167,36 @@ class UsersPresentCount extends ConsumerWidget {
         Icons.remove_red_eye_rounded,
         size: 18,
       ),
-      label: ProviderStateBuilder<Channel>(
-          watchThisProvider: chatChannelProvider(chaseId),
-          logger: logger,
-          loadingBuilder: () => SizedBox.shrink(),
-          errorBuilder: (e, stk) => Text("NA"),
-          builder: (channel, ref, child) {
-            return ProviderStateBuilder(
-              loadingBuilder: () => SizedBox.shrink(),
-              errorBuilder: (e, stk) => Text("NA"),
-              builder: (count, ref, child) {
-                return Text(
-                  count.toString(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              },
-              watchThisProvider: watcherCountProvider(channel),
-              logger: logger,
-            );
+      label: ref.watch(chatWsConnectionStreamProvider).maybeWhen(
+          orElse: () => SizedBox.shrink(),
+          data: (state) {
+            if (state == ConnectionStatus.connected) {
+              return ProviderStateBuilder<Channel>(
+                  watchThisProvider: chatChannelProvider(chaseId),
+                  logger: logger,
+                  loadingBuilder: () => SizedBox.shrink(),
+                  errorBuilder: (e, stk) => Text("NA"),
+                  builder: (channel, ref, child) {
+                    return ProviderStateBuilder<ChannelState>(
+                      loadingBuilder: () => SizedBox.shrink(),
+                      errorBuilder: (e, stk) => Text("NA"),
+                      builder: (channelState, ref, child) {
+                        final count = channelState.watcherCount ?? 0;
+                        return Text(
+                          count.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                      watchThisProvider: watcherStateProvider(channel),
+                      logger: logger,
+                    );
+                  });
+            } else {
+              return SizedBox.shrink();
+            }
           }),
     );
   }

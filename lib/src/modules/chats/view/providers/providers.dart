@@ -20,23 +20,22 @@ final chatChannelProvider =
   final channel = client.channel(
     'livestream',
     id: chaseId,
-    // extraData: {
-    //   'name': chase.name ?? "NA",
-    // },
   );
 
-  await channel.watch();
+  await ref.watch(watcherStateProvider(channel).future);
+
+  return channel;
+});
+
+final watcherStateProvider = FutureProvider.autoDispose
+    .family<ChannelState, Channel>((ref, channel) async {
+  final watchState = await channel.watch();
 
   ref.onDispose(() {
     channel.stopWatching();
   });
-  return channel;
-});
 
-final watcherCountProvider =
-    FutureProvider.autoDispose.family<int, Channel>((ref, channel) async {
-  final watchState = await channel.watch();
-  return watchState.watcherCount ?? 0;
+  return watchState;
 });
 
 final chatWsConnectionStreamProvider =
