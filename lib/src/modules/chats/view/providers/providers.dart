@@ -24,7 +24,9 @@ final chatChannelProvider =
     //   'name': chase.name ?? "NA",
     // },
   );
+
   await channel.watch();
+
   ref.onDispose(() {
     channel.stopWatching();
   });

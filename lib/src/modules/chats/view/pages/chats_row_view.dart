@@ -71,6 +71,7 @@ class ChatsViewRow extends ConsumerWidget {
                     watchThisProvider: chatChannelProvider(chaseId),
                     logger: logger,
                     builder: (channel, ref, child) {
+                      // channel.watch();
                       final messages = channel.state?.messages;
                       if (messages == null || messages.isEmpty)
                         return GestureDetector(
