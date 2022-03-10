@@ -23,20 +23,39 @@ class FirehoseListViewAll extends StatelessWidget {
         scrollController: ScrollController(),
         axis: Axis.vertical,
         builder: (notifications, ref) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final notification = notifications[index];
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: kItemsSpacingMediumConstant,
+          return notifications.isEmpty
+              ? SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.notifications_none_rounded,
+                      ),
+                      Chip(
+                        label: Text(
+                          "No New Notifications!",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: FirehoseNotificationTile(notification: notification),
+                )
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final notification = notifications[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: kItemsSpacingMediumConstant,
+                        ),
+                        child: FirehoseNotificationTile(
+                            notification: notification),
+                      );
+                    },
+                    childCount: notifications.length,
+                  ),
                 );
-              },
-              childCount: notifications.length,
-            ),
-          );
         },
         watchThisStateNotifierProvider:
             firehoseNotificationsStreamProvider(logger),
