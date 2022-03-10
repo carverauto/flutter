@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
@@ -94,24 +92,28 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handleNotificationInForegroundState() {
-    PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
-      log("Pusher Message Recieved in the foreground--->" +
-          notification.toString());
+    PusherBeams.instance.onMessageReceivedInTheForeground((message) {
+      log("Pusher Message Recieved in the foreground--->" + message.toString());
       final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
-          notification["data"] as Map<String, dynamic>);
+          message["data"] as Map<String, dynamic>);
       //TODO: Update with new notification schema
       if (data["Interest"] != null) {
-        final notificationData = ChaseAppNotification(
-          interest: data["Interest"] as String,
-          title: notification["Title"] as String,
-          body: notification["Body"] as String,
-          data: NotificationData.fromJson(data),
-          image: data["Image"] as String?,
-          createdAt: notification["CreatedAt"] as DateTime,
+        final notification = constructNotification(
+          message["title"] as String? ?? "NA",
+          message["body"] as String? ?? "NA",
+          data,
         );
+        // final notificationData = ChaseAppNotification(
+        //   interest: data["Interest"] as String,
+        //   title: notification["Title"] as String,
+        //   body: notification["Body"] as String,
+        //   data: NotificationData.fromJson(data),
+        //   image: data["Image"] as String?,
+        //   createdAt: data["CreatedAt"] as DateTime,
+        // );
         updateNotificationsPresentStatus(ref, true);
 
-        showNotificationBanner(context, notificationData);
+        showNotificationBanner(context, notification);
       } else {
         logger.warning(
             "ChaseAppNotification data didn't contained interest field");

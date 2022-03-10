@@ -10,23 +10,33 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO: Update with new notification schema
-ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
-  final data = message.data;
-
-  final notificationData = ChaseAppNotification(
+ChaseAppNotification constructNotification(
+    String title, String body, Map<String, dynamic> data) {
+  final notification = ChaseAppNotification(
     interest: data["Interest"] as String,
-    title: message.notification?.title ?? "NA",
-    body: message.notification?.body ?? "NA",
+    title: title,
+    body: body,
     image: data["Image"] as String?,
-    data: data["Data"] != null
-        ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
-        : null,
+    data: NotificationData.fromJson(data),
+    //  data["Data"] != null
+    //     ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
+    //     : null,
     id: data["Id"] as String?,
     createdAt: data["CreatedAt"] as DateTime,
   );
 
-  return notificationData;
+  return notification;
+}
+
+//TODO: Update with new notification schema
+ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
+  final notification = constructNotification(
+    message.notification?.title ?? "NA",
+    message.notification?.body ?? "NA",
+    message.data,
+  );
+
+  return notification;
 }
 
 Future<void> handlebgmessage(RemoteMessage message) async {

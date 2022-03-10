@@ -1,5 +1,6 @@
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
+import 'package:chaseapp/src/modules/firehose/view/parts/show_preview_dialog.dart';
 import 'package:chaseapp/src/modules/notifications/view/parts/notification_dialog.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:chaseapp/src/shared/enums/interest_enum.dart';
@@ -23,6 +24,7 @@ Future<void> notificationHandler(
           },
         );
       break;
+
     case Interests.appUpdates:
       if (read != null)
         read(checkForUpdateStateNotifier.notifier).checkForUpdate(true);
@@ -31,6 +33,10 @@ Future<void> notificationHandler(
       //       ? read(checkForUpdateStateNotifier.notifier).checkForUpdate(true)
       //       : null,
       // );
+      break;
+    case Interests.firehose:
+      showFirehosePreview(notificationData, context);
+
       break;
 
     default:
