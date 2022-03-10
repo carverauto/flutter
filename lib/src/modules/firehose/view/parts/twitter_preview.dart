@@ -13,8 +13,8 @@ class TweetPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderStateBuilder<Map<String, dynamic>>(
-      builder: (data, ref, child) {
+    return ProviderStateBuilder<String>(
+      builder: (html, ref, child) {
         // Replace with custom preview
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -24,7 +24,7 @@ class TweetPreview extends StatelessWidget {
           child: WebView(
             javascriptMode: JavascriptMode.unrestricted,
             initialUrl: Uri.dataFromString(
-              getHtmlBody(data["html"] as String),
+              getHtmlBody(html),
               mimeType: 'text/html',
               encoding: Encoding.getByName('utf-8'),
             ).toString(),

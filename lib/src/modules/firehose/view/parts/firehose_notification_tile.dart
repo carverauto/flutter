@@ -4,12 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
+import 'package:chaseapp/src/models/youtube_data/youtube_data.dart';
 import 'package:chaseapp/src/modules/firehose/view/parts/show_preview_dialog.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/firehose_notification_type.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class FirehoseNotificationTile extends ConsumerWidget {
@@ -64,10 +66,6 @@ class FirehoseNotificationTile extends ConsumerWidget {
                     ],
                   ),
                 ),
-                trailing: ImageIcon(
-                  CachedNetworkImageProvider(notification.data!.image!),
-                  color: Colors.blue,
-                ),
               );
             },
             watchThisProvider:
@@ -75,22 +73,44 @@ class FirehoseNotificationTile extends ConsumerWidget {
             logger: logger);
 
       case FirehoseNotificationType.streams:
-        return _FirehoseNotificationListTile(
-          notification: notification,
-          title: Text(
-            "Youtube",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: titleStyle,
-          ),
-          body: notification.body,
-          imageUrl: notification.data!.image!,
-          trailing: Icon(
-            Icons.play_arrow_rounded,
-            color: Colors.red,
-            size: kIconSizeMediumConstant,
-          ),
-        );
+        return ProviderStateBuilder<YoutubeChannelData>(
+            loadingBuilder: () => LoadingListTile(),
+            errorBuilder: (e, stk) {
+              return FirehoseErrorTile(
+                  notification: notification,
+                  onRefesh: () {
+                    ref.refresh(
+                        fetchTweetAlongUserData(notification.data!.channelId!));
+                  });
+            },
+            builder: (channelData, ref, child) {
+              return _FirehoseNotificationListTile(
+                notification: notification,
+                title: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: channelData.name,
+                        style: titleStyle,
+                      ),
+                      TextSpan(text: " "),
+                      TextSpan(
+                        text: NumberFormat.compact()
+                            .format(channelData.subcribersCount),
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                body: notification.body,
+                imageUrl: notification.data!.image!,
+              );
+            },
+            watchThisProvider:
+                fetchYoutubeChannelDataProvider(notification.data!.channelId!),
+            logger: logger);
+
       case FirehoseNotificationType.live_on_patrol:
         return _FirehoseNotificationListTile(
           notification: notification,
@@ -101,26 +121,54 @@ class FirehoseNotificationTile extends ConsumerWidget {
             style: titleStyle,
           ),
           body: notification.body,
-          trailing: ShaderMask(
-            shaderCallback: (bounds) {
-              return LinearGradient(
-                colors: [
-                  Colors.blue,
-                  Colors.red,
-                ],
-              ).createShader(bounds);
-            },
-            child: Icon(
-              Icons.local_police_rounded,
-              color: Colors.white,
-            ),
-          ),
-          //  ImageIcon(
-          //   AssetImage(defaultAssetChaseImage,),
-          //   size: 24,
-          // ),
           imageUrl: notification.data!.image!,
         );
+      default:
+        return SizedBox.shrink();
+    }
+  }
+}
+
+class FirehoseNotificationTrailing extends StatelessWidget {
+  const FirehoseNotificationTrailing({
+    Key? key,
+    required this.notification,
+  }) : super(key: key);
+
+  final ChaseAppNotification notification;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (getFirehoseNotificationTypeFromString(notification.title)) {
+      case FirehoseNotificationType.twitter:
+        return ImageIcon(
+          CachedNetworkImageProvider(notification.data!.image!),
+          color: Colors.blue,
+        );
+
+      case FirehoseNotificationType.streams:
+        return Icon(
+          Icons.play_arrow_rounded,
+          color: Colors.red,
+          size: kIconSizeMediumConstant,
+        );
+
+      case FirehoseNotificationType.live_on_patrol:
+        return ShaderMask(
+          shaderCallback: (bounds) {
+            return LinearGradient(
+              colors: [
+                Colors.blue,
+                Colors.red,
+              ],
+            ).createShader(bounds);
+          },
+          child: Icon(
+            Icons.local_police_rounded,
+            color: Colors.white,
+          ),
+        );
+
       default:
         return SizedBox.shrink();
     }
@@ -139,7 +187,7 @@ class FirehoseErrorTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: Colors.white70,
+      tileColor: Color.fromARGB(255, 94, 94, 94),
       title: TextButton.icon(
         onPressed: onRefesh,
         icon: IconButton(
@@ -150,16 +198,13 @@ class FirehoseErrorTile extends StatelessWidget {
           ),
         ),
         label: Text(
-          "Failed to load tweet!",
+          "Failed to load!",
           style: TextStyle(
             color: Colors.white,
           ),
         ),
       ),
-      trailing: ImageIcon(
-        CachedNetworkImageProvider(notification.data!.image!),
-        color: Colors.blue,
-      ),
+      trailing: FirehoseNotificationTrailing(notification: notification),
     );
   }
 }
@@ -170,7 +215,6 @@ class _FirehoseNotificationListTile extends StatelessWidget {
     required this.notification,
     required this.title,
     required this.body,
-    required this.trailing,
     required this.imageUrl,
     this.leading,
   }) : super(key: key);
@@ -179,7 +223,6 @@ class _FirehoseNotificationListTile extends StatelessWidget {
   final Widget title;
 
   final String body;
-  final Widget trailing;
   final String imageUrl;
   final Widget? leading;
 
@@ -200,14 +243,6 @@ class _FirehoseNotificationListTile extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
       title: title,
-      //  Text(
-      //   title,
-      //   maxLines: 1,
-      //   overflow: TextOverflow.ellipsis,
-      //   style: TextStyle(
-      //     color: Theme.of(context).colorScheme.onBackground,
-      //   ),
-      // ),
       subtitle: Text(
         body,
         maxLines: 2,
@@ -216,7 +251,7 @@ class _FirehoseNotificationListTile extends StatelessWidget {
           color: Theme.of(context).colorScheme.onBackground,
         ),
       ),
-      trailing: trailing,
+      trailing: FirehoseNotificationTrailing(notification: notification),
     );
   }
 }
