@@ -84,7 +84,9 @@ dependencies:
   # Media
   audioplayers: ^0.20.1
   # youtube_player_flutter: ^8.0.0
+  
   youtube_player_flutter:
+  #   path: youtube_player_flutter/packages/youtube_player_flutter/
     git:
       url: https://github.com/rutvik110/youtube_player_flutter.git
       path: packages/youtube_player_flutter/
@@ -102,11 +104,10 @@ dependencies:
   # Pusher
   pusher_channels_flutter: 1.0.2
   pusher_beams: 1.0.2
+  
  # social_embed_webview: ^0.3.2
   webview_flutter: ^2.8.0
   rive: ^0.8.1
-  # webview_flutter: ^3.0.1
-  # flutter_html: ^3.0.0-alpha.2
 
 dependency_overrides:
   # video_compress: 3.1.0
