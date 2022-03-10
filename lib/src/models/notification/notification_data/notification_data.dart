@@ -12,6 +12,7 @@ abstract class NotificationData implements _$NotificationData {
     @JsonKey(name: 'Image') String? image,
     @JsonKey(name: 'Tweetid') String? tweetId,
     @JsonKey(name: 'YoutubeId') String? youtubeId,
+    @JsonKey(name: 'ChannelId') String? channelId,
     @JsonKey(name: 'ConfigState') String? configState,
   }) = _NotificationData;
   factory NotificationData.fromJson(Map<String, dynamic> json) =>
