@@ -47,14 +47,16 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
       children: [
         RepaintBoundary(
           child: Builder(builder: (context) {
-            final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
-                ? MediaQuery.of(context).size.height * 0.15
-                : 0;
+            final isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
+            final bottomPadding =
+                isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
+            final extraSizing = isTyping ? kToolbarHeight : 0;
             return AnimatedContainer(
-              height:
-                  MediaQuery.of(context).size.width * (9 / 16) - bottomPadding,
+              height: MediaQuery.of(context).size.width * (9 / 16) -
+                  bottomPadding +
+                  extraSizing,
               width: double.maxFinite,
-              duration: Duration(milliseconds: 500),
+              duration: Duration(milliseconds: 300),
               child: ChaseHeroSection(
                 chase: widget.chase,
                 imageURL: widget.imageURL,

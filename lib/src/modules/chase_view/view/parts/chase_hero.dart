@@ -42,7 +42,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         }) ??
         false;
     return playVideo
-        ? widget.youtubeVideo
+        ?   widget.youtubeVideo
 
         //  Stack(
         //     children: [

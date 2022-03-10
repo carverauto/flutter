@@ -39,6 +39,7 @@ class _TheaterRiveState extends State<TheaterRive> {
       "https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true",
       stateMachines: const ['Theater'],
       fit: BoxFit.cover,
+      alignment: Alignment.bottomCenter,
       onInit: (artboard) {
         setStateMachine(artboard);
       },

@@ -99,69 +99,94 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     final appBarOffsetAnimation = widget.appBarOffsetAnimation;
     final bottomListAnimation = widget.bottomListAnimation;
     final chase = widget.chase;
-    return WillPopScope(
-      onWillPop: () async {
-        if (ref.read(isShowingChatsWindowProvide)) {
-          ref.read(isShowingChatsWindowProvide.state).update((state) => false);
-          return false;
-        }
-        return true;
-      },
-      child: YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          controller: _controller,
-          topActions: [
-            VideoTopActions(),
-          ],
-          overlayInBetween: VideoAnimationsOverlay(),
-          showVideoProgressIndicator: false,
-        ),
-        builder: (context, video) {
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            resizeToAvoidBottomInset: false,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AnimatedBuilder(
-                  animation: appBarOffsetAnimation,
-                  builder: (context, child) {
-                    return Transform.translate(
-                      offset: appBarOffsetAnimation.value,
-                      child: child,
-                    );
-                  },
-                  child: AppBar(
-                    centerTitle: true,
-                    elevation: 1.0,
-                    title: Text(chase.name ?? "NA"),
-                    actions: [],
-                  ),
-                ),
-                Expanded(
-                  child: AnimatedBuilder(
-                    animation: bottomListAnimation,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: bottomListAnimation.value,
+    final isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
+
+    return SafeArea(
+      top: isTyping,
+      bottom: false,
+      left: false,
+      right: false,
+      child: WillPopScope(
+        onWillPop: () async {
+          if (ref.read(isShowingChatsWindowProvide)) {
+            ref
+                .read(isShowingChatsWindowProvide.state)
+                .update((state) => false);
+            return false;
+          }
+          return true;
+        },
+        child: YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            controller: _controller,
+            topActions: [
+              VideoTopActions(),
+            ],
+            overlayInBetween: VideoAnimationsOverlay(),
+            showVideoProgressIndicator: false,
+          ),
+          builder: (context, video) {
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              resizeToAvoidBottomInset: false,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      // hide the appbar when typing
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset(0, -1),
+                          end: Offset(0, 0),
+                        ).animate(animation),
                         child: child,
                       );
                     },
-                    child: ChaseDetails(
-                      chase: chase,
-                      imageURL: chase.imageURL,
-                      logger: widget.logger,
-                      youtubeVideo: video,
-                      onYoutubeNetworkTap: changeYoutubeVideo,
-                      chatsRow: widget.chatsRow,
-                      chatsView: widget.chatsView,
+                    child: isTyping
+                        ? SizedBox.shrink()
+                        : AnimatedBuilder(
+                            animation: appBarOffsetAnimation,
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: appBarOffsetAnimation.value,
+                                child: child,
+                              );
+                            },
+                            child: AppBar(
+                              centerTitle: true,
+                              elevation: 1.0,
+                              title: Text(chase.name ?? "NA"),
+                              actions: [],
+                            ),
+                          ),
+                  ),
+                  Expanded(
+                    child: AnimatedBuilder(
+                      animation: bottomListAnimation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: bottomListAnimation.value,
+                          child: child,
+                        );
+                      },
+                      child: ChaseDetails(
+                        chase: chase,
+                        imageURL: chase.imageURL,
+                        logger: widget.logger,
+                        youtubeVideo: video,
+                        onYoutubeNetworkTap: changeYoutubeVideo,
+                        chatsRow: widget.chatsRow,
+                        chatsView: widget.chatsView,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
