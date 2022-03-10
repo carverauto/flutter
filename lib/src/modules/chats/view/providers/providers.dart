@@ -22,7 +22,7 @@ final chatChannelProvider =
     id: chaseId,
   );
 
-  await ref.watch(watcherStateProvider(channel).future);
+  await channel.watch();
 
   return channel;
 });
