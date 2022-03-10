@@ -1,3 +1,5 @@
+import 'package:chaseapp/src/shared/util/firebase_collections.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
@@ -13,24 +15,40 @@ class TheaterRive extends StatefulWidget {
 class _TheaterRiveState extends State<TheaterRive> {
   late StateMachineController theaterController;
 
+  void getAnimationsStatus() async {
+    animationsCollection.doc("theater").snapshots().listen((event) {
+      final data = event.data() as Map<String, dynamic>?;
+
+      if (data != null) {
+        final triggerState = data.entries
+            .toList()
+            .singleWhereOrNull((state) => state.value as bool);
+
+        if (triggerState != null) {
+          playThiState(triggerState.key);
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // TODO: Listen to the state trigger stream from firebase doc or may be notifications through
-    // pusher based on the state recieved ,trigger the state
-    // final String state = data["state"];
-    // playThiState( state);
   }
 
   void setStateMachine(Artboard artboard) {
     theaterController = StateMachineController.fromArtboard(artboard, 'Crowd')!;
     artboard.addController(theaterController);
+    getAnimationsStatus();
   }
 
   void playThiState(String state) {
-    final stateTrigger = theaterController.findInput<bool>(state) as SMITrigger;
-    stateTrigger.fire();
+    if (theaterController.isActive) {
+      final stateTrigger =
+          theaterController.findInput<bool>(state) as SMITrigger;
+      stateTrigger.fire();
+    }
   }
 
   @override
