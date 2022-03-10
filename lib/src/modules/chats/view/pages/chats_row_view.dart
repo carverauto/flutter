@@ -130,13 +130,16 @@ class ChatsViewRow extends ConsumerWidget {
                                   : CachedNetworkImageProvider(
                                       lastMessage.user!.image!,
                                     ),
-                              child: Text(
-                                lastMessage.user?.name[0].toUpperCase() ?? "U",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              child: lastMessage.user!.image != null
+                                  ? null
+                                  : Text(
+                                      lastMessage.user?.name[0].toUpperCase() ??
+                                          "U",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                             ),
                             title: Text(
                               lastMessage.user!.name,
