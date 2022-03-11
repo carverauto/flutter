@@ -1,4 +1,3 @@
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/modules/firehose/view/parts/firehose_notification_tile.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
@@ -45,13 +44,8 @@ class FirehoseListViewAll extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final notification = notifications[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: kItemsSpacingMediumConstant,
-                        ),
-                        child: FirehoseNotificationTile(
-                            notification: notification),
-                      );
+                      return FirehoseNotificationTile(
+                          notification: notification);
                     },
                     childCount: notifications.length,
                   ),

@@ -40,13 +40,8 @@ class FireHoseView extends ConsumerWidget {
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final notification = notifications[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: kItemsSpacingMediumConstant,
-                          ),
-                          child: FirehoseNotificationTile(
-                              notification: notification),
-                        );
+                        return FirehoseNotificationTile(
+                            notification: notification);
                       },
                       childCount: notifications.length,
                     ),

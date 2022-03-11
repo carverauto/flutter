@@ -186,25 +186,30 @@ class FirehoseErrorTile extends StatelessWidget {
   final VoidCallback onRefesh;
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Color.fromARGB(255, 94, 94, 94),
-      title: TextButton.icon(
-        onPressed: onRefesh,
-        icon: IconButton(
-          onPressed: onRefesh,
-          icon: Icon(
-            Icons.refresh,
-            color: Colors.white,
-          ),
-        ),
-        label: Text(
-          "Failed to load!",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: kItemsSpacingMediumConstant,
       ),
-      trailing: FirehoseNotificationTrailing(notification: notification),
+      child: ListTile(
+        tileColor: Color.fromARGB(255, 94, 94, 94),
+        title: TextButton.icon(
+          onPressed: onRefesh,
+          icon: IconButton(
+            onPressed: onRefesh,
+            icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+          ),
+          label: Text(
+            "Failed to load!",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        trailing: FirehoseNotificationTrailing(notification: notification),
+      ),
     );
   }
 }
@@ -228,30 +233,35 @@ class _FirehoseNotificationListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: kItemsSpacingMediumConstant,
       ),
-      onTap: () {
-        showFirehosePreview(notification, context);
-      },
-      isThreeLine: true,
-      tileColor: Color.fromARGB(255, 94, 94, 94),
-      leading: leading ??
-          CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(imageUrl),
-            backgroundColor: Colors.white,
-          ),
-      title: title,
-      subtitle: Text(
-        body,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.onBackground,
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kBorderRadiusStandard),
         ),
+        onTap: () {
+          showFirehosePreview(notification, context);
+        },
+        isThreeLine: true,
+        tileColor: Color.fromARGB(255, 94, 94, 94),
+        leading: leading ??
+            CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(imageUrl),
+              backgroundColor: Colors.white,
+            ),
+        title: title,
+        subtitle: Text(
+          body,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+        trailing: FirehoseNotificationTrailing(notification: notification),
       ),
-      trailing: FirehoseNotificationTrailing(notification: notification),
     );
   }
 }
@@ -284,30 +294,35 @@ class _LoadingListTileState extends State<LoadingListTile>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: animationController,
-        builder: (context, child) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                transform: GradientRotation(pi / 4),
-                colors: [
-                  Colors.transparent,
-                  Colors.white70,
-                  Colors.transparent,
-                ],
-                stops: [
-                  0.0,
-                  animationController.value,
-                  1.0,
-                ],
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: kItemsSpacingMediumConstant,
+      ),
+      child: AnimatedBuilder(
+          animation: animationController,
+          builder: (context, child) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+                gradient: LinearGradient(
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
+                  transform: GradientRotation(pi / 4),
+                  colors: [
+                    Colors.transparent,
+                    Colors.white70,
+                    Colors.transparent,
+                  ],
+                  stops: [
+                    0.0,
+                    animationController.value,
+                    1.0,
+                  ],
+                ),
               ),
-            ),
-            height: 50,
-          );
-        });
+              height: 50,
+            );
+          }),
+    );
   }
 }
