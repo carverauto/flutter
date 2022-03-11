@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_pop_up_banner.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
+import 'package:chaseapp/src/shared/notifications/notification_pop_up_banner.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

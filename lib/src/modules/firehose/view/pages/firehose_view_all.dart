@@ -1,6 +1,6 @@
 import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/modules/firehose/view/parts/firehose_notification_tile.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/notifications/notification_tile.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverPaginatedListViewAll.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +44,7 @@ class FirehoseListViewAll extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final notification = notifications[index];
-                      return FirehoseNotificationTile(
-                          notification: notification);
+                      return NotificationTile(notification: notification);
                     },
                     childCount: notifications.length,
                   ),

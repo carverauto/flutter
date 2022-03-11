@@ -5,24 +5,24 @@ import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
 import 'package:chaseapp/src/models/youtube_data/youtube_data.dart';
-import 'package:chaseapp/src/modules/firehose/view/parts/show_preview_dialog.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/firehose_notification_type.dart';
+import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class FirehoseNotificationTile extends ConsumerWidget {
-  FirehoseNotificationTile({
+class NotificationTile extends ConsumerWidget {
+  NotificationTile({
     Key? key,
     required this.notification,
   }) : super(key: key);
 
   final ChaseAppNotification notification;
 
-  final Logger logger = Logger('FirehoseNotificationTile');
+  final Logger logger = Logger('NotificationTile');
 
   final titleStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -48,7 +48,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
                   });
             },
             builder: (tweetData, ref, child) {
-              return _FirehoseNotificationListTile(
+              return _NotificationListTile(
                 notification: notification,
                 body: tweetData.text,
                 imageUrl: tweetData.profileImageUrl,
@@ -88,7 +88,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
                   });
             },
             builder: (channelData, ref, child) {
-              return _FirehoseNotificationListTile(
+              return _NotificationListTile(
                 notification: notification,
                 title: RichText(
                   overflow: TextOverflow.ellipsis,
@@ -116,7 +116,7 @@ class FirehoseNotificationTile extends ConsumerWidget {
             logger: logger);
 
       case FirehoseNotificationType.live_on_patrol:
-        return _FirehoseNotificationListTile(
+        return _NotificationListTile(
           notification: notification,
           title: Text(
             notification.title,
@@ -128,13 +128,23 @@ class FirehoseNotificationTile extends ConsumerWidget {
           imageUrl: notification.data!.image!,
         );
       default:
-        return SizedBox.shrink();
+        return _NotificationListTile(
+          notification: notification,
+          title: Text(
+            notification.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
+          ),
+          body: notification.body,
+          imageUrl: notification.data!.image!,
+        );
     }
   }
 }
 
-class FirehoseNotificationTrailing extends StatelessWidget {
-  const FirehoseNotificationTrailing({
+class NotificationTrailing extends StatelessWidget {
+  const NotificationTrailing({
     Key? key,
     required this.notification,
   }) : super(key: key);
@@ -212,14 +222,14 @@ class FirehoseErrorTile extends StatelessWidget {
             ),
           ),
         ),
-        trailing: FirehoseNotificationTrailing(notification: notification),
+        trailing: NotificationTrailing(notification: notification),
       ),
     );
   }
 }
 
-class _FirehoseNotificationListTile extends StatelessWidget {
-  const _FirehoseNotificationListTile({
+class _NotificationListTile extends StatelessWidget {
+  const _NotificationListTile({
     Key? key,
     required this.notification,
     required this.title,
@@ -246,15 +256,20 @@ class _FirehoseNotificationListTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(kBorderRadiusStandard),
         ),
         onTap: () {
-          showFirehosePreview(notification, context);
+          notificationHandler(
+            context,
+            notification,
+          );
         },
         isThreeLine: true,
         tileColor: Color.fromARGB(255, 94, 94, 94),
-        leading: leading ??
-            CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(imageUrl),
-              backgroundColor: Colors.white,
-            ),
+        leading: Hero(
+            tag: notification.id ?? "NA",
+            child: leading ??
+                CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(imageUrl),
+                  backgroundColor: Colors.white,
+                )),
         title: title,
         subtitle: Text(
           body,
@@ -264,7 +279,7 @@ class _FirehoseNotificationListTile extends StatelessWidget {
             color: Theme.of(context).colorScheme.onBackground,
           ),
         ),
-        trailing: FirehoseNotificationTrailing(notification: notification),
+        trailing: NotificationTrailing(notification: notification),
       ),
     );
   }
