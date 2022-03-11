@@ -56,10 +56,10 @@ String elapsedTimeForDate(DateTime date) {
       }
     } else if (diff.inHours.abs() == 1) {
       // One hour ago
-      dateMsg = diff.inHours.abs().toString() + ' hour ago';
+      dateMsg = diff.inHours.abs().toString() + ' hr ago';
     } else if (diff.inHours.abs() > 1) {
       // Hours ago
-      dateMsg = diff.inHours.abs().toString() + ' hours ago';
+      dateMsg = diff.inHours.abs().toString() + ' hrs ago';
     }
   } else if (today.year != chaseDate.year) {
     dateMsg = DateFormat('MMM d, yyyy').format(chaseDate);

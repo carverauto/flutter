@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chaseapp/src/const/colors.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
@@ -8,6 +9,7 @@ import 'package:chaseapp/src/models/youtube_data/youtube_data.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/firehose_notification_type.dart';
 import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
+import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -145,6 +147,34 @@ class NotificationTile extends ConsumerWidget {
 
 class NotificationTrailing extends StatelessWidget {
   const NotificationTrailing({
+    Key? key,
+    required this.notification,
+  }) : super(key: key);
+
+  final ChaseAppNotification notification;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        NotificationTrailingIcon(
+          notification: notification,
+        ),
+        Spacer(),
+        Text(
+          elapsedTimeForDate(notification.createdAt),
+          style: TextStyle(
+            color: primaryColor.shade300,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class NotificationTrailingIcon extends StatelessWidget {
+  const NotificationTrailingIcon({
     Key? key,
     required this.notification,
   }) : super(key: key);
