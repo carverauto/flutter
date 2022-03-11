@@ -221,7 +221,6 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                     ),
                     Divider(
                       height: kItemsSpacingSmall,
-                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     WatchHereLinksWrapper(
                       chase: widget.chase,
@@ -229,7 +228,6 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                     ),
                     Divider(
                       height: kItemsSpacingSmall,
-                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     widget.chatsRow,
                   ],
