@@ -11,8 +11,9 @@ class ChaseAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       centerTitle: true,
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       title: ChaseAppLogoImage(),
+      floating: true,
       actions: [
         NotificationsAppbarButton(),
       ],
