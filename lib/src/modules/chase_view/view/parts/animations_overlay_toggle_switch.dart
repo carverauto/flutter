@@ -9,15 +9,18 @@ class AnimationsOverlayToggleSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ref, child) {
-      final bool showOverlay = ref.watch(showVideoOverlayProvider);
+    return Tooltip(
+      message: "Toggle Animations Overlay",
+      child: Consumer(builder: (context, ref, child) {
+        final bool showOverlay = ref.watch(showVideoOverlayProvider);
 
-      return Switch.adaptive(
-        value: showOverlay,
-        onChanged: (value) {
-          ref.read(showVideoOverlayProvider.state).update((state) => value);
-        },
-      );
-    });
+        return Switch(
+          value: showOverlay,
+          onChanged: (value) {
+            ref.read(showVideoOverlayProvider.state).update((state) => value);
+          },
+        );
+      }),
+    );
   }
 }

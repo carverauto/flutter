@@ -22,28 +22,12 @@ class VideoTopActions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
+              AnimationsOverlayToggleSwitch(),
+              SizedBox(
+                width: kItemsSpacingSmallConstant,
+              ),
               if (MediaQuery.of(context).orientation == Orientation.portrait)
                 ClosePlayingVideo(),
-              PopupMenuButton<int>(
-                offset: Offset(0, 50),
-                icon: Icon(Icons.more_vert_rounded),
-                itemBuilder: (context) => [
-                  PopupMenuItem<int>(
-                    child: Row(
-                      children: [
-                        Text(
-                          "Animations",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(width: kItemsSpacingSmallConstant),
-                        AnimationsOverlayToggleSwitch(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
