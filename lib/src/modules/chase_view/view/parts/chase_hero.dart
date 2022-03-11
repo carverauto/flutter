@@ -10,7 +10,7 @@ import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChaseHeroSection extends ConsumerStatefulWidget {
+class ChaseHeroSection extends ConsumerWidget {
   ChaseHeroSection({
     Key? key,
     required this.chase,
@@ -23,16 +23,11 @@ class ChaseHeroSection extends ConsumerStatefulWidget {
   final Widget youtubeVideo;
 
   @override
-  ConsumerState<ChaseHeroSection> createState() => _ChaseHeroSectionState();
-}
-
-class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final playVideo = ref.watch(playVideoProvider);
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardVisible = bottomPadding > 0;
-    final isYoutubeUrlPresent = widget.chase.networks?.any((network) {
+    final isYoutubeUrlPresent = chase.networks?.any((network) {
           final url = network.url;
 
           if (url != null) {
@@ -42,11 +37,11 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         }) ??
         false;
     return playVideo
-        ?   widget.youtubeVideo
+        ? youtubeVideo
 
         //  Stack(
         //     children: [
-        //       widget.youtubeVideo,
+        //       youtubeVideo,
         //       Positioned(
         //         top: kItemsSpacingMediumConstant,
         //         right: kItemsSpacingMediumConstant,
@@ -69,17 +64,16 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         //   )
         : GestureDetector(
             onTap: () {
-              setState(() {
+              if (isYoutubeUrlPresent) {
                 ref.read(playVideoProvider.state).update((state) => true);
-              });
+              }
             },
             child: Stack(
               fit: StackFit.expand,
               children: [
                 ColoredBox(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  child: widget.chase.imageURL != null &&
-                          widget.chase.imageURL!.isNotEmpty
+                  child: chase.imageURL != null && chase.imageURL!.isNotEmpty
                       ? CachedNetworkImage(
                           fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
                           maxWidthDiskCache: 750,
@@ -87,7 +81,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
                           memCacheHeight: 421,
                           memCacheWidth: 750,
                           imageUrl: parseImageUrl(
-                            widget.imageURL!,
+                            imageURL!,
                             ImageDimensions.LARGE,
                           ),
                           placeholder: (context, value) =>
@@ -104,8 +98,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
                 if (isYoutubeUrlPresent)
                   Align(
                     alignment: Alignment.center,
-                    child:
-                        WatchYoutubeVideo(isLive: widget.chase.live ?? false),
+                    child: WatchYoutubeVideo(isLive: chase.live ?? false),
                   ),
               ],
             ),
