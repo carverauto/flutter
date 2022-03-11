@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
+import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
+import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TweetPreview extends StatelessWidget {
@@ -18,27 +17,27 @@ class TweetPreview extends StatelessWidget {
     return EmbeddedTweetWebView(
       tweetId: tweetId,
     );
-    ProviderStateBuilder<String>(
-      loadingBuilder: () => AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        color: Colors.red,
-        alignment: Alignment.center,
-        child: CircularAdaptiveProgressIndicatorWithBg(),
-      ),
-      builder: (html, ref, child) {
-        // Replace with custom preview
-        log(html.toString());
-        final remvoedScript = html.replaceFirst(
-            '''<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>''',
-            "");
-        return EmbeddedTweetWebView(
-          tweetId: tweetId,
-        );
-      },
-      watchThisProvider: fetchTweetEmbedData(
-          EmbedTweetParam(tweetId: tweetId, showMedia: showMedia)),
-      logger: Logger('TweetPreview'),
-    );
+    // ProviderStateBuilder<String>(
+    //   loadingBuilder: () => AnimatedContainer(
+    //     duration: Duration(milliseconds: 300),
+    //     color: Colors.red,
+    //     alignment: Alignment.center,
+    //     child: CircularAdaptiveProgressIndicatorWithBg(),
+    //   ),
+    //   builder: (html, ref, child) {
+    //     // Replace with custom preview
+    //     log(html.toString());
+    //     final remvoedScript = html.replaceFirst(
+    //         '''<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>''',
+    //         "");
+    //     return EmbeddedTweetWebView(
+    //       tweetId: tweetId,
+    //     );
+    //   },
+    //   watchThisProvider: fetchTweetEmbedData(
+    //       EmbedTweetParam(tweetId: tweetId, showMedia: showMedia)),
+    //   logger: Logger('TweetPreview'),
+    // );
   }
 }
 
@@ -56,19 +55,39 @@ class EmbeddedTweetWebView extends StatefulWidget {
 
 class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
   bool isLoaded = false;
+  late double previewHeight;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    previewHeight = Sizescaleconfig.screenheight! * 0.5;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.5,
+        maxHeight: previewHeight <= Sizescaleconfig.screenheight! * 0.5
+            ? previewHeight
+            : Sizescaleconfig.screenheight! * 0.5,
         maxWidth: double.infinity,
-        minHeight: 200,
       ),
       child: Stack(
         children: [
           WebView(
             backgroundColor: Colors.black,
             javascriptMode: JavascriptMode.unrestricted,
+            navigationDelegate: (request) {
+              if (request.url.contains("twitter.com")) {
+                return NavigationDecision.navigate;
+              } else {
+                if (isLoaded) {
+                  launchUrl(request.url);
+                }
+                return NavigationDecision.prevent;
+              }
+            },
             onPageFinished: (value) {
               log("OnPageFinished");
             },
@@ -83,6 +102,7 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
                     log(message.message);
                     setState(() {
                       isLoaded = true;
+                      previewHeight = double.parse(message.message);
                     });
                   },
                 ),
@@ -96,13 +116,17 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
               encoding: Encoding.getByName('utf-8'),
             ).toString(),
           ),
-          if (!isLoaded)
-            AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+          AnimatedCrossFade(
+            firstChild: Container(
               color: Colors.blue,
               alignment: Alignment.center,
               child: CircularAdaptiveProgressIndicatorWithBg(),
             ),
+            secondChild: SizedBox.shrink(),
+            crossFadeState:
+                isLoaded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: Duration(milliseconds: 3000),
+          ),
         ],
       ),
     );
@@ -139,14 +163,15 @@ String getHtmlBody(String tweetId) {
          twttr.ready().then( function( el ) {
         });;
          twttr.widgets.createTweet(
-          '1502154545123581954',
+          '$tweetId',
           document.getElementById('container'),
           {
             theme: 'dark'
           }
         ).then( function( el ) {
-          
-          Twitter.postMessage("Ready");
+          const widget = document.getElementById('container');
+       Twitter.postMessage(widget.clientHeight);
+          // Twitter.postMessage("Ready");
         });
 
 
