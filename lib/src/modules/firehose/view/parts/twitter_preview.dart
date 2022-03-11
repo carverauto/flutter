@@ -116,17 +116,36 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
               encoding: Encoding.getByName('utf-8'),
             ).toString(),
           ),
-          AnimatedCrossFade(
-            firstChild: Container(
-              color: Colors.blue,
-              alignment: Alignment.center,
-              child: CircularAdaptiveProgressIndicatorWithBg(),
-            ),
-            secondChild: SizedBox.shrink(),
-            crossFadeState:
-                isLoaded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: Duration(milliseconds: 3000),
+          AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            child: isLoaded
+                ? SizedBox.shrink()
+                : Container(
+                    color: Colors.blue,
+                    alignment: Alignment.center,
+                    child: CircularAdaptiveProgressIndicatorWithBg(),
+                  ),
           ),
+          // AnimatedCrossFade(
+          //   firstChild: Container(
+          //     color: Colors.blue,
+          //     alignment: Alignment.center,
+          //     child: CircularAdaptiveProgressIndicatorWithBg(),
+          //   ),
+          //   secondChild: Container(
+          //     color: Colors.red,
+          //     alignment: Alignment.center,
+          //   ),
+          //   crossFadeState:
+          //       isLoaded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          //   duration: Duration(milliseconds: 3000),
+          // ),
         ],
       ),
     );
