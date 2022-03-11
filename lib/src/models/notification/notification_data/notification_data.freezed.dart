@@ -24,7 +24,6 @@ class _$NotificationDataTearOff {
 
   _NotificationData call(
       {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Type') required String type,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
@@ -32,7 +31,6 @@ class _$NotificationDataTearOff {
       @JsonKey(name: 'ConfigState') String? configState}) {
     return _NotificationData(
       id: id,
-      type: type,
       image: image,
       tweetId: tweetId,
       youtubeId: youtubeId,
@@ -53,8 +51,6 @@ const $NotificationData = _$NotificationDataTearOff();
 mixin _$NotificationData {
   @JsonKey(name: 'Id')
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Type')
-  String get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'Image')
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'Tweetid')
@@ -79,7 +75,6 @@ abstract class $NotificationDataCopyWith<$Res> {
       _$NotificationDataCopyWithImpl<$Res>;
   $Res call(
       {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Type') String type,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
@@ -99,7 +94,6 @@ class _$NotificationDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? type = freezed,
     Object? image = freezed,
     Object? tweetId = freezed,
     Object? youtubeId = freezed,
@@ -111,10 +105,6 @@ class _$NotificationDataCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -148,7 +138,6 @@ abstract class _$NotificationDataCopyWith<$Res>
   @override
   $Res call(
       {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Type') String type,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
@@ -170,7 +159,6 @@ class __$NotificationDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? type = freezed,
     Object? image = freezed,
     Object? tweetId = freezed,
     Object? youtubeId = freezed,
@@ -182,10 +170,6 @@ class __$NotificationDataCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      type: type == freezed
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
       image: image == freezed
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -216,7 +200,6 @@ class __$NotificationDataCopyWithImpl<$Res>
 class _$_NotificationData extends _NotificationData {
   const _$_NotificationData(
       {@JsonKey(name: 'Id') this.id,
-      @JsonKey(name: 'Type') required this.type,
       @JsonKey(name: 'Image') this.image,
       @JsonKey(name: 'Tweetid') this.tweetId,
       @JsonKey(name: 'YoutubeId') this.youtubeId,
@@ -230,9 +213,6 @@ class _$_NotificationData extends _NotificationData {
   @override
   @JsonKey(name: 'Id')
   final String? id;
-  @override
-  @JsonKey(name: 'Type')
-  final String type;
   @override
   @JsonKey(name: 'Image')
   final String? image;
@@ -251,7 +231,7 @@ class _$_NotificationData extends _NotificationData {
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, type: $type, image: $image, tweetId: $tweetId, youtubeId: $youtubeId, channelId: $channelId, configState: $configState)';
+    return 'NotificationData(id: $id, image: $image, tweetId: $tweetId, youtubeId: $youtubeId, channelId: $channelId, configState: $configState)';
   }
 
   @override
@@ -260,7 +240,6 @@ class _$_NotificationData extends _NotificationData {
         (other.runtimeType == runtimeType &&
             other is _NotificationData &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.tweetId, tweetId) &&
             const DeepCollectionEquality().equals(other.youtubeId, youtubeId) &&
@@ -273,7 +252,6 @@ class _$_NotificationData extends _NotificationData {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(tweetId),
       const DeepCollectionEquality().hash(youtubeId),
@@ -294,7 +272,6 @@ class _$_NotificationData extends _NotificationData {
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
       {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Type') required String type,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
@@ -308,9 +285,6 @@ abstract class _NotificationData extends NotificationData {
   @override
   @JsonKey(name: 'Id')
   String? get id;
-  @override
-  @JsonKey(name: 'Type')
-  String get type;
   @override
   @JsonKey(name: 'Image')
   String? get image;

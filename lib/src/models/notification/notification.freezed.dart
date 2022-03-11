@@ -26,6 +26,8 @@ class _$ChaseAppNotificationTearOff {
       {@JsonKey(name: 'Interest')
           required String interest,
       String? id,
+      @JsonKey(name: 'Type')
+          required String type,
       @JsonKey(name: 'Title')
           required String title,
       @JsonKey(name: 'Body')
@@ -40,6 +42,7 @@ class _$ChaseAppNotificationTearOff {
     return _ChaseAppNotification(
       interest: interest,
       id: id,
+      type: type,
       title: title,
       body: body,
       image: image,
@@ -61,6 +64,8 @@ mixin _$ChaseAppNotification {
   @JsonKey(name: 'Interest')
   String get interest => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Type')
+  String get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'Title')
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'Body')
@@ -88,6 +93,8 @@ abstract class $ChaseAppNotificationCopyWith<$Res> {
       {@JsonKey(name: 'Interest')
           String interest,
       String? id,
+      @JsonKey(name: 'Type')
+          String type,
       @JsonKey(name: 'Title')
           String title,
       @JsonKey(name: 'Body')
@@ -116,6 +123,7 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
   $Res call({
     Object? interest = freezed,
     Object? id = freezed,
+    Object? type = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? image = freezed,
@@ -131,6 +139,10 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -177,6 +189,8 @@ abstract class _$ChaseAppNotificationCopyWith<$Res>
       {@JsonKey(name: 'Interest')
           String interest,
       String? id,
+      @JsonKey(name: 'Type')
+          String type,
       @JsonKey(name: 'Title')
           String title,
       @JsonKey(name: 'Body')
@@ -208,6 +222,7 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
   $Res call({
     Object? interest = freezed,
     Object? id = freezed,
+    Object? type = freezed,
     Object? title = freezed,
     Object? body = freezed,
     Object? image = freezed,
@@ -223,6 +238,10 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -255,6 +274,8 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
       {@JsonKey(name: 'Interest')
           required this.interest,
       this.id,
+      @JsonKey(name: 'Type')
+          required this.type,
       @JsonKey(name: 'Title')
           required this.title,
       @JsonKey(name: 'Body')
@@ -277,6 +298,9 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   @override
   final String? id;
   @override
+  @JsonKey(name: 'Type')
+  final String type;
+  @override
   @JsonKey(name: 'Title')
   final String title;
   @override
@@ -295,7 +319,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
 
   @override
   String toString() {
-    return 'ChaseAppNotification(interest: $interest, id: $id, title: $title, body: $body, image: $image, createdAt: $createdAt, data: $data)';
+    return 'ChaseAppNotification(interest: $interest, id: $id, type: $type, title: $title, body: $body, image: $image, createdAt: $createdAt, data: $data)';
   }
 
   @override
@@ -305,6 +329,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
             other is _ChaseAppNotification &&
             const DeepCollectionEquality().equals(other.interest, interest) &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
             const DeepCollectionEquality().equals(other.image, image) &&
@@ -317,6 +342,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
       runtimeType,
       const DeepCollectionEquality().hash(interest),
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
       const DeepCollectionEquality().hash(image),
@@ -340,6 +366,8 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
       {@JsonKey(name: 'Interest')
           required String interest,
       String? id,
+      @JsonKey(name: 'Type')
+          required String type,
       @JsonKey(name: 'Title')
           required String title,
       @JsonKey(name: 'Body')
@@ -361,6 +389,9 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   String get interest;
   @override
   String? get id;
+  @override
+  @JsonKey(name: 'Type')
+  String get type;
   @override
   @JsonKey(name: 'Title')
   String get title;
