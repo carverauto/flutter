@@ -162,6 +162,7 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
     required this.logger,
     this.errorMessage,
     this.errorBuilder,
+    this.loadingBuilder,
   }) : super(key: key);
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
@@ -172,6 +173,7 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
   final Logger logger;
 
   final String? errorMessage;
+  final Widget Function()? loadingBuilder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -196,7 +198,10 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
             );
           },
           loading: () => SliverToBoxAdapter(
-              child: CircularAdaptiveProgressIndicatorWithBg()),
+            child: loadingBuilder != null
+                ? loadingBuilder!()
+                : CircularAdaptiveProgressIndicatorWithBg(),
+          ),
         );
   }
 }

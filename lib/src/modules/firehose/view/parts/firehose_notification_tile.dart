@@ -36,7 +36,9 @@ class FirehoseNotificationTile extends ConsumerWidget {
     switch (notificationType) {
       case FirehoseNotificationType.twitter:
         return ProviderStateBuilder<TweetData>(
-            loadingBuilder: () => LoadingListTile(),
+            loadingBuilder: () => LoadingListTile(
+                  height: 50,
+                ),
             errorBuilder: (e, stk) {
               return FirehoseErrorTile(
                   notification: notification,
@@ -74,7 +76,9 @@ class FirehoseNotificationTile extends ConsumerWidget {
 
       case FirehoseNotificationType.streams:
         return ProviderStateBuilder<YoutubeChannelData>(
-            loadingBuilder: () => LoadingListTile(),
+            loadingBuilder: () => LoadingListTile(
+                  height: 50,
+                ),
             errorBuilder: (e, stk) {
               return FirehoseErrorTile(
                   notification: notification,
@@ -267,7 +271,12 @@ class _FirehoseNotificationListTile extends StatelessWidget {
 }
 
 class LoadingListTile extends StatefulWidget {
-  const LoadingListTile({Key? key}) : super(key: key);
+  const LoadingListTile({
+    Key? key,
+    required this.height,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   State<LoadingListTile> createState() => _LoadingListTileState();
@@ -320,7 +329,7 @@ class _LoadingListTileState extends State<LoadingListTile>
                   ],
                 ),
               ),
-              height: 50,
+              height: widget.height,
             );
           }),
     );
