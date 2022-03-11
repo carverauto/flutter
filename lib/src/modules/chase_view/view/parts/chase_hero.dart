@@ -38,30 +38,6 @@ class ChaseHeroSection extends ConsumerWidget {
         false;
     return playVideo
         ? youtubeVideo
-
-        //  Stack(
-        //     children: [
-        //       youtubeVideo,
-        //       Positioned(
-        //         top: kItemsSpacingMediumConstant,
-        //         right: kItemsSpacingMediumConstant,
-        //         child: GlassButton(
-        //           shape: CircleBorder(),
-        //           onTap: () {
-        //             setState(() {
-        //               ref
-        //                   .read(playVideoProvider.state)
-        //                   .update((state) => false);
-        //             });
-        //           },
-        //           child: Icon(
-        //             Icons.close,
-        //             color: Colors.white,
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   )
         : GestureDetector(
             onTap: () {
               if (isYoutubeUrlPresent) {

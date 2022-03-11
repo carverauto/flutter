@@ -132,20 +132,6 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
                     child: CircularAdaptiveProgressIndicatorWithBg(),
                   ),
           ),
-          // AnimatedCrossFade(
-          //   firstChild: Container(
-          //     color: Colors.blue,
-          //     alignment: Alignment.center,
-          //     child: CircularAdaptiveProgressIndicatorWithBg(),
-          //   ),
-          //   secondChild: Container(
-          //     color: Colors.red,
-          //     alignment: Alignment.center,
-          //   ),
-          //   crossFadeState:
-          //       isLoaded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          //   duration: Duration(milliseconds: 3000),
-          // ),
         ],
       ),
     );
