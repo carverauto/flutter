@@ -9,6 +9,7 @@ abstract class NotificationData implements _$NotificationData {
   @JsonSerializable(explicitToJson: true)
   const factory NotificationData({
     @JsonKey(name: 'Id') String? id,
+    @JsonKey(name: 'Type') required String type,
     @JsonKey(name: 'Image') String? image,
     @JsonKey(name: 'Tweetid') String? tweetId,
     @JsonKey(name: 'YoutubeId') String? youtubeId,

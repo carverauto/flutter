@@ -72,13 +72,7 @@ String getNetworkLogUrl(String? url) {
       )
       ?.value;
 
-  // if successful, return the url
-  // if not, return null
-  //TODO: add web repo github access token
-  return network != null
-      ? "https://chaseapp.tv/" + network
-      // "?raw=true"
-      : defaultPhotoURL;
+  return network != null ? "https://chaseapp.tv/" + network : defaultPhotoURL;
 }
 
 Map<String, String> networkUrls = {
