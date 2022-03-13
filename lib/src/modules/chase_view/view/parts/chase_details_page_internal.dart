@@ -5,6 +5,7 @@ import 'package:chaseapp/src/modules/chase_view/view/parts/chase_details.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/video_animations_overlay.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/video_top_actions.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/util/helpers/is_valid_youtube_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -56,9 +57,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
     late String? videoId;
     if (url != null) {
-      final uri = Uri.parse(url);
-
-      videoId = uri.queryParameters["v"] as String;
+      videoId = parseYoutubeUrlForVideoId(url) ?? "";
     } else {
       videoId = "";
     }

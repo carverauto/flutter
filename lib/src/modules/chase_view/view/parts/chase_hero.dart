@@ -4,6 +4,7 @@ import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/modules/chase_view/view/parts/watch_youtube_video_button.dart';
 import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
+import 'package:chaseapp/src/shared/util/helpers/is_valid_youtube_url.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
@@ -31,7 +32,7 @@ class ChaseHeroSection extends ConsumerWidget {
           final url = network.url;
 
           if (url != null) {
-            return url.contains("youtube.com");
+            return isValidYoutubeUrl(url);
           }
           return false;
         }) ??

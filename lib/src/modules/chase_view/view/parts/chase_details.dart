@@ -234,28 +234,6 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                 ),
               ),
               widget.chatsView,
-              // Consumer(
-              //   child: ChatsView(
-              //     chaseId: widget.chase.id,
-              //   ),
-              //   builder: ((context, ref, child) {
-              //     final showChatsWindow =
-              //         ref.watch(isShowingChatsWindowProvide);
-              //     return AnimatedSwitcher(
-              //       duration: Duration(milliseconds: 300),
-              //       transitionBuilder: (child, animation) {
-              //         return SlideTransition(
-              //           position: Tween<Offset>(
-              //             begin: Offset(0, 1),
-              //             end: Offset(0, 0),
-              //           ).animate(animation),
-              //           child: child,
-              //         );
-              //       },
-              //       child: showChatsWindow ? child : SizedBox.shrink(),
-              //     );
-              //   }),
-              // ),
             ],
           ),
         ),
