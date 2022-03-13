@@ -18,6 +18,7 @@ ChaseAppNotification constructNotification(
     body: body,
     image: data["Image"] as String?,
     data: NotificationData.fromJson(data),
+    type: data["Type"] as String,
     //  data["Data"] != null
     //     ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
     //     : null,

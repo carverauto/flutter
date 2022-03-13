@@ -49,14 +49,15 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     final data = message.data;
     //TODO: Update with new notification schema
 
-    if (data["Interest"] != null) {
+    if (data["Interest"] != null && data["Type"] != null) {
       updateNotificationsPresentStatus(ref, true);
       final notificationData = getNotificationDataFromMessage(message);
 
       notificationHandler(context, notificationData, read: ref.read);
     } else {
-      logger
-          .warning("ChaseAppNotification data didn't contained interest field");
+      logger.warning(
+        "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+      );
     }
   }
 
@@ -97,7 +98,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
           message["data"] as Map<String, dynamic>);
       //TODO: Update with new notification schema
-      if (data["Interest"] != null) {
+      if (data["Interest"] != null && data["Type"] != null) {
         final notification = constructNotification(
           message["title"] as String? ?? "NA",
           message["body"] as String? ?? "NA",
@@ -116,7 +117,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         showNotificationBanner(context, notification);
       } else {
         logger.warning(
-            "ChaseAppNotification data didn't contained interest field");
+          "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+        );
       }
     });
   }
