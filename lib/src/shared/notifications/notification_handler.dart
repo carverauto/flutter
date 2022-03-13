@@ -55,7 +55,7 @@ void _showFirehosePreview(
     ChaseAppNotification notification, BuildContext context) async {
   // create a new custom route for
   final firehoseNotificationType =
-      getFirehoseNotificationTypeFromString(notification.title);
+      getFirehoseNotificationTypeFromString(notification.type);
 
   switch (firehoseNotificationType) {
     case FirehoseNotificationType.twitter:

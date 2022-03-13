@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/colors.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
@@ -13,6 +14,7 @@ import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
 import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -34,7 +36,7 @@ class NotificationTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationType =
-        getFirehoseNotificationTypeFromString(notification.title);
+        getFirehoseNotificationTypeFromString(notification.type);
     switch (notificationType) {
       case FirehoseNotificationType.twitter:
         return ProviderStateBuilder<TweetData>(
@@ -110,7 +112,7 @@ class NotificationTile extends ConsumerWidget {
                   ),
                 ),
                 body: notification.body,
-                imageUrl: notification.data!.image!,
+                imageUrl: notification.data!.image,
               );
             },
             watchThisProvider:
@@ -127,7 +129,7 @@ class NotificationTile extends ConsumerWidget {
             style: titleStyle,
           ),
           body: notification.body,
-          imageUrl: notification.data!.image!,
+          imageUrl: notification.data!.image,
         );
       default:
         return _NotificationListTile(
@@ -139,7 +141,7 @@ class NotificationTile extends ConsumerWidget {
             style: titleStyle,
           ),
           body: notification.body,
-          imageUrl: notification.data!.image!,
+          imageUrl: notification.data!.image,
         );
     }
   }
@@ -183,18 +185,17 @@ class NotificationTrailingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (getFirehoseNotificationTypeFromString(notification.title)) {
+    switch (getFirehoseNotificationTypeFromString(notification.type)) {
       case FirehoseNotificationType.twitter:
-        return ImageIcon(
-          CachedNetworkImageProvider(notification.data!.image!),
-          color: Colors.blue,
+        return SvgPicture.asset(
+          "assets/icon/twitter.svg",
+          height: kIconSizeMediumConstant,
         );
 
       case FirehoseNotificationType.streams:
         return Icon(
           Icons.play_arrow_rounded,
           color: Colors.red,
-          size: kIconSizeMediumConstant,
         );
 
       case FirehoseNotificationType.live_on_patrol:
@@ -272,7 +273,7 @@ class _NotificationListTile extends StatelessWidget {
   final Widget title;
 
   final String body;
-  final String imageUrl;
+  final String? imageUrl;
   final Widget? leading;
 
   @override
@@ -297,7 +298,8 @@ class _NotificationListTile extends StatelessWidget {
             tag: notification.id ?? "NA",
             child: leading ??
                 CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(imageUrl),
+                  backgroundImage:
+                      CachedNetworkImageProvider(imageUrl ?? defaultPhotoURL),
                   backgroundColor: Colors.white,
                 )),
         title: title,
