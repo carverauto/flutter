@@ -108,6 +108,7 @@ dependencies:
  # social_embed_webview: ^0.3.2
   webview_flutter: ^2.8.0
   rive: ^0.8.1
+  stream_feed_flutter_core: ^0.7.0+1
 
 dependency_overrides:
   # video_compress: 3.1.0
