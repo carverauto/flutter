@@ -45,6 +45,13 @@ class NotificationPopUpBanner extends StatefulWidget {
 
 class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
   late Timer timer;
+
+  void onTap() {
+    timer.cancel();
+    Navigator.pop(context);
+    notificationHandler(context, widget.notificationData);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -85,7 +92,14 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
           ),
           getInterestEnumFromString(widget.notificationData.interest) ==
                   Interests.firehose
-              ? NotificationTile(notification: widget.notificationData)
+              ? InkWell(
+                  onTap: onTap,
+                  child: IgnorePointer(
+                    ignoring: true,
+                    child:
+                        NotificationTile(notification: widget.notificationData),
+                  ),
+                )
               : ListTile(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
@@ -133,11 +147,7 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: ElevatedButton(
-                    onPressed: () {
-                      timer.cancel();
-                      Navigator.pop(context);
-                      notificationHandler(context, widget.notificationData);
-                    },
+                    onPressed: onTap,
                     child: Text("View"),
                   ),
                 ),
