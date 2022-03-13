@@ -95,8 +95,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   void handleNotificationInForegroundState() {
     PusherBeams.instance.onMessageReceivedInTheForeground((message) {
       log("Pusher Message Recieved in the foreground--->" + message.toString());
-      final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
-          message["data"] as Map<String, dynamic>);
+      final Map<String, dynamic> data =
+          Map<String, dynamic>.from(message["data"] as Map<dynamic, dynamic>);
       //TODO: Update with new notification schema
       if (data["Interest"] != null && data["Type"] != null) {
         final notification = constructNotification(

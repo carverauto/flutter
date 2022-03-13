@@ -6,6 +6,7 @@ import 'package:chaseapp/src/models/notification/notification_data/notification_
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/interest_enum.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +24,28 @@ ChaseAppNotification constructNotification(
     //     ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
     //     : null,
     id: data["Id"] as String?,
-    createdAt: data["CreatedAt"] as DateTime,
+    createdAt: parseDate(data["CreatedAt"]),
   );
 
   return notification;
+}
+
+DateTime parseDate(dynamic date) {
+  if (date == null) {
+    return DateTime.now();
+  } else if (date is String) {
+    final isMSE = int.tryParse(date);
+    if (isMSE == null) {
+      final parsedDate = DateTime.tryParse(date);
+
+      return parsedDate ?? DateTime.now();
+    }
+    return DateTime.fromMillisecondsSinceEpoch(isMSE);
+  } else if (date is Timestamp) {
+    return date.toDate();
+  } else {
+    return date as DateTime;
+  }
 }
 
 //TODO: Update with new notification schema
