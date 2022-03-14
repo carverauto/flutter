@@ -1,4 +1,5 @@
 import 'package:chaseapp/flavors.dart';
+import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,13 +14,17 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   final Logger logger = Logger("ChatsServiceStateNotifier");
 
+  late final String userToken;
+
+  bool isSubscribedToFeed = false;
+
   final _client = stream.StreamChatClient(
     _getChatApiKey,
     logLevel: Level.INFO,
   );
-  final feed.StreamFeedClient _streamFeedClient = feed.StreamFeedClient(
-    _getChatApiKey,
-  );
+  final feed.StreamFeedClient _streamFeedClient =
+      feed.StreamFeedClient(_getChatApiKey, appId: "102359");
+
   static String get _getChatApiKey {
     if (F.appFlavor == Flavor.DEV) {
       const apiKey = String.fromEnvironment("Dev_GetStream_Chat_Api_Key");
@@ -30,24 +35,35 @@ class ChatStateNotifier extends StateNotifier<void> {
     }
   }
 
+  feed.FlatFeed get firehoseFeed =>
+      _streamFeedClient.flatFeed('events', "firehose");
+
   stream.StreamChatClient get client => _client;
   feed.StreamFeedClient get streamFeed => _streamFeedClient;
 
-  Future<void> connectUserToGetStream(UserData userData) async {
-    try {
+  Future<void> setUserAndSubscribe() async {
+    if (_streamFeedClient.currentUser == null) {
+      final userData = await read(userStreamProvider.future);
       final userToken =
           await read(chatsRepoProvider).getUserToken(userData.uid);
-      // final feed.Token userFeedToken =
-      //     _streamFeedClient.frontendToken(userData.uid);
       await _streamFeedClient.setUser(
         feed.User(
           id: userData.uid,
-
-          // name: userData.userName?.split(" ")[0] ?? "Unknown",
-          // image: userData.photoURL,
         ),
         feed.Token(userToken),
       );
+    }
+    subscribeToFeed();
+  }
+
+  Future<List<feed.Activity>> fetchFirehoseFeed(int offset) async {
+    await setUserAndSubscribe();
+    return firehoseFeed.getActivities(limit: 20, offset: offset);
+  }
+
+  Future<void> connectUserToGetStream(UserData userData) async {
+    try {
+      userToken = await read(chatsRepoProvider).getUserToken(userData.uid);
 
       if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected)
         await client.connectUser(
@@ -60,6 +76,13 @@ class ChatStateNotifier extends StateNotifier<void> {
         );
     } catch (e, stk) {
       logger.severe("Error while connecting user to getStream", e, stk);
+    }
+  }
+
+  Future<void> subscribeToFeed() async {
+    if (!isSubscribedToFeed) {
+      await firehoseFeed.subscribe((message) {});
+      isSubscribedToFeed = true;
     }
   }
 
