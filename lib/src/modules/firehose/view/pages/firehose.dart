@@ -44,9 +44,8 @@ class FireHoseView extends ConsumerWidget {
                           title: Text(notification.actor ?? "NA"),
                         ); // NotificationTile(notification: notification);
                       },
-                      childCount: notifications.length >= 5
-                          ? notifications.sublist(0, 5).length
-                          : notifications.length,
+                      childCount:
+                          notifications.length >= 5 ? 5 : notifications.length,
                     ),
                   );
           },
