@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/const/assets.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
@@ -67,7 +66,7 @@ class _SplashViewState extends State<SplashView>
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: Image.asset(
-                      'assets/powered_by.png',
+                      chaseAppTextLogoAsset,
                       height: kImageSizeSmall,
                       fit: BoxFit.scaleDown,
                     ),

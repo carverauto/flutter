@@ -13,6 +13,7 @@ abstract class ChaseAppNotification implements _$ChaseAppNotification {
   const factory ChaseAppNotification({
     @JsonKey(name: 'Interest') required String interest,
     String? id,
+    @JsonKey(name: 'Type') required String type,
     @JsonKey(name: 'Title') required String title,
     @JsonKey(name: 'Body') required String body,
     @JsonKey(name: 'Image') String? image,

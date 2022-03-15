@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';

@@ -1,5 +1,5 @@
-import 'package:chaseapp/src/const/assets.dart';
 import 'package:chaseapp/src/const/colors.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';

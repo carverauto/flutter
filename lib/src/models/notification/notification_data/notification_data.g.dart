@@ -12,6 +12,7 @@ _$_NotificationData _$$_NotificationDataFromJson(Map<String, dynamic> json) =>
       image: json['Image'] as String?,
       tweetId: json['Tweetid'] as String?,
       youtubeId: json['YoutubeId'] as String?,
+      channelId: json['ChannelId'] as String?,
       configState: json['ConfigState'] as String?,
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$$_NotificationDataToJson(_$_NotificationData instance) =>
       'Image': instance.image,
       'Tweetid': instance.tweetId,
       'YoutubeId': instance.youtubeId,
+      'ChannelId': instance.channelId,
       'ConfigState': instance.configState,
     };

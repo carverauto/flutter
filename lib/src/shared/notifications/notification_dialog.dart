@@ -1,5 +1,5 @@
 import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/links.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';

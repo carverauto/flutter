@@ -3,7 +3,7 @@ library medium_clap_flutter;
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

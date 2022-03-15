@@ -1,7 +1,6 @@
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/modules/firehose/view/parts/firehose_notification_tile.dart';
 import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
+import 'package:chaseapp/src/shared/notifications/notification_tile.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverPaginatedListViewAll.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
@@ -23,20 +22,33 @@ class FirehoseListViewAll extends StatelessWidget {
         scrollController: ScrollController(),
         axis: Axis.vertical,
         builder: (notifications, ref) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final notification = notifications[index];
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: kItemsSpacingMediumConstant,
+          return notifications.isEmpty
+              ? SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.notifications_none_rounded,
+                      ),
+                      Chip(
+                        label: Text(
+                          "No New Notifications!",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: FirehoseNotificationTile(notification: notification),
+                )
+              : SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final notification = notifications[index];
+                      return NotificationTile(notification: notification);
+                    },
+                    childCount: notifications.length,
+                  ),
                 );
-              },
-              childCount: notifications.length,
-            ),
-          );
         },
         watchThisStateNotifierProvider:
             firehoseNotificationsStreamProvider(logger),

@@ -1,4 +1,5 @@
 import 'package:chaseapp/src/const/colors.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
@@ -25,7 +26,6 @@ class ChaseAppDrawer extends StatelessWidget {
 
               return state.maybeWhen(
                 data: (userData) {
-                  final isImagePresent = userData.photoURL != null;
                   return InkWell(
                     onTap: () async {
                       final shouldSignOut = await Navigator.pushNamed<bool>(

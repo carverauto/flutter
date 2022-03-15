@@ -1,6 +1,7 @@
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/models/chase/network/chase_network.dart';
+import 'package:chaseapp/src/shared/util/helpers/is_valid_youtube_url.dart';
 import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:flutter/material.dart';
 
@@ -18,15 +19,21 @@ class WatchHereLinksWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final youtubeNetworks = chase.networks?.where((network) {
       final String? url = network.url;
-      final bool isYoutube = url?.contains("youtube.com") ?? false;
-      return isYoutube;
+      if (url != null) {
+        final bool isYoutube = isValidYoutubeUrl(url);
+        return isYoutube;
+      }
+      return false;
     }).toList();
 
     final otherNetworks = chase.networks?.where((network) {
       final String? url = network.url;
 
-      final bool isYoutube = url?.contains("youtube.com") ?? false;
-      return !isYoutube;
+      if (url != null) {
+        final bool isYoutube = isValidYoutubeUrl(url);
+        return !isYoutube;
+      }
+      return false;
     }).toList();
 
     return Padding(
@@ -38,7 +45,6 @@ class WatchHereLinksWrapper extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           NetworksList(
-            isYoutubeNetworks: true,
             networks: youtubeNetworks,
             onYoutubeNetworkTap: onYoutubeNetworkTap,
           ),
@@ -46,9 +52,7 @@ class WatchHereLinksWrapper extends StatelessWidget {
             height: kItemsSpacingSmallConstant,
           ),
           NetworksList(
-            isYoutubeNetworks: false,
             networks: otherNetworks,
-            onYoutubeNetworkTap: onYoutubeNetworkTap,
           ),
         ],
       ),
@@ -60,13 +64,11 @@ class NetworksList extends StatelessWidget {
   const NetworksList({
     Key? key,
     required this.networks,
-    required this.isYoutubeNetworks,
-    required this.onYoutubeNetworkTap,
+    this.onYoutubeNetworkTap,
   }) : super(key: key);
 
   final List<ChaseNetwork>? networks;
-  final bool isYoutubeNetworks;
-  final void Function(String url) onYoutubeNetworkTap;
+  final void Function(String url)? onYoutubeNetworkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class NetworksList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${isYoutubeNetworks ? "Streams" : "Other"} :",
+                "${onYoutubeNetworkTap != null ? "Streams" : "Other"} :",
                 style: Theme.of(context).textTheme.subtitle1!.copyWith(
                       //  decoration: TextDecoration.underline,
                       color: Theme.of(context).colorScheme.onBackground,
@@ -87,8 +89,7 @@ class NetworksList extends StatelessWidget {
                 height: kItemsSpacingSmallConstant,
               ),
               networks != null
-                  ? URLView(
-                      networks!, isYoutubeNetworks ? onYoutubeNetworkTap : null)
+                  ? URLView(networks!, onYoutubeNetworkTap)
                   : const Text('Please wait..'),
             ],
           );

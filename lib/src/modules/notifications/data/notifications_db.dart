@@ -5,7 +5,7 @@ import 'package:chaseapp/src/shared/util/firebase_collections.dart';
 
 class NotificationsDatabase implements NotificationsDbAB {
   NotificationsDatabase();
-
+  //TODO remove firehose notifications from the list
   Future<List<ChaseAppNotification>> fetchNotifications(
       ChaseAppNotification? notificationData,
       String? notificationType,
@@ -26,7 +26,7 @@ class NotificationsDatabase implements NotificationsDbAB {
       final documentSnapshot = await notificationsCollectionRef
           // .where("uid", isEqualTo: userId)
           .where("Interest", isEqualTo: notificationType)
-          .orderBy("createdAt", descending: true)
+          .orderBy("CreatedAt", descending: true)
           .startAfter([notificationData.createdAt])
           .limit(20)
           .get();

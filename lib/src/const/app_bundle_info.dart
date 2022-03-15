@@ -66,4 +66,6 @@ class AppBundleInfo {
 
 class EnvVaribales {
   static const twitterToken = String.fromEnvironment("Twitter_Token");
+  static const youtubeApiKey = String.fromEnvironment("Youtbe_Api_Key");
+  static const youtubeToken = String.fromEnvironment("Youtube_Token");
 }

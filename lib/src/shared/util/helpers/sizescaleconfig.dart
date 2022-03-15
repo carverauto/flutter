@@ -84,16 +84,16 @@ extension GetGridCount on DeviceType {
     switch (this) {
       case DeviceType.SMALL_MOBILE:
         return 1;
-        break;
+
       case DeviceType.MOBILE:
         return 2;
-        break;
+
       case DeviceType.TABLET:
         return 3;
-        break;
+
       case DeviceType.DESKTOP:
         return 5;
-        break;
+
       default:
         return 2;
     }

@@ -1,4 +1,4 @@
-import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';

@@ -6,33 +6,63 @@ import 'package:chaseapp/src/models/notification/notification_data/notification_
 import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/enums/interest_enum.dart';
 import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO: Update with new notification schema
-ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
-  final data = message.data;
-
-  final notificationData = ChaseAppNotification(
-    interest: data["interest"] as String,
-    title: message.notification?.title ?? "NA",
-    body: message.notification?.body ?? "NA",
-    image: data["image"] as String?,
-    data: data["data"] != null
-        ? NotificationData.fromJson(data["data"] as Map<String, dynamic>)
-        : null,
-    id: data["id"] as String?,
-    createdAt: data["createdAt"] as DateTime,
+ChaseAppNotification constructNotification(
+    String title, String body, Map<String, dynamic> data) {
+  final notification = ChaseAppNotification(
+    interest: data["Interest"] as String,
+    title: title,
+    body: body,
+    image: data["Image"] as String?,
+    data: NotificationData.fromJson(data),
+    type: data["Type"] as String,
+    //  data["Data"] != null
+    //     ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
+    //     : null,
+    id: data["Id"] as String?,
+    createdAt: parseDate(data["CreatedAt"]),
   );
 
-  return notificationData;
+  return notification;
+}
+
+DateTime parseDate(dynamic date) {
+  if (date == null) {
+    return DateTime.now();
+  } else if (date is String) {
+    final isMSE = int.tryParse(date);
+    if (isMSE == null) {
+      final parsedDate = DateTime.tryParse(date);
+
+      return parsedDate ?? DateTime.now();
+    }
+    return DateTime.fromMillisecondsSinceEpoch(isMSE);
+  } else if (date is Timestamp) {
+    return date.toDate();
+  } else {
+    return date as DateTime;
+  }
+}
+
+//TODO: Update with new notification schema
+ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
+  final notification = constructNotification(
+    message.notification?.title ?? "NA",
+    message.notification?.body ?? "NA",
+    message.data,
+  );
+
+  return notification;
 }
 
 Future<void> handlebgmessage(RemoteMessage message) async {
   //TODO: Update with new notification schema
 
-  if (message.data["interest"] != null) {
+  if (message.data["Interest"] != null) {
     // updateNotificationsPresentStatus(true);
     final notificationData = getNotificationDataFromMessage(message);
 

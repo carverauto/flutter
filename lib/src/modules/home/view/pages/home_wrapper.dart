@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
 import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_pop_up_banner.dart';
 import 'package:chaseapp/src/routes/routeNames.dart';
+import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
+import 'package:chaseapp/src/shared/notifications/notification_pop_up_banner.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +49,15 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     final data = message.data;
     //TODO: Update with new notification schema
 
-    if (data["interest"] != null) {
+    if (data["Interest"] != null && data["Type"] != null) {
       updateNotificationsPresentStatus(ref, true);
       final notificationData = getNotificationDataFromMessage(message);
 
       notificationHandler(context, notificationData, read: ref.read);
     } else {
-      logger
-          .warning("ChaseAppNotification data didn't contained interest field");
+      logger.warning(
+        "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+      );
     }
   }
 
@@ -94,27 +93,32 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handleNotificationInForegroundState() {
-    PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
-      log("Pusher Message Recieved in the foreground--->" +
-          notification.toString());
-      final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
-          notification["data"] as Map<String, dynamic>);
+    PusherBeams.instance.onMessageReceivedInTheForeground((message) {
+      log("Pusher Message Recieved in the foreground--->" + message.toString());
+      final Map<String, dynamic> data =
+          Map<String, dynamic>.from(message["data"] as Map<dynamic, dynamic>);
       //TODO: Update with new notification schema
-      if (data["interest"] != null) {
-        final notificationData = ChaseAppNotification(
-          interest: data["interest"] as String,
-          title: notification["title"] as String,
-          body: notification["body"] as String,
-          data: NotificationData.fromJson(data),
-          image: data["image"] as String?,
-          createdAt: notification["createdAt"] as DateTime,
+      if (data["Interest"] != null && data["Type"] != null) {
+        final notification = constructNotification(
+          message["title"] as String? ?? "NA",
+          message["body"] as String? ?? "NA",
+          data,
         );
+        // final notificationData = ChaseAppNotification(
+        //   interest: data["Interest"] as String,
+        //   title: notification["Title"] as String,
+        //   body: notification["Body"] as String,
+        //   data: NotificationData.fromJson(data),
+        //   image: data["Image"] as String?,
+        //   createdAt: data["CreatedAt"] as DateTime,
+        // );
         updateNotificationsPresentStatus(ref, true);
 
-        showNotificationBanner(context, notificationData);
+        showNotificationBanner(context, notification);
       } else {
         logger.warning(
-            "ChaseAppNotification data didn't contained interest field");
+          "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+        );
       }
     });
   }

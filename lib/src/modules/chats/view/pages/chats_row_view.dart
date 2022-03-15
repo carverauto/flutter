@@ -71,6 +71,7 @@ class ChatsViewRow extends ConsumerWidget {
                     watchThisProvider: chatChannelProvider(chaseId),
                     logger: logger,
                     builder: (channel, ref, child) {
+                      // channel.watch();
                       final messages = channel.state?.messages;
                       if (messages == null || messages.isEmpty)
                         return GestureDetector(
@@ -129,13 +130,16 @@ class ChatsViewRow extends ConsumerWidget {
                                   : CachedNetworkImageProvider(
                                       lastMessage.user!.image!,
                                     ),
-                              child: Text(
-                                lastMessage.user?.name[0].toUpperCase() ?? "U",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              child: lastMessage.user!.image != null
+                                  ? null
+                                  : Text(
+                                      lastMessage.user?.name[0].toUpperCase() ??
+                                          "U",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                             ),
                             title: Text(
                               lastMessage.user!.name,
@@ -164,7 +168,7 @@ class ChatsViewRow extends ConsumerWidget {
                       );
                     },
                   );
-                  break;
+
                 case ConnectionStatus.connecting:
                   return Column(
                     children: [

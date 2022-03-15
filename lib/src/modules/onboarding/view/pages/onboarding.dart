@@ -1,5 +1,5 @@
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/info.dart';
-import 'package:chaseapp/src/const/links.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
 import 'package:chaseapp/src/modules/onboarding/view/parts/onboarding_page.dart';

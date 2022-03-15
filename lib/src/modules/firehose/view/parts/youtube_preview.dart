@@ -50,7 +50,6 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initializeVideoController();
     isMuted = true;
@@ -58,7 +57,6 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }

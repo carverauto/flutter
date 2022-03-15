@@ -13,6 +13,9 @@ final CollectionReference notificationsCollection =
 final CollectionReference interestsCollection =
     _firestore.collection('interests');
 
+final CollectionReference animationsCollection =
+    _firestore.collection('animations');
+
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(
   fromFirestore: (data, _) {

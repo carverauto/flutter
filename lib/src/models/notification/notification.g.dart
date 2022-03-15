@@ -11,6 +11,7 @@ _$_ChaseAppNotification _$$_ChaseAppNotificationFromJson(
     _$_ChaseAppNotification(
       interest: json['Interest'] as String,
       id: json['id'] as String?,
+      type: json['Type'] as String,
       title: json['Title'] as String,
       body: json['Body'] as String,
       image: json['Image'] as String?,
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$_ChaseAppNotificationToJson(
     <String, dynamic>{
       'Interest': instance.interest,
       'id': instance.id,
+      'Type': instance.type,
       'Title': instance.title,
       'Body': instance.body,
       'Image': instance.image,
