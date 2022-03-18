@@ -1,15 +1,17 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 class Sizescaleconfig {
-  static final double refrenceheight = 715.0;
-  static final double referencewidth = 320.0;
+  static const double refrenceheight = 715;
+  static const double referencewidth = 320;
   static double? screenheight;
   static double? screenwidth;
   static late double heightscaleratio;
   static late double widthscaleratio;
   static late double textscalefactor;
 
-  static final extraSmallMobileBreakpoint = 380;
-  static final mobileBreakpoint = 480;
-  static final tabletBreakpoint = 900;
+  static const int extraSmallMobileBreakpoint = 380;
+  static const int mobileBreakpoint = 480;
+  static const int tabletBreakpoint = 900;
 
   static DeviceType get getDeviceType {
     if (screenwidth! <= extraSmallMobileBreakpoint) {
@@ -42,8 +44,12 @@ class Sizescaleconfig {
   }
 
   static double scaleWidthFactorWithMaxMinConstraints(
-      double actualWidth, double maxWidth, double minWidth) {
-    final calculatedWidth = actualWidth * widthscaleratio;
+    double actualWidth,
+    double maxWidth,
+    double minWidth,
+  ) {
+    final double calculatedWidth = actualWidth * widthscaleratio;
+
     return calculatedWidth > maxWidth
         ? maxWidth
         : calculatedWidth < minWidth
@@ -52,8 +58,11 @@ class Sizescaleconfig {
   }
 
   static double scaleHeightFactorWithMaxMinConstraints(
-      double actualHeight, double maxHeight, double minHeight) {
-    final calculatedHeight = actualHeight * heightscaleratio;
+    double actualHeight,
+    double maxHeight,
+    double minHeight,
+  ) {
+    final double calculatedHeight = actualHeight * heightscaleratio;
 
     return calculatedHeight > maxHeight
         ? maxHeight
@@ -63,7 +72,10 @@ class Sizescaleconfig {
   }
 
   static void setSizes(
-      double screenheight, double screenwidth, double textscalefactor) {
+    double screenheight,
+    double screenwidth,
+    double textscalefactor,
+  ) {
     Sizescaleconfig.screenheight = screenheight;
     Sizescaleconfig.screenwidth = screenwidth;
     Sizescaleconfig.textscalefactor = textscalefactor;
@@ -93,9 +105,6 @@ extension GetGridCount on DeviceType {
 
       case DeviceType.DESKTOP:
         return 5;
-
-      default:
-        return 2;
     }
   }
 }

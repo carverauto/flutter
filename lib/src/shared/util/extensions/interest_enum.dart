@@ -1,35 +1,32 @@
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/shared/enums/interest_enum.dart';
+import '../../../models/notification/notification.dart';
+import '../../enums/interest_enum.dart';
 
-Interests getInterestEnumFromString(String interest) {
+Interests? getInterestEnumFromString(String interest) {
   switch (interest) {
-    case "chases-notifications":
+    case 'chases-notifications':
       return Interests.chases;
-    case "firehose-notifications":
+    case 'firehose-notifications':
       return Interests.firehose;
-    case "AppUpdates":
+    case 'AppUpdates':
       return Interests.appUpdates;
     default:
-      return Interests.other;
+      return null;
   }
 }
 
 extension NotificationInterestEnum on ChaseAppNotification {
-  Interests get getInterestEnumFromName =>
-      getInterestEnumFromString(this.interest);
+  Interests? get getInterestEnumFromName => getInterestEnumFromString(interest);
 }
 
-String getStringFromInterestEnum(Interests interest) {
+String? getStringFromInterestEnum(Interests interest) {
   switch (interest) {
     case Interests.chases:
-      return "chases-notifications";
+      return 'chases-notifications';
     case Interests.firehose:
-      return "firehose-notifications";
+      return 'firehose-notifications';
     case Interests.appUpdates:
-      return "AppUpdates";
-    case Interests.other:
-      return "other";
+      return 'AppUpdates';
     default:
-      return "other";
+      return null;
   }
 }
