@@ -117,7 +117,7 @@ class _NotificationPopUpBannerState extends State<NotificationPopUpBanner> {
                         color: primaryShadowColor,
                         blurRadius: blurValue,
                         offset: Offset(0, 2),
-                      )
+                      ),
                     ],
                   ),
                   child: ClipRRect(

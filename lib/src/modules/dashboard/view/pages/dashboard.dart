@@ -9,7 +9,7 @@ import '../../../../models/chase/chase.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
-import '../../../firehose/view/pages/firehose.dart';
+import '../../../firehose/view/pages/firehose_view_all.dart';
 import '../parts/chaseapp_appbar.dart';
 import '../parts/chaseapp_drawer.dart';
 import '../parts/connectivity_status.dart';
@@ -218,7 +218,9 @@ class _DashboardMainView extends ConsumerWidget {
                     height: kItemsSpacingSmallConstant,
                   ),
                 ),
-                FireHoseView(),
+                FirehoseListViewAll(
+                  showLimited: true,
+                ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingSmallConstant,
