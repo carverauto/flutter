@@ -1,7 +1,8 @@
-import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
-import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../shared/util/convertors/datetimeconvertor.dart';
+import 'notification_data/notification_data.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';
@@ -12,11 +13,11 @@ abstract class ChaseAppNotification implements _$ChaseAppNotification {
   @JsonSerializable(explicitToJson: true)
   const factory ChaseAppNotification({
     @JsonKey(name: 'Interest') required String interest,
-    String? id,
+    required String id,
     @JsonKey(name: 'Type') required String type,
     @JsonKey(name: 'Title') required String title,
     @JsonKey(name: 'Body') required String body,
-    @JsonKey(name: 'Image') String? image,
+    // @JsonKey(name: 'Image') String? image,
     @JsonKey(name: 'CreatedAt')
     @DatetimeTimestampConverter()
         required DateTime createdAt,
