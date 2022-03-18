@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -406,7 +404,7 @@ class _LoadingListTileState extends State<LoadingListTile>
               gradient: LinearGradient(
                 begin: Alignment.centerRight,
                 end: Alignment.centerLeft,
-                transform: const GradientRotation(pi / 4),
+                // transform: const GradientRotation(pi / 4),
                 colors: const [
                   Colors.transparent,
                   Colors.white70,

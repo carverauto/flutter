@@ -1,5 +1,6 @@
-import 'package:chaseapp/src/const/other.dart';
 import 'package:flutter/material.dart';
+
+import '../../const/other.dart';
 
 class HeroDialogRoute<T> extends PageRoute<T> {
   HeroDialogRoute({required this.builder}) : super();
@@ -24,8 +25,8 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    return new FadeTransition(
-      opacity: new CurvedAnimation(
+    return FadeTransition(
+      opacity: CurvedAnimation(
         parent: animation,
         curve: kPrimaryCurve,
       ),
@@ -40,5 +41,5 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   }
 
   @override
-  String? get barrierLabel => "Dismissable Dialog";
+  String? get barrierLabel => 'Dismissable Dialog';
 }
