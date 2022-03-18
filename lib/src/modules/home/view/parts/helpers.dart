@@ -1,30 +1,35 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/models/notification/notification_data/notification_data.dart';
-import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/enums/interest_enum.dart';
-import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../models/notification/notification.dart';
+import '../../../../models/notification/notification_data/notification_data.dart';
+import '../../../../shared/enums/interest_enum.dart';
+import '../../../../shared/util/extensions/interest_enum.dart';
+import '../../../notifications/view/providers/providers.dart';
+
 ChaseAppNotification constructNotification(
-    String title, String body, Map<String, dynamic> data) {
-  final notification = ChaseAppNotification(
-    interest: data["Interest"] as String,
+  String id,
+  String title,
+  String body,
+  Map<String, dynamic> data,
+) {
+  final ChaseAppNotification notification = ChaseAppNotification(
+    interest: data['Interest'] as String,
     title: title,
     body: body,
-    image: data["Image"] as String?,
+    // image: data["Image"] as String?,
     data: NotificationData.fromJson(data),
-    type: data["Type"] as String,
+    type: data['Type'] as String,
     //  data["Data"] != null
     //     ? NotificationData.fromJson(data["Data"] as Map<String, dynamic>)
     //     : null,
-    id: data["Id"] as String?,
-    createdAt: parseDate(data["CreatedAt"]),
+    id: id,
+    createdAt: parseDate(data['CreatedAt']),
   );
 
   return notification;
@@ -34,13 +39,11 @@ DateTime parseDate(dynamic date) {
   if (date == null) {
     return DateTime.now();
   } else if (date is String) {
-    final isMSE = int.tryParse(date);
-    if (isMSE == null) {
-      final parsedDate = DateTime.tryParse(date);
+    final DateTime? parsedDate = DateTime.tryParse(date);
 
-      return parsedDate ?? DateTime.now();
-    }
-    return DateTime.fromMillisecondsSinceEpoch(isMSE);
+    return parsedDate ?? DateTime.now();
+  } else if (date is int) {
+    return DateTime.fromMillisecondsSinceEpoch(date);
   } else if (date is Timestamp) {
     return date.toDate();
   } else {
@@ -50,9 +53,10 @@ DateTime parseDate(dynamic date) {
 
 //TODO: Update with new notification schema
 ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
-  final notification = constructNotification(
-    message.notification?.title ?? "NA",
-    message.notification?.body ?? "NA",
+  final ChaseAppNotification notification = constructNotification(
+    message.messageId!,
+    message.notification?.title ?? 'NA',
+    message.notification?.body ?? 'NA',
     message.data,
   );
 
@@ -62,17 +66,18 @@ ChaseAppNotification getNotificationDataFromMessage(RemoteMessage message) {
 Future<void> handlebgmessage(RemoteMessage message) async {
   //TODO: Update with new notification schema
 
-  if (message.data["Interest"] != null) {
+  if (message.data['Interest'] != null) {
     // updateNotificationsPresentStatus(true);
-    final notificationData = getNotificationDataFromMessage(message);
+    final ChaseAppNotification notificationData =
+        getNotificationDataFromMessage(message);
 
-    log("Background message arrived--->" + notificationData.data.toString());
+    log('Background message arrived--->${notificationData.data}');
 
     switch (notificationData.getInterestEnumFromName) {
       case Interests.appUpdates:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final bool should_fetch = notificationData.data?.configState == "stale";
-        await prefs.setBool("should_fetch", should_fetch);
+        final bool shouldFetch = notificationData.data?.configState == 'stale';
+        await prefs.setBool('should_fetch', shouldFetch);
         break;
 
       default:
@@ -80,9 +85,14 @@ Future<void> handlebgmessage(RemoteMessage message) async {
   }
 }
 
-void updateNotificationsPresentStatus(WidgetRef ref, bool isPresent) async {
+void updateNotificationsPresentStatus(
+  WidgetRef ref,
+  bool isPresent,
+) async {
   // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // prefs.setBool("newNotificationsPresent", isPresent);
-  ref.read(newNotificationsPresentProvider.state).update((state) => isPresent);
+  ref
+      .read(newNotificationsPresentProvider.state)
+      .update((bool state) => isPresent);
 }
