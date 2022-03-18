@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
-import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
-import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
-import 'package:chaseapp/src/shared/notifications/notification_pop_up_banner.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+
+import '../../../../models/notification/notification.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/notifications/notification_handler.dart';
+import '../../../../shared/notifications/notification_pop_up_banner.dart';
+import '../parts/helpers.dart';
+import 'home_page.dart';
 
 class HomeWrapper extends ConsumerStatefulWidget {
   @override
@@ -20,15 +23,19 @@ class HomeWrapper extends ConsumerStatefulWidget {
 
 class _HomeWrapperState extends ConsumerState<HomeWrapper>
     with WidgetsBindingObserver {
-  final Logger logger = Logger("HomeWrapper");
+  final Logger logger = Logger('HomeWrapper');
   Timer? _timerLink;
 
   Future<void> navigateToView(Uri deepLink) async {
-    final chaseId = deepLink.queryParameters["chaseId"];
+    final String? chaseId = deepLink.queryParameters['chaseId'];
 
-    Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
-      "chaseId": chaseId,
-    });
+    await Navigator.pushNamed(
+      context,
+      RouteName.CHASE_VIEW,
+      arguments: {
+        'chaseId': chaseId,
+      },
+    );
   }
 
   void handleDynamicLinkFromTerminatedState() async {
@@ -36,7 +43,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
-    if (deepLink?.path != "/__/auth/action") {
+    if (deepLink?.path != '/__/auth/action') {
       if (deepLink != null) {
         await navigateToView(deepLink);
       }
@@ -44,16 +51,17 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handlenotifications(RemoteMessage message) async {
-    log("ChaseAppNotification Message Arrived--->" + message.data.toString());
+    log('ChaseAppNotification Message Arrived--->${message.data}');
 
-    final data = message.data;
+    final Map<String, dynamic> data = message.data;
     //TODO: Update with new notification schema
 
-    if (data["Interest"] != null && data["Type"] != null) {
+    if (data['Interest'] != null && data['Type'] != null) {
       updateNotificationsPresentStatus(ref, true);
-      final notificationData = getNotificationDataFromMessage(message);
+      final ChaseAppNotification notificationData =
+          getNotificationDataFromMessage(message);
 
-      notificationHandler(context, notificationData, read: ref.read);
+      await notificationHandler(context, notificationData, read: ref.read);
     } else {
       logger.warning(
         "ChaseAppNotification data didn't contained Interest or Type field--> $data",
@@ -62,7 +70,8 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   Future<void> handleMessagesFromTerminatedState() async {
-    final message = await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? message =
+        await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
       handlenotifications(message);
@@ -70,7 +79,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   Future<void> handlemessagesthatopenedtheappFromBackgroundState() async {
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
       if (event.data.isNotEmpty) {
         handlenotifications(event);
       }
@@ -78,30 +87,35 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   void handleDynamicLinkOpenedFromBackgroundState() {
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      log("Dynamic Link Recieved--->" + dynamicLink.link.toString());
-      final Uri? deepLink = dynamicLink.link;
+    FirebaseDynamicLinks.instance.onLink.listen(
+      (PendingDynamicLinkData dynamicLink) async {
+        log('Dynamic Link Recieved--->${dynamicLink.link}');
+        final Uri deepLink = dynamicLink.link;
 
-      if (deepLink?.path != "/__/auth/action") {
-        if (deepLink != null) {
-          await navigateToView(deepLink);
+        if (deepLink.path != '/__/auth/action') {
+          if (deepLink != null) {
+            await navigateToView(deepLink);
+          }
         }
-      }
-    }, onError: (Object error, StackTrace stackTrace) {
-      log("Error while recieving dynamic link", error: error);
-    });
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        log('Error while recieving dynamic link', error: error);
+      },
+    );
   }
 
   void handleNotificationInForegroundState() {
-    PusherBeams.instance.onMessageReceivedInTheForeground((message) {
-      log("Pusher Message Recieved in the foreground--->" + message.toString());
+    PusherBeams.instance
+        .onMessageReceivedInTheForeground((Map<Object?, Object?> message) {
+      log('Pusher Message Recieved in the foreground--->$message');
       final Map<String, dynamic> data =
-          Map<String, dynamic>.from(message["data"] as Map<dynamic, dynamic>);
+          Map<String, dynamic>.from(message['data'] as Map<dynamic, dynamic>);
       //TODO: Update with new notification schema
-      if (data["Interest"] != null && data["Type"] != null) {
-        final notification = constructNotification(
-          message["title"] as String? ?? "NA",
-          message["body"] as String? ?? "NA",
+      if (data['Interest'] != null && data['Type'] != null) {
+        final ChaseAppNotification notification = constructNotification(
+          math.Random().nextInt(10000).toString(),
+          message['title'] as String? ?? 'NA',
+          message['body'] as String? ?? 'NA',
           data,
         );
         // final notificationData = ChaseAppNotification(
@@ -148,7 +162,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (mounted) {
       if (state == AppLifecycleState.resumed) {
-        _timerLink = new Timer(
+        _timerLink = Timer(
           const Duration(milliseconds: 1000),
           () {},
         );
@@ -158,6 +172,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
   @override
   Widget build(BuildContext context) {
-    return Home();
+    return const Home();
   }
 }

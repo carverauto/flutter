@@ -10,8 +10,8 @@ import '../../../../models/notification/notification_data/notification_data.dart
 import '../../../../models/user/user_data.dart';
 import '../../../../shared/enums/firehose_notification_type.dart';
 import '../../../../shared/enums/interest_enum.dart';
+import '../../../../shared/util/convertors/datetimeconvertor.dart';
 import '../../../../shared/util/extensions/interest_enum.dart';
-import '../../../home/view/parts/helpers.dart';
 import '../providers/providers.dart';
 
 class ChatStateNotifier extends StateNotifier<void> {
@@ -36,10 +36,12 @@ class ChatStateNotifier extends StateNotifier<void> {
     if (F.appFlavor == Flavor.DEV) {
       const String apiKey =
           String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
+
       return apiKey;
     } else {
       const String apiKey =
           String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
+
       return apiKey;
     }
   }

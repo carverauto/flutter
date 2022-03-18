@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../../shared/util/helpers/launchLink.dart';
+import '../../../../shared/util/helpers/sizescaleconfig.dart';
+import '../../../../shared/widgets/loaders/loading.dart';
 
 class TweetPreview extends StatelessWidget {
   final String tweetId;
   final bool showMedia;
-  TweetPreview({required this.tweetId, this.showMedia = true});
+  const TweetPreview({required this.tweetId, this.showMedia = true});
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +72,14 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
         maxHeight: previewHeight <= Sizescaleconfig.screenheight! * 0.5
             ? previewHeight
             : Sizescaleconfig.screenheight! * 0.5,
-        maxWidth: double.infinity,
       ),
       child: Stack(
         children: [
           WebView(
             backgroundColor: Colors.black,
             javascriptMode: JavascriptMode.unrestricted,
-            navigationDelegate: (request) {
-              if (request.url.contains("twitter.com")) {
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.contains('twitter.com')) {
                 return NavigationDecision.navigate;
               } else {
                 if (isLoaded) {
@@ -88,16 +88,15 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
                 return NavigationDecision.prevent;
               }
             },
-            onPageFinished: (value) {
-              log("OnPageFinished");
+            onPageFinished: (String value) {
+              log('OnPageFinished');
             },
-            onWebResourceError: (e) {
-              log("error", error: e.description);
+            onWebResourceError: (WebResourceError e) {
+              log('error', error: e.description);
             },
-            javascriptChannels: Set()
-              ..add(
+            javascriptChannels: <JavascriptChannel>{}..add(
                 JavascriptChannel(
-                  name: "Twitter",
+                  name: 'Twitter',
                   onMessageReceived: (JavascriptMessage message) {
                     log(message.message);
                     setState(() {
@@ -107,8 +106,8 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
                   },
                 ),
               ),
-            onWebViewCreated: (controller) {
-              log("onWebViewCreated");
+            onWebViewCreated: (WebViewController controller) {
+              log('onWebViewCreated');
             },
             initialUrl: Uri.dataFromString(
               getHtmlBody(widget.tweetId),
@@ -117,19 +116,19 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
             ).toString(),
           ),
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
-            transitionBuilder: (child, animation) {
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation) {
               return FadeTransition(
                 opacity: animation,
                 child: child,
               );
             },
             child: isLoaded
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : Container(
                     color: Colors.blue,
                     alignment: Alignment.center,
-                    child: CircularAdaptiveProgressIndicatorWithBg(),
+                    child: const CircularAdaptiveProgressIndicatorWithBg(),
                   ),
           ),
         ],

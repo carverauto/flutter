@@ -6,8 +6,8 @@ enum FirehoseNotificationType {
   events,
 }
 
-FirehoseNotificationType? getFirehoseNotificationTypeFromString(String type) {
-  switch (type.trim()) {
+FirehoseNotificationType? getFirehoseNotificationTypeFromString(String? type) {
+  switch (type?.trim()) {
     case 'twitter':
       return FirehoseNotificationType.twitter;
 

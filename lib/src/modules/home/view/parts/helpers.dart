@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/notification/notification_data/notification_data.dart';
 import '../../../../shared/enums/interest_enum.dart';
+import '../../../../shared/util/convertors/datetimeconvertor.dart';
 import '../../../../shared/util/extensions/interest_enum.dart';
 import '../../../notifications/view/providers/providers.dart';
 
@@ -33,22 +33,6 @@ ChaseAppNotification constructNotification(
   );
 
   return notification;
-}
-
-DateTime parseDate(dynamic date) {
-  if (date == null) {
-    return DateTime.now();
-  } else if (date is String) {
-    final DateTime? parsedDate = DateTime.tryParse(date);
-
-    return parsedDate ?? DateTime.now();
-  } else if (date is int) {
-    return DateTime.fromMillisecondsSinceEpoch(date);
-  } else if (date is Timestamp) {
-    return date.toDate();
-  } else {
-    return date as DateTime;
-  }
 }
 
 //TODO: Update with new notification schema

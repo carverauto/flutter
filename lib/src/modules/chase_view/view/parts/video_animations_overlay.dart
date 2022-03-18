@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/theater_rive.dart';
-import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../const/images.dart';
+import '../../../../const/sizings.dart';
+import '../providers/providers.dart';
+import 'theater_rive.dart';
 
 class VideoAnimationsOverlay extends ConsumerWidget {
   const VideoAnimationsOverlay({
@@ -13,8 +14,9 @@ class VideoAnimationsOverlay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool showOverlay = ref.watch(showVideoOverlayProvider);
+
     return !showOverlay
-        ? SizedBox.shrink()
+        ? const SizedBox.shrink()
         : Stack(
             fit: StackFit.expand,
             children: [
@@ -22,15 +24,15 @@ class VideoAnimationsOverlay extends ConsumerWidget {
                 top: kItemsSpacingSmallConstant,
                 left: kItemsSpacingSmallConstant,
                 child: Image(
-                  image: AssetImage(chaseAppTextLogoAsset),
+                  image: const AssetImage(chaseAppTextLogoAsset),
                   height: kImageSizeSmall,
                   fit: BoxFit.scaleDown,
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.bottomCenter,
                 child: TheaterRive(),
-              )
+              ),
             ],
           );
   }

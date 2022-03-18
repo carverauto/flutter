@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/shared/widgets/builders/image_builder.dart';
 import 'package:flutter/material.dart';
+
+import '../../const/colors.dart';
+import '../../const/images.dart';
+import '../../const/sizings.dart';
+import '../../models/notification/notification.dart';
+import '../widgets/builders/image_builder.dart';
 
 class NotificationDialog extends StatelessWidget {
   const NotificationDialog({
@@ -25,16 +26,16 @@ class NotificationDialog extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: Hero(
-                tag: notification.id ?? "NA",
+                tag: notification.id ?? 'NA',
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-                    boxShadow: [
+                    boxShadow: const <BoxShadow>[
                       BoxShadow(
                         color: primaryShadowColor,
                         blurRadius: blurValue,
                         offset: Offset(0, 2),
-                      )
+                      ),
                     ],
                     color: Theme.of(context).cardColor,
                   ),
@@ -42,7 +43,7 @@ class NotificationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
-                      url: notification.image ?? defaultAssetChaseImage,
+                      url: notification.data?.image ?? defaultAssetChaseImage,
                       //TODO: update later with parser
                       //  parseImageUrl(
                       //   notification.image ?? defaultPhotoURL,
@@ -54,17 +55,17 @@ class NotificationDialog extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
             Text(
               notification.title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingSmallConstant,
             ),
             Text(
@@ -73,15 +74,15 @@ class NotificationDialog extends StatelessWidget {
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingLargeConstant,
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(
-                "Close",
+              child: const Text(
+                'Close',
               ),
             )
           ],

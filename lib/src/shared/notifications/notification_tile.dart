@@ -1,22 +1,23 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/models/tweet_data/tweet_data.dart';
-import 'package:chaseapp/src/models/youtube_data/youtube_data.dart';
-import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/enums/firehose_notification_type.dart';
-import 'package:chaseapp/src/shared/notifications/notification_handler.dart';
-import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
+import '../../const/colors.dart';
+import '../../const/images.dart';
+import '../../const/sizings.dart';
+import '../../models/notification/notification.dart';
+import '../../models/tweet_data/tweet_data.dart';
+import '../../models/youtube_data/youtube_data.dart';
+import '../../modules/firehose/view/providers/providers.dart';
+import '../enums/firehose_notification_type.dart';
+import '../util/helpers/date_added.dart';
+import '../widgets/builders/providerStateBuilder.dart';
+import 'notification_handler.dart';
 
 class NotificationTile extends ConsumerWidget {
   NotificationTile({
@@ -28,96 +29,103 @@ class NotificationTile extends ConsumerWidget {
 
   final Logger logger = Logger('NotificationTile');
 
-  final titleStyle = TextStyle(
+  final TextStyle titleStyle = const TextStyle(
     fontWeight: FontWeight.bold,
     color: Colors.white,
   );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationType =
+    final FirehoseNotificationType? notificationType =
         getFirehoseNotificationTypeFromString(notification.type);
     switch (notificationType) {
       case FirehoseNotificationType.twitter:
         return ProviderStateBuilder<TweetData>(
-            loadingBuilder: () => LoadingListTile(
-                  height: 50,
+          loadingBuilder: () => const LoadingListTile(
+            height: 50,
+          ),
+          errorBuilder: (Object e, StackTrace? stk) {
+            return FirehoseErrorTile(
+              notification: notification,
+              onRefesh: () {
+                ref.refresh(
+                  fetchTweetAlongUserData(notification.data!.tweetId!),
+                );
+              },
+            );
+          },
+          builder: (TweetData tweetData, WidgetRef ref, Widget? child) {
+            return _NotificationListTile(
+              notification: notification,
+              body: tweetData.text,
+              imageUrl: tweetData.profileImageUrl,
+              title: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: tweetData.name,
+                      style: titleStyle,
+                    ),
+                    const TextSpan(text: ' '),
+                    TextSpan(
+                      text: '@${tweetData.userName}',
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
                 ),
-            errorBuilder: (e, stk) {
-              return FirehoseErrorTile(
-                  notification: notification,
-                  onRefesh: () {
-                    ref.refresh(
-                        fetchTweetAlongUserData(notification.data!.tweetId!));
-                  });
-            },
-            builder: (tweetData, ref, child) {
-              return _NotificationListTile(
-                notification: notification,
-                body: tweetData.text,
-                imageUrl: tweetData.profileImageUrl,
-                title: RichText(
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: tweetData.name,
-                        style: titleStyle,
-                      ),
-                      TextSpan(text: " "),
-                      TextSpan(
-                        text: "@" + tweetData.userName,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            watchThisProvider:
-                fetchTweetAlongUserData(notification.data!.tweetId!),
-            logger: logger);
+              ),
+            );
+          },
+          watchThisProvider:
+              fetchTweetAlongUserData(notification.data!.tweetId!),
+          logger: logger,
+        );
 
       case FirehoseNotificationType.streams:
         return ProviderStateBuilder<YoutubeChannelData>(
-            loadingBuilder: () => LoadingListTile(
-                  height: 50,
+          loadingBuilder: () => const LoadingListTile(
+            height: 50,
+          ),
+          errorBuilder: (Object e, StackTrace? stk) {
+            return FirehoseErrorTile(
+              notification: notification,
+              onRefesh: () {
+                ref.refresh(
+                  fetchTweetAlongUserData(notification.data!.channelId!),
+                );
+              },
+            );
+          },
+          builder:
+              (YoutubeChannelData channelData, WidgetRef ref, Widget? child) {
+            return _NotificationListTile(
+              notification: notification,
+              title: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: channelData.name,
+                      style: titleStyle,
+                    ),
+                    const TextSpan(text: ' '),
+                    TextSpan(
+                      text: NumberFormat.compact()
+                          .format(channelData.subcribersCount),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
                 ),
-            errorBuilder: (e, stk) {
-              return FirehoseErrorTile(
-                  notification: notification,
-                  onRefesh: () {
-                    ref.refresh(
-                        fetchTweetAlongUserData(notification.data!.channelId!));
-                  });
-            },
-            builder: (channelData, ref, child) {
-              return _NotificationListTile(
-                notification: notification,
-                title: RichText(
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: channelData.name,
-                        style: titleStyle,
-                      ),
-                      TextSpan(text: " "),
-                      TextSpan(
-                        text: NumberFormat.compact()
-                            .format(channelData.subcribersCount),
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-                body: notification.body,
-                imageUrl: notification.data!.image,
-              );
-            },
-            watchThisProvider:
-                fetchYoutubeChannelDataProvider(notification.data!.channelId!),
-            logger: logger);
+              ),
+              body: notification.body,
+              imageUrl: notification.data!.image,
+            );
+          },
+          watchThisProvider:
+              fetchYoutubeChannelDataProvider(notification.data!.channelId!),
+          logger: logger,
+        );
 
       case FirehoseNotificationType.live_on_patrol:
         return _NotificationListTile(
@@ -131,6 +139,32 @@ class NotificationTile extends ConsumerWidget {
           body: notification.body,
           imageUrl: notification.data!.image,
         );
+      case FirehoseNotificationType.events:
+        return _NotificationListTile(
+          notification: notification,
+          title: Text(
+            notification.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
+          ),
+          body: notification.body,
+          imageUrl: notification.data!.image,
+        );
+
+      case FirehoseNotificationType.chase:
+        return _NotificationListTile(
+          notification: notification,
+          title: Text(
+            notification.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: titleStyle,
+          ),
+          body: notification.body,
+          imageUrl: notification.data!.image,
+        );
+
       default:
         return _NotificationListTile(
           notification: notification,
@@ -159,11 +193,11 @@ class NotificationTrailing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
+      children: <Widget>[
         NotificationTrailingIcon(
           notification: notification,
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           elapsedTimeForDate(notification.createdAt),
           style: TextStyle(
@@ -183,40 +217,48 @@ class NotificationTrailingIcon extends StatelessWidget {
 
   final ChaseAppNotification notification;
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildTrailingIcon() {
     switch (getFirehoseNotificationTypeFromString(notification.type)) {
       case FirehoseNotificationType.twitter:
         return SvgPicture.asset(
-          "assets/icon/twitter.svg",
+          'assets/icon/twitter.svg',
           height: kIconSizeMediumConstant,
         );
 
       case FirehoseNotificationType.streams:
-        return Icon(
+        return const Icon(
           Icons.play_arrow_rounded,
           color: Colors.red,
         );
 
       case FirehoseNotificationType.live_on_patrol:
         return ShaderMask(
-          shaderCallback: (bounds) {
-            return LinearGradient(
+          shaderCallback: (Rect bounds) {
+            return const LinearGradient(
               colors: [
                 Colors.blue,
                 Colors.red,
               ],
             ).createShader(bounds);
           },
-          child: Icon(
+          child: const Icon(
             Icons.local_police_rounded,
             color: Colors.white,
           ),
         );
 
+      case FirehoseNotificationType.events:
+        return const SizedBox.shrink();
+      case FirehoseNotificationType.chase:
+        return const SizedBox.shrink();
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return buildTrailingIcon();
   }
 }
 
@@ -236,18 +278,18 @@ class FirehoseErrorTile extends StatelessWidget {
         bottom: kItemsSpacingMediumConstant,
       ),
       child: ListTile(
-        tileColor: Color.fromARGB(255, 94, 94, 94),
+        tileColor: const Color.fromARGB(255, 94, 94, 94),
         title: TextButton.icon(
           onPressed: onRefesh,
           icon: IconButton(
             onPressed: onRefesh,
-            icon: Icon(
+            icon: const Icon(
               Icons.refresh,
               color: Colors.white,
             ),
           ),
-          label: Text(
-            "Failed to load!",
+          label: const Text(
+            'Failed to load!',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -293,15 +335,16 @@ class _NotificationListTile extends StatelessWidget {
           );
         },
         isThreeLine: true,
-        tileColor: Color.fromARGB(255, 94, 94, 94),
+        tileColor: const Color.fromARGB(255, 94, 94, 94),
         leading: Hero(
-            tag: notification.id ?? "NA",
-            child: leading ??
-                CircleAvatar(
-                  backgroundImage:
-                      CachedNetworkImageProvider(imageUrl ?? defaultPhotoURL),
-                  backgroundColor: Colors.white,
-                )),
+          tag: notification.id ?? UniqueKey(),
+          child: leading ??
+              CircleAvatar(
+                backgroundImage:
+                    CachedNetworkImageProvider(imageUrl ?? defaultPhotoURL),
+                backgroundColor: Colors.white,
+              ),
+        ),
         title: title,
         subtitle: Text(
           body,
@@ -355,30 +398,31 @@ class _LoadingListTileState extends State<LoadingListTile>
         bottom: kItemsSpacingMediumConstant,
       ),
       child: AnimatedBuilder(
-          animation: animationController,
-          builder: (context, child) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-                gradient: LinearGradient(
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft,
-                  transform: GradientRotation(pi / 4),
-                  colors: [
-                    Colors.transparent,
-                    Colors.white70,
-                    Colors.transparent,
-                  ],
-                  stops: [
-                    0.0,
-                    animationController.value,
-                    1.0,
-                  ],
-                ),
+        animation: animationController,
+        builder: (BuildContext context, Widget? child) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+              gradient: LinearGradient(
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+                transform: const GradientRotation(pi / 4),
+                colors: const [
+                  Colors.transparent,
+                  Colors.white70,
+                  Colors.transparent,
+                ],
+                stops: [
+                  0.0,
+                  animationController.value,
+                  1.0,
+                ],
               ),
-              height: widget.height,
-            );
-          }),
+            ),
+            height: widget.height,
+          );
+        },
+      ),
     );
   }
 }
