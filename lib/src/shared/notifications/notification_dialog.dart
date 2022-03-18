@@ -26,7 +26,7 @@ class NotificationDialog extends StatelessWidget {
             AspectRatio(
               aspectRatio: 1,
               child: Hero(
-                tag: notification.id ?? 'NA',
+                tag: notification.id ,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),

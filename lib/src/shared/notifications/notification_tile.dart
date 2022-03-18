@@ -337,7 +337,7 @@ class _NotificationListTile extends StatelessWidget {
         isThreeLine: true,
         tileColor: const Color.fromARGB(255, 94, 94, 94),
         leading: Hero(
-          tag: notification.id ?? UniqueKey(),
+          tag: notification.id,
           child: leading ??
               CircleAvatar(
                 backgroundImage:

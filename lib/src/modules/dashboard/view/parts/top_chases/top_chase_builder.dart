@@ -1,16 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
-import 'package:chaseapp/src/shared/widgets/chase/donut_box.dart';
-import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../const/colors.dart';
+import '../../../../../const/images.dart';
+import '../../../../../const/sizings.dart';
+import '../../../../../models/chase/chase.dart';
+import '../../../../../routes/routeNames.dart';
+import '../../../../../shared/util/helpers/date_added.dart';
+import '../../../../../shared/util/helpers/image_url_parser.dart';
+import '../../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../../../shared/widgets/chase/donut_box.dart';
+import '../../../../../shared/widgets/sentiment_analysis_slider.dart';
+import '../../../../signin/view/parts/gradient_animation_container.dart';
 
 class TopChaseBuilder extends StatelessWidget {
   const TopChaseBuilder({
@@ -25,7 +26,8 @@ class TopChaseBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isImagePresent = chase.imageURL != null && chase.imageURL!.isNotEmpty;
+    final bool isImagePresent =
+        chase.imageURL != null && chase.imageURL!.isNotEmpty;
 
     return Card(
       clipBehavior: Clip.hardEdge,
@@ -58,7 +60,7 @@ class TopChaseBuilder extends StatelessWidget {
                     ? CachedNetworkImageProvider(
                         parseImageUrl(chase.imageURL!, imageDimensions),
                       )
-                    : ResizeImage(
+                    : const ResizeImage(
                         AssetImage(
                           defaultAssetChaseImage,
                         ),
@@ -71,11 +73,15 @@ class TopChaseBuilder extends StatelessWidget {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () async {
-                await Future<void>.delayed(Duration(milliseconds: 300));
-                Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
-                  "chaseId": chase.id,
-                });
+              onTap: () {
+                //  Future<void>.delayed(const Duration(milliseconds: 300));
+                Navigator.pushNamed(
+                  context,
+                  RouteName.CHASE_VIEW,
+                  arguments: {
+                    'chaseId': chase.id,
+                  },
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.all(
@@ -85,15 +91,17 @@ class TopChaseBuilder extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (chase.live ?? false)
-                      GradientAnimationChildBuilder(
-                        shouldAnimate: true,
-                        padding: EdgeInsets.all(0),
-                        child: GlassButton(
-                          child: Text(
-                            "Live!",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                      const RepaintBoundary(
+                        child: GradientAnimationChildBuilder(
+                          shouldAnimate: true,
+                          padding: EdgeInsets.zero,
+                          child: GlassButton(
+                            child: Text(
+                              'Live!',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -107,12 +115,12 @@ class TopChaseBuilder extends StatelessWidget {
                           ),
                         ),
                       ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          chase.name ?? "NA",
+                          chase.name ?? 'NA',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -122,11 +130,10 @@ class TopChaseBuilder extends StatelessWidget {
                                 Theme.of(context).textTheme.subtitle1!.fontSize,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: kItemsSpacingExtraSmallConstant,
                         ),
                         Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
