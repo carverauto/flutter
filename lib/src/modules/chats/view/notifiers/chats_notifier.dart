@@ -6,12 +6,8 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 import '../../../../../flavors.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../models/notification/notification.dart';
-import '../../../../models/notification/notification_data/notification_data.dart';
 import '../../../../models/user/user_data.dart';
-import '../../../../shared/enums/firehose_notification_type.dart';
-import '../../../../shared/enums/interest_enum.dart';
-import '../../../../shared/util/convertors/datetimeconvertor.dart';
-import '../../../../shared/util/extensions/interest_enum.dart';
+import '../../../../shared/notifications/activity_to_notification_convertor.dart';
 import '../providers/providers.dart';
 
 class ChatStateNotifier extends StateNotifier<void> {
@@ -111,73 +107,4 @@ class ChatStateNotifier extends StateNotifier<void> {
       logger.severe('Error while disconnecting user from getStream', e, stk);
     }
   }
-}
-
-// ignore: long-method
-ChaseAppNotification convertActivityToChaseAppNotification(
-  feed.Activity activity,
-) {
-  final String type = activity.extraData!['eventType']! as String;
-  final Map<String, dynamic> payload =
-      activity.extraData!['payload']! as Map<String, dynamic>;
-  final String? title = payload['title'] as String?;
-  final String? body = payload['body'] as String?;
-  final String? image = payload['image_url'] as String?;
-  final DateTime createdAt =
-      parseDate(activity.extraData!['created_at']! as int);
-  final String? id = payload['id'] as String?;
-  late final NotificationData data;
-  switch (getFirehoseNotificationTypeFromString(type)) {
-    case FirehoseNotificationType.twitter:
-      data = NotificationData(
-        tweetId: id,
-        image: image,
-      );
-      break;
-
-    case FirehoseNotificationType.streams:
-      data = NotificationData(
-        youtubeId: id,
-        image: image,
-      );
-      break;
-
-    case FirehoseNotificationType.chase:
-      data = NotificationData(
-        id: id,
-        image: image,
-      );
-      break;
-
-    case FirehoseNotificationType.live_on_patrol:
-      data = NotificationData(
-        id: id,
-        image: image,
-      );
-      break;
-
-    case FirehoseNotificationType.events:
-      data = NotificationData(
-        // id: id,
-        image: image,
-      );
-      break;
-
-    default:
-      data = NotificationData(
-        // id: id,
-        image: image,
-      );
-      break;
-  }
-
-  return ChaseAppNotification(
-    interest: getStringFromInterestEnum(Interests.firehose)!,
-    type: type,
-    title: title ?? 'NA',
-    body: body ?? 'NA',
-    id: activity.id!,
-    createdAt: createdAt,
-    data: data,
-  );
 }
