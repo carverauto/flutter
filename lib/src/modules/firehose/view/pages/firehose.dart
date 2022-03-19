@@ -7,6 +7,7 @@ import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/notifications/notification_tile.dart';
 import '../../../../shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
+import '../../../../shared/widgets/loaders/shimmer_tile.dart';
 
 class FireHoseView extends ConsumerWidget {
   const FireHoseView({
@@ -29,6 +30,9 @@ class FireHoseView extends ConsumerWidget {
     return SliverProviderPaginatedStateNotifierBuilder<ChaseAppNotification>(
       axis: Axis.vertical,
       scrollController: scrollController,
+      loadingBuilder: () {
+        return const ShimmerTile(height: 68);
+      },
       builder: (
         List<ChaseAppNotification> notifications,
         ScrollController controller,

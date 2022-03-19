@@ -9,6 +9,7 @@ import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
 import '../../../../shared/util/helpers/sizescaleconfig.dart';
 import '../../../../shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
+import '../../../../shared/widgets/loaders/shimmer_tile.dart';
 import '../providers/providers.dart';
 import 'paginatedlist_bottom.dart';
 import 'top_chases/top_chase_builder.dart';
@@ -36,6 +37,12 @@ class ChasesPaginatedListView extends ConsumerWidget {
       logger: logger,
       scrollController: scrollController,
       axis: axis,
+      loadingBuilder: () {
+        return const Padding(
+          padding: EdgeInsets.all(kPaddingMediumConstant),
+          child: ShimmerTile(height: 300),
+        );
+      },
       builder: (
         List<Chase> chases,
         ScrollController controller, [

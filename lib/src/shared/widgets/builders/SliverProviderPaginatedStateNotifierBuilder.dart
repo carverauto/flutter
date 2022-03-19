@@ -15,12 +15,14 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.scrollController,
     required this.logger,
     required this.axis,
+    this.loadingBuilder,
   }) : super(key: key);
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
       PaginationNotifierState<T>> watchThisStateNotifierProvider;
 
   final Widget Function(List<T> data, ScrollController controller) builder;
+  final Widget Function()? loadingBuilder;
 
   final ScrollController scrollController;
   final Logger logger;
@@ -60,9 +62,11 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
         );
       },
       loading: (List<T> chases) {
-        return const SliverToBoxAdapter(
-          child:
-              RepaintBoundary(child: CircularAdaptiveProgressIndicatorWithBg()),
+        return SliverToBoxAdapter(
+          child: RepaintBoundary(
+              child: loadingBuilder != null
+                  ? loadingBuilder!()
+                  : const CircularAdaptiveProgressIndicatorWithBg()),
         );
       },
       onGoingLoading: (List<T> data) {
