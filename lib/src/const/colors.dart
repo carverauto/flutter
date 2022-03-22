@@ -12,6 +12,7 @@ const MaterialColor primaryColor = MaterialColor(
     600: Color(0xff656463),
     700: Color(0xff525150),
     800: Color(0xff343332),
+    900: Color(0xff141312),
   },
 );
 

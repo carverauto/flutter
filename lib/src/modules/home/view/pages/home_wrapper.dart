@@ -124,14 +124,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
           message['body'] as String? ?? 'NA',
           data,
         );
-        // final notificationData = ChaseAppNotification(
-        //   interest: data["Interest"] as String,
-        //   title: notification["Title"] as String,
-        //   body: notification["Body"] as String,
-        //   data: NotificationData.fromJson(data),
-        //   image: data["Image"] as String?,
-        //   createdAt: data["CreatedAt"] as DateTime,
-        // );
         updateNotificationsPresentStatus(ref, true);
 
         showNotificationBanner(context, notification);
