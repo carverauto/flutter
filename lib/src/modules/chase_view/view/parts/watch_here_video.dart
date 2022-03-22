@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/models/chase/network/chase_network.dart';
-import 'package:chaseapp/src/shared/util/helpers/is_valid_youtube_url.dart';
-import 'package:chaseapp/src/shared/widgets/views/showurls.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/sizings.dart';
+import '../../../../models/chase/chase.dart';
+import '../../../../models/chase/network/chase_network.dart';
+import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
+import '../../../../shared/widgets/views/showurls.dart';
 
 class WatchHereLinksWrapper extends StatelessWidget {
   const WatchHereLinksWrapper({
@@ -17,7 +18,8 @@ class WatchHereLinksWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final youtubeNetworks = chase.networks?.where((network) {
+    final List<ChaseNetwork>? youtubeNetworks =
+        chase.networks?.where((ChaseNetwork network) {
       final String? url = network.url;
       if (url != null) {
         final bool isYoutube = isValidYoutubeUrl(url);
@@ -26,7 +28,8 @@ class WatchHereLinksWrapper extends StatelessWidget {
       return false;
     }).toList();
 
-    final otherNetworks = chase.networks?.where((network) {
+    final List<ChaseNetwork>? otherNetworks =
+        chase.networks?.where((ChaseNetwork network) {
       final String? url = network.url;
 
       if (url != null) {
@@ -48,7 +51,7 @@ class WatchHereLinksWrapper extends StatelessWidget {
             networks: youtubeNetworks,
             onYoutubeNetworkTap: onYoutubeNetworkTap,
           ),
-          SizedBox(
+          const SizedBox(
             height: kItemsSpacingSmallConstant,
           ),
           NetworksList(
@@ -73,7 +76,7 @@ class NetworksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return networks == null || networks!.isEmpty
-        ? SizedBox.shrink()
+        ? const SizedBox.shrink()
         : Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,12 +88,16 @@ class NetworksList extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: kItemsSpacingSmallConstant,
               ),
-              networks != null
-                  ? URLView(networks!, onYoutubeNetworkTap)
-                  : const Text('Please wait..'),
+              if (networks != null)
+                URLView(
+                  networks: networks!,
+                  onYoutubeNetworkTap: onYoutubeNetworkTap,
+                )
+              else
+                const Text('Please wait..'),
             ],
           );
   }
