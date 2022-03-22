@@ -15,6 +15,7 @@ import '../../modules/firehose/view/providers/providers.dart';
 import '../enums/firehose_notification_type.dart';
 import '../util/helpers/date_added.dart';
 import '../widgets/builders/providerStateBuilder.dart';
+import '../widgets/loaders/shimmer_tile.dart';
 import 'notification_handler.dart';
 
 class NotificationTile extends ConsumerWidget {
@@ -38,51 +39,78 @@ class NotificationTile extends ConsumerWidget {
         getFirehoseNotificationTypeFromString(notification.type);
     switch (notificationType) {
       case FirehoseNotificationType.twitter:
-        return ProviderStateBuilder<TweetData>(
-          loadingBuilder: () => const LoadingListTile(
-            height: 50,
-          ),
-          errorBuilder: (Object e, StackTrace? stk) {
-            return FirehoseErrorTile(
-              notification: notification,
-              onRefesh: () {
-                ref.refresh(
-                  fetchTweetAlongUserData(notification.data!.tweetId!),
-                );
-              },
-            );
-          },
-          builder: (TweetData tweetData, WidgetRef ref, Widget? child) {
-            return _NotificationListTile(
-              notification: notification,
-              body: tweetData.text,
-              imageUrl: tweetData.profileImageUrl,
-              title: RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: tweetData.name,
-                      style: titleStyle,
-                    ),
-                    const TextSpan(text: ' '),
-                    TextSpan(
-                      text: '@${tweetData.userName}',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
+        final TweetData? tweetData = notification.data?.tweetData;
+        if (tweetData == null) {
+          return const SizedBox.shrink();
+        }
+        return _NotificationListTile(
+          notification: notification,
+          body: tweetData.text,
+          imageUrl: tweetData.profileImageUrl,
+          title: RichText(
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: tweetData.name,
+                  style: titleStyle,
                 ),
-              ),
-            );
-          },
-          watchThisProvider:
-              fetchTweetAlongUserData(notification.data!.tweetId!),
-          logger: logger,
+                const TextSpan(text: ' '),
+                TextSpan(
+                  text: '@${tweetData.userName}',
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
         );
+      // return ProviderStateBuilder<TweetData>(
+      //   loadingBuilder: () => const ShimmerTile(
+      //     height: 50,
+      //   ),
+      //   errorBuilder: (Object e, StackTrace? stk) {
+      //     return FirehoseErrorTile(
+      //       notification: notification,
+      //       onRefesh: () {
+      //         ref.refresh(
+      //           fetchTweetAlongUserData(
+      //             notification.data!.tweetData!.tweetId,
+      //           ),
+      //         );
+      //       },
+      //     );
+      //   },
+      //   builder: (TweetData tweetData, WidgetRef ref, Widget? child) {
+      //     return _NotificationListTile(
+      //       notification: notification,
+      //       body: tweetData.text,
+      //       imageUrl: tweetData.profileImageUrl,
+      //       title: RichText(
+      //         overflow: TextOverflow.ellipsis,
+      //         text: TextSpan(
+      //           children: [
+      //             TextSpan(
+      //               text: tweetData.name,
+      //               style: titleStyle,
+      //             ),
+      //             const TextSpan(text: ' '),
+      //             TextSpan(
+      //               text: '@${tweetData.userName}',
+      //               style: const TextStyle(color: Colors.grey),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     );
+      //   },
+      //   watchThisProvider:
+      //       fetchTweetAlongUserData(notification.data!.tweetData!.tweetId),
+      //   logger: logger,
+      // );
 
       case FirehoseNotificationType.streams:
         return ProviderStateBuilder<YoutubeChannelData>(
-          loadingBuilder: () => const LoadingListTile(
+          loadingBuilder: () => const ShimmerTile(
             height: 50,
           ),
           errorBuilder: (Object e, StackTrace? stk) {
@@ -353,73 +381,6 @@ class _NotificationListTile extends StatelessWidget {
           ),
         ),
         trailing: NotificationTrailing(notification: notification),
-      ),
-    );
-  }
-}
-
-class LoadingListTile extends StatefulWidget {
-  const LoadingListTile({
-    Key? key,
-    required this.height,
-  }) : super(key: key);
-
-  final double height;
-
-  @override
-  State<LoadingListTile> createState() => _LoadingListTileState();
-}
-
-class _LoadingListTileState extends State<LoadingListTile>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController animationController;
-
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 3000),
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: kItemsSpacingMediumConstant,
-      ),
-      child: AnimatedBuilder(
-        animation: animationController,
-        builder: (BuildContext context, Widget? child) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                // transform: const GradientRotation(pi / 4),
-                colors: const [
-                  Colors.transparent,
-                  Colors.white70,
-                  Colors.transparent,
-                ],
-                stops: [
-                  0.0,
-                  animationController.value,
-                  1.0,
-                ],
-              ),
-            ),
-            height: widget.height,
-          );
-        },
       ),
     );
   }

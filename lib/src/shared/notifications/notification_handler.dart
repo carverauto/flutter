@@ -77,7 +77,7 @@ Future<void> _showFirehosePreview(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TweetPreview(
-                tweetId: notification.data!.tweetId!,
+                tweetId: notification.data!.tweetData!.tweetId,
                 showMedia: false,
               ),
             ],
