@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-// import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -12,11 +11,15 @@ import 'package:logging/src/log_record.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+// import 'package:device_preview/device_preview.dart';
 import 'flavors.dart';
 import 'src/const/colors.dart';
 import 'src/modules/chats/view/providers/providers.dart';
 import 'src/routes/routes.dart';
 import 'src/theme/theme.dart';
+
+final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -25,6 +28,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'ChaseApp',
+      scaffoldMessengerKey: scaffoldMessangerKey,
       initialRoute: '/',
       builder: (BuildContext context, Widget? child) {
         return StreamChat(

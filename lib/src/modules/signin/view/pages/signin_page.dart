@@ -2,23 +2,25 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:chaseapp/src/const/other.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/const/textstyles.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
-import 'package:chaseapp/src/models/login_state/login_state.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/button_scale_transition.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/email_signin_bottom.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/login_footer.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/multi_auth_dialog.dart';
-import 'package:chaseapp/src/modules/signin/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../../const/other.dart';
+import '../../../../const/sizings.dart';
+import '../../../../const/textstyles.dart';
+import '../../../../core/top_level_providers/firebase_providers.dart';
+import '../../../../models/api_exception/api_exception.dart';
+import '../../../../models/login_state/login_state.dart';
+import '../../../../shared/enums/social_logins.dart';
+import '../parts/button_scale_transition.dart';
+import '../parts/email_signin_bottom.dart';
+import '../parts/gradient_animation_container.dart';
+import '../parts/login_footer.dart';
+import '../parts/multi_auth_dialog.dart';
+import '../providers/providers.dart';
 
 class LogInView extends ConsumerStatefulWidget {
   const LogInView({Key? key}) : super(key: key);
@@ -29,7 +31,7 @@ class LogInView extends ConsumerStatefulWidget {
 
 class _LogInViewState extends ConsumerState<LogInView>
     with SingleTickerProviderStateMixin {
-  SIGNINMETHOD? signinmethod = null;
+  SIGNINMETHOD? signinmethod;
   bool isLoggingWithEmail = false;
   String? emailAddress;
   AuthCredential? authCredential;
@@ -49,7 +51,7 @@ class _LogInViewState extends ConsumerState<LogInView>
     setState(() {
       isLoggingWithEmail = true;
 
-      Timer(Duration(milliseconds: 300), () {
+      Timer(const Duration(milliseconds: 300), () {
         if (focusScopeNode.canRequestFocus) {
           focusScopeNode.requestFocus();
         }
@@ -61,7 +63,7 @@ class _LogInViewState extends ConsumerState<LogInView>
     setState(() {
       signinmethod = method;
     });
-    ref.read(signInProvider.notifier).signIn(method);
+    await ref.read(signInProvider.notifier).signIn(method);
   }
 
   void logInuser(String link) async {
@@ -69,7 +71,7 @@ class _LogInViewState extends ConsumerState<LogInView>
       setState(() {
         signinmethod = SIGNINMETHOD.Email;
       });
-      await Future<void>.delayed(Duration(seconds: 5));
+      await Future<void>.delayed(const Duration(seconds: 5));
       await ref
           .read(signInProvider.notifier)
           .signInWithEmail(emailAddress!, link);
@@ -89,24 +91,27 @@ class _LogInViewState extends ConsumerState<LogInView>
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      if (deepLink.path == "/__/auth/action") {
+      if (deepLink.path == '/__/auth/action') {
         logInuser(deepLink.toString());
       }
     }
   }
 
   void handleDynamicLinkOpenedFromBackgroundState() {
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      final Uri? deepLink = dynamicLink.link;
+    FirebaseDynamicLinks.instance.onLink.listen(
+      (PendingDynamicLinkData dynamicLink) async {
+        final Uri deepLink = dynamicLink.link;
 
-      if (deepLink != null) {
-        if (deepLink.path == "/__/auth/action") {
-          logInuser(deepLink.toString());
+        if (deepLink != null) {
+          if (deepLink.path == '/__/auth/action') {
+            logInuser(deepLink.toString());
+          }
         }
-      }
-    }, onError: (Object error, StackTrace stackTrace) {
-      log("Error while recieving dynamic link", error: error);
-    });
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        log('Error while recieving dynamic link', error: error);
+      },
+    );
   }
 
   @override
@@ -123,73 +128,76 @@ class _LogInViewState extends ConsumerState<LogInView>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<LogInState>(signInProvider, (oldState, newState) {
+    ref.listen<LogInState>(signInProvider,
+        (LogInState? oldState, LogInState newState) {
       newState.when(
-          data: () {
-            setState(() {
-              signinmethod = null;
-            });
-          },
-          multiAuth: (authProviders, credentials) async {
-            setState(() {
-              authCredential = credentials;
-            });
-            final SIGNINMETHOD? knownAuthProvider =
-                await showDialog<SIGNINMETHOD?>(
-                    context: context,
-                    builder: (context) {
-                      return MultiAuthDialog(existingProviders: authProviders);
-                    });
+        data: () {
+          setState(() {
+            signinmethod = null;
+          });
+        },
+        multiAuth:
+            (List<String> authProviders, AuthCredential credentials) async {
+          setState(() {
+            authCredential = credentials;
+          });
+          final SIGNINMETHOD? knownAuthProvider =
+              await showDialog<SIGNINMETHOD?>(
+            context: context,
+            builder: (BuildContext context) {
+              return MultiAuthDialog(existingProviders: authProviders);
+            },
+          );
 
-            if (knownAuthProvider != null) {
-              if (knownAuthProvider != SIGNINMETHOD.Email) {
-                ref
-                    .read(signInProvider.notifier)
-                    .handleMutliProviderSignIn(knownAuthProvider, credentials);
-              } else {
-                setState(() {
-                  signinmethod = null;
-                  isLoggingWithEmail = true;
-                });
-              }
+          if (knownAuthProvider != null) {
+            if (knownAuthProvider != SIGNINMETHOD.Email) {
+              await ref
+                  .read(signInProvider.notifier)
+                  .handleMutliProviderSignIn(knownAuthProvider, credentials);
             } else {
               setState(() {
                 signinmethod = null;
+                isLoggingWithEmail = true;
               });
             }
-          },
-          loading: () {},
-          error: (e, stk) {
+          } else {
             setState(() {
               signinmethod = null;
             });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(e.message),
-            ));
+          }
+        },
+        loading: () {},
+        error: (ChaseAppCallException e, StackTrace? stk) {
+          setState(() {
+            signinmethod = null;
           });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.message),
+            ),
+          );
+        },
+      );
     });
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Spacer(),
+            const Spacer(),
             Align(
-              alignment: Alignment.center,
               child: Padding(
                 padding: const EdgeInsets.all(kPaddingMediumConstant),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     if (isLoggingWithEmail && signinmethod == null)
                       Text(
-                        "Continue with your Email",
+                        'Continue with your Email',
                         style: TextStyle(
                           fontSize:
                               Theme.of(context).textTheme.headline4!.fontSize,
@@ -197,14 +205,14 @@ class _LogInViewState extends ConsumerState<LogInView>
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ...socialSigninMethods.map((method) {
+                    ...socialSigninMethods.map((SIGNINMETHOD method) {
                       if (method == SIGNINMETHOD.Apple && Platform.isAndroid) {
-                        return SizedBox.shrink();
+                        return const SizedBox.shrink();
                       }
                       return Padding(
                         padding: EdgeInsets.only(bottom: kItemsSpacingSmall),
                         child: AnimatedOpacity(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           opacity: signinmethod != null
                               ?
                               //  method != SIGNINMETHOD.Email
@@ -219,7 +227,7 @@ class _LogInViewState extends ConsumerState<LogInView>
                                       : 0
                                   : 1,
                           child: AnimatedContainer(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             curve: kPrimaryCurve,
                             height: signinmethod != null
                                 ?
@@ -243,16 +251,16 @@ class _LogInViewState extends ConsumerState<LogInView>
                                 // : isLoggingWithEmail,
                                 child: ElevatedButton.icon(
                                   icon: IconFloatingAnimation(
+                                    shouldAnimate:
+                                        // signinmethod != SIGNINMETHOD.Email
+                                        //     ?
+                                        signinmethod == method,
                                     child: method == SIGNINMETHOD.Email
                                         ? Icon(Icons.email)
                                         : SvgPicture.asset(
                                             method.getAssetIcon,
                                             height: kIconSizeLargeConstant,
                                           ),
-                                    shouldAnimate:
-                                        // signinmethod != SIGNINMETHOD.Email
-                                        //     ?
-                                        signinmethod == method,
                                     // : isLoggingWithEmail,
                                   ),
                                   style: callToActionButtonStyle,
@@ -273,7 +281,7 @@ class _LogInViewState extends ConsumerState<LogInView>
                                       //       )
                                       //     :
                                       AnimatedSwitcher(
-                                    duration: Duration(milliseconds: 300),
+                                    duration: const Duration(milliseconds: 300),
                                     child: isLoggingWithEmail &&
                                             signinmethod == null &&
                                             method == SIGNINMETHOD.Email
@@ -286,13 +294,13 @@ class _LogInViewState extends ConsumerState<LogInView>
                                                   _textEditingController,
                                               focusNode: focusScopeNode,
                                               cursorColor: Colors.white,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                               ),
                                               textAlignVertical:
                                                   TextAlignVertical.bottom,
                                               decoration: InputDecoration(
-                                                hintText: "Enter",
+                                                hintText: 'Enter',
                                                 enabledBorder:
                                                     UnderlineInputBorder(
                                                   borderSide: BorderSide(
@@ -301,7 +309,7 @@ class _LogInViewState extends ConsumerState<LogInView>
                                                   ),
                                                 ),
                                                 focusedBorder:
-                                                    UnderlineInputBorder(
+                                                    const UnderlineInputBorder(
                                                   borderSide: BorderSide(
                                                     color: Colors.white,
                                                   ),
@@ -311,8 +319,8 @@ class _LogInViewState extends ConsumerState<LogInView>
                                           )
                                         : Text(
                                             signinmethod == method
-                                                ? ""
-                                                : "Continue With ${method.name}",
+                                                ? ''
+                                                : 'Continue With ${method.name}',
                                             style: getButtonStyle(context),
                                           ),
                                   ),
@@ -328,27 +336,29 @@ class _LogInViewState extends ConsumerState<LogInView>
               ),
             ),
             EmailSignInBottom(
-                textEditingController: _textEditingController,
-                isLoggingInWithEmail: signinmethod == SIGNINMETHOD.Email,
-                onTap: () async {
-                  setState(() {
-                    emailAddress = _textEditingController.text;
-                  });
-                  await ref
-                      .read(signInProvider.notifier)
-                      .sendSignInLinkToEmail(emailAddress!);
-                }),
-            Spacer(),
+              textEditingController: _textEditingController,
+              isLoggingInWithEmail: signinmethod == SIGNINMETHOD.Email,
+              onTap: () async {
+                setState(() {
+                  emailAddress = _textEditingController.text;
+                });
+                await ref
+                    .read(signInProvider.notifier)
+                    .sendSignInLinkToEmail(emailAddress!);
+              },
+            ),
+            const Spacer(),
             LogInFooter(
-                isLoggingWithEmail: isLoggingWithEmail,
-                isEmailSignInMethod: signinmethod == SIGNINMETHOD.Email,
-                onTap: () {
-                  setState(() {
-                    focusScopeNode.unfocus();
-                    _textEditingController.clear();
-                    isLoggingWithEmail = false;
-                  });
-                }),
+              isLoggingWithEmail: isLoggingWithEmail,
+              isEmailSignInMethod: signinmethod == SIGNINMETHOD.Email,
+              onTap: () {
+                setState(() {
+                  focusScopeNode.unfocus();
+                  _textEditingController.clear();
+                  isLoggingWithEmail = false;
+                });
+              },
+            ),
           ],
         ),
       ),

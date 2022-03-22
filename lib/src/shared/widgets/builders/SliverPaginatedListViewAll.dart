@@ -1,13 +1,14 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../const/sizings.dart';
+import '../../../core/notifiers/pagination_notifier.dart';
+import '../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../modules/dashboard/view/parts/connectivity_status.dart';
+import '../../../modules/dashboard/view/parts/paginatedlist_bottom.dart';
+import '../../../modules/dashboard/view/parts/scroll_to_top_button.dart';
+import '../buttons/glass_button.dart';
 
 class SliversPaginatedListViewAll<T> extends ConsumerWidget {
   SliversPaginatedListViewAll({
@@ -51,11 +52,11 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GlassButton(
-                    padding: EdgeInsets.all(
+                    padding: const EdgeInsets.all(
                       kPaddingSmallConstant,
                     ),
                     child: Text(
-                      "Refreshed",
+                      'Refreshed',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
@@ -63,7 +64,7 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
                   ),
                 ],
               ),
-              margin: EdgeInsets.all(30),
+              margin: const EdgeInsets.all(30),
             ),
           );
         },
@@ -80,19 +81,19 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
                 ),
 
                 // Error if removed (Need to report)
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kPaddingMediumConstant,
                   ),
                 ),
                 SliverPadding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+                      const EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
                   sliver: builder(scrollController, itemsPaginationProvider),
                 ),
                 SliverToBoxAdapter(
                   child: PaginatedListBottom<T>(
-                      chasesPaginationProvider: itemsPaginationProvider),
+                      chasesPaginationProvider: itemsPaginationProvider,),
                 ),
               ],
             ),
@@ -101,7 +102,7 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
                   kToolbarHeight +
                   kItemsSpacingSmallConstant,
               width: MediaQuery.of(context).size.width,
-              child: ConnectivityStatus(),
+              child: const ConnectivityStatus(),
             ),
           ],
         ),

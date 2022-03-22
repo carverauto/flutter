@@ -1,12 +1,13 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/medium_clap_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/images.dart';
+import '../../../../core/top_level_providers/services_providers.dart';
+import '../../../../models/chase/chase.dart';
+import '../../../../shared/widgets/buttons/medium_clap_flutter.dart';
 
 class DonutClapButton extends ConsumerWidget {
   const DonutClapButton({
@@ -21,7 +22,7 @@ class DonutClapButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ClapFAB.image(
-      trailing: (counter) => Text(
+      trailing: (int counter) => Text(
         NumberFormat('#,###').format(chase.votes ?? 0),
         style: Theme.of(context).textTheme.subtitle1!.copyWith(
               color: primaryColor.shade300,
@@ -29,15 +30,15 @@ class DonutClapButton extends ConsumerWidget {
       ),
       clapFabCallback: (int upCount) async {
         try {
-          ref.read(chaseRepoProvider).upVoteChase(upCount, chase.id);
+          await ref.read(chaseRepoProvider).upVoteChase(upCount, chase.id);
         } catch (e, stk) {
           logger.warning(
-            "Error while upvoting a Chase",
+            'Error while upvoting a Chase',
             e,
             stk,
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text(
                 'Something went wrong. Please try again later.',
               ),

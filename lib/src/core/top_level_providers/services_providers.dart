@@ -1,10 +1,3 @@
-import 'package:chaseapp/src/core/modules/chase/data/chase_db.dart';
-import 'package:chaseapp/src/core/modules/chase/data/chase_db_ab.dart';
-import 'package:chaseapp/src/core/modules/chase/domain/chase_repo.dart';
-import 'package:chaseapp/src/core/modules/chase/domain/chase_repo_ab.dart';
-import 'package:chaseapp/src/core/notifiers/app_update_notifier.dart';
-import 'package:chaseapp/src/models/app_update_info/app_update_info.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -12,40 +5,60 @@ import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-final sharedPreferancesProvider = Provider<SharedPreferences>((ref) {
+import '../../models/app_update_info/app_update_info.dart';
+import '../../models/chase/chase.dart';
+import '../modules/chase/data/chase_db.dart';
+import '../modules/chase/data/chase_db_ab.dart';
+import '../modules/chase/domain/chase_repo.dart';
+import '../modules/chase/domain/chase_repo_ab.dart';
+import '../notifiers/app_update_notifier.dart';
+
+final Provider<SharedPreferences> sharedPreferancesProvider =
+    Provider<SharedPreferences>((ProviderRef<SharedPreferences> ref) {
   throw UnimplementedError();
 });
 
-final chaseDbProvider = Provider<ChaseDbAB>((ref) => ChaseDatabase());
+final Provider<ChaseDbAB> chaseDbProvider =
+    Provider<ChaseDbAB>((ProviderRef<ChaseDbAB> ref) => ChaseDatabase());
 
-final chaseRepoProvider =
-    Provider<ChaseRepoAB>((ref) => ChaseRepository(read: ref.read));
+final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
+  (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(read: ref.read),
+);
 
-final streamChaseProvider = StreamProvider.family<Chase, String>(
-    (ref, chaseId) => ref.watch(chaseRepoProvider).streamChase(chaseId));
+final StreamProviderFamily<Chase, String> streamChaseProvider =
+    StreamProvider.family<Chase, String>(
+  (StreamProviderRef<Chase> ref, String chaseId) =>
+      ref.watch(chaseRepoProvider).streamChase(chaseId),
+);
 
-final isConnected = StreamProvider<bool>((ref) async* {
-  ConnectivityResult result = await Connectivity().checkConnectivity();
-  bool active = result != ConnectivityResult.none;
+final StreamProvider<bool> isConnected =
+    StreamProvider<bool>((StreamProviderRef<bool> ref) async* {
+  final ConnectivityResult result = await Connectivity().checkConnectivity();
+  final bool active = result != ConnectivityResult.none;
 
   yield active;
 
-  yield* Connectivity().onConnectivityChanged.map((event) {
-    bool active =
+  yield* Connectivity().onConnectivityChanged.map((ConnectivityResult event) {
+    final bool active =
         ConnectivityResult.values[event.index] != ConnectivityResult.none;
 
     return active;
   });
 });
 
-final appInfoProvider =
-    Provider<PackageInfo>((ref) => throw UnimplementedError());
+final Provider<PackageInfo> appInfoProvider = Provider<PackageInfo>(
+  (ProviderRef<PackageInfo> ref) => throw UnimplementedError(),
+);
 
-final checkForUpdateStateNotifier =
+final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
+    checkForUpdateStateNotifier =
     StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>(
-        (ref) {
+        (StateNotifierProviderRef<AppUpdateStateNotifier,
+                AsyncValue<AppUpdateInfo>>
+            ref) {
   return AppUpdateStateNotifier(read: ref.read);
 });
 
-final pusherBeamsProvider =
-    Provider<PusherBeams>((ref) => PusherBeams.instance);
+final Provider<PusherBeams> pusherBeamsProvider = Provider<PusherBeams>(
+  (ProviderRef<PusherBeams> ref) => PusherBeams.instance,
+);

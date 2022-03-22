@@ -1,55 +1,60 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_setting_tile.dart';
-import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
+import '../../../../const/sizings.dart';
+import '../../../../models/interest/interest.dart';
+import '../../../../shared/widgets/builders/providerStateBuilder.dart';
+import '../providers/providers.dart';
+import 'notification_setting_tile.dart';
 
 class NotificationsSettings extends StatelessWidget {
   NotificationsSettings({Key? key}) : super(key: key);
 
-  final Logger logger = Logger("NotificationsSettings");
+  final Logger logger = Logger('NotificationsSettings');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notifications Interests"),
+        title: const Text('Notifications Interests'),
         elevation: 0,
       ),
       body: ProviderStateBuilder<List<Interest>>(
-        builder: (interests, ref, child) {
+        builder: (List<Interest> interests, WidgetRef ref, Widget? child) {
           return ProviderStateBuilder<List<String?>>(
-              builder: (usersInterests, ref, child) {
-                final defaultInterests =
-                    interests.where((interest) => interest.isDefault).toList();
-                final optionalInterests =
-                    interests.where((interest) => !interest.isDefault).toList();
+            builder:
+                (List<String?> usersInterests, WidgetRef ref, Widget? child) {
+              final List<Interest> defaultInterests = interests
+                  .where((Interest interest) => interest.isDefault)
+                  .toList();
+              final List<Interest> optionalInterests = interests
+                  .where((Interest interest) => !interest.isDefault)
+                  .toList();
 
-                return Padding(
-                  padding:
-                      const EdgeInsets.all(kPaddingMediumConstant).copyWith(
-                    bottom: 0,
-                  ),
-                  child: CustomScrollView(
-                    slivers: [
-                      InterestsHeader(name: "Default"),
-                      InterestsList(
-                        interests: defaultInterests,
-                        usersInterests: usersInterests,
-                      ),
-                      InterestsHeader(name: "Optional"),
-                      InterestsList(
-                        interests: optionalInterests,
-                        usersInterests: usersInterests,
-                      ),
-                    ],
-                  ),
-                );
-              },
-              watchThisProvider: usersInterestsStreamProvider,
-              logger: logger);
+              return Padding(
+                padding: const EdgeInsets.all(kPaddingMediumConstant).copyWith(
+                  bottom: 0,
+                ),
+                child: CustomScrollView(
+                  slivers: [
+                    const InterestsHeader(name: 'Default'),
+                    InterestsList(
+                      interests: defaultInterests,
+                      usersInterests: usersInterests,
+                    ),
+                    const InterestsHeader(name: 'Optional'),
+                    InterestsList(
+                      interests: optionalInterests,
+                      usersInterests: usersInterests,
+                    ),
+                  ],
+                ),
+              );
+            },
+            watchThisProvider: usersInterestsStreamProvider,
+            logger: logger,
+          );
         },
         watchThisProvider: interestsProvider,
         logger: logger,
@@ -79,10 +84,10 @@ class InterestsHeader extends StatelessWidget {
               fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: kItemsSpacingSmallConstant,
           ),
-          Expanded(
+          const Expanded(
             child: Divider(),
           ),
         ],
@@ -103,31 +108,36 @@ class InterestsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    interests.sort(((a, b) => a.name.compareTo(b.name)));
+    interests.sort((Interest a, Interest b) => a.name.compareTo(b.name));
 
     return interests.isEmpty
         ? SliverToBoxAdapter(
-            child: Column(children: [
-              // Icon(
-              //   Icons.notifications_off_outlined,
-              // ),
-              Chip(
-                label: Text(
-                  "None Found",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
+            child: Column(
+              children: [
+                // Icon(
+                //   Icons.notifications_off_outlined,
+                // ),
+                Chip(
+                  label: Text(
+                    'None Found',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
+                    ),
                   ),
                 ),
-              )
-            ]),
+              ],
+            ),
           )
         : SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final interest = interests[index];
-                final isUsersInterest = usersInterests.contains(interest.name);
+              (BuildContext context, int index) {
+                final Interest interest = interests[index];
+                final bool isUsersInterest =
+                    usersInterests.contains(interest.name);
                 return NotificationSettingTile(
-                    interest: interest, isUsersInterest: isUsersInterest);
+                  interest: interest,
+                  isUsersInterest: isUsersInterest,
+                );
               },
               childCount: interests.length,
             ),

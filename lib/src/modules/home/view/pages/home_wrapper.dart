@@ -13,6 +13,7 @@ import '../../../../models/notification/notification.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
 import '../../../../shared/notifications/notification_pop_up_banner.dart';
+import '../../../../shared/notifications/notifications_helpers.dart';
 import '../parts/helpers.dart';
 import 'home_page.dart';
 
@@ -84,6 +85,11 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         handlenotifications(event);
       }
     });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    //   if (event.data.isNotEmpty) {
+    //     handlenotifications(event);
+    //   }
+    // });
   }
 
   void handleDynamicLinkOpenedFromBackgroundState() {
