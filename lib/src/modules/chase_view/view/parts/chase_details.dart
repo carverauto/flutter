@@ -12,7 +12,6 @@ import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/sentiment_analysis_slider.dart';
 import '../../../signin/view/parts/gradient_animation_container.dart';
 import 'chase_description_dialog.dart';
-import 'chase_hero.dart';
 import 'donut_clap_button.dart';
 import 'watch_here_video.dart';
 
@@ -46,30 +45,30 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RepaintBoundary(
-          child: Builder(
-            builder: (BuildContext context) {
-              final bool isTyping =
-                  MediaQuery.of(context).viewInsets.bottom > 0;
-              final num bottomPadding =
-                  isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
-              final num extraSizing = isTyping ? kToolbarHeight : 0;
+        // RepaintBoundary(
+        //   child: Builder(
+        //     builder: (BuildContext context) {
+        //       final bool isTyping =
+        //           MediaQuery.of(context).viewInsets.bottom > 0;
+        //       final num bottomPadding =
+        //           isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
+        //       final num extraSizing = isTyping ? kToolbarHeight : 0;
 
-              return AnimatedContainer(
-                height: MediaQuery.of(context).size.width * (9 / 16) -
-                    bottomPadding +
-                    extraSizing,
-                width: double.maxFinite,
-                duration: const Duration(milliseconds: 300),
-                child: ChaseHeroSection(
-                  chase: widget.chase,
-                  imageURL: widget.imageURL,
-                  youtubeVideo: widget.youtubeVideo,
-                ),
-              );
-            },
-          ),
-        ),
+        //       return AnimatedContainer(
+        //         height: MediaQuery.of(context).size.width * (9 / 16) -
+        //             bottomPadding +
+        //             extraSizing,
+        //         width: double.maxFinite,
+        //         duration: const Duration(milliseconds: 300),
+        //         child: ChaseHeroSection(
+        //           chase: widget.chase,
+        //           imageURL: widget.imageURL,
+        //           youtubeVideo: widget.youtubeVideo,
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // ),
         Expanded(
           child: Stack(
             children: [
