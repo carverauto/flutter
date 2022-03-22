@@ -1,10 +1,8 @@
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/modules/firehose/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/notifications/notification_tile.dart';
+import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverPaginatedListViewAll.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart';
 
 class FirehoseListViewAll extends StatelessWidget {
   FirehoseListViewAll({Key? key}) : super(key: key);
@@ -13,47 +11,47 @@ class FirehoseListViewAll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliversPaginatedListViewAll<ChaseAppNotification>(
-      itemsPaginationProvider: firehoseNotificationsStreamProvider(logger),
+    return SliversPaginatedListViewAll<Activity>(
+      itemsPaginationProvider: firehosePaginatedStateNotifierProvier(logger),
       title: "Firehose",
       logger: logger,
       builder: (controller, itemsPaginationProvider) =>
-          SliverProviderPaginatedStateNotifierBuilder<ChaseAppNotification>(
-        scrollController: ScrollController(),
-        axis: Axis.vertical,
-        builder: (notifications, ref) {
-          return notifications.isEmpty
-              ? SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.notifications_none_rounded,
-                      ),
-                      Chip(
-                        label: Text(
-                          "No New Notifications!",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColorLight,
-                          ),
+          SliverProviderPaginatedStateNotifierBuilder<Activity>(
+              axis: Axis.vertical,
+              scrollController: controller,
+              builder: (notifications, controller) {
+                return notifications.isEmpty
+                    ? SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.notifications_none_rounded,
+                            ),
+                            Chip(
+                              label: Text(
+                                "No New Notifications!",
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              : SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final notification = notifications[index];
-                      return NotificationTile(notification: notification);
-                    },
-                    childCount: notifications.length,
-                  ),
-                );
-        },
-        watchThisStateNotifierProvider:
-            firehoseNotificationsStreamProvider(logger),
-        logger: logger,
-      ),
+                      )
+                    : SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final notification = notifications[index];
+                            return ListTile(
+                              title: Text(notification.actor ?? "NA"),
+                            ); // NotificationTile(notification: notification);
+                          },
+                          childCount: notifications.length,
+                        ),
+                      );
+              },
+              watchThisStateNotifierProvider: itemsPaginationProvider,
+              logger: logger),
     );
   }
 }
