@@ -1,26 +1,27 @@
 enum FirehoseNotificationType {
   twitter,
   streams,
+  chase,
   live_on_patrol,
   events,
-  other,
 }
 
-FirehoseNotificationType getFirehoseNotificationTypeFromString(String type) {
-  switch (type.trim()) {
-    case "twitter":
+FirehoseNotificationType? getFirehoseNotificationTypeFromString(String? type) {
+  switch (type?.trim()) {
+    case 'twitter':
       return FirehoseNotificationType.twitter;
 
-    case "streams":
+    case 'streams':
       return FirehoseNotificationType.streams;
-
-    case "Live on Patrol":
+    // case "chase":
+    //   return FirehoseNotificationType.chase;
+    case 'Live on Patrol':
       return FirehoseNotificationType.live_on_patrol;
 
-    case "events":
+    case 'events':
       return FirehoseNotificationType.events;
 
     default:
-      return FirehoseNotificationType.other;
+      return null;
   }
 }

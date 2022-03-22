@@ -1,7 +1,8 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/other.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/other.dart';
+import '../../../../const/sizings.dart';
 
 class WatchYoutubeVideo extends StatefulWidget {
   const WatchYoutubeVideo({
@@ -24,7 +25,7 @@ class _WatchYoutubeVideoState extends State<WatchYoutubeVideo>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     )
       ..drive(CurveTween(curve: kPrimaryCurve))
       ..repeat();
@@ -43,33 +44,34 @@ class _WatchYoutubeVideoState extends State<WatchYoutubeVideo>
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: widget.isLive ? "Watch Livestream!" : "Watch video!",
+      message: widget.isLive ? 'Watch Livestream!' : 'Watch video!',
       child: Container(
         height: 34,
         width: 64,
         clipBehavior: Clip.hardEdge,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.circular(
-              kBorderRadiusMediumConstant,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: primaryShadowColor,
-                blurRadius: blurValue,
-              )
-            ]),
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(
+            kBorderRadiusMediumConstant,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: primaryShadowColor,
+              blurRadius: blurValue,
+            )
+          ],
+        ),
         child: !widget.isLive
-            ? Icon(
+            ? const Icon(
                 Icons.play_arrow_rounded,
               )
             : AnimatedBuilder(
                 animation: _controller,
-                child: Icon(
+                child: const Icon(
                   Icons.play_arrow_rounded,
                 ),
-                builder: (context, child) {
+                builder: (BuildContext context, Widget? child) {
                   return Stack(
                     alignment: Alignment.center,
                     children: [

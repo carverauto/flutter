@@ -1,22 +1,23 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/chase_description_dialog.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/chase_hero.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/donut_clap_button.dart';
-import 'package:chaseapp/src/modules/chase_view/view/parts/watch_here_video.dart';
-import 'package:chaseapp/src/modules/signin/view/parts/gradient_animation_container.dart';
-import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/util/helpers/dynamiclink_generator.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
-import 'package:chaseapp/src/shared/widgets/sentiment_analysis_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../const/colors.dart';
+import '../../../../const/sizings.dart';
+import '../../../../models/chase/chase.dart';
+import '../../../../shared/util/helpers/date_added.dart';
+import '../../../../shared/util/helpers/dynamiclink_generator.dart';
+import '../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../../shared/widgets/sentiment_analysis_slider.dart';
+import '../../../signin/view/parts/gradient_animation_container.dart';
+import 'chase_description_dialog.dart';
+import 'chase_hero.dart';
+import 'donut_clap_button.dart';
+import 'watch_here_video.dart';
+
 class ChaseDetails extends ConsumerStatefulWidget {
-  ChaseDetails({
+  const ChaseDetails({
     Key? key,
     required this.imageURL,
     required this.logger,
@@ -46,24 +47,28 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RepaintBoundary(
-          child: Builder(builder: (context) {
-            final isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
-            final bottomPadding =
-                isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
-            final extraSizing = isTyping ? kToolbarHeight : 0;
-            return AnimatedContainer(
-              height: MediaQuery.of(context).size.width * (9 / 16) -
-                  bottomPadding +
-                  extraSizing,
-              width: double.maxFinite,
-              duration: Duration(milliseconds: 300),
-              child: ChaseHeroSection(
-                chase: widget.chase,
-                imageURL: widget.imageURL,
-                youtubeVideo: widget.youtubeVideo,
-              ),
-            );
-          }),
+          child: Builder(
+            builder: (BuildContext context) {
+              final bool isTyping =
+                  MediaQuery.of(context).viewInsets.bottom > 0;
+              final num bottomPadding =
+                  isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
+              final num extraSizing = isTyping ? kToolbarHeight : 0;
+
+              return AnimatedContainer(
+                height: MediaQuery.of(context).size.width * (9 / 16) -
+                    bottomPadding +
+                    extraSizing,
+                width: double.maxFinite,
+                duration: const Duration(milliseconds: 300),
+                child: ChaseHeroSection(
+                  chase: widget.chase,
+                  imageURL: widget.imageURL,
+                  youtubeVideo: widget.youtubeVideo,
+                ),
+              );
+            },
+          ),
         ),
         Expanded(
           child: Stack(
@@ -71,7 +76,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
               ColoredBox(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: ListView(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   children: [
                     Material(
                       child: InkWell(
@@ -89,7 +94,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  widget.chase.name ?? "NA",
+                                  widget.chase.name ?? 'NA',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: Theme.of(context)
@@ -103,7 +108,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                       ),
                                 ),
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.expand_more,
                               ),
                             ],
@@ -111,7 +116,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kItemsSpacingSmallConstant,
                     ),
                     Padding(
@@ -128,19 +133,21 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                 Icons.alarm,
                                 color: primaryColor.shade300,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: kItemsSpacingSmallConstant / 2,
                               ),
                               if (widget.chase.live ?? false)
-                                GradientAnimationChildBuilder(
-                                  shouldAnimate: true,
-                                  padding: EdgeInsets.all(0),
-                                  child: GlassButton(
-                                    child: Text(
-                                      "Live!",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                const RepaintBoundary(
+                                  child: GradientAnimationChildBuilder(
+                                    shouldAnimate: true,
+                                    padding: EdgeInsets.zero,
+                                    child: GlassButton(
+                                      child: Text(
+                                        'Live!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -158,11 +165,11 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                 ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: kItemsSpacingSmallConstant,
                           ),
                           Text(
-                            "Sentiment Analysis :",
+                            'Sentiment Analysis :',
                             style:
                                 Theme.of(context).textTheme.subtitle1!.copyWith(
                                       color: Theme.of(context)
@@ -170,7 +177,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                           .onBackground,
                                     ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: kItemsSpacingExtraSmallConstant,
                           ),
                           SentimentSlider(chase: widget.chase),
@@ -183,19 +190,20 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                     IconButton(
                                       onPressed: () async {
                                         try {
-                                          final shareLink =
+                                          final String shareLink =
                                               await createChaseDynamicLink(
-                                                  widget.chase);
-                                          Share.share(shareLink);
+                                            widget.chase,
+                                          );
+                                          await Share.share(shareLink);
                                         } catch (e, stk) {
                                           widget.logger.warning(
-                                            "Chase Sharing Failed!",
+                                            'Chase Sharing Failed!',
                                             e,
                                             stk,
                                           );
                                         }
                                       },
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.share,
                                       ),
                                     ),

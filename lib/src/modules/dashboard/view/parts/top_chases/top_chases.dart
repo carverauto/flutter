@@ -1,13 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chase_builder.dart';
-import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
-import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../../../const/sizings.dart';
+import '../../../../../models/chase/chase.dart';
+import '../../../../../shared/util/helpers/sizescaleconfig.dart';
+import '../../../../../shared/widgets/builders/providerStateBuilder.dart';
+import '../../../../../shared/widgets/loaders/shimmer_tile.dart';
+import '../../providers/providers.dart';
+import 'top_chase_builder.dart';
 
 class TopChasesListView extends ConsumerWidget {
   const TopChasesListView({
@@ -22,7 +24,14 @@ class TopChasesListView extends ConsumerWidget {
     return SliverProviderStateBuilder<List<Chase>>(
       watchThisProvider: topChasesStreamProvider,
       logger: logger,
-      builder: (chases) {
+      loadingBuilder: () {
+        return Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+          child: ShimmerTile(height: Sizescaleconfig.screenheight! * 0.4),
+        );
+      },
+      builder: (List<Chase> chases) {
         return SliverToBoxAdapter(
           child: chases.isEmpty
               ? Column(
@@ -31,13 +40,14 @@ class TopChasesListView extends ConsumerWidget {
                       onPressed: () {
                         ref
                             .read(
-                                chasesPaginatedStreamProvider(logger).notifier)
+                              chasesPaginatedStreamProvider(logger).notifier,
+                            )
                             .fetchFirstPage(true);
                       },
-                      icon: Icon(Icons.replay),
+                      icon: const Icon(Icons.replay),
                     ),
-                    Chip(
-                      label: Text("No Chases Found!"),
+                    const Chip(
+                      label: Text('No Chases Found!'),
                     ),
                   ],
                 )
@@ -52,13 +62,14 @@ class TopChasesListView extends ConsumerWidget {
                     items: chases
                         .asMap()
                         .map<int, Widget>(
-                          (index, chase) => MapEntry(
+                          (int index, Chase chase) => MapEntry(
                             index,
                             TweenAnimationBuilder<double>(
                               key: UniqueKey(),
-                              duration: Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 300),
                               tween: Tween<double>(begin: 0.8, end: 1),
-                              builder: (context, value, child) {
+                              builder: (BuildContext context, double value,
+                                  Widget? child) {
                                 return ScaleTransition(
                                   scale: AlwaysStoppedAnimation(value),
                                   child: child,
@@ -77,7 +88,7 @@ class TopChasesListView extends ConsumerWidget {
                                       right: kPaddingMediumConstant,
                                       top: kPaddingMediumConstant,
                                       child: Text(
-                                        "${index + 1} / ${chases.length}",
+                                        '${index + 1} / ${chases.length}',
                                         style: TextStyle(
                                           color: Theme.of(context)
                                               .colorScheme

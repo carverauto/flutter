@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
-import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../core/top_level_providers/services_providers.dart';
+import '../../../../models/interest/interest.dart';
+import '../providers/providers.dart';
 
 class NotificationSettingTile extends StatelessWidget {
   const NotificationSettingTile({
@@ -17,13 +18,14 @@ class NotificationSettingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayName = toBeginningOfSentenceCase(interest.name.split("-")[0])!;
+    final String displayName =
+        toBeginningOfSentenceCase(interest.name.split('-')[0])!;
 
     return ListTile(
-      contentPadding: EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.all(0),
       title: Text(
         displayName,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
         ),
       ),
@@ -69,7 +71,7 @@ class _NotificationSettingTileSwitchState
       value: isEnabled,
       onChanged: widget.interest.isCompulsory
           ? null
-          : (value) async {
+          : (bool value) async {
               if (value) {
                 await ref
                     .read(pusherBeamsProvider)
@@ -77,7 +79,7 @@ class _NotificationSettingTileSwitchState
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      "Subscribed to ${widget.displayName} notifications.",
+                      'Subscribed to ${widget.displayName} notifications.',
                     ),
                   ),
                 );
@@ -88,7 +90,7 @@ class _NotificationSettingTileSwitchState
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      "UnSubscribed from ${widget.displayName} notifications.",
+                      'UnSubscribed from ${widget.displayName} notifications.',
                     ),
                   ),
                 );

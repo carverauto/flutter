@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
+import '../../../../const/sizings.dart';
+import '../../../../shared/widgets/loaders/loading.dart';
+
 class EmailSignInBottom extends StatefulWidget {
-  EmailSignInBottom({
+  const EmailSignInBottom({
     Key? key,
     required TextEditingController textEditingController,
     required this.onTap,
@@ -30,9 +31,9 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
   @override
   Widget build(BuildContext context) {
     return isSending
-        ? CircularAdaptiveProgressIndicatorWithBg()
+        ? const CircularAdaptiveProgressIndicatorWithBg()
         : widget.isLoggingInWithEmail
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : AnimatedBuilder(
                 animation: widget._textEditingController,
                 child: ElevatedButton(
@@ -48,7 +49,7 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Row(
-                              children: [
+                              children: const [
                                 Icon(
                                   Icons.check_circle,
                                   color: Colors.white,
@@ -58,7 +59,7 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    "Log in link has been sent to your email. Please check.",
+                                    'Log in link has been sent to your email. Please check.',
                                   ),
                                 ),
                               ],
@@ -67,24 +68,27 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                         );
                       });
                     } on FirebaseAuthException catch (e, stk) {
-                      if (e.code != "invalid-email") {
+                      if (e.code != 'invalid-email') {
                         logger.severe(
-                            "Failed To Send Email Signin Link", e, stk);
+                          'Failed To Send Email Signin Link',
+                          e,
+                          stk,
+                        );
                       }
 
-                      final message = e.code == "invalid-email"
-                          ? "Invalid email address."
-                          : "Something went wrong!";
+                      final String message = e.code == 'invalid-email'
+                          ? 'Invalid email address.'
+                          : 'Something went wrong!';
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.info,
                                 color: Colors.red,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: kItemsSpacingSmallConstant,
                               ),
                               Text(
@@ -96,12 +100,12 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                       );
                     } catch (e, stk) {
                       //TODO:logger log this
-                      logger.severe("Failed To Send Email Signin Link", e, stk);
+                      logger.severe('Failed To Send Email Signin Link', e, stk);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Row(
-                            children: [
+                            children: const [
                               Icon(
                                 Icons.info,
                                 color: Colors.red,
@@ -111,7 +115,7 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                               ),
                               Expanded(
                                 child: Text(
-                                  "Something went wrong. Please try again later.",
+                                  'Something went wrong. Please try again later.',
                                 ),
                               ),
                             ],
@@ -124,17 +128,18 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                       });
                     }
                   },
-                  child: Text(
-                    "Sign in",
+                  child: const Text(
+                    'Sign in',
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                 ),
-                builder: (context, child) {
+                builder: (BuildContext context, Widget? child) {
                   return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
                       return ScaleTransition(
                         scale: animation,
                         child: child,
@@ -142,7 +147,7 @@ class _EmailSignInBottomState extends State<EmailSignInBottom> {
                     },
                     child: widget._textEditingController.text.isNotEmpty
                         ? child!
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                   );
                 },
               );

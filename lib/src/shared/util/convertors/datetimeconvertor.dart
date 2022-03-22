@@ -15,8 +15,9 @@ class DatetimeTimestampConverter implements JsonConverter<DateTime, Timestamp> {
   Timestamp toJson(
     DateTime date,
   ) {
-    final utcDate = date.toUtc();
+    final DateTime utcDate = date.toUtc();
     log("message: 'utcDate: $utcDate");
+
     return Timestamp.fromDate(utcDate);
   }
 }
@@ -27,11 +28,27 @@ class DatetimeTimestampNullableConverter
 
   @override
   DateTime? fromJson(Timestamp? timestamp) {
-    return timestamp == null ? null : timestamp.toDate();
+    return timestamp?.toDate();
   }
 
   @override
   Timestamp? toJson(DateTime? date, {bool? stringDate}) {
     return date == null ? null : Timestamp.fromDate(date);
+  }
+}
+
+DateTime parseDate(dynamic date) {
+  if (date == null) {
+    return DateTime.now();
+  } else if (date is String) {
+    final DateTime? parsedDate = DateTime.tryParse(date);
+
+    return parsedDate ?? DateTime.now();
+  } else if (date is int) {
+    return DateTime.fromMillisecondsSinceEpoch(date);
+  } else if (date is Timestamp) {
+    return date.toDate();
+  } else {
+    return date as DateTime;
   }
 }

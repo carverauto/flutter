@@ -25,15 +25,13 @@ class _$ChaseAppNotificationTearOff {
   _ChaseAppNotification call(
       {@JsonKey(name: 'Interest')
           required String interest,
-      String? id,
+      required String id,
       @JsonKey(name: 'Type')
           required String type,
       @JsonKey(name: 'Title')
           required String title,
       @JsonKey(name: 'Body')
           required String body,
-      @JsonKey(name: 'Image')
-          String? image,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
           required DateTime createdAt,
@@ -45,7 +43,6 @@ class _$ChaseAppNotificationTearOff {
       type: type,
       title: title,
       body: body,
-      image: image,
       createdAt: createdAt,
       data: data,
     );
@@ -63,15 +60,14 @@ const $ChaseAppNotification = _$ChaseAppNotificationTearOff();
 mixin _$ChaseAppNotification {
   @JsonKey(name: 'Interest')
   String get interest => throw _privateConstructorUsedError;
-  String? get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'Type')
   String get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'Title')
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'Body')
-  String get body => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Image')
-  String? get image => throw _privateConstructorUsedError;
+  String get body =>
+      throw _privateConstructorUsedError; // @JsonKey(name: 'Image') String? image,
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -92,15 +88,13 @@ abstract class $ChaseAppNotificationCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'Interest')
           String interest,
-      String? id,
+      String id,
       @JsonKey(name: 'Type')
           String type,
       @JsonKey(name: 'Title')
           String title,
       @JsonKey(name: 'Body')
           String body,
-      @JsonKey(name: 'Image')
-          String? image,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
           DateTime createdAt,
@@ -126,7 +120,6 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
     Object? type = freezed,
     Object? title = freezed,
     Object? body = freezed,
-    Object? image = freezed,
     Object? createdAt = freezed,
     Object? data = freezed,
   }) {
@@ -138,7 +131,7 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -151,10 +144,6 @@ class _$ChaseAppNotificationCopyWithImpl<$Res>
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
               as String,
-      image: image == freezed
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -188,15 +177,13 @@ abstract class _$ChaseAppNotificationCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'Interest')
           String interest,
-      String? id,
+      String id,
       @JsonKey(name: 'Type')
           String type,
       @JsonKey(name: 'Title')
           String title,
       @JsonKey(name: 'Body')
           String body,
-      @JsonKey(name: 'Image')
-          String? image,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
           DateTime createdAt,
@@ -225,7 +212,6 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
     Object? type = freezed,
     Object? title = freezed,
     Object? body = freezed,
-    Object? image = freezed,
     Object? createdAt = freezed,
     Object? data = freezed,
   }) {
@@ -237,7 +223,7 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -250,10 +236,6 @@ class __$ChaseAppNotificationCopyWithImpl<$Res>
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
               as String,
-      image: image == freezed
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -273,15 +255,13 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   const _$_ChaseAppNotification(
       {@JsonKey(name: 'Interest')
           required this.interest,
-      this.id,
+      required this.id,
       @JsonKey(name: 'Type')
           required this.type,
       @JsonKey(name: 'Title')
           required this.title,
       @JsonKey(name: 'Body')
           required this.body,
-      @JsonKey(name: 'Image')
-          this.image,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
           required this.createdAt,
@@ -296,7 +276,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   @JsonKey(name: 'Interest')
   final String interest;
   @override
-  final String? id;
+  final String id;
   @override
   @JsonKey(name: 'Type')
   final String type;
@@ -306,10 +286,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   @override
   @JsonKey(name: 'Body')
   final String body;
-  @override
-  @JsonKey(name: 'Image')
-  final String? image;
-  @override
+  @override // @JsonKey(name: 'Image') String? image,
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   final DateTime createdAt;
@@ -319,7 +296,7 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
 
   @override
   String toString() {
-    return 'ChaseAppNotification(interest: $interest, id: $id, type: $type, title: $title, body: $body, image: $image, createdAt: $createdAt, data: $data)';
+    return 'ChaseAppNotification(interest: $interest, id: $id, type: $type, title: $title, body: $body, createdAt: $createdAt, data: $data)';
   }
 
   @override
@@ -332,7 +309,6 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.body, body) &&
-            const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.data, data));
   }
@@ -345,7 +321,6 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(body),
-      const DeepCollectionEquality().hash(image),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(data));
 
@@ -365,15 +340,13 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   const factory _ChaseAppNotification(
       {@JsonKey(name: 'Interest')
           required String interest,
-      String? id,
+      required String id,
       @JsonKey(name: 'Type')
           required String type,
       @JsonKey(name: 'Title')
           required String title,
       @JsonKey(name: 'Body')
           required String body,
-      @JsonKey(name: 'Image')
-          String? image,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
           required DateTime createdAt,
@@ -388,7 +361,7 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   @JsonKey(name: 'Interest')
   String get interest;
   @override
-  String? get id;
+  String get id;
   @override
   @JsonKey(name: 'Type')
   String get type;
@@ -398,10 +371,7 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   @override
   @JsonKey(name: 'Body')
   String get body;
-  @override
-  @JsonKey(name: 'Image')
-  String? get image;
-  @override
+  @override // @JsonKey(name: 'Image') String? image,
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   DateTime get createdAt;

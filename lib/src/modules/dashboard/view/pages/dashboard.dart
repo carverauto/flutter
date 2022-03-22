@@ -1,20 +1,21 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_drawer.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/connectivity_status.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/recent_chases/recent_chases.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/top_chases/top_chases.dart';
-import 'package:chaseapp/src/modules/dashboard/view/providers/providers.dart';
-import 'package:chaseapp/src/modules/firehose/view/pages/firehose.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/sizings.dart';
+import '../../../../core/notifiers/pagination_notifier.dart';
+import '../../../../models/chase/chase.dart';
+import '../../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../firehose/view/pages/firehose_view_all.dart';
+import '../parts/chaseapp_appbar.dart';
+import '../parts/chaseapp_drawer.dart';
+import '../parts/connectivity_status.dart';
+import '../parts/recent_chases/recent_chases.dart';
+import '../parts/top_chases/top_chases.dart';
+import '../providers/providers.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
@@ -24,23 +25,27 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chasesPaginationProvider = chasesPaginatedStreamProvider(logger);
+    final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
+            PaginationNotifierState<Chase>> chasesPaginationProvider =
+        chasesPaginatedStreamProvider(logger);
 
     return Scaffold(
-        drawer: ChaseAppDrawer(),
-        body: _DashboardMainView(
-            chasesPaginationProvider: chasesPaginationProvider, logger: logger)
+      drawer: const ChaseAppDrawer(),
+      body: _DashboardMainView(
+        chasesPaginationProvider: chasesPaginationProvider,
+        logger: logger,
+      ),
 
-        //  ProviderStateBuilder(
-        //     errorBuilder: (context, stk) => DashboardMainView(
-        //         chasesPaginationProvider: chasesPaginationProvider,
-        //         logger: logger),
-        //     builder: (data, ref, child) => DashboardMainView(
-        //         chasesPaginationProvider: chasesPaginationProvider,
-        //         logger: logger),
-        //     watchThisProvider: topChasesStreamProvider,
-        //     logger: logger),
-        );
+      //  ProviderStateBuilder(
+      //     errorBuilder: (context, stk) => DashboardMainView(
+      //         chasesPaginationProvider: chasesPaginationProvider,
+      //         logger: logger),
+      //     builder: (data, ref, child) => DashboardMainView(
+      //         chasesPaginationProvider: chasesPaginationProvider,
+      //         logger: logger),
+      //     watchThisProvider: topChasesStreamProvider,
+      //     logger: logger),
+    );
   }
 }
 
@@ -62,7 +67,7 @@ class _DashboardMainView extends ConsumerWidget {
       edgeOffset: kItemsSpacingLargeConstant,
       onRefresh: () async {
         await ref.read(chasesPaginationProvider.notifier).fetchFirstPage(true);
-        await ref.refresh(topChasesStreamProvider);
+        ref.refresh(topChasesStreamProvider);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -74,11 +79,11 @@ class _DashboardMainView extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 GlassButton(
-                  padding: EdgeInsets.all(
+                  padding: const EdgeInsets.all(
                     kPaddingSmallConstant,
                   ),
                   child: Text(
-                    "Refreshed",
+                    'Refreshed',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -86,7 +91,7 @@ class _DashboardMainView extends ConsumerWidget {
                 ),
               ],
             ),
-            margin: EdgeInsets.all(30),
+            margin: const EdgeInsets.all(30),
           ),
         );
       },
@@ -95,26 +100,27 @@ class _DashboardMainView extends ConsumerWidget {
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    primaryColor.shade700,
-                    primaryColor.shade900.withOpacity(0.4),
-                  ],
-                  stops: [
-                    0.0,
-                    0.8,
-                  ]),
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  primaryColor.shade700,
+                  primaryColor.shade900.withOpacity(0.4),
+                ],
+                stops: const [
+                  0.0,
+                  0.8,
+                ],
+              ),
             ),
             child: CustomScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              restorationId: "Chases List",
+              physics: const AlwaysScrollableScrollPhysics(),
+              restorationId: 'Chases List',
               slivers: [
                 // AppBar
-                ChaseAppBar(),
+                const ChaseAppBar(),
 
                 // Error if removed (Need to report)
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kPaddingMediumConstant,
                   ),
@@ -129,7 +135,7 @@ class _DashboardMainView extends ConsumerWidget {
                 // ),
 
                 //Top Chases
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingMediumConstant,
                   ),
@@ -137,10 +143,11 @@ class _DashboardMainView extends ConsumerWidget {
 
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant),
+                    horizontal: kPaddingMediumConstant,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: Text(
-                      "Top Chases",
+                      'Top Chases',
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             color: Theme.of(context).colorScheme.onBackground,
                           ),
@@ -148,7 +155,7 @@ class _DashboardMainView extends ConsumerWidget {
                   ),
                 ),
 
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingSmallConstant,
                   ),
@@ -158,19 +165,20 @@ class _DashboardMainView extends ConsumerWidget {
                   logger: logger,
                 ),
 
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingMediumConstant,
                   ),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant),
+                    horizontal: kPaddingMediumConstant,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       children: [
                         Text(
-                          "Firehose",
+                          'Firehose',
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1!
@@ -179,7 +187,7 @@ class _DashboardMainView extends ConsumerWidget {
                                     Theme.of(context).colorScheme.onBackground,
                               ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         TextButton.icon(
                           onPressed: () {
                             Navigator.pushNamed(
@@ -188,7 +196,7 @@ class _DashboardMainView extends ConsumerWidget {
                             );
                           },
                           icon: Text(
-                            "View All",
+                            'View All',
                             style:
                                 Theme.of(context).textTheme.subtitle1!.copyWith(
                                       color: Theme.of(context)
@@ -200,18 +208,20 @@ class _DashboardMainView extends ConsumerWidget {
                             Icons.arrow_forward_ios_outlined,
                             color: Theme.of(context).colorScheme.onBackground,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingSmallConstant,
                   ),
                 ),
-                FireHoseView(),
-                SliverToBoxAdapter(
+                FirehoseListViewAll(
+                  showLimited: true,
+                ),
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingSmallConstant,
                   ),
@@ -219,12 +229,13 @@ class _DashboardMainView extends ConsumerWidget {
 
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: kPaddingMediumConstant),
+                    horizontal: kPaddingMediumConstant,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       children: [
                         Text(
-                          "Recent",
+                          'Recent',
                           style: Theme.of(context)
                               .textTheme
                               .subtitle1!
@@ -233,20 +244,20 @@ class _DashboardMainView extends ConsumerWidget {
                                     Theme.of(context).colorScheme.onBackground,
                               ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         TextButton.icon(
                           onPressed: () {
                             Navigator.pushNamed(
                               context,
                               RouteName.RECENT_CHASESS_VIEW_ALL,
                               arguments: {
-                                "chasesPaginationProvider":
+                                'chasesPaginationProvider':
                                     chasesPaginationProvider,
                               },
                             );
                           },
                           icon: Text(
-                            "See More",
+                            'See More',
                             style:
                                 Theme.of(context).textTheme.subtitle1!.copyWith(
                                       color: Theme.of(context)
@@ -258,13 +269,13 @@ class _DashboardMainView extends ConsumerWidget {
                             Icons.arrow_forward_ios_outlined,
                             color: Theme.of(context).colorScheme.onBackground,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
 
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingSmallConstant,
                   ),
@@ -274,7 +285,7 @@ class _DashboardMainView extends ConsumerWidget {
                   chasesPaginationProvider: chasesPaginationProvider,
                   logger: logger,
                 ),
-                SliverToBoxAdapter(
+                const SliverToBoxAdapter(
                   child: SizedBox(
                     height: kItemsSpacingLargeConstant * 3,
                   ),
@@ -287,27 +298,26 @@ class _DashboardMainView extends ConsumerWidget {
                 kToolbarHeight +
                 kItemsSpacingSmallConstant,
             width: MediaQuery.of(context).size.width,
-            child: ConnectivityStatus(),
+            child: const ConnectivityStatus(),
           ),
           Positioned.fill(
-            bottom: 0,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: IgnorePointer(
-                ignoring: true,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Color.fromARGB(255, 26, 25, 25),
-                          Colors.transparent,
-                        ],
-                        stops: [
-                          0.0,
-                          0.2,
-                        ]),
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Color.fromARGB(255, 26, 25, 25),
+                        Colors.transparent,
+                      ],
+                      stops: [
+                        0.0,
+                        0.2,
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/core/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../models/user/user_data.dart';
+import '../../../../shared/enums/social_logins.dart';
+import '../view/providers/providers.dart';
+import 'auth_repo_ab.dart';
 
 class AuthRepository implements AuthRepositoryAB {
   AuthRepository({
@@ -11,6 +12,7 @@ class AuthRepository implements AuthRepositoryAB {
   });
   final Reader read;
 
+  @override
   Stream<User?> streamLogInStatus() {
     return read(authDbProvider).streamLogInStatus();
   }

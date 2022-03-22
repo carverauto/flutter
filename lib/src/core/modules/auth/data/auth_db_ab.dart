@@ -1,6 +1,7 @@
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../../../models/user/user_data.dart';
+import '../../../../shared/enums/social_logins.dart';
 
 abstract class AuthDB {
   Future<UserData> fetchOrCreateUser(User user);
@@ -10,7 +11,9 @@ abstract class AuthDB {
   Stream<User?> streamLogInStatus();
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
   Future<void> handleMutliProviderSignIn(
-      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential);
+    SIGNINMETHOD signinmethod,
+    AuthCredential providerOAuthCredential,
+  );
   Future<void> subscribeToTopics();
   Future<void> saveDeviceTokenToDatabase(User user, String token);
   Future<void> googleLogin();

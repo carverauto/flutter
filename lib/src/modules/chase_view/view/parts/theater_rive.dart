@@ -1,7 +1,9 @@
-import 'package:chaseapp/src/shared/util/firebase_collections.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+
+import '../../../../shared/util/firebase_collections.dart';
 
 class TheaterRive extends StatefulWidget {
   const TheaterRive({
@@ -16,13 +18,17 @@ class _TheaterRiveState extends State<TheaterRive> {
   late StateMachineController theaterController;
 
   void getAnimationsStatus() async {
-    animationsCollection.doc("theater").snapshots().listen((event) {
-      final data = event.data() as Map<String, dynamic>?;
+    animationsCollection
+        .doc('theater')
+        .snapshots()
+        .listen((DocumentSnapshot<Object?> event) {
+      final Map<String, dynamic>? data = event.data() as Map<String, dynamic>?;
 
       if (data != null) {
-        final triggerState = data.entries
-            .toList()
-            .singleWhereOrNull((state) => state.value as bool);
+        final MapEntry<String, dynamic>? triggerState =
+            data.entries.toList().singleWhereOrNull(
+                  (MapEntry<String, dynamic> state) => state.value as bool,
+                );
 
         if (triggerState != null) {
           playThiState(triggerState.key);
@@ -45,22 +51,27 @@ class _TheaterRiveState extends State<TheaterRive> {
 
   void playThiState(String state) {
     if (theaterController.isActive) {
-      final stateTrigger =
+      final SMITrigger stateTrigger =
           theaterController.findInput<bool>(state) as SMITrigger;
       stateTrigger.fire();
     }
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    theaterController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RiveAnimation.network(
-      "https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true",
+      'https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true',
       stateMachines: const ['Theater'],
       fit: BoxFit.cover,
       alignment: Alignment.bottomCenter,
-      onInit: (artboard) {
-        setStateMachine(artboard);
-      },
+      onInit: setStateMachine,
     );
 
     // Container(

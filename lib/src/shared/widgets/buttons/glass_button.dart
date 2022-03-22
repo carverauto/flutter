@@ -1,8 +1,9 @@
 import 'dart:ui';
 
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+
+import '../../../const/colors.dart';
+import '../../../const/sizings.dart';
 
 class GlassButton extends StatelessWidget {
   const GlassButton({
