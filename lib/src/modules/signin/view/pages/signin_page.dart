@@ -103,6 +103,8 @@ class _LogInViewState extends ConsumerState<LogInView>
         final Uri deepLink = dynamicLink.link;
 
         if (deepLink != null) {
+          //TODO: Replace with FirebaseAuth.instance.isSignInWithEmailLink(emailLink) check
+
           if (deepLink.path == '/__/auth/action') {
             logInuser(deepLink.toString());
           }
@@ -184,7 +186,6 @@ class _LogInViewState extends ConsumerState<LogInView>
       body: Padding(
         padding: const EdgeInsets.all(kPaddingMediumConstant),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Spacer(),
             Align(
@@ -256,7 +257,7 @@ class _LogInViewState extends ConsumerState<LogInView>
                                         //     ?
                                         signinmethod == method,
                                     child: method == SIGNINMETHOD.Email
-                                        ? Icon(Icons.email)
+                                        ? const Icon(Icons.email)
                                         : SvgPicture.asset(
                                             method.getAssetIcon,
                                             height: kIconSizeLargeConstant,

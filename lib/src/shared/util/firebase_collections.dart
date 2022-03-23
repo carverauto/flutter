@@ -1,10 +1,11 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final _firestore = FirebaseFirestore.instance;
+import '../../models/chase/chase.dart';
+import '../../models/interest/interest.dart';
+import '../../models/notification/notification.dart';
+import '../../models/user/user_data.dart';
+
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 final CollectionReference chasesCollection = _firestore.collection('chases');
 final CollectionReference usersCollection = _firestore.collection('users');
@@ -18,56 +19,57 @@ final CollectionReference animationsCollection =
 
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(
-  fromFirestore: (data, _) {
-    final rawData = data.data()!;
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
 
-    if (rawData["tokens"] != null) {
-      final tokens = rawData["tokens"] as List<dynamic>;
+    if (rawData['tokens'] != null) {
+      final List tokens = rawData['tokens'] as List<dynamic>;
       if (tokens[0] is String) {
-        rawData["tokens"] = null;
+        rawData['tokens'] = null;
       }
     }
 
     return UserData.fromJson(rawData);
   },
-  toFirestore: (data, _) {
+  toFirestore: (UserData data, _) {
     return data.toJson();
   },
 );
 
 final CollectionReference<Chase> chasesCollectionRef =
     chasesCollection.withConverter<Chase>(
-  fromFirestore: (data, _) {
-    final rawData = data.data()!;
-    rawData["id"] = data.id;
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
+    rawData['id'] = data.id;
 
     return Chase.fromJson(rawData);
   },
-  toFirestore: (data, _) {
+  toFirestore: (Chase data, _) {
     return data.toJson();
   },
 );
 
-final notificationsCollectionRef =
+final CollectionReference<ChaseAppNotification> notificationsCollectionRef =
     notificationsCollection.withConverter<ChaseAppNotification>(
-  fromFirestore: (data, _) {
-    final rawData = data.data()!;
-    rawData["id"] = data.id;
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
+    rawData['id'] = data.id;
 
     return ChaseAppNotification.fromJson(rawData);
   },
-  toFirestore: (data, _) {
+  toFirestore: (ChaseAppNotification data, _) {
     return data.toJson();
   },
 );
-final interestsCollectionRef = interestsCollection.withConverter<Interest>(
-  fromFirestore: (data, _) {
-    final rawData = data.data()!;
-    rawData["id"] = data.id;
+final CollectionReference<Interest> interestsCollectionRef =
+    interestsCollection.withConverter<Interest>(
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
+    rawData['id'] = data.id;
 
     return Interest.fromJson(rawData);
   },
-  toFirestore: (data, _) {
+  toFirestore: (Interest data, _) {
     return data.toJson();
   },
 );

@@ -97,7 +97,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       (PendingDynamicLinkData dynamicLink) async {
         log('Dynamic Link Recieved--->${dynamicLink.link}');
         final Uri deepLink = dynamicLink.link;
-
+//TODO: Replace with FirebaseAuth.instance.isSignInWithEmailLink(emailLink) check
         if (deepLink.path != '/__/auth/action') {
           if (deepLink != null) {
             await navigateToView(deepLink);
