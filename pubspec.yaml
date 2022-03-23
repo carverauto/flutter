@@ -109,6 +109,9 @@ dependencies:
   webview_flutter: ^2.8.0
   rive: ^0.8.1
   stream_feed_flutter_core: ^0.7.0+1
+  firebase_auth_mocks: ^0.8.2
+  google_sign_in_mocks: ^0.2.1
+  fake_cloud_firestore: ^1.2.2
 
 dependency_overrides:
   # video_compress: 3.1.0
