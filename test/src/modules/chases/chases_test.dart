@@ -69,10 +69,37 @@ void main() {
     expect(chases, hasLength(20));
   });
 
+  //TODO:Failing need to come back to this later!
   test('streamChases at offset 50', () async {
     final List<Chase> chasesList = await chaseDb.streamChases(chases[0], 50);
     expect(chasesList, isNotEmpty);
     expect(chasesList, isNotNull);
     expect(chasesList.length <= 20, isTrue);
+  });
+  test('Upvote a chase', () async {
+    const int index = 0; //should be within range of chases list
+    final int originalCount = chases[index].votes ?? 0;
+    const int upVoteCount = 25;
+    await chaseDb.upVoteChase(upVoteCount, index.toString());
+    final DocumentSnapshot<Chase> chaseDoc =
+        await fakeChasesCollectionRef.doc(index.toString()).get();
+    final Chase? chase = chaseDoc.data();
+
+    expect(chase?.votes, originalCount + upVoteCount);
+  });
+
+  test('Stream Top Chases', () async {
+    //arrange
+    //act
+    final Stream<List<Chase>> snapshot = chaseDb.streamTopChases();
+    final List<Chase> topChases = await snapshot.first;
+
+    //assert
+    expect(topChases, isNotEmpty);
+    expect(topChases, isNotNull);
+    expect(
+      topChases,
+      chases.sublist(chases.length - 3, chases.length).reversed.toList(),
+    );
   });
 }
