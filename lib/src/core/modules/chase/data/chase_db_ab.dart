@@ -1,4 +1,4 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
+import '../../../../models/chase/chase.dart';
 
 abstract class ChaseDbAB {
   Future<List<Chase>> streamChases(

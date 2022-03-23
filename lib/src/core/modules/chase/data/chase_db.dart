@@ -31,9 +31,10 @@ class ChaseDatabase implements ChaseDbAB {
     } else {
       final QuerySnapshot<Chase> documentSnapshot = await chasesCollectionRef
           .orderBy('CreatedAt', descending: true)
-          .startAfter([chase.createdAt])
+          .startAfter([Timestamp.fromDate(chase.createdAt!)])
           .limit(20)
           .get();
+
       return documentSnapshot.docs
           .map((QueryDocumentSnapshot<Chase> snapshot) => snapshot.data())
           .toList();
