@@ -1,35 +1,52 @@
-import 'package:chaseapp/src/core/modules/auth/data/auth_db.dart';
-import 'package:chaseapp/src/core/modules/auth/data/auth_db_ab.dart';
-import 'package:chaseapp/src/core/modules/auth/domain/auth_repo.dart';
-import 'package:chaseapp/src/core/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/core/notifiers/post_login_state_notifier.dart';
-import 'package:chaseapp/src/core/top_level_providers/firebase_providers.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final postLoginStateNotifierProvider =
+import '../../../../../models/user/user_data.dart';
+import '../../../../notifiers/post_login_state_notifier.dart';
+import '../../../../top_level_providers/firebase_providers.dart';
+import '../../data/auth_db.dart';
+import '../../data/auth_db_ab.dart';
+import '../../domain/auth_repo.dart';
+import '../../domain/auth_repo_ab.dart';
+
+final AutoDisposeStateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>
+    postLoginStateNotifierProvider =
     StateNotifierProvider.autoDispose<PostLoginStateNotifier, AsyncValue<void>>(
-        (ref) {
+        (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier,
+                AsyncValue<void>>
+            ref) {
   return PostLoginStateNotifier(ref.read);
 });
 
-final authRepoProvider = Provider<AuthRepositoryAB>((ref) => AuthRepository(
-      read: ref.read,
-    ));
-final authDbProvider = Provider<AuthDB>((ref) => AuthDatabase(
-      read: ref.read,
-    ));
+final Provider<AuthRepositoryAB> authRepoProvider = Provider<AuthRepositoryAB>(
+  (ProviderRef<AuthRepositoryAB> ref) => AuthRepository(
+    read: ref.read,
+  ),
+);
+final Provider<AuthDB> authDbProvider = Provider<AuthDB>(
+  (ProviderRef<AuthDB> ref) => AuthDatabase(
+    firebaseAuth: ref.read(firebaseAuthProvider),
+    firebaseMessaging: ref.read(firebaseMessagingProvider),
+    googleSignIn: ref.read(googleSignInProvider),
+    facebookAuth: ref.read(facebookSignInProvider),
+  ),
+);
 
-final streamLogInStatus = StreamProvider<User?>((ref) {
-  final authrepo = ref.watch(authRepoProvider);
+final StreamProvider<User?> streamLogInStatus =
+    StreamProvider<User?>((StreamProviderRef<User?> ref) {
+  final AuthRepositoryAB authrepo = ref.watch(authRepoProvider);
   return authrepo.streamLogInStatus();
 });
 
-final fetchUserProvider = FutureProvider.family<UserData, User>(
-    (ref, user) async => ref.read(authRepoProvider).fetchOrCreateUser(user));
+final FutureProviderFamily<UserData, User> fetchUserProvider =
+    FutureProvider.family<UserData, User>(
+  (FutureProviderRef<UserData> ref, User user) async =>
+      ref.read(authRepoProvider).fetchOrCreateUser(user),
+);
 
-final userStreamProvider = StreamProvider.autoDispose<UserData>((ref) {
-  final user = ref.watch(firebaseAuthProvider).currentUser!;
+final AutoDisposeStreamProvider<UserData> userStreamProvider =
+    StreamProvider.autoDispose<UserData>(
+        (AutoDisposeStreamProviderRef<UserData> ref) {
+  final User user = ref.watch(firebaseAuthProvider).currentUser!;
   return ref.read(authRepoProvider).streamUserData(user.uid);
 });

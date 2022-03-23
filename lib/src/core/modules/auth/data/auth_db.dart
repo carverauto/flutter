@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fauth;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart' as sa;
 import 'package:twitter_login/entity/auth_result.dart';
@@ -18,18 +18,23 @@ import '../../../../shared/enums/device.dart';
 import '../../../../shared/enums/social_logins.dart';
 import '../../../../shared/enums/token_type.dart';
 import '../../../../shared/util/firebase_collections.dart';
-import '../../../top_level_providers/firebase_providers.dart';
 import 'auth_db_ab.dart';
 
 class AuthDatabase implements AuthDB {
-  AuthDatabase({
-    required this.read,
+  const AuthDatabase({
+    required this.firebaseAuth,
+    required this.firebaseMessaging,
+    required this.googleSignIn,
+    required this.facebookAuth,
   });
-  final Reader read;
+  final FirebaseAuth firebaseAuth;
+  final FirebaseMessaging firebaseMessaging;
+  final GoogleSignIn googleSignIn;
+  final FacebookAuth facebookAuth;
 
   @override
   Future<void> saveDeviceTokenToDatabase(User user, String token) async {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final String userId = firebaseAuth.currentUser!.uid;
 
     final PushToken pushToken = PushToken(
       token: token,
@@ -48,9 +53,7 @@ class AuthDatabase implements AuthDB {
 
   @override
   void updateTokenWhenRefreshed(User user) {
-    read(firebaseMesssagingProvider)
-        .onTokenRefresh
-        .listen((String refreshedToken) async {
+    firebaseMessaging.onTokenRefresh.listen((String refreshedToken) async {
       await saveDeviceTokenToDatabase(user, refreshedToken);
       await subscribeToTopics();
     });
@@ -59,20 +62,20 @@ class AuthDatabase implements AuthDB {
   // Subcribe to topics
   @override
   Future<void> subscribeToTopics() async {
-    await read(firebaseMesssagingProvider).subscribeToTopic('chases');
+    await firebaseMessaging.subscribeToTopic('chases');
   }
 
   //sign out
   @override
   Future<void> signOut() async {
-    await read(googleSignInProvider).signOut();
-    await read(firebaseAuthProvider).signOut();
-    await read(facebookSignInProvider).logOut();
+    await googleSignIn.signOut();
+    await firebaseAuth.signOut();
+    await facebookAuth.logOut();
   }
 
   @override
   Stream<User?> streamLogInStatus() {
-    return read(firebaseAuthProvider).authStateChanges();
+    return firebaseAuth.authStateChanges();
   }
 
   @override
@@ -91,8 +94,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Future<void> googleLogin() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     if (googleUser == null) {
@@ -105,7 +106,7 @@ class AuthDatabase implements AuthDB {
       idToken: googleAuth.idToken,
     );
 
-    await read(firebaseAuthProvider).signInWithCredential(credential);
+    await firebaseAuth.signInWithCredential(credential);
   }
 
   @override
@@ -200,7 +201,7 @@ class AuthDatabase implements AuthDB {
       final fauth.AuthCredential credential = fauth.OAuthProvider('apple.com')
           .credential(idToken: appleSignIn.identityToken);
 
-      await read(firebaseAuthProvider).signInWithCredential(credential);
+      await firebaseAuth.signInWithCredential(credential);
     } on sa.SignInWithAppleAuthorizationException catch (e) {
       if (e.code != sa.AuthorizationErrorCode.canceled) {
         rethrow;
@@ -215,7 +216,7 @@ class AuthDatabase implements AuthDB {
     late final LoginResult loginResult;
     late final OAuthCredential facebookAuthCredential;
 
-    loginResult = await FacebookAuth.instance.login();
+    loginResult = await facebookAuth.login();
 
     if (loginResult.status == LoginStatus.cancelled) {
       return;
@@ -225,8 +226,7 @@ class AuthDatabase implements AuthDB {
     facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    await read(firebaseAuthProvider)
-        .signInWithCredential(facebookAuthCredential);
+    await firebaseAuth.signInWithCredential(facebookAuthCredential);
   }
 
   @override
@@ -236,9 +236,7 @@ class AuthDatabase implements AuthDB {
   ) async {
     await socialLogin(signinmethod);
 
-    await read(firebaseAuthProvider)
-        .currentUser!
-        .linkWithCredential(providerOAuthCredential);
+    await firebaseAuth.currentUser!.linkWithCredential(providerOAuthCredential);
   }
 
   @override
@@ -264,13 +262,12 @@ class AuthDatabase implements AuthDB {
       secret: authResult.authTokenSecret!,
     );
 
-    await read(firebaseAuthProvider)
-        .signInWithCredential(twitterAuthCredential);
+    await firebaseAuth.signInWithCredential(twitterAuthCredential);
   }
 
   @override
   Future<void> sendSignInLinkToEmail(String email) async {
-    await FirebaseAuth.instance.sendSignInLinkToEmail(
+    await firebaseAuth.sendSignInLinkToEmail(
       email: email,
       actionCodeSettings: ActionCodeSettings(
         url: AppBundleInfo.dynamicLinkHostUrl(
@@ -289,7 +286,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Future<void> signInWithEmailAndLink(String email, String link) async {
-    await FirebaseAuth.instance
-        .signInWithEmailLink(email: email, emailLink: link);
+    await firebaseAuth.signInWithEmailLink(email: email, emailLink: link);
   }
 }
