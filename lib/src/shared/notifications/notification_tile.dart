@@ -117,9 +117,9 @@ class NotificationTile extends ConsumerWidget {
             return FirehoseErrorTile(
               notification: notification,
               onRefesh: () {
-                ref.refresh(
-                  fetchTweetAlongUserData(notification.data!.channelId!),
-                );
+                // ref.refresh(
+                //   fetchTweetAlongUserData(notification.data!.channelId!),
+                // );
               },
             );
           },
