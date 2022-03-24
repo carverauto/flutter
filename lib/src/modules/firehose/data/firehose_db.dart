@@ -9,16 +9,18 @@ import '../../../models/tweet_data/tweet_data.dart';
 import '../../../models/youtube_data/youtube_data.dart';
 import '../../../shared/enums/interest_enum.dart';
 import '../../../shared/util/extensions/interest_enum.dart';
-import '../../../shared/util/firebase_collections.dart';
 import '../view/providers/providers.dart';
 import 'firehose_db_ab.dart';
 
 class FirehoseNotificationsDatabase implements FirehoseNotificationsDbAB {
-  FirehoseNotificationsDatabase();
+  FirehoseNotificationsDatabase(this.notificationsCollectionRef);
+
+  final CollectionReference<ChaseAppNotification> notificationsCollectionRef;
 
   @override
   Future<List<ChaseAppNotification>> fetchNotifications(
-      ChaseAppNotification? notificationData) async {
+    ChaseAppNotification? notificationData,
+  ) async {
     final String? firehose = getStringFromInterestEnum(Interests.firehose);
     if (notificationData == null) {
       final QuerySnapshot<ChaseAppNotification> documentSnapshot =
