@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
+import '../../../../../flavors.dart';
+import '../../../../const/app_bundle_info.dart';
 import '../../../../core/notifiers/pagination_notifier.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
@@ -25,11 +28,25 @@ final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   ),
 );
 
+final ProviderFamily<feed.StreamFeedClient, String> streamFeedClientProvider =
+    Provider.family<feed.StreamFeedClient, String>(
+        (ProviderRef<feed.StreamFeedClient> ref, String apiKey) {
+  return feed.StreamFeedClient(apiKey, appId: '102359');
+});
+
 final StateNotifierProvider<ChatStateNotifier, void>
     chatsServiceStateNotifierProvider =
     StateNotifierProvider<ChatStateNotifier, void>(
-  (StateNotifierProviderRef<ChatStateNotifier, void> ref) =>
-      ChatStateNotifier(ref.read),
+  (StateNotifierProviderRef<ChatStateNotifier, void> ref) => ChatStateNotifier(
+    read: ref.read,
+    streamFeedClient: ref.read(
+      streamFeedClientProvider(
+        F.appFlavor == Flavor.DEV
+            ? EnvVaribales.devGetStreamChatApiKey
+            : EnvVaribales.prodGetStreamChatApiKey,
+      ),
+    ),
+  ),
 );
 
 final AutoDisposeFutureProviderFamily<Channel, String> chatChannelProvider =
