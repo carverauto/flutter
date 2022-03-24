@@ -8,6 +8,17 @@ import '../../data/chats_db.dart';
 import '../../domain/chats_repo.dart';
 import '../notifiers/chats_notifier.dart';
 
+typedef ChaseAppNotificationStateNotifierProvider
+    = AutoDisposeStateNotifierProviderFamily<
+        PaginationNotifier<ChaseAppNotification>,
+        PaginationNotifierState<ChaseAppNotification>,
+        Logger>;
+
+typedef ChaseAppNotificationStateNotifierProviderRef
+    = AutoDisposeStateNotifierProviderRef<
+        PaginationNotifier<ChaseAppNotification>,
+        PaginationNotifierState<ChaseAppNotification>>;
+
 final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   (ProviderRef<ChatsRepository> ref) => ChatsRepository(
     db: ChatsDatabase(ref.read),
@@ -38,19 +49,12 @@ final AutoDisposeFutureProviderFamily<Channel, String> chatChannelProvider =
   return channel;
 });
 
-final AutoDisposeStateNotifierProviderFamily<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger> firehosePaginatedStateNotifierProvier =
-    StateNotifierProvider.autoDispose.family<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger>(
+final ChaseAppNotificationStateNotifierProvider
+    firehosePaginatedStateNotifierProvier = StateNotifierProvider.autoDispose
+        .family<PaginationNotifier<ChaseAppNotification>,
+            PaginationNotifierState<ChaseAppNotification>, Logger>(
   (
-    AutoDisposeStateNotifierProviderRef<
-            PaginationNotifier<ChaseAppNotification>,
-            PaginationNotifierState<ChaseAppNotification>>
-        ref,
+    ChaseAppNotificationStateNotifierProviderRef ref,
     Logger logger,
   ) {
     return PaginationNotifier(

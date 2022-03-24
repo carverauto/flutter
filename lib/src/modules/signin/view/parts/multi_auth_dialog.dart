@@ -1,6 +1,7 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/sizings.dart';
+import '../../../../shared/enums/social_logins.dart';
 
 class MultiAuthDialog extends StatelessWidget {
   const MultiAuthDialog({
@@ -13,9 +14,9 @@ class MultiAuthDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: EdgeInsets.all(kPaddingMediumConstant),
+      insetPadding: const EdgeInsets.all(kPaddingMediumConstant),
       child: Padding(
-        padding: EdgeInsets.all(kPaddingSmallConstant),
+        padding: const EdgeInsets.all(kPaddingSmallConstant),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -24,7 +25,7 @@ class MultiAuthDialog extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             Text(
-              "Account exists with multiple sign in providers.",
+              'Account exists with multiple sign in providers.',
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.onBackground,
@@ -32,7 +33,7 @@ class MultiAuthDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              "Please sign in using any one of the previously used providers to continue.",
+              'Please sign in using any one of the previously used providers to continue.',
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -42,7 +43,7 @@ class MultiAuthDialog extends StatelessWidget {
               height: kItemsSpacingSmall,
             ),
             Wrap(
-              children: existingProviders.map<Widget>((provider) {
+              children: existingProviders.map<Widget>((String provider) {
                 final SIGNINMETHOD knownAuthProvider =
                     getSignInProviderHelper(provider);
                 return Padding(
