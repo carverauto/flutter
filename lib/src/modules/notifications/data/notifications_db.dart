@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../models/interest/interest.dart';
 import '../../../models/notification/notification.dart';
-import '../../../shared/util/firebase_collections.dart';
 import 'notifications_db_ab.dart';
 
 class NotificationsDatabase implements NotificationsDbAB {
-  NotificationsDatabase();
+  NotificationsDatabase({
+    required this.notificationsCollectionRef,
+    required this.interestsCollectionRef,
+  });
+  final CollectionReference<ChaseAppNotification> notificationsCollectionRef;
+  final CollectionReference<Interest> interestsCollectionRef;
   //TODO remove firehose notifications from the list
   @override
   Future<List<ChaseAppNotification>> fetchNotifications(
@@ -17,11 +21,11 @@ class NotificationsDatabase implements NotificationsDbAB {
     if (notificationData == null) {
       final QuerySnapshot<ChaseAppNotification> documentSnapshot =
           await notificationsCollectionRef
-              // .where("uid", isEqualTo: userId)
               .where('Interest', isEqualTo: notificationType)
               .orderBy('CreatedAt', descending: true)
               .limit(20)
               .get();
+
       return documentSnapshot.docs
           .map<ChaseAppNotification>(
             (QueryDocumentSnapshot<ChaseAppNotification> snapshot) =>
@@ -31,12 +35,12 @@ class NotificationsDatabase implements NotificationsDbAB {
     } else {
       final QuerySnapshot<ChaseAppNotification> documentSnapshot =
           await notificationsCollectionRef
-              // .where("uid", isEqualTo: userId)
               .where('Interest', isEqualTo: notificationType)
               .orderBy('CreatedAt', descending: true)
               .startAfter([notificationData.createdAt])
               .limit(20)
               .get();
+
       return documentSnapshot.docs
           .map<ChaseAppNotification>(
             (QueryDocumentSnapshot<ChaseAppNotification> snapshot) =>
