@@ -5,41 +5,51 @@ import 'package:chaseapp/src/core/modules/chase/data/chase_db_ab.dart';
 import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+final Provider<ChaseDbAB> fakechaseDbProvider = Provider<ChaseDbAB>(
+  (ProviderRef<ChaseDbAB> ref) => ChaseDatabase(
+    fakeChasesCollectionRef,
+  ),
+);
+
+final FakeFirebaseFirestore fakeFirestore = FakeFirebaseFirestore();
+
+CollectionReference<Chase> fakeChasesCollectionRef =
+    fakeFirestore.collection('chases').withConverter<Chase>(
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
+    rawData['id'] = data.id;
+
+    return Chase.fromJson(rawData);
+  },
+  toFirestore: (Chase data, _) {
+    return data.toJson();
+  },
+);
 
 void main() {
   //arrange
-  final FakeFirebaseFirestore fakeFirestore = FakeFirebaseFirestore();
-  late final CollectionReference<Chase> fakeChasesCollectionRef;
-  late final ChaseDbAB chaseDb;
-  late final Chase chase;
-  late final List<Chase> chases;
-  setUpAll(() async {
+  // late final CollectionReference<Chase> fakeChasesCollectionRef;
+  late Chase chase;
+  late List<Chase> chases;
+  late ChaseDbAB chaseDb;
+  setUp(() async {
+    final ProviderContainer container = ProviderContainer();
     chases = List<Chase>.generate(20, (int index) {
       final DateTime createdAt = DateTime.now();
-      print(createdAt.millisecondsSinceEpoch);
+
       return Chase(
         id: '$index',
         name: 'Temple chase',
         live: true,
-        createdAt: createdAt,
+        createdAt: createdAt.add(Duration(milliseconds: index)),
         desc: 'desc',
         votes: 100 + index,
       );
     });
 
-    fakeChasesCollectionRef =
-        fakeFirestore.collection('chases').withConverter<Chase>(
-      fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
-        final Map<String, dynamic> rawData = data.data()!;
-        rawData['id'] = data.id;
-
-        return Chase.fromJson(rawData);
-      },
-      toFirestore: (Chase data, _) {
-        return data.toJson();
-      },
-    );
     chase = chases.first;
 
     await Future.forEach(chases, (Chase element) async {
@@ -48,7 +58,7 @@ void main() {
           );
     });
 
-    chaseDb = ChaseDatabase(fakeChasesCollectionRef);
+    chaseDb = container.read(fakechaseDbProvider);
   });
 
   test('streamChase', () async {
@@ -71,7 +81,7 @@ void main() {
 
   //TODO:Failing need to come back to this later!
   test('streamChases at offset 50', () async {
-    final List<Chase> chasesList = await chaseDb.streamChases(chases[0], 50);
+    final List<Chase> chasesList = await chaseDb.streamChases(chases[1], 50);
     expect(chasesList, isNotEmpty);
     expect(chasesList, isNotNull);
     expect(chasesList.length <= 20, isTrue);
