@@ -2,13 +2,14 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../const/colors.dart';
+import '../../../const/sizings.dart';
+import '../../../shared/util/helpers/launchLink.dart';
+import '../../../shared/util/helpers/sizescaleconfig.dart';
 
 class CreditsView extends ConsumerStatefulWidget {
   const CreditsView({Key? key}) : super(key: key);
@@ -37,24 +38,24 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   );
 
   void playAnimation() async {
-    final height = MediaQuery.of(context).size.height;
-    final topOffset =
+    final double height = MediaQuery.of(context).size.height;
+    final double topOffset =
         Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
             ? height * 0.8
             : height / 1.5;
-    final bottomOffset = -height * 0.8;
+    final double bottomOffset = -height * 0.8;
     crawlTextposition =
         Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
             .animate(_animationController);
-    disappearCrawlText = Tween<double>(begin: 1.0, end: 0)
+    disappearCrawlText = Tween<double>(begin: 1, end: 0)
         .chain(
           CurveTween(
-            curve: Interval(0.95, 1.0),
+            curve: const Interval(0.95, 1),
           ),
         )
         .animate(_animationController);
-    _animationController.forward();
-    _animationController.addStatusListener((status) {
+    await _animationController.forward();
+    _animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _animationController.reverse();
       } else if (status == AnimationStatus.dismissed) {
@@ -64,9 +65,9 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   }
 
   Future<void> playTrack() async {
-    await Future<void>.delayed(Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     await audioPlayer.play(
-      "audio/about_music.mp3",
+      'audio/about_music.mp3',
       volume: 0.01,
     );
   }
@@ -100,40 +101,41 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned.fill(
-                child: Image.asset(
-                  'assets/galaxy.png',
-                  fit: BoxFit.cover,
-                  cacheHeight: 1294,
-                  cacheWidth: 750,
-                ),
+        backgroundColor: Colors.black,
+        body: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'assets/galaxy.png',
+                fit: BoxFit.cover,
+                cacheHeight: 1294,
+                cacheWidth: 750,
               ),
-              CrawlText(
-                animationController: _animationController,
-                crawlText: crawlText,
-                crawlTextposition: crawlTextposition,
-                disappearCrawlText: disappearCrawlText,
+            ),
+            CrawlText(
+              animationController: _animationController,
+              crawlText: crawlText,
+              crawlTextposition: crawlTextposition,
+              disappearCrawlText: disappearCrawlText,
+            ),
+            const BackButton(),
+            // add mute button and vertical slider for volume in bottom right corner
+            Positioned(
+              bottom: kPaddingMediumConstant,
+              right: 0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  VolumeController(
+                    audioController: audioPlayer,
+                  ),
+                ],
               ),
-              BackButton(),
-              // add mute button and vertical slider for volume in bottom right corner
-              Positioned(
-                bottom: kPaddingMediumConstant,
-                right: 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    VolumeController(
-                      audioController: audioPlayer,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -158,7 +160,7 @@ class _VolumeControllerState extends State<VolumeController> {
       children: [
         RotatedBox(
           quarterTurns: -1,
-          child: Container(
+          child: SizedBox(
             width: 200,
             height: 70,
             child: Platform.isAndroid
@@ -167,7 +169,7 @@ class _VolumeControllerState extends State<VolumeController> {
                     activeColor: starWarsCrawlTextColor,
                     inactiveColor: Colors.white.withOpacity(0.5),
                     thumbColor: starWarsCrawlTextColor,
-                    onChanged: (volume) {
+                    onChanged: (double volume) {
                       setState(() {
                         widget.audioController.fixedPlayer!.setVolume(volume);
                         _volume = volume;
@@ -178,7 +180,7 @@ class _VolumeControllerState extends State<VolumeController> {
                     value: _volume,
                     activeColor: starWarsCrawlTextColor,
                     thumbColor: starWarsCrawlTextColor,
-                    onChanged: (volume) {
+                    onChanged: (double volume) {
                       setState(() {
                         widget.audioController.fixedPlayer!.setVolume(volume);
                         _volume = volume;
@@ -187,12 +189,12 @@ class _VolumeControllerState extends State<VolumeController> {
                   ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: kItemsSpacingExtraSmallConstant,
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             primary: starWarsCrawlTextColor,
           ),
           onPressed: () {
@@ -206,8 +208,9 @@ class _VolumeControllerState extends State<VolumeController> {
               }
             });
           },
-          child:
-              _volume == 0.0 ? Icon(Icons.volume_off) : Icon(Icons.volume_up),
+          child: _volume == 0.0
+              ? const Icon(Icons.volume_off)
+              : const Icon(Icons.volume_up),
         ),
       ],
     );
@@ -249,19 +252,20 @@ class CrawlText extends StatelessWidget {
               -0.001,
             ),
           child: AnimatedBuilder(
-              animation: _animationController,
-              child: CrawlContributions(
-                animationController: _animationController,
-              ),
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: crawlTextposition.value,
-                  child: Opacity(
-                    opacity: disappearCrawlText.value,
-                    child: child,
-                  ),
-                );
-              }),
+            animation: _animationController,
+            child: CrawlContributions(
+              animationController: _animationController,
+            ),
+            builder: (BuildContext context, Widget? child) {
+              return Transform.translate(
+                offset: crawlTextposition.value,
+                child: Opacity(
+                  opacity: disappearCrawlText.value,
+                  child: child,
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -269,7 +273,7 @@ class CrawlText extends StatelessWidget {
 }
 
 class CrawlContributions extends StatelessWidget {
-  CrawlContributions({
+  const CrawlContributions({
     Key? key,
     required this.animationController,
   }) : super(key: key);
@@ -278,26 +282,27 @@ class CrawlContributions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crawlBodyTextStyle = TextStyle(
+    final TextStyle crawlBodyTextStyle = TextStyle(
       height: 1.3,
       fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
           ? Theme.of(context).textTheme.bodyText1!.fontSize
           : Theme.of(context).textTheme.subtitle1!.fontSize,
       color: starWarsCrawlTextColor,
-      fontFamily: "Crawl",
+      fontFamily: 'Crawl',
     );
 
     return GestureDetector(
-      onVerticalDragUpdate: (details) {
-        final maxdrag = details.primaryDelta! / Sizescaleconfig.screenheight!;
+      onVerticalDragUpdate: (DragUpdateDetails details) {
+        final double maxdrag =
+            details.primaryDelta! / Sizescaleconfig.screenheight!;
 
-        final isScrolledDown = maxdrag.isNegative;
+        final bool isScrolledDown = maxdrag.isNegative;
 
-        final animationValue = animationController.value;
+        final double animationValue = animationController.value;
         animationController
             .animateTo(
           isScrolledDown ? (animationValue + 0.1) : (animationValue - 0.1),
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
         )
             .then((value) {
           if (!isScrolledDown) {
@@ -309,13 +314,13 @@ class CrawlContributions extends StatelessWidget {
       },
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Column(
           // clipBehavior: Clip.none,
           // physics: NeverScrollableScrollPhysics(),
           children: [
             Text(
-              "ChaseApp Development Credits",
+              'ChaseApp Development Credits',
               overflow: TextOverflow.visible,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -325,10 +330,10 @@ class CrawlContributions extends StatelessWidget {
                         ? Theme.of(context).textTheme.subtitle1!.fontSize
                         : Theme.of(context).textTheme.headline5!.fontSize,
                 color: starWarsCrawlTextColor,
-                fontFamily: "Crawl",
+                fontFamily: 'Crawl',
               ),
             ),
-            Divider(
+            const Divider(
               height: kItemsSpacingMediumConstant,
               color: Colors.white,
               indent: kPaddingSmallConstant,
@@ -336,60 +341,64 @@ class CrawlContributions extends StatelessWidget {
               thickness: 1,
             ),
             Text(
-              "A special thank you goes out to all those that have helped contribute code, ideas, and with the overall care and feeding of the system, we salute you.",
+              'A special thank you goes out to all those that have helped contribute code, ideas, and with the overall care and feeding of the system, we salute you.',
               overflow: TextOverflow.visible,
               textAlign: TextAlign.center,
               style: crawlBodyTextStyle,
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingSmallConstant,
             ),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: "# ",
-                  style: crawlBodyTextStyle.copyWith(
-                    color: Colors.white,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '# ',
+                    style: crawlBodyTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: "Chases IRC team",
-                  style: crawlBodyTextStyle.copyWith(
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                    decorationThickness: 10,
-                    decorationStyle: TextDecorationStyle.solid,
+                  TextSpan(
+                    text: 'Chases IRC team',
+                    style: crawlBodyTextStyle.copyWith(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                      decorationThickness: 10,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
             RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: "# ",
-                  style: crawlBodyTextStyle.copyWith(
-                    color: Colors.white,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '# ',
+                    style: crawlBodyTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                TextSpan(
-                  text: "Chases Private Channel",
-                  style: crawlBodyTextStyle.copyWith(
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                    decorationThickness: 10,
-                    decorationStyle: TextDecorationStyle.solid,
+                  TextSpan(
+                    text: 'Chases Private Channel',
+                    style: crawlBodyTextStyle.copyWith(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white,
+                      decorationThickness: 10,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
             GridView.count(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               crossAxisCount:
                   Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
                       ? 2
@@ -397,30 +406,30 @@ class CrawlContributions extends StatelessWidget {
                           ? 2
                           : 3,
               mainAxisSpacing: kItemsSpacingSmallConstant,
-              children: [
+              children: const [
                 CustomAvatar(
-                  name: "Acidjazz",
-                  link: "https://github.com/acidjazz",
+                  name: 'Acidjazz',
+                  link: 'https://github.com/acidjazz',
                 ),
                 CustomAvatar(
-                  name: "Rutvik",
-                  link: "https://github.com/rutvik110",
+                  name: 'Rutvik',
+                  link: 'https://github.com/rutvik110',
                 ),
                 CustomAvatar(
-                  name: "Michael",
-                  link: "https://github.com/mfreeman451",
+                  name: 'Michael',
+                  link: 'https://github.com/mfreeman451',
                 ),
                 CustomAvatar(
-                  name: "Cottongin",
-                  link: "https://github.com/cottongin",
+                  name: 'Cottongin',
+                  link: 'https://github.com/cottongin',
                 ),
                 CustomAvatar(
-                  name: "Pilate",
-                  link: "https://github.com/pilate",
+                  name: 'Pilate',
+                  link: 'https://github.com/pilate',
                 ),
               ],
             ),
-            Divider(
+            const Divider(
               height: kItemsSpacingMediumConstant,
               color: Colors.white,
               thickness: 1,
@@ -428,7 +437,7 @@ class CrawlContributions extends StatelessWidget {
               endIndent: kPaddingSmallConstant,
             ),
             Text(
-              "Thank You!",
+              'Thank You!',
               overflow: TextOverflow.visible,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -436,10 +445,10 @@ class CrawlContributions extends StatelessWidget {
                     ? Theme.of(context).textTheme.subtitle1!.fontSize
                     : Theme.of(context).textTheme.headline5!.fontSize,
                 color: starWarsCrawlTextColor,
-                fontFamily: "Crawl",
+                fontFamily: 'Crawl',
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
           ],
@@ -461,7 +470,7 @@ class CustomAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(
+    final TextStyle textStyle = TextStyle(
       fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
           ? Theme.of(context).textTheme.overline!.fontSize
           : Theme.of(context).textTheme.button!.fontSize,
@@ -487,11 +496,11 @@ class CustomAvatar extends StatelessWidget {
                 backgroundColor: Colors.white.withOpacity(
                   0.8,
                 ),
-                avatar: Icon(
+                avatar: const Icon(
                   Icons.link,
                   color: starWarsCrawlTextColor,
                 ),
-                labelPadding: EdgeInsets.symmetric(horizontal: 2),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 2),
                 label: Text(
                   name,
                   style: textStyle.copyWith(
@@ -518,22 +527,23 @@ class BackButton extends StatelessWidget {
     return Positioned(
       top: Sizescaleconfig.screenheight! * 0.02,
       child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: ElevatedButton.styleFrom(
-            shape: CircleBorder(),
-            primary: starWarsCrawlTextColor,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        style: ElevatedButton.styleFrom(
+          shape: const CircleBorder(),
+          primary: starWarsCrawlTextColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 5,
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 5,
-            ),
-            child: Icon(
-              Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-          )),
+          child: Icon(
+            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }
