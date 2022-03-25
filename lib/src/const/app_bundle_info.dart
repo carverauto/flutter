@@ -7,21 +7,28 @@ import 'dart:io';
 import '../../flavors.dart';
 
 class AppBundleInfo {
-  static const String appstoreId = '1462719760';
+  static const String _appstoreId = '1462719760';
+  String get appstoreId => _appstoreId;
 
-  static const String devDynamicLinkHostUrl = 'https://carverauto.page.link';
+  static const String _devDynamicLinkHostUrl = 'https://carverauto.page.link';
+  static String get devDynamicLinkHostUrl => _devDynamicLinkHostUrl;
 
-  static const String devIosBundleId = 'com.carverauto.chaseapp.cdev';
+  static const String _devIosBundleId = 'com.carverauto.chaseapp.cdev';
+  static String get devIosBundleId => _devIosBundleId;
 
-  static const String devAndroidBundleId = 'com.carverauto.chasedev';
+  static const String _devAndroidBundleId = 'com.carverauto.chasedev';
+  static String get devAndroidBundleId => _devAndroidBundleId;
 
 // Production
 
-  static const String prodDynamicLinkHostUrl = 'https://m.chaseapp.tv';
+  static const String _prodDynamicLinkHostUrl = 'https://m.chaseapp.tv';
+  static String get prodDynamicLinkHostUrl => _prodDynamicLinkHostUrl;
 
-  static const String prodAndroidBundleId = 'com.carverauto.chaseapp';
+  static const String _prodAndroidBundleId = 'com.carverauto.chaseapp';
+  static String get prodAndroidBundleId => _prodAndroidBundleId;
 
-  static const String prodIosBundleId = 'com.carverauto.chaseapp';
+  static const String _prodIosBundleId = 'com.carverauto.chaseapp';
+  static String get prodIosBundleId => _prodIosBundleId;
 
   static String dynamicLinkHostUrl(bool forEmail) {
     final String url = F.appFlavor == Flavor.DEV
@@ -67,11 +74,16 @@ class AppBundleInfo {
 }
 
 class EnvVaribales {
-  static const String twitterToken = String.fromEnvironment('Twitter_Token');
-  static const String youtubeApiKey = String.fromEnvironment('Youtbe_Api_Key');
-  static const String youtubeToken = String.fromEnvironment('Youtube_Token');
-  static const String devGetStreamChatApiKey =
+  static const String _twitterToken = String.fromEnvironment('Twitter_Token');
+  String get twitterToken => _twitterToken;
+  static const String _youtubeApiKey = String.fromEnvironment('Youtbe_Api_Key');
+  String get youtubeApiKey => _youtubeApiKey;
+  static const String _youtubeToken = String.fromEnvironment('Youtube_Token');
+  String get youtubeToken => _youtubeToken;
+  static const String _devGetStreamChatApiKey =
       String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
-  static const String prodGetStreamChatApiKey =
+  String get devGetStreamChatApiKey => _devGetStreamChatApiKey;
+  static const String _prodGetStreamChatApiKey =
       String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
+  String get prodGetStreamChatApiKey => _prodGetStreamChatApiKey;
 }
