@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 
+import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
@@ -44,7 +45,9 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
-    if (deepLink?.path != '/__/auth/action') {
+    if (!ref
+        .read(firebaseAuthProvider)
+        .isSignInWithEmailLink(deepLink.toString())) {
       if (deepLink != null) {
         await navigateToView(deepLink);
       }
@@ -98,7 +101,9 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         log('Dynamic Link Recieved--->${dynamicLink.link}');
         final Uri deepLink = dynamicLink.link;
 //TODO: Replace with FirebaseAuth.instance.isSignInWithEmailLink(emailLink) check
-        if (deepLink.path != '/__/auth/action') {
+        if (!ref
+            .read(firebaseAuthProvider)
+            .isSignInWithEmailLink(deepLink.toString())) {
           if (deepLink != null) {
             await navigateToView(deepLink);
           }
