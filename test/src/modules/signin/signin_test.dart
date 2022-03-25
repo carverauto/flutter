@@ -27,8 +27,8 @@ void main() {
     });
     test('Unkown Provider', () {
       expect(
-        () => getSignInProviderHelper('Unkown Provider'),
-        throwsException,
+        getSignInProviderHelper('Unkown Provider'),
+        SIGNINMETHOD.Unknown,
       );
     });
   });
