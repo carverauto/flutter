@@ -85,13 +85,15 @@ class _LogInViewState extends ConsumerState<LogInView>
     }
   }
 
-  void handleDynamicLinkFromTerminatedState() async {
+  Future<void> handleDynamicLinkFromTerminatedState() async {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
     if (deepLink != null) {
-      if (deepLink.path == '/__/auth/action') {
+      if (ref
+          .read(firebaseAuthProvider)
+          .isSignInWithEmailLink(deepLink.toString())) {
         logInuser(deepLink.toString());
       }
     }
@@ -103,9 +105,9 @@ class _LogInViewState extends ConsumerState<LogInView>
         final Uri deepLink = dynamicLink.link;
 
         if (deepLink != null) {
-          //TODO: Replace with FirebaseAuth.instance.isSignInWithEmailLink(emailLink) check
-
-          if (deepLink.path == '/__/auth/action') {
+          if (ref
+              .read(firebaseAuthProvider)
+              .isSignInWithEmailLink(deepLink.toString())) {
             logInuser(deepLink.toString());
           }
         }
@@ -130,8 +132,10 @@ class _LogInViewState extends ConsumerState<LogInView>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<LogInState>(signInProvider,
-        (LogInState? oldState, LogInState newState) {
+    ref.listen<LogInState>(signInProvider, (
+      LogInState? oldState,
+      LogInState newState,
+    ) {
       newState.when(
         data: () {
           setState(() {
@@ -150,9 +154,33 @@ class _LogInViewState extends ConsumerState<LogInView>
               return MultiAuthDialog(existingProviders: authProviders);
             },
           );
-
           if (knownAuthProvider != null) {
-            if (knownAuthProvider != SIGNINMETHOD.Email) {
+            log(knownAuthProvider.name);
+
+            if (knownAuthProvider == SIGNINMETHOD.Unknown) {
+              await Future<void>.delayed(const Duration(milliseconds: 300));
+              final SIGNINMETHOD? fallBackSignInMethod =
+                  await showDialog<SIGNINMETHOD?>(
+                context: context,
+                builder: (BuildContext context) {
+                  return NotSupportedSignInProviderDialog(
+                    authProviders: authProviders,
+                  );
+                },
+              );
+              if (fallBackSignInMethod != null) {
+                await ref
+                    .read(signInProvider.notifier)
+                    .handleMutliProviderSignIn(
+                      fallBackSignInMethod,
+                      credentials,
+                    );
+              } else {
+                setState(() {
+                  signinmethod = null;
+                });
+              }
+            } else if (knownAuthProvider != SIGNINMETHOD.Email) {
               await ref
                   .read(signInProvider.notifier)
                   .handleMutliProviderSignIn(knownAuthProvider, credentials);
