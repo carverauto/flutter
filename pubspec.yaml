@@ -108,7 +108,11 @@ dependencies:
  # social_embed_webview: ^0.3.2
   webview_flutter: ^2.8.0
   rive: ^0.8.1
+
+ # Stream 
   stream_feed_flutter_core: ^0.7.0+1
+
+  # Testing
   firebase_auth_mocks: ^0.8.2
   google_sign_in_mocks: ^0.2.1
   fake_cloud_firestore: ^1.2.2

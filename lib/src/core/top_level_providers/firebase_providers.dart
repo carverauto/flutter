@@ -12,9 +12,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final AutoDisposeProvider<FirebaseAuth> firebaseAuthProvider =
     Provider.autoDispose<FirebaseAuth>(
-        (AutoDisposeProviderRef<FirebaseAuth> ref) {
-  return FirebaseAuth.instance;
-});
+  (AutoDisposeProviderRef<FirebaseAuth> ref) {
+    return FirebaseAuth.instance;
+  },
+);
 
 final Provider<GoogleSignIn> googleSignInProvider =
     Provider<GoogleSignIn>((ProviderRef<GoogleSignIn> ref) => GoogleSignIn());
@@ -37,13 +38,16 @@ final Provider<FirebaseAnalytics> analyticsProvider =
 });
 final Provider<FirebaseAnalyticsObserver> analyticsoObserverProvider =
     Provider<FirebaseAnalyticsObserver>(
-        (ProviderRef<FirebaseAnalyticsObserver> ref) {
-  return FirebaseAnalyticsObserver(analytics: ref.watch(analyticsProvider));
-});
+  (ProviderRef<FirebaseAnalyticsObserver> ref) {
+    return FirebaseAnalyticsObserver(analytics: ref.watch(analyticsProvider));
+  },
+);
 final Provider<FirebaseMessaging> firebaseMessagingProvider =
-    Provider<FirebaseMessaging>((ProviderRef<FirebaseMessaging> ref) {
-  return FirebaseMessaging.instance;
-});
+    Provider<FirebaseMessaging>(
+  (ProviderRef<FirebaseMessaging> ref) {
+    return FirebaseMessaging.instance;
+  },
+);
 
 final Provider<FirebaseFirestore> firestoreProvider =
     Provider<FirebaseFirestore>((ProviderRef<FirebaseFirestore> ref) {

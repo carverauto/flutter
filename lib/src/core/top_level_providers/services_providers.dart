@@ -57,11 +57,13 @@ final Provider<PackageInfo> appInfoProvider = Provider<PackageInfo>(
 final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
     checkForUpdateStateNotifier =
     StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>(
-        (StateNotifierProviderRef<AppUpdateStateNotifier,
-                AsyncValue<AppUpdateInfo>>
-            ref) {
-  return AppUpdateStateNotifier(read: ref.read);
-});
+  (StateNotifierProviderRef<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
+      ref) {
+    return AppUpdateStateNotifier(
+      read: ref.read,
+    );
+  },
+);
 
 final Provider<PusherBeams> pusherBeamsProvider = Provider<PusherBeams>(
   (ProviderRef<PusherBeams> ref) => PusherBeams.instance,

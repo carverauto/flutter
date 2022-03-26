@@ -1,5 +1,6 @@
-import 'package:chaseapp/src/const/other.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/other.dart';
 
 class ButtonScaleAnimationWidget extends StatelessWidget {
   const ButtonScaleAnimationWidget({
@@ -13,10 +14,10 @@ class ButtonScaleAnimationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.7, end: 1),
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: kPrimaryCurve,
       child: child,
-      builder: (context, animation, child) {
+      builder: (BuildContext context, double animation, Widget? child) {
         return Transform.scale(
           scale: animation,
           child: child,

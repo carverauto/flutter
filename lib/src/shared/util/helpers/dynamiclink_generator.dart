@@ -1,22 +1,23 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/const/app_bundle_info.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
+import '../../../const/app_bundle_info.dart';
+import '../../../const/images.dart';
+import '../../../models/chase/chase.dart';
+import 'image_url_parser.dart';
+
 Future<String> createChaseDynamicLink(Chase chase) async {
-  final fallbackUrl = Uri.parse("https://chaseapp.tv/chase/${chase.id}");
-  final shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
-      ? parseImageUrl(chase.imageURL!, ImageDimensions.MEDIUM)
+  final Uri fallbackUrl = Uri.parse('https://chaseapp.tv/chase/${chase.id}');
+  final String shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
+      ? parseImageUrl(chase.imageURL!)
       : defaultPhotoURL;
 
-  final uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
+  final String uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
 
-  final linkPrefix = AppBundleInfo.dynamicLinkPrefix;
+  final String linkPrefix = AppBundleInfo.dynamicLinkPrefix;
 
-  final link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
+  final Uri link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
   //Dynamic link generalization
   final DynamicLinkParameters parameters = DynamicLinkParameters(
     uriPrefix: uriPrefix,
