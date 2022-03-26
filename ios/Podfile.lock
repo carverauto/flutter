@@ -657,6 +657,8 @@ PODS:
     - Flutter
   - image_picker (0.0.1):
     - Flutter
+  - integration_test (0.0.1):
+    - Flutter
   - launch_review (0.0.1):
     - Flutter
   - leveldb-library (1.22.1)
@@ -767,6 +769,7 @@ DEPENDENCIES:
   - GoogleUtilities/UserDefaults
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - NodleSDK
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -885,6 +888,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info_plus:
@@ -977,6 +982,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker: 541dcbb3b9cf32d87eacbd957845d8651d6c62c3
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
