@@ -117,6 +117,7 @@ dependencies:
   google_sign_in_mocks: ^0.2.1
   fake_cloud_firestore: ^1.2.2
 
+
 dependency_overrides:
   # video_compress: 3.1.0
   video_compress:
@@ -127,6 +128,8 @@ dependency_overrides:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   # Configuring launcher icons
   flutter_launcher_icons: ^0.9.2  
