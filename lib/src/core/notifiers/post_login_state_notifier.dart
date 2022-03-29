@@ -68,7 +68,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> _initFirebaseActions(User user, UserData userData) async {
     final DateTime? lastTokenUpdate = userData.lastTokenUpdate;
     final List<PushToken>? tokens = userData.tokens;
-    final String? token = await _read(firebaseMesssagingProvider).getToken();
+    final String? token = await _read(firebaseMessagingProvider).getToken();
 
     if (token != null) {
       try {

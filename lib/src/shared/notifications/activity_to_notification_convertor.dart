@@ -53,13 +53,6 @@ ChaseAppNotification convertActivityToChaseAppNotification(
       );
       break;
 
-    case FirehoseNotificationType.live_on_patrol:
-      data = NotificationData(
-        id: id,
-        image: image,
-      );
-      break;
-
     case FirehoseNotificationType.events:
       data = NotificationData(
         // id: id,

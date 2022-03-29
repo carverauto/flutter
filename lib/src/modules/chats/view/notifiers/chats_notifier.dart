@@ -11,9 +11,13 @@ import '../../../../shared/notifications/activity_to_notification_convertor.dart
 import '../providers/providers.dart';
 
 class ChatStateNotifier extends StateNotifier<void> {
-  ChatStateNotifier(this.read) : super(null);
+  ChatStateNotifier({
+    required this.read,
+    required this.streamFeedClient,
+  }) : super(null);
 
   final Reader read;
+  final feed.StreamFeedClient streamFeedClient;
 
   final Logger logger = Logger('ChatsServiceStateNotifier');
 
@@ -25,8 +29,8 @@ class ChatStateNotifier extends StateNotifier<void> {
     _getChatApiKey,
     logLevel: Level.INFO,
   );
-  final feed.StreamFeedClient _streamFeedClient =
-      feed.StreamFeedClient(_getChatApiKey, appId: '102359');
+  // final feed.StreamFeedClient _streamFeedClient =
+  //     feed.StreamFeedClient(_getChatApiKey, appId: '102359');
 
   static String get _getChatApiKey {
     if (F.appFlavor == Flavor.DEV) {
@@ -43,17 +47,17 @@ class ChatStateNotifier extends StateNotifier<void> {
   }
 
   feed.FlatFeed get firehoseFeed =>
-      _streamFeedClient.flatFeed('events', 'firehose');
+      streamFeedClient.flatFeed('events', 'firehose');
 
   stream.StreamChatClient get client => _client;
-  feed.StreamFeedClient get streamFeed => _streamFeedClient;
+  feed.StreamFeedClient get streamFeed => streamFeedClient;
 
   Future<void> setUserAndSubscribe() async {
-    if (_streamFeedClient.currentUser == null) {
+    if (streamFeedClient.currentUser == null) {
       final UserData userData = await read(userStreamProvider.future);
       final String userToken =
           await read(chatsRepoProvider).getUserToken(userData.uid);
-      await _streamFeedClient.setUser(
+      await streamFeedClient.setUser(
         feed.User(
           id: userData.uid,
         ),

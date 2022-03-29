@@ -117,9 +117,9 @@ class NotificationTile extends ConsumerWidget {
             return FirehoseErrorTile(
               notification: notification,
               onRefesh: () {
-                ref.refresh(
-                  fetchTweetAlongUserData(notification.data!.channelId!),
-                );
+                // ref.refresh(
+                //   fetchTweetAlongUserData(notification.data!.channelId!),
+                // );
               },
             );
           },
@@ -153,7 +153,7 @@ class NotificationTile extends ConsumerWidget {
           logger: logger,
         );
 
-      case FirehoseNotificationType.live_on_patrol:
+      case FirehoseNotificationType.chase:
         return _NotificationListTile(
           notification: notification,
           title: Text(
@@ -166,19 +166,6 @@ class NotificationTile extends ConsumerWidget {
           imageUrl: notification.data!.image,
         );
       case FirehoseNotificationType.events:
-        return _NotificationListTile(
-          notification: notification,
-          title: Text(
-            notification.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: titleStyle,
-          ),
-          body: notification.body,
-          imageUrl: notification.data!.image,
-        );
-
-      case FirehoseNotificationType.chase:
         return _NotificationListTile(
           notification: notification,
           title: Text(
@@ -257,7 +244,7 @@ class NotificationTrailingIcon extends StatelessWidget {
           color: Colors.red,
         );
 
-      case FirehoseNotificationType.live_on_patrol:
+      case FirehoseNotificationType.chase:
         return ShaderMask(
           shaderCallback: (Rect bounds) {
             return const LinearGradient(
@@ -274,8 +261,6 @@ class NotificationTrailingIcon extends StatelessWidget {
         );
 
       case FirehoseNotificationType.events:
-        return const SizedBox.shrink();
-      case FirehoseNotificationType.chase:
         return const SizedBox.shrink();
       default:
         return const SizedBox.shrink();

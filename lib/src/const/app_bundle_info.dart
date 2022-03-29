@@ -1,35 +1,44 @@
 // Development
 
+// ignore_for_file: public_member_api_docs, avoid_classes_with_only_static_members
+
 import 'dart:io';
 
-import 'package:chaseapp/flavors.dart';
+import '../../flavors.dart';
 
 class AppBundleInfo {
-  static const appstoreId = "1462719760";
+  static const String _appstoreId = '1462719760';
+  static String get appstoreId => _appstoreId;
 
-  static const devDynamicLinkHostUrl = "https://carverauto.page.link";
+  static const String _devDynamicLinkHostUrl = 'https://carverauto.page.link';
+  static String get devDynamicLinkHostUrl => _devDynamicLinkHostUrl;
 
-  static const devIosBundleId = 'com.carverauto.chaseapp.cdev';
+  static const String _devIosBundleId = 'com.carverauto.chaseapp.cdev';
+  static String get devIosBundleId => _devIosBundleId;
 
-  static const devAndroidBundleId = "com.carverauto.chasedev";
+  static const String _devAndroidBundleId = 'com.carverauto.chasedev';
+  static String get devAndroidBundleId => _devAndroidBundleId;
 
 // Production
 
-  static const prodDynamicLinkHostUrl = "https://m.chaseapp.tv";
+  static const String _prodDynamicLinkHostUrl = 'https://m.chaseapp.tv';
+  static String get prodDynamicLinkHostUrl => _prodDynamicLinkHostUrl;
 
-  static const prodAndroidBundleId = 'com.carverauto.chaseapp';
+  static const String _prodAndroidBundleId = 'com.carverauto.chaseapp';
+  static String get prodAndroidBundleId => _prodAndroidBundleId;
 
-  static const prodIosBundleId = "com.carverauto.chaseapp";
+  static const String _prodIosBundleId = 'com.carverauto.chaseapp';
+  static String get prodIosBundleId => _prodIosBundleId;
 
   static String dynamicLinkHostUrl(bool forEmail) {
     final String url = F.appFlavor == Flavor.DEV
         ? devDynamicLinkHostUrl
         : prodDynamicLinkHostUrl;
-    return forEmail ? url + "/" : url;
+    return forEmail ? '$url/' : url;
   }
 
   static String get dynamicLinkPrefix =>
-      F.appFlavor == Flavor.DEV ? "carverauto.com" : "chaseapp.tv";
+      F.appFlavor == Flavor.DEV ? 'carverauto.com' : 'chaseapp.tv';
 
   static String get bundleId {
     if (F.appFlavor == Flavor.DEV) {
@@ -65,7 +74,16 @@ class AppBundleInfo {
 }
 
 class EnvVaribales {
-  static const twitterToken = String.fromEnvironment("Twitter_Token");
-  static const youtubeApiKey = String.fromEnvironment("Youtbe_Api_Key");
-  static const youtubeToken = String.fromEnvironment("Youtube_Token");
+  static const String _twitterToken = String.fromEnvironment('Twitter_Token');
+  static String get twitterToken => _twitterToken;
+  static const String _youtubeApiKey = String.fromEnvironment('Youtbe_Api_Key');
+  static String get youtubeApiKey => _youtubeApiKey;
+  static const String _youtubeToken = String.fromEnvironment('Youtube_Token');
+  static String get youtubeToken => _youtubeToken;
+  static const String _devGetStreamChatApiKey =
+      String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
+  static String get devGetStreamChatApiKey => _devGetStreamChatApiKey;
+  static const String _prodGetStreamChatApiKey =
+      String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
+  static String get prodGetStreamChatApiKey => _prodGetStreamChatApiKey;
 }

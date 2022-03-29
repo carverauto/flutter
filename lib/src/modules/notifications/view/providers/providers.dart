@@ -8,6 +8,8 @@ import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/interest/interest.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../../shared/util/firebase_collections.dart';
+import '../../../chats/view/providers/providers.dart';
 import '../../data/notifications_db.dart';
 import '../../data/notifications_db_ab.dart';
 import '../../domain/notifications_repo.dart';
@@ -17,7 +19,10 @@ final StateProvider<String?> notificationInterestProvider =
     StateProvider<String?>((StateProviderRef<String?> ref) => null);
 final AutoDisposeProvider<NotificationsDbAB> notificationDbProvider =
     Provider.autoDispose<NotificationsDbAB>(
-  (AutoDisposeProviderRef<NotificationsDbAB> ref) => NotificationsDatabase(),
+  (AutoDisposeProviderRef<NotificationsDbAB> ref) => NotificationsDatabase(
+    notificationsCollectionRef: notificationsCollectionRef,
+    interestsCollectionRef: interestsCollectionRef,
+  ),
 );
 final AutoDisposeProvider<NotificationsRepoAB> notificationRepoProvider =
     Provider.autoDispose<NotificationsRepoAB>(
@@ -25,34 +30,34 @@ final AutoDisposeProvider<NotificationsRepoAB> notificationRepoProvider =
       NotificationsRepository(ref.read),
 );
 
-final AutoDisposeStateNotifierProviderFamily<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger> notificationsStreamProvider =
+final ChaseAppNotificationStateNotifierProvider notificationsStreamProvider =
     StateNotifierProvider.autoDispose.family<
         PaginationNotifier<ChaseAppNotification>,
         PaginationNotifierState<ChaseAppNotification>,
-        Logger>((AutoDisposeStateNotifierProviderRef<
-                PaginationNotifier<ChaseAppNotification>,
-                PaginationNotifierState<ChaseAppNotification>>
-            ref,
-        Logger logger) {
-  final String? notificationType = ref.watch(notificationInterestProvider);
-  final User user = ref.read(firebaseAuthProvider).currentUser!;
+        Logger>(
+  (
+    ChaseAppNotificationStateNotifierProviderRef ref,
+    Logger logger,
+  ) {
+    final String? notificationType = ref.watch(notificationInterestProvider);
+    final User user = ref.read(firebaseAuthProvider).currentUser!;
 
-  return PaginationNotifier(
-    hitsPerPage: 20,
-    logger: logger,
-    fetchNextItems: (
-      ChaseAppNotification? notification,
-      int offset,
-    ) async {
-      return ref
-          .read(notificationRepoProvider)
-          .fetchNotifications(notification, notificationType, user.uid);
-    },
-  );
-});
+    return PaginationNotifier(
+      hitsPerPage: 20,
+      logger: logger,
+      fetchNextItems: (
+        ChaseAppNotification? notification,
+        int offset,
+      ) async {
+        return ref.read(notificationRepoProvider).fetchNotifications(
+              notification,
+              notificationType,
+              user.uid,
+            );
+      },
+    );
+  },
+);
 
 final AutoDisposeFutureProvider<List<String?>> usersInterestsStreamProvider =
     FutureProvider.autoDispose<List<String?>>(

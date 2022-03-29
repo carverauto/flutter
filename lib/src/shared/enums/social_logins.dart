@@ -4,6 +4,7 @@ enum SIGNINMETHOD {
   Facebook,
   Twitter,
   Email,
+  Unknown,
 }
 
 extension SignInMethodIcon on SIGNINMETHOD {
@@ -22,6 +23,8 @@ extension SignInMethodIcon on SIGNINMETHOD {
         return 'assets/icon/twitter.svg';
       case SIGNINMETHOD.Email:
         return 'assets/icon/email.svg';
+      case SIGNINMETHOD.Unknown:
+        return 'assets/icon/unknown.svg';
     }
   }
 }
@@ -43,6 +46,7 @@ SIGNINMETHOD getSignInProviderHelper(String unKnownProvider) {
       return SIGNINMETHOD.Email;
 
     default:
-      throw Exception('Unknown provider: $unKnownProvider');
+      return SIGNINMETHOD.Unknown;
+    // throw Exception('Unknown provider: $unKnownProvider');
   }
 }

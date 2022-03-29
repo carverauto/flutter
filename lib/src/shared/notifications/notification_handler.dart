@@ -95,7 +95,7 @@ Future<void> _showFirehosePreview(
 
       break;
 
-    case FirehoseNotificationType.live_on_patrol:
+    case FirehoseNotificationType.chase:
       navigateToChaseView(context, notification.data!.id!);
       break;
     default:

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
 import '../providers/providers.dart';
+import 'pop_up_animations_overlay.dart';
 import 'theater_rive.dart';
 
 class VideoAnimationsOverlay extends ConsumerWidget {
   const VideoAnimationsOverlay({
     Key? key,
+    required this.controller,
   }) : super(key: key);
+
+  final YoutubePlayerController controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +25,13 @@ class VideoAnimationsOverlay extends ConsumerWidget {
         : Stack(
             fit: StackFit.expand,
             children: [
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: TheaterRive(),
+              ),
+              PopupAnimationsView(
+                controller: controller,
+              ),
               Positioned(
                 top: kItemsSpacingSmallConstant,
                 left: kItemsSpacingSmallConstant,
@@ -28,10 +40,6 @@ class VideoAnimationsOverlay extends ConsumerWidget {
                   height: kImageSizeSmall,
                   fit: BoxFit.scaleDown,
                 ),
-              ),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: TheaterRive(),
               ),
             ],
           );

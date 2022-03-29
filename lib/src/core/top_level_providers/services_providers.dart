@@ -7,6 +7,7 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../models/app_update_info/app_update_info.dart';
 import '../../models/chase/chase.dart';
+import '../../shared/util/firebase_collections.dart';
 import '../modules/chase/data/chase_db.dart';
 import '../modules/chase/data/chase_db_ab.dart';
 import '../modules/chase/domain/chase_repo.dart';
@@ -18,8 +19,11 @@ final Provider<SharedPreferences> sharedPreferancesProvider =
   throw UnimplementedError();
 });
 
-final Provider<ChaseDbAB> chaseDbProvider =
-    Provider<ChaseDbAB>((ProviderRef<ChaseDbAB> ref) => ChaseDatabase());
+final Provider<ChaseDbAB> chaseDbProvider = Provider<ChaseDbAB>(
+  (ProviderRef<ChaseDbAB> ref) => ChaseDatabase(
+    chasesCollectionRef,
+  ),
+);
 
 final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
   (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(read: ref.read),
@@ -53,11 +57,13 @@ final Provider<PackageInfo> appInfoProvider = Provider<PackageInfo>(
 final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
     checkForUpdateStateNotifier =
     StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>(
-        (StateNotifierProviderRef<AppUpdateStateNotifier,
-                AsyncValue<AppUpdateInfo>>
-            ref) {
-  return AppUpdateStateNotifier(read: ref.read);
-});
+  (StateNotifierProviderRef<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
+      ref) {
+    return AppUpdateStateNotifier(
+      read: ref.read,
+    );
+  },
+);
 
 final Provider<PusherBeams> pusherBeamsProvider = Provider<PusherBeams>(
   (ProviderRef<PusherBeams> ref) => PusherBeams.instance,

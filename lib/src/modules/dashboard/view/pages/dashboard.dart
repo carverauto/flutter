@@ -9,13 +9,13 @@ import '../../../../models/chase/chase.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../chases/view/pages/recent_chases/recent_chases.dart';
+import '../../../chases/view/pages/top_chases/top_chases.dart';
+import '../../../chases/view/providers/providers.dart';
 import '../../../firehose/view/pages/firehose_view_all.dart';
 import '../parts/chaseapp_appbar.dart';
 import '../parts/chaseapp_drawer.dart';
 import '../parts/connectivity_status.dart';
-import '../parts/recent_chases/recent_chases.dart';
-import '../parts/top_chases/top_chases.dart';
-import '../providers/providers.dart';
 
 class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);

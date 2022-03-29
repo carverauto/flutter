@@ -1,14 +1,15 @@
 import 'dart:core';
 
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/notification/notification.dart';
-import 'package:chaseapp/src/modules/chase_view/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/widgets/buttons/glass_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/sizings.dart';
+import '../../../../models/notification/notification.dart';
+import '../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../chase_view/view/providers/providers.dart';
 
 class YoutubePreview extends ConsumerStatefulWidget {
   const YoutubePreview({
@@ -29,8 +30,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
   YoutubePlayerController initializeVideoController({String? youtubeUrl}) {
     _controller = YoutubePlayerController(
       initialVideoId: widget.notification.data!.youtubeId!,
-      flags: YoutubePlayerFlags(
-        autoPlay: true,
+      flags: const YoutubePlayerFlags(
         mute: true,
       ),
     );
@@ -43,9 +43,9 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
     initializeVideoController(
       youtubeUrl: url,
     );
-    ref.read(playVideoProvider.state).update((state) => false);
-    await Future<void>.delayed(Duration(milliseconds: 300));
-    ref.read(playVideoProvider.state).update((state) => true);
+    ref.read(playVideoProvider.state).update((bool state) => false);
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    ref.read(playVideoProvider.state).update((bool state) => true);
   }
 
   @override
@@ -63,21 +63,21 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: double.maxFinite,
       child: YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
           // showVideoProgressIndicator: true,
         ),
-        builder: (context, video) {
+        builder: (BuildContext context, Widget video) {
           return Scaffold(
             backgroundColor: Colors.transparent,
             resizeToAvoidBottomInset: false,
             body: Center(
               child: Container(
-                padding: EdgeInsets.all(kPaddingMediumConstant),
-                margin: EdgeInsets.all(kPaddingMediumConstant),
+                padding: const EdgeInsets.all(kPaddingMediumConstant),
+                margin: const EdgeInsets.all(kPaddingMediumConstant),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(kBorderRadiusStandard),
@@ -87,13 +87,15 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     DecoratedBox(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: primaryShadowColor,
-                          blurRadius: blurValue,
-                          offset: Offset(0, 4),
-                        )
-                      ]),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: primaryShadowColor,
+                            blurRadius: blurValue,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
                       child: ClipRRect(
                         borderRadius:
                             BorderRadius.circular(kBorderRadiusStandard),
@@ -141,32 +143,32 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                       children: [
                         TextButton(
                           style: TextButton.styleFrom(
-                            side: BorderSide(),
+                            side: const BorderSide(),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("Close"),
+                          child: const Text('Close'),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: kItemsSpacingSmallConstant,
                         ),
                         Tooltip(
-                          message: "Watch on Youtube",
+                          message: 'Watch on Youtube',
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red,
                             ),
                             onPressed: () {
-                              final url =
-                                  "https://www.youtube.com/watch?v=${widget.notification.data!.youtubeId!}";
+                              final String url =
+                                  'https://www.youtube.com/watch?v=${widget.notification.data!.youtubeId!}';
                               launchURL(context, url);
                             },
-                            child: Icon(Icons.play_arrow_rounded),
+                            child: const Icon(Icons.play_arrow_rounded),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -191,7 +193,7 @@ class VolumeOnOffButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassButton(
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
       onTap: onTap,
       child: Icon(
         isMuted ? Icons.volume_off : Icons.volume_up,

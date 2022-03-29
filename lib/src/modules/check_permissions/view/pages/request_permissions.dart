@@ -1,10 +1,11 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/info.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/parts/grant_permissions_button.dart';
-import 'package:chaseapp/src/core/modules/auth/view/parts/permissions_list.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/info.dart';
+import '../../../../const/sizings.dart';
+import '../../../../core/modules/auth/view/parts/grant_permissions_button.dart';
+import '../../../../core/modules/auth/view/parts/permissions_list.dart';
+import '../../../dashboard/view/parts/chaseapp_appbar.dart';
 
 class RequestPermissionsView extends StatelessWidget {
   const RequestPermissionsView({Key? key}) : super(key: key);
@@ -16,17 +17,17 @@ class RequestPermissionsView extends StatelessWidget {
         padding:
             const EdgeInsets.all(kPaddingMediumConstant).copyWith(bottom: 0),
         child: ListView(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           children: [
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingSmallConstant,
             ),
-            ChaseAppLogoImage(),
-            SizedBox(
+            const ChaseAppLogoImage(),
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
             Container(
-              padding: EdgeInsets.all(
+              padding: const EdgeInsets.all(
                 kPaddingSmallConstant,
               ),
               decoration: BoxDecoration(
@@ -40,7 +41,7 @@ class RequestPermissionsView extends StatelessWidget {
                     Icons.info,
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: kItemsSpacingSmallConstant,
                   ),
                   Expanded(
@@ -55,15 +56,15 @@ class RequestPermissionsView extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
-            PermissionsList(),
-            SizedBox(
+            const PermissionsList(),
+            const SizedBox(
               height: kItemsSpacingLargeConstant,
             ),
-            GrantAllPermissionsButton(),
-            SizedBox(
+            const GrantAllPermissionsButton(),
+            const SizedBox(
               height: kItemsSpacingMediumConstant,
             ),
           ],

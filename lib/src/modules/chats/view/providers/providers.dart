@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
+import '../../../../../flavors.dart';
+import '../../../../const/app_bundle_info.dart';
 import '../../../../core/notifiers/pagination_notifier.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
@@ -8,17 +11,42 @@ import '../../data/chats_db.dart';
 import '../../domain/chats_repo.dart';
 import '../notifiers/chats_notifier.dart';
 
+typedef ChaseAppNotificationStateNotifierProvider
+    = AutoDisposeStateNotifierProviderFamily<
+        PaginationNotifier<ChaseAppNotification>,
+        PaginationNotifierState<ChaseAppNotification>,
+        Logger>;
+
+typedef ChaseAppNotificationStateNotifierProviderRef
+    = AutoDisposeStateNotifierProviderRef<
+        PaginationNotifier<ChaseAppNotification>,
+        PaginationNotifierState<ChaseAppNotification>>;
+
 final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   (ProviderRef<ChatsRepository> ref) => ChatsRepository(
     db: ChatsDatabase(ref.read),
   ),
 );
 
+final ProviderFamily<feed.StreamFeedClient, String> streamFeedClientProvider =
+    Provider.family<feed.StreamFeedClient, String>(
+        (ProviderRef<feed.StreamFeedClient> ref, String apiKey) {
+  return feed.StreamFeedClient(apiKey, appId: '102359');
+});
+
 final StateNotifierProvider<ChatStateNotifier, void>
     chatsServiceStateNotifierProvider =
     StateNotifierProvider<ChatStateNotifier, void>(
-  (StateNotifierProviderRef<ChatStateNotifier, void> ref) =>
-      ChatStateNotifier(ref.read),
+  (StateNotifierProviderRef<ChatStateNotifier, void> ref) => ChatStateNotifier(
+    read: ref.read,
+    streamFeedClient: ref.read(
+      streamFeedClientProvider(
+        F.appFlavor == Flavor.DEV
+            ? EnvVaribales.devGetStreamChatApiKey
+            : EnvVaribales.prodGetStreamChatApiKey,
+      ),
+    ),
+  ),
 );
 
 final AutoDisposeFutureProviderFamily<Channel, String> chatChannelProvider =
@@ -38,19 +66,12 @@ final AutoDisposeFutureProviderFamily<Channel, String> chatChannelProvider =
   return channel;
 });
 
-final AutoDisposeStateNotifierProviderFamily<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger> firehosePaginatedStateNotifierProvier =
-    StateNotifierProvider.autoDispose.family<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger>(
+final ChaseAppNotificationStateNotifierProvider
+    firehosePaginatedStateNotifierProvier = StateNotifierProvider.autoDispose
+        .family<PaginationNotifier<ChaseAppNotification>,
+            PaginationNotifierState<ChaseAppNotification>, Logger>(
   (
-    AutoDisposeStateNotifierProviderRef<
-            PaginationNotifier<ChaseAppNotification>,
-            PaginationNotifierState<ChaseAppNotification>>
-        ref,
+    ChaseAppNotificationStateNotifierProviderRef ref,
     Logger logger,
   ) {
     return PaginationNotifier(
