@@ -11,6 +11,7 @@ import '../../../../shared/util/helpers/dynamiclink_generator.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/sentiment_analysis_slider.dart';
 import '../../../signin/view/parts/gradient_animation_container.dart';
+import '../providers/providers.dart';
 import 'chase_description_dialog.dart';
 import 'chase_hero.dart';
 import 'donut_clap_button.dart';
@@ -71,179 +72,202 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
           ),
         ),
         Expanded(
-          child: Stack(
-            children: [
-              ColoredBox(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: ListView(
-                  padding: const EdgeInsets.all(0),
-                  children: [
-                    Material(
-                      child: InkWell(
-                        onTap: () {
-                          showDescriptionDialog(context, widget.chase);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: kPaddingMediumConstant,
-                            vertical: kPaddingSmallConstant,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.chase.name ?? 'NA',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
-                                      ),
-                                ),
+          child: Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final bool showChatsWindow =
+                  ref.watch(isShowingChatsWindowProvide);
+
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  );
+                },
+                child: showChatsWindow ? widget.chatsView : child,
+              );
+            },
+            child: ColoredBox(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Material(
+                    child: InkWell(
+                      onTap: () {
+                        showDescriptionDialog(context, widget.chase);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: kPaddingMediumConstant,
+                          vertical: kPaddingSmallConstant,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.chase.name ?? 'NA',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
                               ),
-                              const Icon(
-                                Icons.expand_more,
-                              ),
-                            ],
-                          ),
+                            ),
+                            const Icon(
+                              Icons.expand_more,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: kItemsSpacingSmallConstant,
+                  ),
+                  const SizedBox(
+                    height: kItemsSpacingSmallConstant,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: kPaddingMediumConstant,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kPaddingMediumConstant,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.alarm,
-                                color: primaryColor.shade300,
-                              ),
-                              const SizedBox(
-                                width: kItemsSpacingSmallConstant / 2,
-                              ),
-                              if (widget.chase.live ?? false)
-                                const RepaintBoundary(
-                                  child: GradientAnimationChildBuilder(
-                                    shouldAnimate: true,
-                                    padding: EdgeInsets.zero,
-                                    child: GlassButton(
-                                      child: Text(
-                                        'Live!',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.alarm,
+                              color: primaryColor.shade300,
+                            ),
+                            const SizedBox(
+                              width: kItemsSpacingSmallConstant / 2,
+                            ),
+                            if (widget.chase.live ?? false)
+                              const RepaintBoundary(
+                                child: GradientAnimationChildBuilder(
+                                  shouldAnimate: true,
+                                  padding: EdgeInsets.zero,
+                                  child: GlassButton(
+                                    child: Text(
+                                      'Live!',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                )
-                              else
-                                GlassButton(
-                                  child: Text(
-                                    dateAdded(widget.chase),
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
+                                ),
+                              )
+                            else
+                              GlassButton(
+                                child: Text(
+                                  dateAdded(widget.chase),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
                                 ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: kItemsSpacingSmallConstant,
-                          ),
-                          Text(
-                            'Sentiment Analysis :',
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                          ),
-                          const SizedBox(
-                            height: kItemsSpacingExtraSmallConstant,
-                          ),
-                          SentimentSlider(chase: widget.chase),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Material(
-                                child: ButtonBar(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () async {
-                                        try {
-                                          final String shareLink =
-                                              await createChaseDynamicLink(
-                                            widget.chase,
-                                          );
-                                          await Share.share(shareLink);
-                                        } catch (e, stk) {
-                                          widget.logger.warning(
-                                            'Chase Sharing Failed!',
-                                            e,
-                                            stk,
-                                          );
-                                        }
-                                      },
-                                      icon: const Icon(
-                                        Icons.share,
-                                      ),
-                                    ),
-                                    // IconButton(
-                                    //   onPressed: () {},
-                                    //   icon: Icon(
-                                    //     Icons.bookmark_border,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
                               ),
-                              Expanded(
-                                child: DonutClapButton(
-                                  chase: widget.chase,
-                                  logger: widget.logger,
-                                ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: kItemsSpacingSmallConstant,
+                        ),
+                        Text(
+                          'Sentiment Analysis :',
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: kItemsSpacingExtraSmallConstant,
+                        ),
+                        SentimentSlider(chase: widget.chase),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Material(
+                              child: ButtonBar(
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      try {
+                                        final String shareLink =
+                                            await createChaseDynamicLink(
+                                          widget.chase,
+                                        );
+                                        await Share.share(shareLink);
+                                      } catch (e, stk) {
+                                        widget.logger.warning(
+                                          'Chase Sharing Failed!',
+                                          e,
+                                          stk,
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.share,
+                                    ),
+                                  ),
+                                  // IconButton(
+                                  //   onPressed: () {},
+                                  //   icon: Icon(
+                                  //     Icons.bookmark_border,
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: DonutClapButton(
+                                chase: widget.chase,
+                                logger: widget.logger,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Divider(
-                      height: kItemsSpacingSmall,
-                    ),
-                    WatchHereLinksWrapper(
-                      chase: widget.chase,
-                      onYoutubeNetworkTap: widget.onYoutubeNetworkTap,
-                    ),
-                    Divider(
-                      height: kItemsSpacingSmall,
-                    ),
-                    widget.chatsRow,
-                  ],
-                ),
+                  ),
+                  Divider(
+                    height: kItemsSpacingSmall,
+                  ),
+                  WatchHereLinksWrapper(
+                    chase: widget.chase,
+                    onYoutubeNetworkTap: widget.onYoutubeNetworkTap,
+                  ),
+                  Divider(
+                    height: kItemsSpacingSmall,
+                  ),
+                  widget.chatsRow,
+                ],
               ),
-              widget.chatsView,
-            ],
+            ),
           ),
+
+          //  Stack(
+          //   children: [
+          //     ,
+          //     widget.chatsView,
+          //   ],
+          // ),
         ),
       ],
     );

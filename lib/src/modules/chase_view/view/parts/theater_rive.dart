@@ -16,8 +16,7 @@ class TheaterRive extends StatefulWidget {
 
 class _TheaterRiveState extends State<TheaterRive> {
   late StateMachineController theaterController;
-
-  void getAnimationsStatus() async {
+  Future<void> getAnimationsStatus() async {
     animationsCollection
         .doc('theater')
         .snapshots()
@@ -70,40 +69,9 @@ class _TheaterRiveState extends State<TheaterRive> {
       'https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true',
       stateMachines: const ['Theater'],
       fit: BoxFit.cover,
+      antialiasing: false,
       alignment: Alignment.bottomCenter,
       onInit: setStateMachine,
     );
-
-    // Container(
-    //   height: 300,
-    //   color: Colors.red,
-    //   child: Column(
-    //     children: [
-    //       Expanded(
-    //         child: RiveAnimation.network(
-    //           "https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true",
-    //           stateMachines: const ['Theater'],
-    //           animations: [],
-    //           fit: BoxFit.cover,
-    //           onInit: (artboard) {
-    //             setStateMachine(artboard);
-    //           },
-    //         ),
-    //       ),
-    //       ButtonBar(
-    //         children: ["Man Point Left", "Horse Fist", "Robot Hop"]
-    //             .map<Widget>(
-    //               (state) => ElevatedButton(
-    //                 onPressed: () {
-    //                   playThiState(state);
-    //                 },
-    //                 child: Text(state),
-    //               ),
-    //             )
-    //             .toList(),
-    //       )
-    //     ],
-    //   ),
-    // );
   }
 }

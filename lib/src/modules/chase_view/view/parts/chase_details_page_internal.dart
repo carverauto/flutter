@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     return _controller;
   }
 
-  void changeYoutubeVideo(String url) async {
+  Future<void> changeYoutubeVideo(String url) async {
     initializeVideoController(
       youtubeUrl: url,
     );
@@ -119,10 +120,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
         child: YoutubePlayerBuilder(
           player: YoutubePlayer(
             controller: _controller,
-            topActions: const [
-              VideoTopActions(),
-            ],
-            overlayInBetween: const VideoAnimationsOverlay(),
+            topActions: const VideoTopActions(),
+            overlayInBetween: VideoAnimationsOverlay(
+              controller: _controller,
+            ),
           ),
           builder: (BuildContext context, Widget video) {
             return Scaffold(
