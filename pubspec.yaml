@@ -86,7 +86,7 @@ dependencies:
   # youtube_player_flutter: ^8.0.0
   
   youtube_player_flutter:
-  #   path: youtube_player_flutter/packages/youtube_player_flutter/
+    # path: youtube_player_flutter/packages/youtube_player_flutter/
     git:
       url: https://github.com/rutvik110/youtube_player_flutter.git
       path: packages/youtube_player_flutter/
@@ -160,6 +160,7 @@ flutter:
     - assets/
     - assets/icon/
     - assets/audio/
+    - assets/rive/
     - images/donut.png
     - images/sparkles.png
     - images/chaseapp.png
