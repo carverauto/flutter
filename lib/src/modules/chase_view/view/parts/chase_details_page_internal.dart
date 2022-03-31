@@ -123,6 +123,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
             topActions: const VideoTopActions(),
             overlayInBetween: VideoAnimationsOverlay(
               controller: _controller,
+              chase: chase,
             ),
           ),
           builder: (BuildContext context, Widget video) {

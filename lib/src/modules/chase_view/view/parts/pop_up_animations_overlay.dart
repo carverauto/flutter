@@ -1,83 +1,118 @@
 import 'dart:async';
 import 'dart:developer' as dev;
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class PopupAnimationsView extends StatefulWidget {
+import '../../../../models/chase/chase.dart';
+import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
+import '../providers/providers.dart';
+import 'theater_rive.dart';
+
+class PopupAnimationsView extends ConsumerStatefulWidget {
   const PopupAnimationsView({
     Key? key,
     required this.controller,
+    required this.chase,
   }) : super(key: key);
 
   final YoutubePlayerController controller;
+  final Chase chase;
 
   @override
-  State<PopupAnimationsView> createState() => _PopupAnimationsViewState();
+  ConsumerState<PopupAnimationsView> createState() =>
+      _PopupAnimationsViewState();
 }
 
-class _PopupAnimationsViewState extends State<PopupAnimationsView> {
-  Widget animatingChild = Container(
-    height: 50,
-    width: 50,
-    color: Colors.blue,
-  );
+class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
+  Widget animatingChild = SizedBox.shrink(key: UniqueKey());
   late PopUpAnimationMetaData popUpAnimationMetaData;
   Alignment prevAlignment = Alignment.center;
   Alignment nextAlignment = Alignment.center;
   Timer timer = Timer(Duration.zero, () {});
+  late Timer periodicTimer;
   bool isReady = false;
 
-  late final StreamController<PopUpAnimationMetaData> streamController;
+  // late final StreamController<PopUpAnimationMetaData> streamController;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.controller.addListener(() {
-      if (!isReady && widget.controller.value.isPlaying) {
-        dev.log('Ready');
-        Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-          final int index = Random().nextInt(9);
-          streamController.add(
-            popUpAnimationsList[index],
-          );
-        });
-        setState(() {
-          isReady = true;
-        });
-      }
-    });
-    streamController = StreamController<PopUpAnimationMetaData>();
 
-    streamController.stream.listen((PopUpAnimationMetaData event) {
+    ref
+        .read(chaseEventsNotifierProvider(widget.chase).notifier)
+        .streamController
+        .stream
+        .listen((ChaseAnimationEvent event) {
+      dev.log('Event label-->${event.label}');
       setState(() {
         prevAlignment = nextAlignment;
-
         nextAlignment = event.alignment;
-        animatingChild = Container(
-          height: 100,
-          width: 100,
+        animatingChild = RiveEmojies(
+          animationEvent: event,
           key: UniqueKey(),
-          color: event.color,
         );
-        timer.cancel();
-
         timer = Timer(const Duration(seconds: 3), () {
-          setState(() {
-            prevAlignment = nextAlignment;
-            nextAlignment = nextAlignment;
-            animatingChild = const SizedBox.shrink();
-          });
+          if (mounted) {
+            setState(() {
+              prevAlignment = nextAlignment;
+              nextAlignment = nextAlignment;
+              animatingChild = const SizedBox.shrink();
+            });
+          }
         });
       });
     });
+
+    widget.controller.addListener(() {
+      if (!isReady && widget.controller.value.isPlaying) {
+        dev.log('Ready');
+
+        if (mounted) {
+          setState(() {
+            isReady = true;
+          });
+        }
+      }
+    });
+    // streamController = StreamController<PopUpAnimationMetaData>();
+
+    // streamController.stream.listen((PopUpAnimationMetaData event) {
+    //   if (mounted) {
+    //     setState(() {
+    //       prevAlignment = nextAlignment;
+
+    //       nextAlignment = event.alignment;
+    //       animatingChild = RiveEmojies(
+    //         emojieArtboard: event,
+    //         key: UniqueKey(),
+    //       );
+    //       timer.cancel();
+
+    //       timer = Timer(const Duration(seconds: 3), () {
+    //         if (mounted) {
+    //           setState(() {
+    //             prevAlignment = nextAlignment;
+    //             nextAlignment = nextAlignment;
+    //             animatingChild = const SizedBox.shrink();
+    //           });
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    streamController.close();
+    // streamController.close();
+    // if (isReady) {
+    //   periodicTimer.cancel();
+    // }
+
     super.dispose();
   }
 
@@ -94,12 +129,12 @@ class _PopupAnimationsViewState extends State<PopupAnimationsView> {
                     alignment: nextAlignment,
                     child: child,
                   ),
-                  Align(
-                    alignment: prevAlignment,
-                    child: childrens.isNotEmpty
-                        ? childrens[0]
-                        : const SizedBox.shrink(),
-                  ),
+                  // Align(
+                  //   alignment: prevAlignment,
+                  //   child: childrens.isNotEmpty
+                  //       ? childrens[0]
+                  //       : const SizedBox.shrink(),
+                  // ),
                 ],
               );
             },
@@ -115,47 +150,61 @@ class _PopupAnimationsViewState extends State<PopupAnimationsView> {
 }
 
 class PopUpAnimationMetaData {
-  PopUpAnimationMetaData({required this.alignment, required this.color});
+  PopUpAnimationMetaData({
+    required this.alignment,
+    required this.artBoard,
+    required this.animations,
+  });
 
   final Alignment alignment;
-  final Color color;
+  final String artBoard;
+  final List<String> animations;
 }
 
 List<PopUpAnimationMetaData> popUpAnimationsList = [
   PopUpAnimationMetaData(
     alignment: Alignment.topLeft,
-    color: Colors.blue,
+    artBoard: 'Mindblown',
+    animations: ['Brain_play'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.topCenter,
-    color: Colors.yellow,
+    artBoard: 'Bullseye',
+    animations: ['Dart_board_play'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.topRight,
-    color: Colors.green,
+    artBoard: 'love',
+    animations: ['Animation 1'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.centerLeft,
-    color: Colors.orange,
+    artBoard: 'Bullseye',
+    animations: ['Dart_board_play'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.center,
-    color: Colors.white,
+    artBoard: 'joy',
+    animations: ['idle'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.centerRight,
-    color: Colors.black,
+    artBoard: 'Tada',
+    animations: ['idle'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.bottomLeft,
-    color: Colors.grey,
+    artBoard: 'Onfire',
+    animations: ['idle'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.bottomCenter,
-    color: Colors.purple,
+    artBoard: 'Tada',
+    animations: ['idle'],
   ),
   PopUpAnimationMetaData(
     alignment: Alignment.bottomRight,
-    color: Colors.pink,
+    artBoard: 'joy',
+    animations: ['idle'],
   ),
 ];
