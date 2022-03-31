@@ -28,10 +28,14 @@ final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   ),
 );
 
-final ProviderFamily<feed.StreamFeedClient, String> streamFeedClientProvider =
-    Provider.family<feed.StreamFeedClient, String>(
-        (ProviderRef<feed.StreamFeedClient> ref, String apiKey) {
-  return feed.StreamFeedClient(apiKey, appId: '102359');
+final Provider<feed.StreamFeedClient> streamFeedClientProvider =
+    Provider<feed.StreamFeedClient>((ProviderRef<feed.StreamFeedClient> ref) {
+  return feed.StreamFeedClient(
+    F.appFlavor == Flavor.DEV
+        ? EnvVaribales.devGetStreamChatApiKey
+        : EnvVaribales.prodGetStreamChatApiKey,
+    appId: '102359',
+  );
 });
 
 final StateNotifierProvider<ChatStateNotifier, void>
@@ -40,11 +44,7 @@ final StateNotifierProvider<ChatStateNotifier, void>
   (StateNotifierProviderRef<ChatStateNotifier, void> ref) => ChatStateNotifier(
     read: ref.read,
     streamFeedClient: ref.read(
-      streamFeedClientProvider(
-        F.appFlavor == Flavor.DEV
-            ? EnvVaribales.devGetStreamChatApiKey
-            : EnvVaribales.prodGetStreamChatApiKey,
-      ),
+      streamFeedClientProvider,
     ),
   ),
 );
