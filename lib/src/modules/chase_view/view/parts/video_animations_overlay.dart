@@ -43,63 +43,73 @@ class _VideoAnimationsOverlayState
       final int timerDuration = nextTimerDuration - prevTimerDuration;
 
       timer = Timer(Duration(milliseconds: timerDuration), () {
-        ref
-            .read(chaseEventsNotifierProvider(widget.chase).notifier)
-            .streamController
-            .add(chaseAnimationEvents[finishedIndex]);
+        if (mounted) {
+          // ref
+          //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
+          //     .streamController
+          //     .add(chaseAnimationEvents[finishedIndex]);
+          ref
+              .read(popupsEvetnsStreamControllerProvider)
+              .add(chaseAnimationEvents[finishedIndex]);
+
+          setState(() {
+            finishedIndex += 1;
+          });
+          setRecursiveTimer();
+        }
+      });
+    }
+  }
+
+  void listener() {
+    if (!widget.controller.value.isPlaying) {
+      if (timer.isActive) {
+        timer.cancel();
+      }
+    } else if (widget.controller.value.isPlaying) {
+      if (!timer.isActive) {
+        setRecursiveTimer();
+      }
+    } else if (widget.controller.value.isReady) {
+      if (!isReady) {
         setState(() {
-          finishedIndex += 1;
+          isReady = true;
         });
         setRecursiveTimer();
-      });
+      }
     }
   }
 
   Future<void> fetchAnimationEvents() async {
     chaseAnimationEvents = await ref
-        .read(chaseEventsNotifierProvider(widget.chase).notifier)
+        .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
         .fetchAnimationEvents();
     setState(() {});
     // if (chaseAnimationEvents.isNotEmpty) {
     //   setRecursiveTimer();
     // }
 
-    widget.controller.addListener(() {
-      if (!widget.controller.value.isPlaying) {
-        if (timer.isActive) {
-          timer.cancel();
-        }
-      } else if (widget.controller.value.isPlaying) {
-        if (!timer.isActive) {
-          setRecursiveTimer();
-        }
-      } else if (widget.controller.value.isReady) {
-        if (!isReady) {
-          setState(() {
-            isReady = true;
-          });
-          setRecursiveTimer();
-        }
-      }
-      // final int duration = widget.controller.value.position.inMilliseconds;
-      // log(duration.toString());
-      // if (!timer.isActive) {
-      //   final ChaseAnimationEvent? matchedEvent =
-      //       chaseAnimationEvents.singleWhereOrNull((ChaseAnimationEvent event) {
-      //     return duration >= event.label - 300 || duration <= event.label + 300;
-      //   });
-      //   if (matchedEvent != null) {
-      //     ref
-      //         .read(chaseEventsNotifierProvider(widget.chase).notifier)
-      //         .streamController
-      //         .add(matchedEvent);
-      //   }
+    widget.controller.addListener(listener);
 
-      //   timer.cancel();
+    // final int duration = widget.controller.value.position.inMilliseconds;
+    // log(duration.toString());
+    // if (!timer.isActive) {
+    //   final ChaseAnimationEvent? matchedEvent =
+    //       chaseAnimationEvents.singleWhereOrNull((ChaseAnimationEvent event) {
+    //     return duration >= event.label - 300 || duration <= event.label + 300;
+    //   });
+    //   if (matchedEvent != null) {
+    //     ref
+    //         .read(chaseEventsNotifierProvider(widget.chase).notifier)
+    //         .streamController
+    //         .add(matchedEvent);
+    //   }
 
-      //   timer = Timer(const Duration(milliseconds: 300), () {});
-      // }
-    });
+    //   timer.cancel();
+
+    //   timer = Timer(const Duration(milliseconds: 300), () {});
+    // }
+    // });
   }
 
   @override
@@ -110,6 +120,25 @@ class _VideoAnimationsOverlayState
     if (!isLive) {
       Future<void>.microtask(fetchAnimationEvents);
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer.cancel();
+    // ref
+    //     .read(chaseEventsNotifierProvider(widget.chase).notifier)
+    //     .streamController
+    //     .close();
+
+    widget.controller.removeListener(listener);
+
+    // ref
+    //     .read(chaseEventsNotifierProvider(widget.chase).notifier)
+    //     .streamController
+    //     .close();
+
+    super.dispose();
   }
 
   @override

@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/chase/chase.dart';
+import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../../../chats/view/providers/providers.dart';
 import '../notifiers/chase_events_notifier.dart';
 
@@ -22,15 +24,28 @@ final AutoDisposeStateProvider<bool> isShowingChatsWindowProvide =
 //   return
 // });
 
-final StateNotifierProviderFamily<ChaseEventsNotifier, void, Chase>
+final StateNotifierProviderFamily<ChaseEventsNotifier, void, String>
     chaseEventsNotifierProvider =
-    StateNotifierProvider.family<ChaseEventsNotifier, void, Chase>(
-  (StateNotifierProviderRef<ChaseEventsNotifier, void> ref, Chase chase) =>
+    StateNotifierProvider.family<ChaseEventsNotifier, void, String>(
+  (StateNotifierProviderRef<ChaseEventsNotifier, void> ref, String chaseId) =>
       ChaseEventsNotifier(
-    chase: chase,
+    chaseId: chaseId,
     read: ref.read,
     streamFeedClient: ref.read(streamFeedClientProvider),
   ),
+);
+
+final Provider<StreamController<ChaseAnimationEvent>>
+    popupsEvetnsStreamControllerProvider =
+    Provider<StreamController<ChaseAnimationEvent>>(
+  (ProviderRef<StreamController<ChaseAnimationEvent>> ref) =>
+      StreamController<ChaseAnimationEvent>(),
+);
+final Provider<StreamController<ChaseAnimationEvent>>
+    theaterEvetnsStreamControllerProvider =
+    Provider<StreamController<ChaseAnimationEvent>>(
+  (ProviderRef<StreamController<ChaseAnimationEvent>> ref) =>
+      StreamController<ChaseAnimationEvent>(),
 );
 
 // final FutureProviderFamily<List<ChaseAnimationEvent>, Chase>

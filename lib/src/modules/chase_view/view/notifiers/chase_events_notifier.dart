@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
+import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 
 class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   ChaseEventsNotifier({
-    required this.chase,
+    required this.chaseId,
     required this.read,
     required this.streamFeedClient,
   }) : super(const AsyncValue.data(null));
 
   final Reader read;
 
-  final Chase chase;
+  final String chaseId;
 
   // late String videoId;
 
@@ -28,7 +29,7 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   // late List<ChaseAnimationEvent> _animationEvents;
 
   feed.FlatFeed get firehoseFeed =>
-      streamFeedClient.flatFeed('events', chase.id);
+      streamFeedClient.flatFeed('events', chaseId);
 
   Future<List<ChaseAnimationEvent>> fetchAnimationEvents() async {
     // state = const AsyncValue.loading();
@@ -55,6 +56,7 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<void> subscribeToEventsStream() async {
+    final Chase chase = await read(streamChaseProvider(chaseId).future);
     if (chase.live ?? false) {
       final feed.Subscription subscription = await firehoseFeed.subscribe(
         (feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message) {

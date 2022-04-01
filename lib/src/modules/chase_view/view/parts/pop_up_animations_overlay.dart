@@ -31,21 +31,11 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
   Alignment prevAlignment = Alignment.center;
   Alignment nextAlignment = Alignment.center;
   Timer timer = Timer(Duration.zero, () {});
-  late Timer periodicTimer;
   bool isReady = false;
+  // late final Stream<ChaseAnimationEvent> streamSubscription;
 
-  // late final StreamController<PopUpAnimationMetaData> streamController;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    ref
-        .read(chaseEventsNotifierProvider(widget.chase).notifier)
-        .streamController
-        .stream
-        .listen((ChaseAnimationEvent event) {
+  void eventListener(ChaseAnimationEvent event) {
+    if (mounted) {
       dev.log('Event label-->${event.label}');
       setState(() {
         prevAlignment = nextAlignment;
@@ -64,19 +54,36 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
           }
         });
       });
-    });
+    }
+  }
 
-    widget.controller.addListener(() {
-      if (!isReady && widget.controller.value.isPlaying) {
-        dev.log('Ready');
+  void listener() {
+    if (!isReady && widget.controller.value.isPlaying) {
+      dev.log('Ready');
 
-        if (mounted) {
-          setState(() {
-            isReady = true;
-          });
-        }
+      if (mounted) {
+        setState(() {
+          isReady = true;
+        });
       }
-    });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref.refresh(popupsEvetnsStreamControllerProvider);
+    // final Stream<ChaseAnimationEvent> stream = ref
+    //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
+    //     .streamController
+    //     .stream;
+
+    // stream.listen(eventListener);
+
+    ref.read(popupsEvetnsStreamControllerProvider).stream.listen(eventListener);
+
+    widget.controller.addListener(listener);
     // streamController = StreamController<PopUpAnimationMetaData>();
 
     // streamController.stream.listen((PopUpAnimationMetaData event) {
@@ -112,6 +119,9 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
     // if (isReady) {
     //   periodicTimer.cancel();
     // }
+    timer.cancel();
+
+    widget.controller.removeListener(listener);
 
     super.dispose();
   }
