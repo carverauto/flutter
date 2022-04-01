@@ -34,6 +34,7 @@ class _VideoAnimationsOverlayState
   int finishedIndex = 0;
   Timer timer = Timer(Duration.zero, () {});
   bool isReady = false;
+  bool isDragged = false;
 
   void setRecursiveTimer([int? providedTimerDuration]) {
     if (finishedIndex < chaseAnimationEvents.length - 1) {
@@ -61,6 +62,7 @@ class _VideoAnimationsOverlayState
     }
   }
 
+  // ignore: long-method
   void listener() {
     log(widget.controller.value.playerState.toString());
     if (widget.controller.value.playerState == PlayerState.buffering) {
@@ -71,29 +73,58 @@ class _VideoAnimationsOverlayState
       // if (!timer.isActive) {
       //   setRecursiveTimer();
       // }
+
       if (!timer.isActive) {
         // position
-        final int position = widget.controller.value.position.inMilliseconds;
-        final int nextEventIndex = chaseAnimationEvents
-            .indexWhere((ChaseAnimationEvent event) => event.label >= position);
-        if (nextEventIndex != -1) {
-          final int timerDuration =
-              chaseAnimationEvents[nextEventIndex].label - position;
-          setState(() {
-            finishedIndex = nextEventIndex;
-            // finishedIndex += 1;
-          });
-          log('Next index--->${nextEventIndex}Label---> ${chaseAnimationEvents[nextEventIndex].label}');
+        if (!isDragged) {
+          if (finishedIndex <= chaseAnimationEvents.length - 1) {
+            setState(() {
+              finishedIndex += 1;
+              isDragged = false;
+            });
 
-          setRecursiveTimer(timerDuration);
+            setRecursiveTimer();
+          }
+        } else {
+          final int position =
+              widget.controller.durationNotifier.value.position.inMilliseconds;
+          final int nextEventIndex = chaseAnimationEvents.indexWhere(
+            (ChaseAnimationEvent event) => event.label >= position,
+          );
+          if (nextEventIndex != -1) {
+            final int timerDuration =
+                chaseAnimationEvents[nextEventIndex].label - position;
+            setState(() {
+              finishedIndex = nextEventIndex;
+              isDragged = false;
+              // finishedIndex += 1;
+            });
+            log('Next index--->${nextEventIndex}Label---> ${chaseAnimationEvents[nextEventIndex].label}');
+
+            setRecursiveTimer(timerDuration);
+          }
+        }
+        if (isDragged) {
+          setState(() {
+            isDragged = false;
+          });
         }
       }
     } else if (widget.controller.value.playerState == PlayerState.paused) {
+      if (widget.controller.value.isDragging) {
+        if (!isDragged) {
+          setState(() {
+            isDragged = widget.controller.value.isDragging;
+          });
+        }
+      }
       if (timer.isActive) {
         timer.cancel();
       }
     } else if (widget.controller.value.playerState == PlayerState.ended) {
-      timer.cancel();
+      if (timer.isActive) {
+        timer.cancel();
+      }
     } else if (widget.controller.value.isReady) {
       if (!isReady) {
         setState(() {
