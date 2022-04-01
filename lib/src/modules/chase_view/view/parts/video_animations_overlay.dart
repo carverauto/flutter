@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +35,7 @@ class _VideoAnimationsOverlayState
   Timer timer = Timer(Duration.zero, () {});
   bool isReady = false;
 
-  void setRecursiveTimer() {
+  void setRecursiveTimer([int? providedTimerDuration]) {
     if (finishedIndex < chaseAnimationEvents.length - 1) {
       final int prevTimerDuration = finishedIndex - 1 < 0
           ? 0
@@ -42,34 +43,57 @@ class _VideoAnimationsOverlayState
       final int nextTimerDuration = chaseAnimationEvents[finishedIndex].label;
       final int timerDuration = nextTimerDuration - prevTimerDuration;
 
-      timer = Timer(Duration(milliseconds: timerDuration), () {
-        if (mounted) {
-          // ref
-          //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
-          //     .streamController
-          //     .add(chaseAnimationEvents[finishedIndex]);
-          ref
-              .read(popupsEvetnsStreamControllerProvider)
-              .add(chaseAnimationEvents[finishedIndex]);
+      timer = Timer(
+        Duration(milliseconds: providedTimerDuration ?? timerDuration),
+        () {
+          if (mounted) {
+            ref
+                .read(popupsEvetnsStreamControllerProvider)
+                .add(chaseAnimationEvents[finishedIndex]);
 
-          setState(() {
-            finishedIndex += 1;
-          });
-          setRecursiveTimer();
-        }
-      });
+            setState(() {
+              finishedIndex += 1;
+            });
+            setRecursiveTimer();
+          }
+        },
+      );
     }
   }
 
   void listener() {
-    if (!widget.controller.value.isPlaying) {
+    log(widget.controller.value.playerState.toString());
+    if (widget.controller.value.playerState == PlayerState.buffering) {
       if (timer.isActive) {
         timer.cancel();
       }
-    } else if (widget.controller.value.isPlaying) {
+    } else if (widget.controller.value.playerState == PlayerState.playing) {
+      // if (!timer.isActive) {
+      //   setRecursiveTimer();
+      // }
       if (!timer.isActive) {
-        setRecursiveTimer();
+        // position
+        final int position = widget.controller.value.position.inMilliseconds;
+        final int nextEventIndex = chaseAnimationEvents
+            .indexWhere((ChaseAnimationEvent event) => event.label >= position);
+        if (nextEventIndex != -1) {
+          final int timerDuration =
+              chaseAnimationEvents[nextEventIndex].label - position;
+          setState(() {
+            finishedIndex = nextEventIndex;
+            // finishedIndex += 1;
+          });
+          log('Next index--->${nextEventIndex}Label---> ${chaseAnimationEvents[nextEventIndex].label}');
+
+          setRecursiveTimer(timerDuration);
+        }
       }
+    } else if (widget.controller.value.playerState == PlayerState.paused) {
+      if (timer.isActive) {
+        timer.cancel();
+      }
+    } else if (widget.controller.value.playerState == PlayerState.ended) {
+      timer.cancel();
     } else if (widget.controller.value.isReady) {
       if (!isReady) {
         setState(() {
@@ -85,31 +109,8 @@ class _VideoAnimationsOverlayState
         .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
         .fetchAnimationEvents();
     setState(() {});
-    // if (chaseAnimationEvents.isNotEmpty) {
-    //   setRecursiveTimer();
-    // }
 
     widget.controller.addListener(listener);
-
-    // final int duration = widget.controller.value.position.inMilliseconds;
-    // log(duration.toString());
-    // if (!timer.isActive) {
-    //   final ChaseAnimationEvent? matchedEvent =
-    //       chaseAnimationEvents.singleWhereOrNull((ChaseAnimationEvent event) {
-    //     return duration >= event.label - 300 || duration <= event.label + 300;
-    //   });
-    //   if (matchedEvent != null) {
-    //     ref
-    //         .read(chaseEventsNotifierProvider(widget.chase).notifier)
-    //         .streamController
-    //         .add(matchedEvent);
-    //   }
-
-    //   timer.cancel();
-
-    //   timer = Timer(const Duration(milliseconds: 300), () {});
-    // }
-    // });
   }
 
   @override
@@ -126,17 +127,8 @@ class _VideoAnimationsOverlayState
   void dispose() {
     // TODO: implement dispose
     timer.cancel();
-    // ref
-    //     .read(chaseEventsNotifierProvider(widget.chase).notifier)
-    //     .streamController
-    //     .close();
 
     widget.controller.removeListener(listener);
-
-    // ref
-    //     .read(chaseEventsNotifierProvider(widget.chase).notifier)
-    //     .streamController
-    //     .close();
 
     super.dispose();
   }

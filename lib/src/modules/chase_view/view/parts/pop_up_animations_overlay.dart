@@ -32,7 +32,6 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
   Alignment nextAlignment = Alignment.center;
   Timer timer = Timer(Duration.zero, () {});
   bool isReady = false;
-  // late final Stream<ChaseAnimationEvent> streamSubscription;
 
   void eventListener(ChaseAnimationEvent event) {
     if (mounted) {
@@ -71,54 +70,16 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     ref.refresh(popupsEvetnsStreamControllerProvider);
-    // final Stream<ChaseAnimationEvent> stream = ref
-    //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
-    //     .streamController
-    //     .stream;
-
-    // stream.listen(eventListener);
 
     ref.read(popupsEvetnsStreamControllerProvider).stream.listen(eventListener);
 
     widget.controller.addListener(listener);
-    // streamController = StreamController<PopUpAnimationMetaData>();
-
-    // streamController.stream.listen((PopUpAnimationMetaData event) {
-    //   if (mounted) {
-    //     setState(() {
-    //       prevAlignment = nextAlignment;
-
-    //       nextAlignment = event.alignment;
-    //       animatingChild = RiveEmojies(
-    //         emojieArtboard: event,
-    //         key: UniqueKey(),
-    //       );
-    //       timer.cancel();
-
-    //       timer = Timer(const Duration(seconds: 3), () {
-    //         if (mounted) {
-    //           setState(() {
-    //             prevAlignment = nextAlignment;
-    //             nextAlignment = nextAlignment;
-    //             animatingChild = const SizedBox.shrink();
-    //           });
-    //         }
-    //       });
-    //     });
-    //   }
-    // });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    // streamController.close();
-    // if (isReady) {
-    //   periodicTimer.cancel();
-    // }
     timer.cancel();
 
     widget.controller.removeListener(listener);
