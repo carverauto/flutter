@@ -20,21 +20,25 @@ class AuthViewWrapper extends ConsumerWidget {
   final Logger logger = Logger('AuthViewWrapper');
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<AppUpdateInfo>>(checkForUpdateStateNotifier,
-        (AsyncValue<AppUpdateInfo>? previousState,
-            AsyncValue<AppUpdateInfo> newState) {
-      newState.when(
-        loading: () {},
-        data: (AppUpdateInfo appUpdateInfo) async {
-          await ref
-              .watch(checkForUpdateStateNotifier.notifier)
-              .showOrNotShowUpdateDialog(context);
-        },
-        error: (Object e, StackTrace? s) {
-          log(e.toString());
-        },
-      );
-    });
+    ref.listen<AsyncValue<AppUpdateInfo>>(
+      checkForUpdateStateNotifier,
+      (
+        AsyncValue<AppUpdateInfo>? previousState,
+        AsyncValue<AppUpdateInfo> newState,
+      ) {
+        newState.when(
+          loading: () {},
+          data: (AppUpdateInfo appUpdateInfo) async {
+            await ref
+                .watch(checkForUpdateStateNotifier.notifier)
+                .showOrNotShowUpdateDialog(context);
+          },
+          error: (Object e, StackTrace? s) {
+            log(e.toString());
+          },
+        );
+      },
+    );
 
     return ProviderStateBuilder<User?>(
       watchThisProvider: streamLogInStatus,
@@ -83,7 +87,7 @@ class AuthViewWrapper extends ConsumerWidget {
                       ref.read(authRepoProvider).signOut();
                     },
                     child: const Text('Logout'),
-                  )
+                  ),
                 ],
               ),
             );
