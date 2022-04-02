@@ -8,8 +8,8 @@ import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/interest/interest.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../../shared/app_typedefs/notifications_typedefs.dart';
 import '../../../../shared/util/firebase_collections.dart';
-import '../../../chats/view/providers/providers.dart';
 import '../../data/notifications_db.dart';
 import '../../data/notifications_db_ab.dart';
 import '../../domain/notifications_repo.dart';
@@ -61,24 +61,27 @@ final ChaseAppNotificationStateNotifierProvider notificationsStreamProvider =
 
 final AutoDisposeFutureProvider<List<String?>> usersInterestsStreamProvider =
     FutureProvider.autoDispose<List<String?>>(
-        (AutoDisposeFutureProviderRef<List<String?>> ref) async {
-  final List<String?> usersInterests =
-      await ref.read(pusherBeamsProvider).getDeviceInterests();
-  usersInterests.sort(
-    (String? a, String? b) =>
-        a?.toLowerCase().compareTo(b?.toLowerCase() ?? '') ?? -1,
-  );
-  // For "All"
-  final List<String?> finalList = List<String?>.from(usersInterests)
-    ..insert(0, null);
-  return finalList;
-});
+  (AutoDisposeFutureProviderRef<List<String?>> ref) async {
+    final List<String?> usersInterests =
+        await ref.read(pusherBeamsProvider).getDeviceInterests();
+    usersInterests.sort(
+      (String? a, String? b) =>
+          a?.toLowerCase().compareTo(b?.toLowerCase() ?? '') ?? -1,
+    );
+    // For "All"
+    final List<String?> finalList = List<String?>.from(usersInterests)
+      ..insert(0, null);
+
+    return finalList;
+  },
+);
 
 final AutoDisposeFutureProvider<List<Interest>> interestsProvider =
     FutureProvider.autoDispose<List<Interest>>(
-        (AutoDisposeFutureProviderRef<List<Interest>> ref) async {
-  return ref.read(notificationRepoProvider).fetchInterests();
-});
+  (AutoDisposeFutureProviderRef<List<Interest>> ref) async {
+    return ref.read(notificationRepoProvider).fetchInterests();
+  },
+);
 
 final StateProvider<bool> newNotificationsPresentProvider =
     StateProvider<bool>((StateProviderRef<bool> ref) => false);
