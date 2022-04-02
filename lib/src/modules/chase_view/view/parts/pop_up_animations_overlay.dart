@@ -8,7 +8,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../providers/providers.dart';
-import 'theater_rive.dart';
+import 'rive_emojies.dart';
 
 class PopupAnimationsView extends ConsumerStatefulWidget {
   const PopupAnimationsView({
@@ -27,7 +27,6 @@ class PopupAnimationsView extends ConsumerStatefulWidget {
 
 class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
   Widget animatingChild = SizedBox.shrink(key: UniqueKey());
-  late PopUpAnimationMetaData popUpAnimationMetaData;
   Alignment prevAlignment = Alignment.center;
   Alignment nextAlignment = Alignment.center;
   Timer timer = Timer(Duration.zero, () {});
@@ -119,63 +118,3 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
           );
   }
 }
-
-class PopUpAnimationMetaData {
-  PopUpAnimationMetaData({
-    required this.alignment,
-    required this.artBoard,
-    required this.animations,
-  });
-
-  final Alignment alignment;
-  final String artBoard;
-  final List<String> animations;
-}
-
-List<PopUpAnimationMetaData> popUpAnimationsList = [
-  PopUpAnimationMetaData(
-    alignment: Alignment.topLeft,
-    artBoard: 'Mindblown',
-    animations: ['Brain_play'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.topCenter,
-    artBoard: 'Bullseye',
-    animations: ['Dart_board_play'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.topRight,
-    artBoard: 'love',
-    animations: ['Animation 1'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.centerLeft,
-    artBoard: 'Bullseye',
-    animations: ['Dart_board_play'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.center,
-    artBoard: 'joy',
-    animations: ['idle'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.centerRight,
-    artBoard: 'Tada',
-    animations: ['idle'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomLeft,
-    artBoard: 'Onfire',
-    animations: ['idle'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomCenter,
-    artBoard: 'Tada',
-    animations: ['idle'],
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomRight,
-    artBoard: 'joy',
-    animations: ['idle'],
-  ),
-];
