@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -63,8 +61,8 @@ Future<void> setUpServices() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
   final FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-  FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
   if (kDebugMode) {
