@@ -12,7 +12,7 @@ Future<String> createChaseDynamicLink(
   FirebaseDynamicLinks firebaseDynamicLinks,
 ) async {
   final Uri fallbackUrl = Uri.parse('https://chaseapp.tv/chase/${chase.id}');
-  final String shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
+  final String shareImage = chase.imageURL != null && chase.imageURL!.isNotEmpty
       ? parseImageUrl(chase.imageURL!)
       : defaultPhotoURL;
   final String uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
