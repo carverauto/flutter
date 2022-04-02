@@ -144,13 +144,22 @@ class _VideoAnimationsOverlayState
     widget.controller.addListener(listener);
   }
 
+  Future<void> subscribetoAnimationEvents() async {
+    await ref
+        .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
+        .subscribeToEventsStream();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    final bool isLive = widget.chase.live ?? true;
-    if (!isLive) {
-      Future<void>.microtask(fetchAnimationEvents);
+    if (widget.chase.live != null) {
+      if (widget.chase.live!) {
+        Future<void>.microtask(subscribetoAnimationEvents);
+      } else {
+        Future<void>.microtask(fetchAnimationEvents);
+      }
     }
   }
 
