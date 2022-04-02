@@ -120,7 +120,7 @@ class _RiveEmojiesState extends State<RiveEmojies> {
         fit: BoxFit.cover,
 
         artboard: widget.animationEvent.artboard,
-        animations: [widget.animationEvent.animation],
+        animations: widget.animationEvent.animations,
         antialiasing: false,
         // controllers: [_controller],
 
