@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../const/colors.dart';
 import '../../../../const/sizings.dart';
+import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../shared/util/helpers/date_added.dart';
 import '../../../../shared/util/helpers/dynamiclink_generator.dart';
@@ -212,6 +213,9 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                         final String shareLink =
                                             await createChaseDynamicLink(
                                           widget.chase,
+                                          ref.read(
+                                            firebaseDynamicLinksProvider,
+                                          ),
                                         );
                                         await Share.share(shareLink);
                                       } catch (e, stk) {
