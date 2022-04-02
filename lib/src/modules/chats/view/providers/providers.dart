@@ -4,23 +4,11 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
 import '../../../../../flavors.dart';
 import '../../../../const/app_bundle_info.dart';
-import '../../../../core/notifiers/pagination_notifier.dart';
-import '../../../../models/notification/notification.dart';
-import '../../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../models/user/user_data.dart';
 import '../../data/chats_db.dart';
 import '../../domain/chats_repo.dart';
 import '../notifiers/chats_notifier.dart';
-
-typedef ChaseAppNotificationStateNotifierProvider
-    = AutoDisposeStateNotifierProviderFamily<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>,
-        Logger>;
-
-typedef ChaseAppNotificationStateNotifierProviderRef
-    = AutoDisposeStateNotifierProviderRef<
-        PaginationNotifier<ChaseAppNotification>,
-        PaginationNotifierState<ChaseAppNotification>>;
 
 final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   (ProviderRef<ChatsRepository> ref) => ChatsRepository(
@@ -37,68 +25,71 @@ final Provider<feed.StreamFeedClient> streamFeedClientProvider =
     appId: '102359',
   );
 });
+final AutoDisposeProvider<StreamChatClient> streamChatClientProvider =
+    Provider.autoDispose<StreamChatClient>(
+  (AutoDisposeProviderRef<StreamChatClient> ref) {
+    final StreamChatClient client = StreamChatClient(
+      F.appFlavor == Flavor.DEV
+          ? EnvVaribales.devGetStreamChatApiKey
+          : EnvVaribales.prodGetStreamChatApiKey,
+      logLevel: Level.INFO,
+    );
 
-final StateNotifierProvider<ChatStateNotifier, void>
+    return client;
+  },
+);
+
+final AutoDisposeStateNotifierProvider<ChatStateNotifier, void>
     chatsServiceStateNotifierProvider =
-    StateNotifierProvider<ChatStateNotifier, void>(
-  (StateNotifierProviderRef<ChatStateNotifier, void> ref) => ChatStateNotifier(
+    StateNotifierProvider.autoDispose<ChatStateNotifier, void>(
+  (
+    AutoDisposeStateNotifierProviderRef<ChatStateNotifier, void> ref,
+  ) =>
+      ChatStateNotifier(
     read: ref.read,
-    streamFeedClient: ref.read(
-      streamFeedClientProvider,
-    ),
+    // chaseId: chaseId,
+    client: ref.watch(streamChatClientProvider),
   ),
 );
 
-final AutoDisposeFutureProviderFamily<Channel, String> chatChannelProvider =
-    FutureProvider.autoDispose.family<Channel, String>((
-  AutoDisposeFutureProviderRef<Channel> ref,
+final AutoDisposeProviderFamily<Channel, String> chatChannelProvider =
+    Provider.autoDispose.family<Channel, String>((
+  AutoDisposeProviderRef<Channel> ref,
   String chaseId,
-) async {
-  final StreamChatClient client =
-      ref.read(chatsServiceStateNotifierProvider.notifier).client;
+) {
+  //   final UserData userData =  ref.watch(userStreamProvider).asData!.value;
+
+  //  ref
+  //                 .read(chatsServiceStateNotifierProvider.notifier)
+  //                 .connectUserToGetStream(userData);
+  // await ref
+  //     .watch(chatsServiceStateNotifierProvider.notifier)
+  // //     .connectUserToGetStream(userData);
+  // final StreamChatClient client =
+  //     ref.watch(chatsServiceStateNotifierProvider(chaseId).notifier).client;
+  final StreamChatClient client = ref.watch(streamChatClientProvider);
   final Channel channel = client.channel(
     'livestream',
     id: chaseId,
   );
 
-  await channel.watch();
-
   return channel;
 });
 
-final ChaseAppNotificationStateNotifierProvider
-    firehosePaginatedStateNotifierProvier = StateNotifierProvider.autoDispose
-        .family<PaginationNotifier<ChaseAppNotification>,
-            PaginationNotifierState<ChaseAppNotification>, Logger>(
-  (
-    ChaseAppNotificationStateNotifierProviderRef ref,
-    Logger logger,
-  ) {
-    return PaginationNotifier(
-      hitsPerPage: 20,
-      logger: logger,
-      fetchNextItems: (
-        ChaseAppNotification? notification,
-        int offset,
-      ) async {
-        return ref
-            .read(chatsServiceStateNotifierProvider.notifier)
-            .fetchFirehoseFeed(offset);
-      },
-    );
-  },
-);
-
-final AutoDisposeFutureProviderFamily<ChannelState, Channel>
+final AutoDisposeFutureProviderFamily<ChannelState, String>
     watcherStateProvider =
-    FutureProvider.autoDispose.family<ChannelState, Channel>((
+    FutureProvider.autoDispose.family<ChannelState, String>((
   AutoDisposeFutureProviderRef<ChannelState> ref,
-  Channel channel,
+  String chaseId,
 ) async {
+  final Channel channel = ref.watch(chatChannelProvider(chaseId));
   final ChannelState watchState = await channel.watch();
 
-  ref.onDispose(() {
-    channel.stopWatching();
+  ref.onDispose(() async {
+    await channel.stopWatching();
+
+    await ref.read(streamChatClientProvider).disconnectUser();
+    await ref.read(streamChatClientProvider).dispose();
   });
 
   return watchState;
@@ -108,9 +99,13 @@ final AutoDisposeStreamProvider<ConnectionStatus>
     chatWsConnectionStreamProvider =
     StreamProvider.autoDispose<ConnectionStatus>((
   AutoDisposeStreamProviderRef<ConnectionStatus> ref,
-) {
-  final StreamChatClient client =
-      ref.read(chatsServiceStateNotifierProvider.notifier).client;
+) async* {
+  final UserData userData = await ref.watch(userStreamProvider.future);
 
-  return client.wsConnectionStatusStream;
+  await ref
+      .watch(chatsServiceStateNotifierProvider.notifier)
+      .connectUserToGetStream(userData);
+  final StreamChatClient client = ref.watch(streamChatClientProvider);
+
+  yield* client.wsConnectionStatusStream;
 });

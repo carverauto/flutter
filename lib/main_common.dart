@@ -13,8 +13,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 // import 'package:device_preview/device_preview.dart';
 import 'flavors.dart';
-import 'src/const/colors.dart';
-import 'src/modules/chats/view/providers/providers.dart';
 import 'src/routes/routes.dart';
 import 'src/theme/theme.dart';
 
@@ -30,20 +28,20 @@ class MyApp extends ConsumerWidget {
       title: 'ChaseApp',
       scaffoldMessengerKey: scaffoldMessangerKey,
       initialRoute: '/',
-      builder: (BuildContext context, Widget? child) {
-        return StreamChat(
-          streamChatThemeData: StreamChatThemeData.dark().copyWith(
-            // TODO: Need to debug why?
-            // If not added then getStream API is overriding the
-            // the user set accentColor in Custom Theme
-            colorTheme: ColorTheme.dark(
-              accentPrimary: kPrimaryAccent,
-            ),
-          ),
-          client: ref.read(chatsServiceStateNotifierProvider.notifier).client,
-          child: child,
-        );
-      },
+      // builder: (BuildContext context, Widget? child) {
+      //   return StreamChat(
+      //     streamChatThemeData: StreamChatThemeData.dark().copyWith(
+      //       // TODO: Need to debug why?
+      //       // If not added then getStream API is overriding the
+      //       // the user set accentColor in Custom Theme
+      //       colorTheme: ColorTheme.dark(
+      //         accentPrimary: kPrimaryAccent,
+      //       ),
+      //     ),
+      //     client: ref.watch(streamChatClientProvider),
+      //     child: child,
+      //   );
+      // },
       // locale: Locale('en'), // Add the locale here
       // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
