@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:rive/rive.dart';
 
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
-import '../../../../shared/util/firebase_collections.dart';
 import '../providers/providers.dart';
 
 class TheaterRive extends ConsumerStatefulWidget {
@@ -21,33 +18,15 @@ class TheaterRive extends ConsumerStatefulWidget {
 class _TheaterRiveState extends ConsumerState<TheaterRive> {
   final Logger logger = Logger('TheaterRiveAnimationView');
   late StateMachineController theaterController;
-  Future<void> getAnimationsStatus() async {
-    animationsCollection
-        .doc('theater')
-        .snapshots()
-        .listen((DocumentSnapshot<Object?> event) {
-      final Map<String, dynamic>? data = event.data() as Map<String, dynamic>?;
-
-      if (data != null) {
-        final MapEntry<String, dynamic>? triggerState =
-            data.entries.toList().singleWhereOrNull(
-                  (MapEntry<String, dynamic> state) => state.value as bool,
-                );
-
-        if (triggerState != null) {
-          playThiState(triggerState.key);
-        }
-      }
-    });
-  }
-
-  void eventListener(ChaseAnimationEvent event) {
-    playThiState(event.animstate);
-  }
+  late String riveFile;
+  late String? animstate;
 
   @override
   void initState() {
     super.initState();
+    riveFile =
+        'https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true';
+    animstate = null;
     ref.refresh(theaterEvetnsStreamControllerProvider);
 
     ref
@@ -56,10 +35,45 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
         .listen(eventListener);
   }
 
+  // Future<void> getAnimationsStatus() async {
+  //   animationsCollection
+  //       .doc('theater')
+  //       .snapshots()
+  //       .listen((DocumentSnapshot<Object?> event) {
+  //     final Map<String, dynamic>? data = event.data() as Map<String, dynamic>?;
+
+  //     if (data != null) {
+  //       final MapEntry<String, dynamic>? triggerState =
+  //           data.entries.toList().singleWhereOrNull(
+  //                 (MapEntry<String, dynamic> state) => state.value as bool,
+  //               );
+
+  //       if (triggerState != null) {
+  //         playThiState(triggerState.key);
+  //       }
+  //     }
+  //   });
+  // }
+
+  void eventListener(ChaseAnimationEvent event) {
+    if (event.endpoint == riveFile) {
+      playThiState(event.animstate);
+    } else {
+      setState(() {
+        riveFile = event.endpoint;
+        animstate = event.animstate;
+      });
+    }
+  }
+
   void setStateMachine(Artboard artboard) {
     theaterController = StateMachineController.fromArtboard(artboard, 'Crowd')!;
     artboard.addController(theaterController);
-    getAnimationsStatus();
+    if (animstate != null) {
+      playThiState(animstate!);
+      animstate = null;
+    }
+    // getAnimationsStatus();
   }
 
   void playThiState(String state) {
@@ -84,7 +98,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   @override
   Widget build(BuildContext context) {
     return RiveAnimation.network(
-      'https://github.com/chase-app/flutter-rive/blob/main/assets/animations/chase_app.riv?raw=true',
+      riveFile,
       stateMachines: const ['Theater'],
       fit: BoxFit.cover,
       antialiasing: false,
