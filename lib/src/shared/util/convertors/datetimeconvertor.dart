@@ -7,8 +7,8 @@ class DatetimeTimestampConverter implements JsonConverter<DateTime, Timestamp> {
   const DatetimeTimestampConverter();
 
   @override
-  DateTime fromJson(Timestamp timestamp) {
-    return timestamp.toDate();
+  DateTime fromJson(dynamic date) {
+    return parseDate(date);
   }
 
   @override
