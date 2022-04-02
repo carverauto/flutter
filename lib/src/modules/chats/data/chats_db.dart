@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chaseapp/flavors.dart';
-import 'package:chaseapp/src/modules/chats/data/chats_db_ab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../../flavors.dart';
+import 'chats_db_ab.dart';
 
 class ChatsDatabase implements ChatsDatabaseAB {
   ChatsDatabase(this.read);
@@ -12,30 +13,28 @@ class ChatsDatabase implements ChatsDatabaseAB {
   final Reader read;
   @override
   Future<String> getUserToken(String userId) async {
-    // final getToken = read(functionsProvider).httpsCallable("GetStreamToken");
+    final String projectId =
+        F.appFlavor == Flavor.DEV ? 'chaseapp-staging' : 'chaseapp-8459b';
 
-    // final HttpsCallableResult<dynamic> responce =
-    //     await getToken.call<Map<String, dynamic>>({"user_id": userId});
-    //Move id/endpoints to someplace better
-    final projectId =
-        F.appFlavor == Flavor.DEV ? "chaseapp-staging" : "chaseapp-8459b";
+    final Uri url = Uri.parse(
+      'https://us-central1-$projectId.cloudfunctions.net/GetStreamToken',
+    );
 
-    final url = Uri.parse(
-        "https://us-central1-$projectId.cloudfunctions.net/GetStreamToken");
+    final http.Response responce = await http.post(
+      url,
+      headers: {
+        //  "Content-Type": "application/json",
+      },
+      body: jsonEncode({
+        'user_id': userId,
+      }),
+    );
 
-    final responce = await http.post(url,
-        headers: {
-          //  "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          "user_id": userId,
-        }));
-
-    log(responce.body.toString());
+    log(responce.body);
 
     final Map<String, dynamic> decodedData =
         jsonDecode(responce.body) as Map<String, dynamic>;
 
-    return decodedData["data"]["message"] as String;
+    return decodedData['data']['message'] as String;
   }
 }
