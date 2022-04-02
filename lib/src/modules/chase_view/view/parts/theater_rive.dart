@@ -1,21 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:rive/rive.dart';
 
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../../../../shared/util/firebase_collections.dart';
+import '../providers/providers.dart';
 
-class TheaterRive extends StatefulWidget {
+class TheaterRive extends ConsumerStatefulWidget {
   const TheaterRive({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<TheaterRive> createState() => _TheaterRiveState();
+  ConsumerState<TheaterRive> createState() => _TheaterRiveState();
 }
 
-class _TheaterRiveState extends State<TheaterRive> {
+class _TheaterRiveState extends ConsumerState<TheaterRive> {
+  final Logger logger = Logger('TheaterRiveAnimationView');
   late StateMachineController theaterController;
   Future<void> getAnimationsStatus() async {
     animationsCollection
@@ -37,10 +41,19 @@ class _TheaterRiveState extends State<TheaterRive> {
     });
   }
 
+  void eventListener(ChaseAnimationEvent event) {
+    playThiState(event.animstate);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    ref.refresh(theaterEvetnsStreamControllerProvider);
+
+    ref
+        .read(theaterEvetnsStreamControllerProvider)
+        .stream
+        .listen(eventListener);
   }
 
   void setStateMachine(Artboard artboard) {
@@ -51,9 +64,13 @@ class _TheaterRiveState extends State<TheaterRive> {
 
   void playThiState(String state) {
     if (theaterController.isActive) {
-      final SMITrigger stateTrigger =
-          theaterController.findInput<bool>(state) as SMITrigger;
-      stateTrigger.fire();
+      final SMITrigger? stateTrigger =
+          theaterController.findInput<bool>(state) as SMITrigger?;
+      if (stateTrigger != null) {
+        stateTrigger.fire();
+      } else {
+        logger.warning('Provided Animation state is not valid.');
+      }
     }
   }
 
@@ -73,60 +90,6 @@ class _TheaterRiveState extends State<TheaterRive> {
       antialiasing: false,
       alignment: Alignment.bottomCenter,
       onInit: setStateMachine,
-    );
-  }
-}
-
-class RiveEmojies extends StatefulWidget {
-  const RiveEmojies({
-    Key? key,
-    required this.animationEvent,
-  }) : super(key: key);
-
-  final ChaseAnimationEvent animationEvent;
-
-  @override
-  State<RiveEmojies> createState() => _RiveEmojiesState();
-}
-
-class _RiveEmojiesState extends State<RiveEmojies> {
-  // late RiveAnimationController _controller;
-
-  // void setStateMachine(Artboard artboard) {
-  //   const Type riveFile = RiveFile;
-  // }
-
-  @override
-  void initState() {
-    super.initState();
-    // _controller = SimpleAnimation(
-    //   'Animation 1',
-    //   // onStop: () => setState(() => _isPlaying = false),
-    //   // onStart: () => setState(() => _isPlaying = true),
-    // );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).orientation == Orientation.landscape
-          ? 100
-          : 50,
-      width: MediaQuery.of(context).orientation == Orientation.landscape
-          ? 100
-          : 50,
-      child: RiveAnimation.asset(
-        widget.animationEvent.endpoint,
-        fit: BoxFit.cover,
-
-        artboard: widget.animationEvent.artboard,
-        animations: widget.animationEvent.animations,
-        antialiasing: false,
-        // controllers: [_controller],
-
-        alignment: Alignment.bottomCenter,
-        // onInit: setStateMachine,
-      ),
     );
   }
 }
