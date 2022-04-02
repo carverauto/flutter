@@ -7,7 +7,7 @@ import '../../../../core/notifiers/pagination_notifier.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/widgets/builders/SliverPaginatedListViewAll.dart';
-import '../../../chats/view/providers/providers.dart';
+import '../providers/providers.dart';
 import 'firehose.dart';
 
 class FirehoseListViewAll extends StatelessWidget {
