@@ -76,7 +76,7 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
                 event = message!.newActivities![0];
             if (event.object == 'animation-event') {
               final Map<String, Object?>? extraData = event.extraData;
-              extraData!['id'] = event.id!;
+              extraData!['id'] = event.id;
               final ChaseAnimationEvent animationevent =
                   ChaseAnimationEvent.fromJson(extraData);
 
