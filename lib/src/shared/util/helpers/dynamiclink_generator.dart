@@ -7,12 +7,14 @@ import '../../../const/images.dart';
 import '../../../models/chase/chase.dart';
 import 'image_url_parser.dart';
 
-Future<String> createChaseDynamicLink(Chase chase) async {
+Future<String> createChaseDynamicLink(
+  Chase chase,
+  FirebaseDynamicLinks firebaseDynamicLinks,
+) async {
   final Uri fallbackUrl = Uri.parse('https://chaseapp.tv/chase/${chase.id}');
   final String shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
       ? parseImageUrl(chase.imageURL!)
       : defaultPhotoURL;
-
   final String uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
 
   final String linkPrefix = AppBundleInfo.dynamicLinkPrefix;
@@ -39,12 +41,13 @@ Future<String> createChaseDynamicLink(Chase chase) async {
       imageUrl: Uri.parse(shareImage),
     ),
   );
+
   //TODO:Need to report
   //Proper link is not generated if creating for custom domains using .buildLink()?
   //This is serious issue.
-  log('message');
   final ShortDynamicLink shortDynamicLink =
-      await FirebaseDynamicLinks.instance.buildShortLink(parameters);
-  log(parameters.uriPrefix.toString());
+      await firebaseDynamicLinks.buildShortLink(parameters);
+  log(parameters.uriPrefix);
+
   return shortDynamicLink.shortUrl.toString();
 }
