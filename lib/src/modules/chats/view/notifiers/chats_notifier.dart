@@ -14,16 +14,6 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   // final String chaseId;
 
-  @override
-  Future<void> dispose() async {
-    try {
-      // await client.disconnectUser();
-    } catch (e, stk) {
-      logger.severe('Error while disconnecting user from getStream', e, stk);
-    }
-    super.dispose();
-  }
-
   final Reader read;
 
   final Logger logger = Logger('ChatsServiceStateNotifier');

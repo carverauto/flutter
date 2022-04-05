@@ -38,7 +38,7 @@ class ChaseAppDrawer extends StatelessWidget {
                       );
 
                       if (shouldSignOut != null && shouldSignOut) {
-                        await ref
+                        ref
                             .refresh(chatsServiceStateNotifierProvider.notifier)
                             .dispose();
                         await ref.read(authRepoProvider).signOut();
