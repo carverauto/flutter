@@ -67,6 +67,9 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
     }
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
+      flags: YoutubePlayerFlags(
+        isLive: widget.chase.live ?? false,
+      ),
     );
     setState(() {});
 
