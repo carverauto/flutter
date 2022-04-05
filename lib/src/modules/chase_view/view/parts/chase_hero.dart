@@ -8,7 +8,6 @@ import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
 import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
-import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
 import 'watch_youtube_video_button.dart';
@@ -98,9 +97,12 @@ class ClosePlayingVideo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GlassButton(
-      shape: const CircleBorder(),
-      onTap: () {
+    return ElevatedButton(
+      // shape: const CircleBorder(),
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+      ),
+      onPressed: () {
         ref.read(playVideoProvider.state).update((bool state) => false);
       },
       child: const Icon(
