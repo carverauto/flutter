@@ -29,6 +29,7 @@ class ChatStateNotifier extends StateNotifier<void> {
   final Logger logger = Logger('ChatsServiceStateNotifier');
 
   late String userToken;
+  late bool isTokenInitialized = false;
 
   final stream.StreamChatClient client;
 
@@ -64,7 +65,10 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
-      userToken = await read(chatsRepoProvider).getUserToken(userData.uid);
+      if (!isTokenInitialized) {
+        userToken = await read(chatsRepoProvider).getUserToken(userData.uid);
+        isTokenInitialized = true;
+      }
 
       if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected) {
         // await Future<void>.delayed(const Duration(seconds: 10));

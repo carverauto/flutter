@@ -10,6 +10,7 @@ import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/util/helpers/launchLink.dart';
+import '../../../chats/view/providers/providers.dart';
 
 class ChaseAppDrawer extends StatelessWidget {
   const ChaseAppDrawer({
@@ -37,6 +38,9 @@ class ChaseAppDrawer extends StatelessWidget {
                       );
 
                       if (shouldSignOut != null && shouldSignOut) {
+                        await ref
+                            .refresh(chatsServiceStateNotifierProvider.notifier)
+                            .dispose();
                         await ref.read(authRepoProvider).signOut();
                       }
                     },

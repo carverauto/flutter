@@ -25,9 +25,9 @@ final Provider<feed.StreamFeedClient> streamFeedClientProvider =
     appId: '102359',
   );
 });
-final AutoDisposeProvider<StreamChatClient> streamChatClientProvider =
-    Provider.autoDispose<StreamChatClient>(
-  (AutoDisposeProviderRef<StreamChatClient> ref) {
+final Provider<StreamChatClient> streamChatClientProvider =
+    Provider<StreamChatClient>(
+  (ProviderRef<StreamChatClient> ref) {
     final StreamChatClient client = StreamChatClient(
       F.appFlavor == Flavor.DEV
           ? EnvVaribales.devGetStreamChatApiKey
@@ -39,11 +39,11 @@ final AutoDisposeProvider<StreamChatClient> streamChatClientProvider =
   },
 );
 
-final AutoDisposeStateNotifierProvider<ChatStateNotifier, void>
+final StateNotifierProvider<ChatStateNotifier, void>
     chatsServiceStateNotifierProvider =
-    StateNotifierProvider.autoDispose<ChatStateNotifier, void>(
+    StateNotifierProvider<ChatStateNotifier, void>(
   (
-    AutoDisposeStateNotifierProviderRef<ChatStateNotifier, void> ref,
+    StateNotifierProviderRef<ChatStateNotifier, void> ref,
   ) =>
       ChatStateNotifier(
     read: ref.read,
@@ -89,7 +89,7 @@ final AutoDisposeFutureProviderFamily<ChannelState, String>
     await channel.stopWatching();
 
     await ref.read(streamChatClientProvider).disconnectUser();
-    await ref.read(streamChatClientProvider).dispose();
+    // await ref.read(streamChatClientProvider).dispose();
   });
 
   return watchState;
