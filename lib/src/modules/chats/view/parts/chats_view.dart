@@ -146,7 +146,7 @@ class ChatsView extends ConsumerWidget {
                             errorBuilder: (BuildContext context, Object e) {
                               return ChaseAppErrorWidget(
                                 onRefresh: () {
-                                  ref.refresh(chatChannelProvider(chaseId));
+                                  ref.refresh(chatWsConnectionStreamProvider);
                                 },
                               );
                             },
