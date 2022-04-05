@@ -1,13 +1,15 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/links.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/images.dart';
+import '../../../../const/links.dart';
+import '../../../../const/sizings.dart';
+import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../models/user/user_data.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/util/helpers/launchLink.dart';
 
 class ChaseAppDrawer extends StatelessWidget {
   const ChaseAppDrawer({
@@ -21,23 +23,25 @@ class ChaseAppDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Consumer(
-            builder: (context, ref, child) {
-              final state = ref.watch(userStreamProvider);
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final AsyncValue<UserData> state = ref.watch(userStreamProvider);
 
               return state.maybeWhen(
-                data: (userData) {
+                data: (UserData userData) {
                   return InkWell(
                     onTap: () async {
-                      final shouldSignOut = await Navigator.pushNamed<bool>(
-                          context, RouteName.PROFILE);
+                      final bool? shouldSignOut =
+                          await Navigator.pushNamed<bool>(
+                        context,
+                        RouteName.PROFILE,
+                      );
 
                       if (shouldSignOut != null && shouldSignOut) {
-                        ref.read(authRepoProvider).signOut();
+                        await ref.read(authRepoProvider).signOut();
                       }
                     },
                     child: DrawerHeader(
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             backgroundColor: primaryColor.shade800,
@@ -45,7 +49,7 @@ class ChaseAppDrawer extends StatelessWidget {
                               userData.photoURL ?? defaultPhotoURL,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: kItemsSpacingSmallConstant,
                           ),
                           Column(
@@ -68,11 +72,11 @@ class ChaseAppDrawer extends StatelessWidget {
                                       .colorScheme
                                       .onBackground,
                                 ),
-                              )
+                              ),
                             ],
                           ),
-                          Spacer(),
-                          Icon(
+                          const Spacer(),
+                          const Icon(
                             Icons.arrow_forward_ios,
                           ),
                         ],
@@ -80,7 +84,7 @@ class ChaseAppDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                orElse: () => SizedBox.shrink(),
+                orElse: SizedBox.shrink,
               );
             },
           ),
@@ -93,7 +97,7 @@ class ChaseAppDrawer extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text(
-              "About Us",
+              'About Us',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
@@ -108,7 +112,7 @@ class ChaseAppDrawer extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text(
-              "Credits",
+              'Credits',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
@@ -123,22 +127,23 @@ class ChaseAppDrawer extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground,
             ),
             title: Text(
-              "Settings",
+              'Settings',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
           ),
-          Spacer(),
-          Divider(),
+          const Spacer(),
+          const Divider(),
           Padding(
             padding: const EdgeInsets.all(16),
             child: RichText(
-                textAlign: TextAlign.left,
-                text: TextSpan(children: [
+              textAlign: TextAlign.left,
+              text: TextSpan(
+                children: [
                   TextSpan(
-                    text: "Privacy policy",
-                    style: TextStyle(
+                    text: 'Privacy policy',
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -147,15 +152,15 @@ class ChaseAppDrawer extends StatelessWidget {
                       },
                   ),
                   TextSpan(
-                    text: " . ",
+                    text: ' . ',
                     style: TextStyle(
                       color: primaryColor.shade400,
                       fontSize: 18,
                     ),
                   ),
                   TextSpan(
-                    text: "Tos",
-                    style: TextStyle(
+                    text: 'Tos',
+                    style: const TextStyle(
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -163,8 +168,10 @@ class ChaseAppDrawer extends StatelessWidget {
                         launchUrl(tosPolicy);
                       },
                   ),
-                ])),
-          )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

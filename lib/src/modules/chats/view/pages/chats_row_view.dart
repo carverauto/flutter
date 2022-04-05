@@ -321,7 +321,7 @@ class ChatsViewRow extends ConsumerWidget {
                     return ChaseAppErrorWidget(
                       message: 'Unable to connect chats. Try again.',
                       onRefresh: () {
-                        ref.refresh(chatChannelProvider(chaseId));
+                        ref.refresh(chatWsConnectionStreamProvider);
                       },
                     );
                   default:
