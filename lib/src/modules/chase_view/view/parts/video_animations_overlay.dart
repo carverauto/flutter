@@ -64,73 +64,76 @@ class _VideoAnimationsOverlayState
 
   // ignore: long-method
   void listener() {
-    log(widget.controller.value.playerState.toString());
-    if (widget.controller.value.playerState == PlayerState.buffering) {
-      if (timer.isActive) {
-        timer.cancel();
-      }
-    } else if (widget.controller.value.playerState == PlayerState.playing) {
-      // if (!timer.isActive) {
-      //   setRecursiveTimer();
-      // }
+    if (mounted) {
+      log(widget.controller.value.playerState.toString());
 
-      if (!timer.isActive) {
-        // position
-        if (!isDragged) {
-          if (finishedIndex <= chaseAnimationEvents.length - 1) {
+      if (widget.controller.value.playerState == PlayerState.buffering) {
+        if (timer.isActive) {
+          timer.cancel();
+        }
+      } else if (widget.controller.value.playerState == PlayerState.playing) {
+        // if (!timer.isActive) {
+        //   setRecursiveTimer();
+        // }
+
+        if (!timer.isActive) {
+          // position
+          if (!isDragged) {
+            if (finishedIndex <= chaseAnimationEvents.length - 1) {
+              setState(() {
+                finishedIndex += 1;
+                isDragged = false;
+              });
+
+              setRecursiveTimer();
+            }
+          } else {
+            final int position = widget
+                .controller.durationNotifier.value.position.inMilliseconds;
+            final int nextEventIndex = chaseAnimationEvents.indexWhere(
+              (ChaseAnimationEvent event) => event.label >= position,
+            );
+            if (nextEventIndex != -1) {
+              final int timerDuration =
+                  chaseAnimationEvents[nextEventIndex].label - position;
+              setState(() {
+                finishedIndex = nextEventIndex;
+                isDragged = false;
+                // finishedIndex += 1;
+              });
+              log('Next index--->${nextEventIndex}Label---> ${chaseAnimationEvents[nextEventIndex].label}');
+
+              setRecursiveTimer(timerDuration);
+            }
+          }
+          if (isDragged) {
             setState(() {
-              finishedIndex += 1;
               isDragged = false;
             });
-
-            setRecursiveTimer();
           }
-        } else {
-          final int position =
-              widget.controller.durationNotifier.value.position.inMilliseconds;
-          final int nextEventIndex = chaseAnimationEvents.indexWhere(
-            (ChaseAnimationEvent event) => event.label >= position,
-          );
-          if (nextEventIndex != -1) {
-            final int timerDuration =
-                chaseAnimationEvents[nextEventIndex].label - position;
+        }
+      } else if (widget.controller.value.playerState == PlayerState.paused) {
+        if (widget.controller.value.isDragging) {
+          if (!isDragged) {
             setState(() {
-              finishedIndex = nextEventIndex;
-              isDragged = false;
-              // finishedIndex += 1;
+              isDragged = widget.controller.value.isDragging;
             });
-            log('Next index--->${nextEventIndex}Label---> ${chaseAnimationEvents[nextEventIndex].label}');
-
-            setRecursiveTimer(timerDuration);
           }
         }
-        if (isDragged) {
-          setState(() {
-            isDragged = false;
-          });
+        if (timer.isActive) {
+          timer.cancel();
         }
-      }
-    } else if (widget.controller.value.playerState == PlayerState.paused) {
-      if (widget.controller.value.isDragging) {
-        if (!isDragged) {
-          setState(() {
-            isDragged = widget.controller.value.isDragging;
-          });
+      } else if (widget.controller.value.playerState == PlayerState.ended) {
+        if (timer.isActive) {
+          timer.cancel();
         }
-      }
-      if (timer.isActive) {
-        timer.cancel();
-      }
-    } else if (widget.controller.value.playerState == PlayerState.ended) {
-      if (timer.isActive) {
-        timer.cancel();
-      }
-    } else if (widget.controller.value.isReady) {
-      if (!isReady) {
-        setState(() {
-          isReady = true;
-        });
-        setRecursiveTimer();
+      } else if (widget.controller.value.isReady) {
+        if (!isReady) {
+          setState(() {
+            isReady = true;
+          });
+          setRecursiveTimer();
+        }
       }
     }
   }
