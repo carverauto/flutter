@@ -28,7 +28,7 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   final Logger logger = Logger('ChatsServiceStateNotifier');
 
-  late final String userToken;
+  late String userToken;
 
   final stream.StreamChatClient client;
 
