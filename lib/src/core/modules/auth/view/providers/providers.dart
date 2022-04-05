@@ -12,11 +12,11 @@ import '../../domain/auth_repo_ab.dart';
 final AutoDisposeStateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>
     postLoginStateNotifierProvider =
     StateNotifierProvider.autoDispose<PostLoginStateNotifier, AsyncValue<void>>(
-        (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier,
-                AsyncValue<void>>
-            ref) {
-  return PostLoginStateNotifier(ref.read);
-});
+  (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier, AsyncValue<void>>
+      ref) {
+    return PostLoginStateNotifier(ref.read);
+  },
+);
 
 final Provider<AuthRepositoryAB> authRepoProvider = Provider<AuthRepositoryAB>(
   (ProviderRef<AuthRepositoryAB> ref) => AuthRepository(
@@ -46,7 +46,11 @@ final FutureProviderFamily<UserData, User> fetchUserProvider =
 
 final AutoDisposeStreamProvider<UserData> userStreamProvider =
     StreamProvider.autoDispose<UserData>(
-        (AutoDisposeStreamProviderRef<UserData> ref) {
-  final User user = ref.watch(firebaseAuthProvider).currentUser!;
-  return ref.read(authRepoProvider).streamUserData(user.uid);
-});
+  (
+    AutoDisposeStreamProviderRef<UserData> ref,
+  ) {
+    final User user = ref.watch(firebaseAuthProvider).currentUser!;
+
+    return ref.read(authRepoProvider).streamUserData(user.uid);
+  },
+);
