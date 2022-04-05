@@ -120,3 +120,49 @@ Future<void> setUpServices() async {
   }
    */
 }
+
+class ProvidersLogger extends ProviderObserver {
+//   @override
+//   void didAddProvider(
+//     ProviderBase provider,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+//   @override
+//   void didUpdateProvider(
+//     ProviderBase provider,
+//     Object? previousValue,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase provider,
+    ProviderContainer container,
+  ) {
+    log(
+      '''
+{
+  "provider": "${provider.name ?? provider.runtimeType}"
+}''',
+    );
+  }
+}
