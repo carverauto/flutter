@@ -125,7 +125,7 @@ class ChatsView extends ConsumerWidget {
                 child: StreamChat(
                   streamChatThemeData: StreamChatThemeData.dark().copyWith(
                     // TODO: Need to debug why?
-                    // If not added then getStream API is overriding the
+                    // If not added at the root of the app then getStream API is overriding the
                     // the user set accentColor in Custom Theme
                     colorTheme: ColorTheme.dark(
                       accentPrimary: kPrimaryAccent,

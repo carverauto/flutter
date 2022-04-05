@@ -139,7 +139,9 @@ class _VideoAnimationsOverlayState
     chaseAnimationEvents = await ref
         .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
         .fetchAnimationEvents();
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
 
     widget.controller.addListener(listener);
   }
