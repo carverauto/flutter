@@ -20,6 +20,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   late StateMachineController theaterController;
   late String riveFile;
   late String? animstate;
+  bool isInitialized = false;
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
 
   void setStateMachine(Artboard artboard) {
     theaterController = StateMachineController.fromArtboard(artboard, 'Crowd')!;
+    isInitialized = true;
     artboard.addController(theaterController);
     if (animstate != null) {
       playThiState(animstate!);
@@ -91,7 +93,9 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   @override
   void dispose() {
     // TODO: implement dispose
-    theaterController.dispose();
+    if (isInitialized) {
+      theaterController.dispose();
+    }
     super.dispose();
   }
 
