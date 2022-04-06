@@ -244,8 +244,8 @@ class AuthDatabase implements AuthDB {
     // Create a TwitterLogin instance
 
     final TwitterLogin twitterLogin = TwitterLogin(
-      apiKey: 'VFgiAVqCmf7iBcyvNpJwHeUZi',
-      apiSecretKey: 'Dw9ueyKvEc6YYdUUSLoBMIwWwwvAEDl0Lyuj4f0qZmdbRtPWYL',
+      apiKey: EnvVaribales.twitterApiKey,
+      apiSecretKey: EnvVaribales.twitterSecretKey,
       redirectURI: 'social-firebase-auth://',
     );
 
