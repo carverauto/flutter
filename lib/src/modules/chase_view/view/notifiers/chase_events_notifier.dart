@@ -18,14 +18,6 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
     required this.streamFeedClient,
   }) : super(const AsyncValue.data(null));
 
-  @override
-  void dispose() {
-    if (isSubscribed) {
-      feedSubscription.cancel();
-    }
-    super.dispose();
-  }
-
   final Reader read;
 
   final String chaseId;
@@ -91,6 +83,12 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
         },
       );
       isSubscribed = true;
+    }
+  }
+
+  void unsubscribeFeed() {
+    if (isSubscribed) {
+      feedSubscription.cancel();
     }
   }
 }
