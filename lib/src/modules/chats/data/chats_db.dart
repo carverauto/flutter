@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../flavors.dart';
+import '../../../core/top_level_providers/firebase_providers.dart';
 import 'chats_db_ab.dart';
 
 class ChatsDatabase implements ChatsDatabaseAB {
@@ -13,9 +13,7 @@ class ChatsDatabase implements ChatsDatabaseAB {
   final Reader read;
   @override
   Future<String> getUserToken(String userId) async {
-    final String projectId =
-        F.appFlavor == Flavor.DEV ? 'chaseapp-staging' : 'chaseapp-8459b';
-
+    final String projectId = read(firebaseAuthProvider).app.options.projectId;
     final Uri url = Uri.parse(
       'https://us-central1-$projectId.cloudfunctions.net/GetStreamToken',
     );
