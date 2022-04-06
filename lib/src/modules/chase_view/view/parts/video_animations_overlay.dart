@@ -32,10 +32,8 @@ class VideoAnimationsOverlay extends ConsumerStatefulWidget {
 class _VideoAnimationsOverlayState
     extends ConsumerState<VideoAnimationsOverlay> {
   late final List<ChaseAnimationEvent> chaseAnimationEvents;
-  int finishedIndex = 0;
   Timer timer = Timer(Duration.zero, () {});
   bool isReady = false;
-  bool isDragged = false;
 
   void setRecursiveTimer() {
     if (timer.isActive) {
@@ -56,7 +54,7 @@ class _VideoAnimationsOverlayState
         () {
           if (mounted) {
             final ChaseAnimationEvent animationevent =
-                chaseAnimationEvents[finishedIndex];
+                chaseAnimationEvents[nextEventIndex];
             // ref
             //     .read(popupsEvetnsStreamControllerProvider)
             //     .add(chaseAnimationEvents[finishedIndex]);
@@ -136,13 +134,13 @@ class _VideoAnimationsOverlayState
           // }
         }
       } else if (widget.controller.value.playerState == PlayerState.paused) {
-        if (widget.controller.value.isDragging) {
-          if (!isDragged) {
-            setState(() {
-              isDragged = widget.controller.value.isDragging;
-            });
-          }
-        }
+        // if (widget.controller.value.isDragging) {
+        //   if (!isDragged) {
+        //     setState(() {
+        //       isDragged = widget.controller.value.isDragging;
+        //     });
+        //   }
+        // }
         if (timer.isActive) {
           timer.cancel();
         }
