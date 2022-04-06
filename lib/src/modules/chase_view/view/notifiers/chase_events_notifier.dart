@@ -55,7 +55,6 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
     //   state = AsyncValue.error(e, stackTrace: stk);
     // }
 
-    await Future<void>.delayed(const Duration(seconds: 5));
     fakeAnimationEvents.sort(
       (ChaseAnimationEvent a, ChaseAnimationEvent b) =>
           a.label.compareTo(b.label),
