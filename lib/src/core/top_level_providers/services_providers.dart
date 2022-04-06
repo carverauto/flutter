@@ -36,7 +36,7 @@ final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
   (AutoDisposeStreamProviderRef<Chase> ref, String chaseId) {
     ref.onDispose(() async {
       ref.read(chaseEventsNotifierProvider(chaseId).notifier).unsubscribeFeed();
-      ref.refresh(chaseEventsNotifierProvider(chaseId).notifier);
+      ref.refresh(chaseEventsNotifierProvider(chaseId));
 
       await ref.read(popupsEvetnsStreamControllerProvider).close();
       await ref.read(theaterEvetnsStreamControllerProvider).close();

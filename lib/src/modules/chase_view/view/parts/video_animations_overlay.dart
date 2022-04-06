@@ -139,6 +139,9 @@ class _VideoAnimationsOverlayState
   }
 
   Future<void> fetchAnimationEvents() async {
+    ref.refresh(chaseEventsNotifierProvider(widget.chase.id));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+
     chaseAnimationEvents = await ref
         .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
         .fetchAnimationEvents();
@@ -150,6 +153,8 @@ class _VideoAnimationsOverlayState
   }
 
   Future<void> subscribetoAnimationEvents() async {
+    ref.refresh(chaseEventsNotifierProvider(widget.chase.id));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     await ref
         .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
         .subscribeToEventsStream();
@@ -172,6 +177,9 @@ class _VideoAnimationsOverlayState
   void dispose() {
     // TODO: implement dispose
     timer.cancel();
+    // ref
+    //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
+    //     .unsubscribeFeed();
 
     widget.controller.removeListener(listener);
 
