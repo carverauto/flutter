@@ -85,12 +85,12 @@ final AutoDisposeFutureProviderFamily<ChannelState, String>
   final Channel channel = ref.watch(chatChannelProvider(chaseId));
   final ChannelState watchState = await channel.watch();
 
-  ref.onDispose(() async {
-    await channel.stopWatching();
+  // ref.onDispose(() async {
+  //   await channel.stopWatching();
 
-    await ref.read(streamChatClientProvider).disconnectUser();
-    // await ref.read(streamChatClientProvider).dispose();
-  });
+  //   await ref.read(streamChatClientProvider).disconnectUser();
+  //   // await ref.read(streamChatClientProvider).dispose();
+  // });
 
   return watchState;
 });

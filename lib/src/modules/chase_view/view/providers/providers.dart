@@ -24,11 +24,11 @@ final AutoDisposeStateProvider<bool> isShowingChatsWindowProvide =
 //   return
 // });
 
-final AutoDisposeStateNotifierProviderFamily<ChaseEventsNotifier, void, String>
+final StateNotifierProviderFamily<ChaseEventsNotifier, void, String>
     chaseEventsNotifierProvider =
-    StateNotifierProvider.autoDispose.family<ChaseEventsNotifier, void, String>(
+    StateNotifierProvider.family<ChaseEventsNotifier, void, String>(
   (
-    AutoDisposeStateNotifierProviderRef<ChaseEventsNotifier, void> ref,
+    StateNotifierProviderRef<ChaseEventsNotifier, void> ref,
     String chaseId,
   ) =>
       ChaseEventsNotifier(

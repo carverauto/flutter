@@ -8,6 +8,7 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../../models/app_update_info/app_update_info.dart';
 import '../../models/chase/chase.dart';
 import '../../modules/chase_view/view/providers/providers.dart';
+import '../../modules/chats/view/providers/providers.dart';
 import '../../shared/util/firebase_collections.dart';
 import '../modules/chase/data/chase_db.dart';
 import '../modules/chase/data/chase_db_ab.dart';
@@ -33,14 +34,16 @@ final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
 final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
     StreamProvider.autoDispose.family<Chase, String>(
   (AutoDisposeStreamProviderRef<Chase> ref, String chaseId) {
-    ref.onDispose(() {
-      // ref
-      //     .read(chaseEventsNotifierProvider(chaseId).notifier)
-      //     .streamController
-      //     .close();
-      ref.read(popupsEvetnsStreamControllerProvider).close();
-      ref.read(theaterEvetnsStreamControllerProvider).close();
-      ref.read(chaseEventsNotifierProvider(chaseId).notifier).dispose();
+    ref.onDispose(() async {
+      ref.read(chaseEventsNotifierProvider(chaseId).notifier).unsubscribeFeed();
+      ref.refresh(chaseEventsNotifierProvider(chaseId).notifier);
+
+      await ref.read(popupsEvetnsStreamControllerProvider).close();
+      await ref.read(theaterEvetnsStreamControllerProvider).close();
+
+      await ref.read(chatChannelProvider(chaseId)).stopWatching();
+
+      await ref.read(streamChatClientProvider).disconnectUser();
     });
 
     return ref.watch(chaseRepoProvider).streamChase(chaseId);
