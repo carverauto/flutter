@@ -38,6 +38,9 @@ class _VideoAnimationsOverlayState
   bool isDragged = false;
 
   void setRecursiveTimer() {
+    if (timer.isActive) {
+      timer.cancel();
+    }
     final int position =
         widget.controller.durationNotifier.value.position.inMilliseconds;
     final int nextEventIndex = chaseAnimationEvents.indexWhere(
