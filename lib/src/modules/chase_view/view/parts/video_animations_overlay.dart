@@ -9,6 +9,7 @@ import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
+import '../../../../shared/enums/animtype.dart';
 import '../providers/providers.dart';
 import 'pop_up_animations_overlay.dart';
 import 'theater_rive.dart';
@@ -48,9 +49,22 @@ class _VideoAnimationsOverlayState
         Duration(milliseconds: providedTimerDuration ?? timerDuration),
         () {
           if (mounted) {
-            ref
-                .read(popupsEvetnsStreamControllerProvider)
-                .add(chaseAnimationEvents[finishedIndex]);
+            final ChaseAnimationEvent animationevent =
+                chaseAnimationEvents[finishedIndex];
+            // ref
+            //     .read(popupsEvetnsStreamControllerProvider)
+            //     .add(chaseAnimationEvents[finishedIndex]);
+            if (animationevent.animtype == AnimType.pop_up) {
+              ref
+                  .read(popupsEvetnsStreamControllerProvider)
+                  .add(animationevent);
+            } else if (animationevent.animtype == AnimType.theater) {
+              ref
+                  .read(theaterEvetnsStreamControllerProvider)
+                  .add(animationevent);
+            } else {
+              log('Event type not identified');
+            }
 
             setState(() {
               finishedIndex += 1;
