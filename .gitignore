@@ -9,8 +9,8 @@
 .history
 .svn/
 .flutter-plugins-dependencies
-# google-services.json
-# GoogleService-Info.plist
+google-services.json
+GoogleService-Info.plist
 pubspec.lock
 
 # IntelliJ related
