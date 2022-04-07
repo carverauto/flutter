@@ -106,11 +106,13 @@ While the Congress of the Republic endlessly debates this alarming chain of even
           clipBehavior: Clip.none,
           children: [
             Positioned.fill(
-              child: Image.asset(
-                'assets/galaxy.png',
-                fit: BoxFit.cover,
-                cacheHeight: 1294,
-                cacheWidth: 750,
+              child: RepaintBoundary(
+                child: Image.asset(
+                  'assets/galaxy.png',
+                  fit: BoxFit.cover,
+                  cacheHeight: 1294,
+                  cacheWidth: 750,
+                ),
               ),
             ),
             CrawlText(
@@ -119,18 +121,20 @@ While the Congress of the Republic endlessly debates this alarming chain of even
               crawlTextposition: crawlTextposition,
               disappearCrawlText: disappearCrawlText,
             ),
-            const BackButton(),
+            const RepaintBoundary(child: BackButton()),
             // add mute button and vertical slider for volume in bottom right corner
             Positioned(
               bottom: kPaddingMediumConstant,
               right: 0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  VolumeController(
-                    audioController: audioPlayer,
-                  ),
-                ],
+              child: RepaintBoundary(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    VolumeController(
+                      audioController: audioPlayer,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
