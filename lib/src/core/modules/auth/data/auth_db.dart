@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,8 +35,6 @@ class AuthDatabase implements AuthDB {
 
   @override
   Future<void> saveDeviceTokenToDatabase(User user, String token) async {
-    final String userId = firebaseAuth.currentUser!.uid;
-
     final PushToken pushToken = PushToken(
       token: token,
       created_at: DateTime.now().millisecondsSinceEpoch,
@@ -43,7 +42,7 @@ class AuthDatabase implements AuthDB {
       type: TokenType.FCM,
     );
 
-    await usersCollectionRef.doc(userId).update(<String, dynamic>{
+    await usersCollectionRef.doc(user.uid).update(<String, dynamic>{
       'tokens':
           FieldValue.arrayUnion(<Map<String, dynamic>>[pushToken.toJson()]),
       'lastTokenUpdate': DateTime.now(),
@@ -79,7 +78,8 @@ class AuthDatabase implements AuthDB {
   }
 
   @override
-  Stream<UserData> streamUserData(String uid) {
+  Stream<UserData> streamUserData(String? uid) {
+    log(firebaseAuth.currentUser?.email ?? '');
     final Stream<DocumentSnapshot<UserData>> snapshot =
         usersCollectionRef.doc(uid).snapshots();
 

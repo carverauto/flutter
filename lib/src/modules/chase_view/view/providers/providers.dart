@@ -34,7 +34,7 @@ final StateNotifierProviderFamily<ChaseEventsNotifier, void, String>
       ChaseEventsNotifier(
     chaseId: chaseId,
     read: ref.read,
-    streamFeedClient: ref.watch(streamFeedClientProvider),
+    streamFeedClient: ref.read(streamFeedClientProvider),
   ),
 );
 

@@ -43,7 +43,7 @@ final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
 
       await ref.read(chatChannelProvider(chaseId)).stopWatching();
 
-      await ref.read(streamChatClientProvider).disconnectUser();
+      // await ref.read(streamChatClientProvider).disconnectUser();
     });
 
     return ref.watch(chaseRepoProvider).streamChase(chaseId);

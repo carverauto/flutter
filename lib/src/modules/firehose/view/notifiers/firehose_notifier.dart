@@ -2,9 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
-import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/notification/notification.dart';
-import '../../../../models/user/user_data.dart';
 import '../../../../shared/notifications/activity_to_notification_convertor.dart';
 import '../../../chats/view/providers/providers.dart';
 
@@ -40,12 +39,11 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   Future<void> setUserAndSubscribe() async {
     if (streamFeedClient.currentUser == null) {
-      final UserData userData = await read(userStreamProvider.future);
-      final String userToken =
-          await read(chatsRepoProvider).getUserToken(userData.uid);
+      final String uid = read(firebaseAuthProvider).currentUser!.uid;
+      final String userToken = await read(chatsRepoProvider).getUserToken(uid);
       await streamFeedClient.setUser(
         feed.User(
-          id: userData.uid,
+          id: uid,
         ),
         feed.Token(userToken),
       );

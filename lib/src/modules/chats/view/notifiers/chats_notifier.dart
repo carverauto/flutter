@@ -61,7 +61,6 @@ class ChatStateNotifier extends StateNotifier<void> {
       }
 
       if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected) {
-        // await Future<void>.delayed(const Duration(seconds: 10));
         await client.connectUser(
           stream.User(
             id: userData.uid,
