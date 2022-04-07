@@ -103,7 +103,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   Widget build(BuildContext context) {
     return RiveAnimation.network(
       riveFile,
-      stateMachines: const ['Theater'],
+      // stateMachines: const ['Theater'],
       fit: BoxFit.cover,
       antialiasing: false,
       alignment: Alignment.bottomCenter,
