@@ -222,7 +222,6 @@ class _VideoAnimationsOverlayState
               ),
               PopupAnimationsView(
                 controller: widget.controller,
-                chase: widget.chase,
               ),
               Positioned(
                 top: kItemsSpacingSmallConstant,

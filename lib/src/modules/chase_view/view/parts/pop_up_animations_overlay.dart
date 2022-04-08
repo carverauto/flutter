@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../providers/providers.dart';
 import 'rive_emojies.dart';
@@ -14,11 +13,9 @@ class PopupAnimationsView extends ConsumerStatefulWidget {
   const PopupAnimationsView({
     Key? key,
     required this.controller,
-    required this.chase,
   }) : super(key: key);
 
   final YoutubePlayerController controller;
-  final Chase chase;
 
   @override
   ConsumerState<PopupAnimationsView> createState() =>
