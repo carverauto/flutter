@@ -20,6 +20,9 @@ final AutoDisposeStateProvider<bool> isShowingChatsWindowProvide =
   (AutoDisposeStateProviderRef<bool> ref) => false,
 );
 
+final StateProvider<String?> playingVideoIdProvider =
+    StateProvider<String?>((StateProviderRef<String?> ref) => null);
+
 // final  StateNotifierProviderFamily<StateNotifierProvider<ChaseEventsNotifier, void>, List<ChaseAnimationEvent>, Chase> chasesEventsStateNotifierProvider = StateNotifierProvider.family<StateNotifierProvider<ChaseEventsNotifier, void> ,List<ChaseAnimationEvent>,Chase>((StateNotifierProvider<ChaseEventsNotifier, void> ref,Chase chase ) {
 //   return
 // });

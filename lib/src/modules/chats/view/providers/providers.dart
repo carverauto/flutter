@@ -16,9 +16,9 @@ final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   ),
 );
 
-final AutoDisposeProvider<feed.StreamFeedClient> streamFeedClientProvider =
-    Provider.autoDispose<feed.StreamFeedClient>(
-  (AutoDisposeProviderRef<feed.StreamFeedClient> ref) {
+final Provider<feed.StreamFeedClient> streamFeedClientProvider =
+    Provider<feed.StreamFeedClient>(
+  (ProviderRef<feed.StreamFeedClient> ref) {
     return feed.StreamFeedClient(
       F.appFlavor == Flavor.DEV
           ? EnvVaribales.devGetStreamChatApiKey

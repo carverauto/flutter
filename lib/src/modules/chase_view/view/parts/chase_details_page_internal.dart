@@ -41,44 +41,42 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   final bool expandChats = false;
 
   late YoutubePlayerController _controller;
-
-  YoutubePlayerController initializeVideoController({String? youtubeUrl}) {
+  void initializeVideoController(String? videoId) {
     late final String? url;
-    if (youtubeUrl == null) {
+    late final String? playerVideoId;
+    if (videoId == null) {
       final ChaseNetwork? network =
           widget.chase.networks?.firstWhereOrNull((ChaseNetwork network) {
         final String? url = network.url;
 
         if (url != null) {
-          return url.contains('youtube.com');
+          return isValidYoutubeUrl(url);
         }
+
         return false;
       });
       url = network?.url;
+      playerVideoId = url != null ? parseYoutubeUrlForVideoId(url) : null;
     } else {
-      url = youtubeUrl;
+      playerVideoId = videoId;
     }
 
-    late String? videoId;
-    if (url != null) {
-      videoId = parseYoutubeUrlForVideoId(url) ?? '';
-    } else {
-      videoId = '';
-    }
     _controller = YoutubePlayerController(
-      initialVideoId: videoId,
+      initialVideoId: playerVideoId ?? '',
       flags: YoutubePlayerFlags(
         isLive: widget.chase.live ?? false,
       ),
     );
     setState(() {});
-
-    return _controller;
   }
 
   Future<void> changeYoutubeVideo(String url) async {
+    final String? videoId = parseYoutubeUrlForVideoId(url);
+    ref.read(playingVideoIdProvider.state).update((String? state) => videoId);
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
     initializeVideoController(
-      youtubeUrl: url,
+      videoId,
     );
     ref.read(playVideoProvider.state).update((bool state) => false);
     await Future<void>.delayed(const Duration(milliseconds: 300));
@@ -88,7 +86,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   @override
   void initState() {
     super.initState();
-    initializeVideoController();
+    initializeVideoController(null);
   }
 
   @override

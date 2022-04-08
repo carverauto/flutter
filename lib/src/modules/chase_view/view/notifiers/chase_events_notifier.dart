@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
 import '../../../../core/top_level_providers/services_providers.dart';
@@ -24,28 +25,48 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
 
   bool isSubscribed = false;
 
+  final Logger logger = Logger('ChaseEventsStateNotifier');
+
   late final feed.Subscription feedSubscription;
 
   final feed.StreamFeedClient streamFeedClient;
 
   feed.FlatFeed get firehoseFeed =>
-      streamFeedClient.flatFeed('events', chaseId);
+      streamFeedClient.flatFeed('events', 'animation');
 
   Future<List<ChaseAnimationEvent>> fetchAnimationEvents() async {
     // state = const AsyncValue.loading();
     // //  final feed.Filter filter = feed.Filter().;
-    // try {
-    //   // final List<feed.Activity> activities = await firehoseFeed.getActivities(
-    //   //     // filter: filter,
-    //   //     // ranking:
-    //   //     );
-    //   await subscribeToEventsStream();
-    //   //convert to ChaseAnimationEvents objects
-    //   // state = ChaseAnimationEvents list;
-    //   state = AsyncValue.data(fakeAnimationEvents);
-    // } catch (e, stk) {
-    //   state = AsyncValue.error(e, stackTrace: stk);
-    // }
+    final String? videoId = read(playingVideoIdProvider);
+    try {
+      final List<feed.Activity> activities = await firehoseFeed.getActivities(
+          // filter: filter,
+          // ranking:
+          );
+
+      //convert to ChaseAnimationEvents objects
+      // state = ChaseAnimationEvents list;
+      final List<feed.Activity> filteredActivities =
+          activities.where((feed.Activity event) {
+        return event.object == 'animation-event' &&
+            event.extraData?['videoId'] == videoId;
+      }).toList();
+      final List<ChaseAnimationEvent> chaseAnimationEvents =
+          filteredActivities.map<ChaseAnimationEvent>((feed.Activity event) {
+        final Map<String, Object?>? extraData = event.extraData;
+        extraData!['id'] = event.id;
+        final ChaseAnimationEvent animationevent =
+            ChaseAnimationEvent.fromJson(extraData);
+
+        return animationevent;
+      }).toList();
+
+      return chaseAnimationEvents;
+    } catch (e, stk) {
+      logger.warning('Failed to fetch Animation events for a chase', e, stk);
+    }
+
+    return [];
 
     fakeAnimationEvents.sort(
       (ChaseAnimationEvent a, ChaseAnimationEvent b) =>
