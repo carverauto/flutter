@@ -122,46 +122,35 @@ class ChatsView extends ConsumerWidget {
                     child: child,
                   );
                 },
-                child: StreamChat(
-                  streamChatThemeData: StreamChatThemeData.dark().copyWith(
-                    // TODO: Need to debug why?
-                    // If not added at the root of the app then getStream API is overriding the
-                    // the user set accentColor in Custom Theme
-                    colorTheme: ColorTheme.dark(
-                      accentPrimary: kPrimaryAccent,
-                    ),
-                  ),
-                  client: ref.watch(streamChatClientProvider),
-                  child: StreamChannel(
-                    channel: channel,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: MessageListView(
-                            // initialAlignment: 0,
-                            loadingBuilder: (BuildContext context) =>
-                                const CircularAdaptiveProgressIndicatorWithBg(),
-                            errorBuilder: (BuildContext context, Object e) {
-                              return ChaseAppErrorWidget(
-                                onRefresh: () {
-                                  ref.refresh(chatWsConnectionStreamProvider);
-                                },
-                              );
-                            },
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.manual,
-                          ),
+                child: StreamChannel(
+                  channel: channel,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: MessageListView(
+                          // initialAlignment: 0,
+                          loadingBuilder: (BuildContext context) =>
+                              const CircularAdaptiveProgressIndicatorWithBg(),
+                          errorBuilder: (BuildContext context, Object e) {
+                            return ChaseAppErrorWidget(
+                              onRefresh: () {
+                                ref.refresh(chatWsConnectionStreamProvider);
+                              },
+                            );
+                          },
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.manual,
                         ),
-                        const RepaintBoundary(
-                          child: MessageInput(
-                            disableAttachments: true,
-                            maxHeight: 100,
-                          ),
+                      ),
+                      const RepaintBoundary(
+                        child: MessageInput(
+                          disableAttachments: true,
+                          maxHeight: 100,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
