@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -21,6 +23,8 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   late String riveFile;
   late String? animstate;
   bool isInitialized = false;
+  late final Artboard artboard;
+  Timer timer = Timer(Duration.zero, () {});
 
   @override
   void initState() {
@@ -67,18 +71,21 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
     }
   }
 
-  void setStateMachine(Artboard artboard) {
+  void setStateMachine(Artboard riveArtboard) {
+    artboard = riveArtboard;
     theaterController = StateMachineController.fromArtboard(artboard, 'Crowd')!;
+
     isInitialized = true;
-    artboard.addController(theaterController);
     if (animstate != null) {
       playThiState(animstate!);
       animstate = null;
     }
-    // getAnimationsStatus();
   }
 
-  void playThiState(String state) {
+  void playThiState(String state) async {
+    timer.cancel();
+    artboard.addController(theaterController);
+    await Future<void>.delayed(const Duration(milliseconds: 300));
     if (theaterController.isActive) {
       final SMITrigger? stateTrigger =
           theaterController.findInput<bool>(state) as SMITrigger?;
@@ -88,11 +95,15 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
         logger.warning('Provided Animation state is not valid.');
       }
     }
+    timer = Timer(const Duration(seconds: 5), () {
+      artboard.removeController(theaterController);
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    timer.cancel();
     if (isInitialized) {
       theaterController.dispose();
     }
