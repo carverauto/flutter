@@ -2,9 +2,34 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/top_level_providers/services_providers.dart';
+import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../../../chats/view/providers/providers.dart';
 import '../notifiers/chase_events_notifier.dart';
+
+final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
+    StreamProvider.autoDispose.family<Chase, String>(
+  (AutoDisposeStreamProviderRef<Chase> ref, String chaseId) {
+    ref.onDispose(() async {
+      ref.read(chaseEventsNotifierProvider(chaseId).notifier).unsubscribeFeed();
+      ref.refresh(chaseEventsNotifierProvider(chaseId));
+
+      await ref.read(popupsEvetnsStreamControllerProvider).close();
+      await ref.read(theaterEvetnsStreamControllerProvider).close();
+
+      final bool isChannelInitialized =
+          await ref.read(chatChannelProvider(chaseId)).initialized;
+      if (isChannelInitialized) {
+        await ref.read(chatChannelProvider(chaseId)).stopWatching();
+      }
+
+      // await ref.read(streamChatClientProvider).disconnectUser();
+    });
+
+    return ref.watch(chaseRepoProvider).streamChase(chaseId);
+  },
+);
 
 // final chaseDetailsHeightProvider = StateProvider<double?>((ref) => null);
 final AutoDisposeStateProvider<bool> playVideoProvider =
