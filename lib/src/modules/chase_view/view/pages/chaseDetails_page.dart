@@ -36,8 +36,6 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
   Widget build(BuildContext context) {
     final String chaseId = widget.chaseId;
 
-    ref.watch(playVideoProvider);
-
     return ChaseDetailsProviderStateBuilder<Chase>(
       watchThisProvider: streamChaseProvider(chaseId),
       logger: logger,
