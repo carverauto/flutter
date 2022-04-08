@@ -27,8 +27,6 @@ class ChaseHeroSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool playVideo = ref.watch(playVideoProvider);
-    final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    final bool isKeyboardVisible = bottomPadding > 0;
     final bool isYoutubeUrlPresent =
         chase.networks?.any((ChaseNetwork network) {
               final String? url = network.url;
