@@ -37,16 +37,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
     fixedPlayer: AudioPlayer(),
   );
 
-  void playAnimation() async {
-    final double height = MediaQuery.of(context).size.height;
-    final double topOffset =
-        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
-            ? height * 0.8
-            : height / 1.5;
-    final double bottomOffset = -height * 0.8;
-    crawlTextposition =
-        Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
-            .animate(_animationController);
+  Future<void> playAnimation() async {
     disappearCrawlText = Tween<double>(begin: 1, end: 0)
         .chain(
           CurveTween(
@@ -81,12 +72,11 @@ While the Congress of the Republic endlessly debates this alarming chain of even
       duration: const Duration(seconds: 60),
     );
     playTrack();
+    playAnimation();
   }
 
   @override
   void didChangeDependencies() {
-    playAnimation();
-
     super.didChangeDependencies();
   }
 
@@ -99,6 +89,16 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double topOffset =
+        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
+            ? height * 0.8
+            : height / 1.5;
+    final double bottomOffset = -height * 0.8;
+    crawlTextposition =
+        Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
+            .animate(_animationController);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
