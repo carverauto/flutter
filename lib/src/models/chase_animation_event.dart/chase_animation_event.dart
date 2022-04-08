@@ -8,6 +8,7 @@ import '../../shared/enums/animtype.dart';
 import '../../shared/util/convertors/alignment_convertor.dart';
 import '../../shared/util/convertors/animtype_json_convertor.dart';
 import '../../shared/util/convertors/datetimeconvertor.dart';
+import '../../shared/util/convertors/label_convertor.dart';
 
 part 'chase_animation_event.freezed.dart';
 part 'chase_animation_event.g.dart';
@@ -24,7 +25,7 @@ abstract class ChaseAnimationEvent implements _$ChaseAnimationEvent {
     @AnimTypeConvertor() required AnimType animtype,
     required String endpoint,
     required String animstate,
-    required int label,
+    @EventLabelTimestampConverter() required int label,
     required String videoId,
     required String artboard,
     required List<String> animations,

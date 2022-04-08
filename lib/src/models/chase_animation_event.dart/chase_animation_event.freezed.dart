@@ -27,7 +27,7 @@ class _$ChaseAnimationEventTearOff {
       @AnimTypeConvertor() required AnimType animtype,
       required String endpoint,
       required String animstate,
-      required int label,
+      @EventLabelTimestampConverter() required int label,
       required String videoId,
       required String artboard,
       required List<String> animations,
@@ -64,6 +64,7 @@ mixin _$ChaseAnimationEvent {
   AnimType get animtype => throw _privateConstructorUsedError;
   String get endpoint => throw _privateConstructorUsedError;
   String get animstate => throw _privateConstructorUsedError;
+  @EventLabelTimestampConverter()
   int get label => throw _privateConstructorUsedError;
   String get videoId => throw _privateConstructorUsedError;
   String get artboard => throw _privateConstructorUsedError;
@@ -90,7 +91,7 @@ abstract class $ChaseAnimationEventCopyWith<$Res> {
       @AnimTypeConvertor() AnimType animtype,
       String endpoint,
       String animstate,
-      int label,
+      @EventLabelTimestampConverter() int label,
       String videoId,
       String artboard,
       List<String> animations,
@@ -177,7 +178,7 @@ abstract class _$ChaseAnimationEventCopyWith<$Res>
       @AnimTypeConvertor() AnimType animtype,
       String endpoint,
       String animstate,
-      int label,
+      @EventLabelTimestampConverter() int label,
       String videoId,
       String artboard,
       List<String> animations,
@@ -263,7 +264,7 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
       @AnimTypeConvertor() required this.animtype,
       required this.endpoint,
       required this.animstate,
-      required this.label,
+      @EventLabelTimestampConverter() required this.label,
       required this.videoId,
       required this.artboard,
       required this.animations,
@@ -285,6 +286,7 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
   @override
   final String animstate;
   @override
+  @EventLabelTimestampConverter()
   final int label;
   @override
   final String videoId;
@@ -354,7 +356,7 @@ abstract class _ChaseAnimationEvent extends ChaseAnimationEvent {
           @AnimTypeConvertor() required AnimType animtype,
           required String endpoint,
           required String animstate,
-          required int label,
+          @EventLabelTimestampConverter() required int label,
           required String videoId,
           required String artboard,
           required List<String> animations,
@@ -377,6 +379,7 @@ abstract class _ChaseAnimationEvent extends ChaseAnimationEvent {
   @override
   String get animstate;
   @override
+  @EventLabelTimestampConverter()
   int get label;
   @override
   String get videoId;

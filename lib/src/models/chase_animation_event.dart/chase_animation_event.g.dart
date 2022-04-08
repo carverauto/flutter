@@ -13,7 +13,7 @@ _$_ChaseAnimationEvent _$$_ChaseAnimationEventFromJson(
       animtype: const AnimTypeConvertor().fromJson(json['animtype'] as String),
       endpoint: json['endpoint'] as String,
       animstate: json['animstate'] as String,
-      label: json['label'] as int,
+      label: const EventLabelTimestampConverter().fromJson(json['label']),
       videoId: json['videoId'] as String,
       artboard: json['artboard'] as String,
       animations: (json['animations'] as List<dynamic>)
@@ -32,7 +32,7 @@ Map<String, dynamic> _$$_ChaseAnimationEventToJson(
       'animtype': const AnimTypeConvertor().toJson(instance.animtype),
       'endpoint': instance.endpoint,
       'animstate': instance.animstate,
-      'label': instance.label,
+      'label': const EventLabelTimestampConverter().toJson(instance.label),
       'videoId': instance.videoId,
       'artboard': instance.artboard,
       'animations': instance.animations,
