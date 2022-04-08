@@ -227,10 +227,12 @@ class _VideoAnimationsOverlayState
               Positioned(
                 top: kItemsSpacingSmallConstant,
                 left: kItemsSpacingSmallConstant,
-                child: Image(
-                  image: const AssetImage(chaseAppTextLogoAsset),
-                  height: kImageSizeSmall,
-                  fit: BoxFit.scaleDown,
+                child: RepaintBoundary(
+                  child: Image(
+                    image: const AssetImage(chaseAppTextLogoAsset),
+                    height: kImageSizeSmall,
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
             ],
