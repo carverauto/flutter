@@ -56,7 +56,7 @@ class ChaseHeroSection extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.primaryContainer,
                   child: chase.imageURL != null && chase.imageURL!.isNotEmpty
                       ? CachedNetworkImage(
-                          fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
+                          fit: BoxFit.cover,
                           maxWidthDiskCache: 750,
                           maxHeightDiskCache: 421,
                           memCacheHeight: 421,
