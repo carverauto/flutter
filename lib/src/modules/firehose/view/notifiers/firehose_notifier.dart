@@ -3,9 +3,9 @@ import 'package:logging/logging.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
 import '../../../../core/top_level_providers/firebase_providers.dart';
+import '../../../../core/top_level_providers/getstream_providers.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../shared/notifications/activity_to_notification_convertor.dart';
-import '../../../chats/view/providers/providers.dart';
 
 class FirehoseStateNotifier extends StateNotifier<void> {
   FirehoseStateNotifier({
@@ -44,7 +44,7 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
     if (streamFeedClient.currentUser?.id != uid) {
       if (!isUserTokenInitialized) {
-        userToken = await read(chatsRepoProvider).getUserToken(uid);
+        userToken = await read(fetchUserTokenForGetStream(uid).future);
         isUserTokenInitialized = true;
       }
       await streamFeedClient.setUser(

@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart' as stream;
 
+import '../../../../core/top_level_providers/getstream_providers.dart';
 import '../../../../models/user/user_data.dart';
-import '../providers/providers.dart';
 
 class ChatStateNotifier extends StateNotifier<void> {
   ChatStateNotifier({
@@ -56,7 +56,7 @@ class ChatStateNotifier extends StateNotifier<void> {
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
       if (!isTokenInitialized) {
-        userToken = await read(chatsRepoProvider).getUserToken(userData.uid);
+        userToken = await read(fetchUserTokenForGetStream(userData.uid).future);
         isTokenInitialized = true;
       }
 
