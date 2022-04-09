@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
-import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../../../../shared/enums/animtype.dart';
@@ -68,12 +67,12 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
 
     return [];
 
-    fakeAnimationEvents.sort(
-      (ChaseAnimationEvent a, ChaseAnimationEvent b) =>
-          a.label.compareTo(b.label),
-    );
+    // fakeAnimationEvents.sort(
+    //   (ChaseAnimationEvent a, ChaseAnimationEvent b) =>
+    //       a.label.compareTo(b.label),
+    // );
 
-    return fakeAnimationEvents;
+    // return fakeAnimationEvents;
   }
 
   Future<void> subscribeToEventsStream() async {
@@ -82,27 +81,42 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
       feedSubscription = await firehoseFeed.subscribe(
         (feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message) {
           //parsed chaseapp event
+          log(
+            'Subcription Event ---> GetStream Feed Activity Recieved : ${message?.newActivities?.length}',
+          );
           if (message?.newActivities != null) {
             final feed
                     .GenericEnrichedActivity<Object?, Object?, Object?, Object?>
                 event = message!.newActivities![0];
             if (event.object == 'animation-event') {
               final Map<String, Object?>? extraData = event.extraData;
-              extraData!['id'] = event.id;
+              extraData!['id'] = event.verb?.replaceFirst('event-', '');
+              extraData['createdAt'] = event.time?.millisecondsSinceEpoch;
+              //TODO
+              // extraData['alignment'] = 'center';
+              // extraData['animstate'] = 'Horse Fist';
               final ChaseAnimationEvent animationevent =
                   ChaseAnimationEvent.fromJson(extraData);
+              final String? videoId = read(playingVideoIdProvider);
+              final String chaseId = chase.id;
 
-              if (animationevent.animtype == AnimType.pop_up) {
-                read(popupsEvetnsStreamControllerProvider).add(animationevent);
-              } else if (animationevent.animtype == AnimType.theater) {
-                read(theaterEvetnsStreamControllerProvider).add(animationevent);
-              } else {
-                log('Event type not identified');
+              if (animationevent.id == chaseId &&
+                  animationevent.videoId == videoId) {
+                if (animationevent.animtype == AnimType.pop_up) {
+                  read(popupsEvetnsStreamControllerProvider)
+                      .add(animationevent);
+                } else if (animationevent.animtype == AnimType.theater) {
+                  read(theaterEvetnsStreamControllerProvider)
+                      .add(animationevent);
+                } else {
+                  logger.warning('Animation Event type not identified');
+                }
               }
             }
           }
         },
       );
+
       isSubscribed = true;
     }
   }
