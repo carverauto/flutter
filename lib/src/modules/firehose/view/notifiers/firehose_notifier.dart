@@ -20,6 +20,8 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   late final String userToken;
 
+  bool isUserTokenInitialized = false;
+
   bool isSubscribedToFeed = false;
 
   late feed.Subscription firehoseSubscription;
@@ -40,7 +42,10 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   Future<void> setUserAndSubscribe() async {
     if (streamFeedClient.currentUser == null) {
       final String uid = read(firebaseAuthProvider).currentUser!.uid;
-      final String userToken = await read(chatsRepoProvider).getUserToken(uid);
+      if (!isUserTokenInitialized) {
+        userToken = await read(chatsRepoProvider).getUserToken(uid);
+        isUserTokenInitialized = true;
+      }
       await streamFeedClient.setUser(
         feed.User(
           id: uid,
@@ -48,7 +53,8 @@ class FirehoseStateNotifier extends StateNotifier<void> {
         feed.Token(userToken),
       );
     }
-    await subscribeToFeed();
+    // ignore: unawaited_futures
+    subscribeToFeed();
   }
 
   Future<List<ChaseAppNotification>> fetchFirehoseFeed(int offset) async {
