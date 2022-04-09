@@ -40,8 +40,9 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   }
 
   Future<void> setUserAndSubscribe() async {
-    if (streamFeedClient.currentUser == null) {
-      final String uid = read(firebaseAuthProvider).currentUser!.uid;
+    final String uid = read(firebaseAuthProvider).currentUser!.uid;
+
+    if (streamFeedClient.currentUser?.id != uid) {
       if (!isUserTokenInitialized) {
         userToken = await read(chatsRepoProvider).getUserToken(uid);
         isUserTokenInitialized = true;
