@@ -185,12 +185,10 @@ class _VideoAnimationsOverlayState
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (widget.chase.live != null) {
-      if (widget.chase.live!) {
-        Future<void>.microtask(subscribetoAnimationEvents);
-      } else {
-        Future<void>.microtask(fetchAnimationEvents);
-      }
+    if (widget.chase.live ?? false) {
+      Future<void>.microtask(subscribetoAnimationEvents);
+    } else {
+      // Future<void>.microtask(fetchAnimationEvents);
     }
   }
 
@@ -202,7 +200,7 @@ class _VideoAnimationsOverlayState
     //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
     //     .unsubscribeFeed();
 
-    widget.controller.removeListener(listener);
+    // widget.controller.removeListener(listener);
 
     super.dispose();
   }
