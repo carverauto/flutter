@@ -23,7 +23,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
   late String riveFile;
   late String? animstate;
   bool isInitialized = false;
-  late final Artboard artboard;
+  late Artboard artboard;
   Timer timer = Timer(Duration.zero, () {});
 
   @override
@@ -68,6 +68,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
         riveFile = event.endpoint;
         animstate = event.animstate;
       });
+      // playThiState(event.animstate);
     }
   }
 
