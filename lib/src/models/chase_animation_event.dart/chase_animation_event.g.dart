@@ -21,8 +21,7 @@ _$_ChaseAnimationEvent _$$_ChaseAnimationEventFromJson(
           .toList(),
       alignment:
           const AlignmentConvertor().fromJson(json['alignment'] as String),
-      createdAt: const DatetimeTimestampConverter()
-          .fromJson(json['createdAt'] as Timestamp),
+      createdAt: const DatetimeTimestampConverter().fromJson(json['createdAt']),
     );
 
 Map<String, dynamic> _$$_ChaseAnimationEventToJson(

@@ -14,8 +14,7 @@ _$_ChaseAppNotification _$$_ChaseAppNotificationFromJson(
       type: json['Type'] as String,
       title: json['Title'] as String,
       body: json['Body'] as String,
-      createdAt: const DatetimeTimestampConverter()
-          .fromJson(json['CreatedAt'] as Timestamp),
+      createdAt: const DatetimeTimestampConverter().fromJson(json['CreatedAt']),
       data: json['Data'] == null
           ? null
           : NotificationData.fromJson(json['Data'] as Map<String, dynamic>),
