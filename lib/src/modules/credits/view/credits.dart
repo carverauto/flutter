@@ -121,7 +121,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
               crawlTextposition: crawlTextposition,
               disappearCrawlText: disappearCrawlText,
             ),
-            const RepaintBoundary(child: BackButton()),
+            Positioned(
+              top: Sizescaleconfig.screenheight! * 0.02,
+              child: const RepaintBoundary(child: BackButton()),
+            ),
             // add mute button and vertical slider for volume in bottom right corner
             Positioned(
               bottom: kPaddingMediumConstant,
@@ -528,24 +531,21 @@ class BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: Sizescaleconfig.screenheight! * 0.02,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        style: ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          primary: starWarsCrawlTextColor,
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        primary: starWarsCrawlTextColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 5,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 5,
-          ),
-          child: Icon(
-            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
+        child: Icon(
+          Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
+          color: Colors.white,
         ),
       ),
     );
