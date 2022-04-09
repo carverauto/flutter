@@ -39,7 +39,7 @@ class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
           animationEvent: event,
           key: UniqueKey(),
         );
-        timer = Timer(const Duration(seconds: 3), () {
+        timer = Timer(const Duration(seconds: 5), () {
           if (mounted) {
             setState(() {
               prevAlignment = nextAlignment;

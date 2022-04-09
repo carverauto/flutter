@@ -30,7 +30,7 @@ class _RiveEmojiesState extends State<RiveEmojies> {
       width: MediaQuery.of(context).orientation == Orientation.landscape
           ? 100
           : 50,
-      child: RiveAnimation.asset(
+      child: RiveAnimation.network(
         widget.animationEvent.endpoint,
         fit: BoxFit.cover,
 
@@ -39,7 +39,7 @@ class _RiveEmojiesState extends State<RiveEmojies> {
         antialiasing: false,
         // controllers: [_controller],
 
-        alignment: Alignment.bottomCenter,
+        alignment: widget.animationEvent.alignment,
         // onInit: setStateMachine,
       ),
     );
