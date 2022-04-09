@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -37,29 +38,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
     fixedPlayer: AudioPlayer(),
   );
 
-  Future<void> playAnimation() async {
-    disappearCrawlText = Tween<double>(begin: 1, end: 0)
-        .chain(
-          CurveTween(
-            curve: const Interval(0.95, 1),
-          ),
-        )
-        .animate(_animationController);
-    await _animationController.forward();
-    _animationController.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.completed) {
-        _animationController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _animationController.forward();
-      }
-    });
-  }
-
   Future<void> playTrack() async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
     await audioPlayer.play(
       'audio/about_music.mp3',
-      volume: 0.01,
+      volume: 0.03,
     );
   }
 
@@ -72,7 +54,22 @@ While the Congress of the Republic endlessly debates this alarming chain of even
       duration: const Duration(seconds: 60),
     );
     playTrack();
-    playAnimation();
+    disappearCrawlText = Tween<double>(begin: 1, end: 0)
+        .chain(
+          CurveTween(
+            curve: const Interval(0.95, 1),
+          ),
+        )
+        .animate(_animationController);
+    _animationController.forward();
+    _animationController.addStatusListener((AnimationStatus status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        _animationController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _animationController.forward();
+      }
+    });
   }
 
   @override
