@@ -75,6 +75,8 @@ class ChatsViewRow extends ConsumerWidget {
                 switch (connectionStatus) {
                   case ConnectionStatus.connected:
                     return ProviderStateBuilder<ChannelState>(
+                      watchThisProvider: watcherStateProvider(chaseId),
+                      logger: logger,
                       builder: (
                         ChannelState channelState,
                         WidgetRef ref,
@@ -127,7 +129,7 @@ class ChatsViewRow extends ConsumerWidget {
                             );
                           },
                           child: StreamChannel(
-                            channel: ref.read(chatChannelProvider(chaseId)),
+                            channel: channel,//ref.read(chatChannelProvider(chaseId)),
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               onTap: () async {
@@ -184,8 +186,6 @@ class ChatsViewRow extends ConsumerWidget {
                           ),
                         );
                       },
-                      watchThisProvider: watcherStateProvider(chaseId),
-                      logger: logger,
                     );
 
                   // }

@@ -55,9 +55,9 @@ final AutoDisposeStateNotifierProvider<ChatStateNotifier, void>
   ),
 );
 
-final AutoDisposeProviderFamily<Channel, String> chatChannelProvider =
-    Provider.autoDispose.family<Channel, String>((
-  AutoDisposeProviderRef<Channel> ref,
+final ProviderFamily<Channel, String> chatChannelProvider =
+    Provider.family<Channel, String>((
+  ProviderRef<Channel> ref,
   String chaseId,
 ) {
   //   final UserData userData =  ref.watch(userStreamProvider).asData!.value;
@@ -79,10 +79,9 @@ final AutoDisposeProviderFamily<Channel, String> chatChannelProvider =
   return channel;
 });
 
-final AutoDisposeFutureProviderFamily<ChannelState, String>
-    watcherStateProvider =
-    FutureProvider.autoDispose.family<ChannelState, String>((
-  AutoDisposeFutureProviderRef<ChannelState> ref,
+final FutureProviderFamily<ChannelState, String> watcherStateProvider =
+    FutureProvider.family<ChannelState, String>((
+  FutureProviderRef<ChannelState> ref,
   String chaseId,
 ) async {
   final Channel channel = ref.watch(chatChannelProvider(chaseId));

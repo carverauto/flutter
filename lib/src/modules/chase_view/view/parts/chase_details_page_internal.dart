@@ -57,6 +57,11 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       });
       url = network?.url;
       playerVideoId = url != null ? parseYoutubeUrlForVideoId(url) : null;
+      Future<void>.microtask(() {
+        ref
+            .read(playingVideoIdProvider.state)
+            .update((String? state) => playerVideoId);
+      });
     } else {
       playerVideoId = videoId;
     }
@@ -72,8 +77,9 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
   Future<void> changeYoutubeVideo(String url) async {
     final String? videoId = parseYoutubeUrlForVideoId(url);
-    ref.read(playingVideoIdProvider.state).update((String? state) => videoId);
-    await Future<void>.delayed(const Duration(milliseconds: 100));
+    await Future<void>.microtask(() {
+      ref.read(playingVideoIdProvider.state).update((String? state) => videoId);
+    });
 
     initializeVideoController(
       videoId,
