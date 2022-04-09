@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
-import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../chats/view/pages/chats_row_view.dart';
@@ -36,33 +35,39 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
   Widget build(BuildContext context) {
     final String chaseId = widget.chaseId;
 
+    ref.watch(playVideoProvider);
+
     return ChaseDetailsProviderStateBuilder<Chase>(
       watchThisProvider: streamChaseProvider(chaseId),
       logger: logger,
       showBackButton: true,
       chatsRow: ChatsViewRow(chaseId: chaseId),
-      chatsView: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          final bool showChatsWindow = ref.watch(isShowingChatsWindowProvide);
-
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 1),
-                  end: const Offset(0, 0),
-                ).animate(animation),
-                child: child,
-              );
-            },
-            child: showChatsWindow ? child : const SizedBox.shrink(),
-          );
-        },
-        child: ChatsView(
-          chaseId: chaseId,
-        ),
+      chatsView: ChatsView(
+        chaseId: chaseId,
       ),
+      //  Consumer(
+      //   builder: (BuildContext context, WidgetRef ref, Widget? child) {
+      //     // final bool showChatsWindow = ref.watch(isShowingChatsWindowProvide);
+
+      //     return child!;
+      //     // AnimatedSwitcher(
+      //     //   duration: const Duration(milliseconds: 300),
+      //     //   transitionBuilder: (Widget child, Animation<double> animation) {
+      //     //     return SlideTransition(
+      //     //       position: Tween<Offset>(
+      //     //         begin: const Offset(0, 1),
+      //     //         end: const Offset(0, 0),
+      //     //       ).animate(animation),
+      //     //       child: child,
+      //     //     );
+      //     //   },
+      //     //   child: showChatsWindow ? child : const SizedBox.shrink(),
+      //     // );
+      //   },
+      //   child: ChatsView(
+      //     chaseId: chaseId,
+      //   ),
+      // ),
       builder: (Chase chase, WidgetRef ref, Widget chatsRow, Widget chatsView) {
         return ChaseDetailsInternal(
           chase: chase,
