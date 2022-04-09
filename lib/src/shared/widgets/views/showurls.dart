@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 import '../../../const/colors.dart';
 import '../../../const/images.dart';
@@ -57,7 +58,7 @@ class URLView extends ConsumerWidget {
                     width: kItemsSpacingExtraSmallConstant,
                   ),
                   Text(
-                    name ?? 'NA',
+                    toBeginningOfSentenceCase(name) ?? 'NA',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
