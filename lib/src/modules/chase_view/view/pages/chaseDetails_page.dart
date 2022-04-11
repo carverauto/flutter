@@ -8,6 +8,7 @@ import '../../../../models/chase/chase.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../chats/view/pages/chats_row_view.dart';
 import '../../../chats/view/parts/chats_view.dart';
+import '../../../chats/view/providers/providers.dart';
 import '../parts/chase_details_page_internal.dart';
 import '../providers/providers.dart';
 
@@ -30,6 +31,13 @@ class ChaseDetailsView extends ConsumerStatefulWidget {
 
 class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
   final Logger logger = Logger('ChaseView');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() => ref.watch(chatChannelProvider(widget.chaseId)));
+  }
 
   @override
   Widget build(BuildContext context) {
