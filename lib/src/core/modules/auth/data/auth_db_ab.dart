@@ -7,7 +7,7 @@ abstract class AuthDB {
   Future<UserData> fetchOrCreateUser(User user);
   Future<void> createUser(User user);
   Future<UserData> fetchUser(User user);
-  Stream<UserData> streamUserData(String uid);
+  Stream<UserData> streamUserData(String? uid);
   Stream<User?> streamLogInStatus();
   Future<void> socialLogin(SIGNINMETHOD loginmethods);
   Future<void> handleMutliProviderSignIn(

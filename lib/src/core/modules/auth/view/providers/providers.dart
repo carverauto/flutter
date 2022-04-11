@@ -12,11 +12,11 @@ import '../../domain/auth_repo_ab.dart';
 final AutoDisposeStateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>
     postLoginStateNotifierProvider =
     StateNotifierProvider.autoDispose<PostLoginStateNotifier, AsyncValue<void>>(
-        (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier,
-                AsyncValue<void>>
-            ref) {
-  return PostLoginStateNotifier(ref.read);
-});
+  (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier, AsyncValue<void>>
+      ref) {
+    return PostLoginStateNotifier(ref.read);
+  },
+);
 
 final Provider<AuthRepositoryAB> authRepoProvider = Provider<AuthRepositoryAB>(
   (ProviderRef<AuthRepositoryAB> ref) => AuthRepository(
@@ -24,12 +24,14 @@ final Provider<AuthRepositoryAB> authRepoProvider = Provider<AuthRepositoryAB>(
   ),
 );
 final Provider<AuthDB> authDbProvider = Provider<AuthDB>(
-  (ProviderRef<AuthDB> ref) => AuthDatabase(
-    firebaseAuth: ref.read(firebaseAuthProvider),
-    firebaseMessaging: ref.read(firebaseMessagingProvider),
-    googleSignIn: ref.read(googleSignInProvider),
-    facebookAuth: ref.read(facebookSignInProvider),
-  ),
+  (ProviderRef<AuthDB> ref) {
+    return AuthDatabase(
+      firebaseAuth: ref.read(firebaseAuthProvider),
+      firebaseMessaging: ref.read(firebaseMessagingProvider),
+      googleSignIn: ref.read(googleSignInProvider),
+      facebookAuth: ref.read(facebookSignInProvider),
+    );
+  },
 );
 
 final StreamProvider<User?> streamLogInStatus =
@@ -38,15 +40,23 @@ final StreamProvider<User?> streamLogInStatus =
   return authrepo.streamLogInStatus();
 });
 
-final FutureProviderFamily<UserData, User> fetchUserProvider =
-    FutureProvider.family<UserData, User>(
-  (FutureProviderRef<UserData> ref, User user) async =>
+final AutoDisposeFutureProviderFamily<UserData, User> fetchUserProvider =
+    FutureProvider.autoDispose.family<UserData, User>(
+  (AutoDisposeFutureProviderRef<UserData> ref, User user) async =>
       ref.read(authRepoProvider).fetchOrCreateUser(user),
 );
 
-final AutoDisposeStreamProvider<UserData> userStreamProvider =
-    StreamProvider.autoDispose<UserData>(
-        (AutoDisposeStreamProviderRef<UserData> ref) {
-  final User user = ref.watch(firebaseAuthProvider).currentUser!;
-  return ref.read(authRepoProvider).streamUserData(user.uid);
+final StreamProvider<User?> userAuthStateChanges =
+    StreamProvider<User?>((StreamProviderRef<User?> ref) {
+  return ref.read(authRepoProvider).streamLogInStatus();
 });
+
+final StreamProvider<UserData> userStreamProvider = StreamProvider<UserData>(
+  (
+    StreamProviderRef<UserData> ref,
+  ) async* {
+    final User? user = await ref.watch(userAuthStateChanges.future);
+
+    yield* ref.read(authRepoProvider).streamUserData(user?.uid);
+  },
+);

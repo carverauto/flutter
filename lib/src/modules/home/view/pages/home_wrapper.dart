@@ -163,14 +163,20 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (mounted) {
-      if (state == AppLifecycleState.resumed) {
-        _timerLink = Timer(
-          const Duration(milliseconds: 1000),
-          () {},
-        );
-      }
-    }
+    // if (mounted) {
+    //   switch (state) {
+    //     case AppLifecycleState.resumed:
+    //       ref.refresh(firehosePaginatedStateNotifierProvier(logger));
+    //       break;
+    //     default:
+    //   }
+    //   // if (state == AppLifecycleState.resumed) {
+    //   //   _timerLink = Timer(
+    //   //     const Duration(milliseconds: 1000),
+    //   //     () {},
+    //   //   );
+    //   // }
+    // }
   }
 
   @override

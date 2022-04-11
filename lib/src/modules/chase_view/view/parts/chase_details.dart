@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../const/colors.dart';
 import '../../../../const/sizings.dart';
+import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../shared/util/helpers/date_added.dart';
 import '../../../../shared/util/helpers/dynamiclink_generator.dart';
@@ -47,29 +48,26 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RepaintBoundary(
-          child: Builder(
-            builder: (BuildContext context) {
-              final bool isTyping =
-                  MediaQuery.of(context).viewInsets.bottom > 0;
-              final num bottomPadding =
-                  isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
-              final num extraSizing = isTyping ? kToolbarHeight : 0;
+        Builder(
+          builder: (BuildContext context) {
+            final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
+            final num bottomPadding =
+                isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
+            final num extraSizing = isTyping ? kToolbarHeight : 0;
 
-              return AnimatedContainer(
-                height: MediaQuery.of(context).size.width * (9 / 16) -
-                    bottomPadding +
-                    extraSizing,
-                width: double.maxFinite,
-                duration: const Duration(milliseconds: 300),
-                child: ChaseHeroSection(
-                  chase: widget.chase,
-                  imageURL: widget.imageURL,
-                  youtubeVideo: widget.youtubeVideo,
-                ),
-              );
-            },
-          ),
+            return AnimatedContainer(
+              height: MediaQuery.of(context).size.width * (9 / 16) -
+                  bottomPadding +
+                  extraSizing,
+              width: double.maxFinite,
+              duration: const Duration(milliseconds: 300),
+              child: ChaseHeroSection(
+                chase: widget.chase,
+                imageURL: widget.imageURL,
+                youtubeVideo: widget.youtubeVideo,
+              ),
+            );
+          },
         ),
         Expanded(
           child: Consumer(
@@ -212,6 +210,9 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                         final String shareLink =
                                             await createChaseDynamicLink(
                                           widget.chase,
+                                          ref.read(
+                                            firebaseDynamicLinksProvider,
+                                          ),
                                         );
                                         await Share.share(shareLink);
                                       } catch (e, stk) {

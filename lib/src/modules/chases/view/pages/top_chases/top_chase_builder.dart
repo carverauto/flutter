@@ -29,135 +29,131 @@ class TopChaseBuilder extends StatelessWidget {
     final bool isImagePresent =
         chase.imageURL != null && chase.imageURL!.isNotEmpty;
 
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          kBorderRadiusStandard,
-        ),
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            foregroundDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                kBorderRadiusStandard,
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  primaryColor.shade900,
-                  Colors.transparent,
-                ],
-              ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          clipBehavior: Clip.hardEdge,
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              kBorderRadiusStandard,
             ),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: isImagePresent
-                    ? CachedNetworkImageProvider(
-                        parseImageUrl(chase.imageURL!, imageDimensions),
-                      )
-                    : const ResizeImage(
-                        AssetImage(
-                          defaultAssetChaseImage,
-                        ),
-                        height: 544,
-                        width: 484,
-                      ) as ImageProvider,
-              ),
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                primaryColor.shade900,
+                Colors.transparent,
+              ],
             ),
           ),
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                //  Future<void>.delayed(const Duration(milliseconds: 300));
-                Navigator.pushNamed(
-                  context,
-                  RouteName.CHASE_VIEW,
-                  arguments: {
-                    'chaseId': chase.id,
-                  },
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  kPaddingSmallConstant,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (chase.live ?? false)
-                      const RepaintBoundary(
-                        child: GradientAnimationChildBuilder(
-                          shouldAnimate: true,
-                          padding: EdgeInsets.zero,
-                          child: GlassButton(
-                            child: Text(
-                              'Live!',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              kBorderRadiusStandard,
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: isImagePresent
+                  ? CachedNetworkImageProvider(
+                      parseImageUrl(chase.imageURL!, imageDimensions),
+                    )
+                  : const ResizeImage(
+                      AssetImage(
+                        defaultAssetChaseImage,
+                      ),
+                      height: 544,
+                      width: 484,
+                    ) as ImageProvider,
+            ),
+          ),
+        ),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              //  Future<void>.delayed(const Duration(milliseconds: 300));
+              Navigator.pushNamed(
+                context,
+                RouteName.CHASE_VIEW,
+                arguments: {
+                  'chaseId': chase.id,
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(
+                kPaddingSmallConstant,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (chase.live ?? false)
+                    const RepaintBoundary(
+                      child: GradientAnimationChildBuilder(
+                        shouldAnimate: true,
+                        padding: EdgeInsets.zero,
+                        child: GlassButton(
+                          child: Text(
+                            'Live!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ),
-                      )
-                    else
-                      GlassButton(
-                        child: Text(
-                          dateAdded(chase),
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                         ),
                       ),
-                    const Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          chase.name ?? 'NA',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Theme.of(context).textTheme.subtitle1!.fontSize,
-                          ),
+                    )
+                  else
+                    GlassButton(
+                      child: Text(
+                        dateAdded(chase),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
-                        const SizedBox(
-                          height: kItemsSpacingExtraSmallConstant,
+                      ),
+                    ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        chase.name ?? 'NA',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize:
+                              Theme.of(context).textTheme.subtitle1!.fontSize,
                         ),
-                        Wrap(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                right: kItemsSpacingMediumConstant,
-                                bottom: kItemsSpacingSmallConstant,
-                              ),
-                              child: SentimentSlider(
-                                chase: chase,
-                              ),
+                      ),
+                      const SizedBox(
+                        height: kItemsSpacingExtraSmallConstant,
+                      ),
+                      Wrap(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: kItemsSpacingMediumConstant,
+                              bottom: kItemsSpacingSmallConstant,
                             ),
-                            DonutBox(
+                            child: SentimentSlider(
                               chase: chase,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          ),
+                          DonutBox(
+                            chase: chase,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

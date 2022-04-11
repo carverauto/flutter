@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -39,10 +37,10 @@ class MyApp extends ConsumerWidget {
             // If not added then getStream API is overriding the
             // the user set accentColor in Custom Theme
             colorTheme: ColorTheme.dark(
-              accentPrimary: kPrimaryAccent,
+              accentPrimary: primaryColor.shade500,
             ),
           ),
-          client: ref.read(chatsServiceStateNotifierProvider.notifier).client,
+          client: ref.watch(streamChatClientProvider),
           child: child,
         );
       },
@@ -63,8 +61,8 @@ Future<void> setUpServices() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
   final FirebaseApp firebaseApp = await Firebase.initializeApp();
 
-  FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
   final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
   if (kDebugMode) {
@@ -123,4 +121,50 @@ Future<void> setUpServices() async {
     print("ERROR: $e");
   }
    */
+}
+
+class ProvidersLogger extends ProviderObserver {
+//   @override
+//   void didAddProvider(
+//     ProviderBase provider,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+//   @override
+//   void didUpdateProvider(
+//     ProviderBase provider,
+//     Object? previousValue,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase provider,
+    ProviderContainer container,
+  ) {
+    log(
+      '''
+{
+  "provider": "${provider.name ?? provider.runtimeType}"
+}''',
+    );
+  }
 }

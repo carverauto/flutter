@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
-import 'package:chaseapp/src/shared/widgets/builders/providerStateBuilder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:logging/logging.dart';
+
+import '../../../../const/images.dart';
+import '../../../../const/sizings.dart';
+import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../models/user/user_data.dart';
+import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -16,28 +17,26 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  final Logger logger = Logger("Profile");
+  final Logger logger = Logger('Profile');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: const Text('Profile'),
         centerTitle: false,
         elevation: 1,
       ),
       body: ProviderStateBuilder<UserData>(
         watchThisProvider: userStreamProvider,
         logger: logger,
-        builder: (user, ref, child) {
+        builder: (UserData user, WidgetRef ref, Widget? child) {
           return Padding(
             padding: const EdgeInsets.only(
               top: kPaddingMediumConstant,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Align(
-                  alignment: Alignment.center,
                   child: CircleAvatar(
                     radius: kImageSizeLarge,
                     backgroundImage: CachedNetworkImageProvider(
@@ -45,7 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: kItemsSpacingSmallConstant,
                 ),
                 if (user.userName != null)
@@ -61,22 +60,22 @@ class _ProfileViewState extends State<ProfileView> {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
-                Spacer(),
-                Divider(),
+                const Spacer(),
+                const Divider(),
                 TextButton(
                   onPressed: () async {
-                    await ref
-                        .read(chatsServiceStateNotifierProvider.notifier)
-                        .disconnectUser();
+                    // await ref
+                    //     .read(chatsServiceStateNotifierProvider.notifier)
+                    //     .disconnectUser();
                     Navigator.pop(context, true);
                   },
                   child: Text(
-                    "Log out",
+                    'Log out',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           );

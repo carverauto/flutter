@@ -38,7 +38,7 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Stream<UserData> streamUserData(String uid) {
+  Stream<UserData> streamUserData(String? uid) {
     return read(authDbProvider).streamUserData(uid);
   }
 

@@ -1,8 +1,9 @@
-import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../errors/error_widget.dart';
+import '../loaders/loading.dart';
 
 class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
   const ChaseDetailsProviderStateBuilder({
@@ -35,51 +36,52 @@ class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
-        data: (data) {
-          return builder(
-            data,
-            ref,
-            chatsRow,
-            chatsView,
-          );
-        },
-        error: (e, stk) {
-          logger.severe(
-            errorMessage ?? 'Error Loading Data',
-            e,
-            stk,
-          );
-          return errorBuilder != null
-              ? errorBuilder!(e, stk)
-              : Material(
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ChaseAppErrorWidget(
-                          onRefresh: () {
-                            ref.refresh(watchThisProvider);
-                          },
-                        ),
-                        if (showBackButton)
-                          ElevatedButton.icon(
-                            icon: Icon(Icons.arrow_back),
-                            label: Text('Back'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+          data: (data) {
+            return builder(
+              data,
+              ref,
+              chatsRow,
+              chatsView,
+            );
+          },
+          error: (Object e, StackTrace? stk) {
+            logger.severe(
+              errorMessage ?? 'Error Loading Data',
+              e,
+              stk,
+            );
+            return errorBuilder != null
+                ? errorBuilder!(e, stk)
+                : Material(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChaseAppErrorWidget(
+                            onRefresh: () {
+                              ref.refresh(watchThisProvider);
                             },
                           ),
-                      ],
+                          if (showBackButton)
+                            ElevatedButton.icon(
+                              icon: const Icon(Icons.arrow_back),
+                              label: const Text('Back'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-        },
-        loading: () => loadingBuilder != null
-            ? loadingBuilder!()
-            : Material(
-                child: CircularAdaptiveProgressIndicatorWithBg(),
-              ));
+                  );
+          },
+          loading: () => loadingBuilder != null
+              ? loadingBuilder!()
+              : const Material(
+                  child: CircularAdaptiveProgressIndicatorWithBg(),
+                ),
+        );
   }
 }
 
@@ -111,46 +113,47 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
-        data: (data) {
-          return builder(data, ref, child);
-        },
-        error: (e, stk) {
-          logger.severe(
-            errorMessage ?? 'Error Loading Data',
-            e,
-            stk,
-          );
-          return errorBuilder != null
-              ? errorBuilder!(e, stk)
-              : Material(
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ChaseAppErrorWidget(
-                          onRefresh: () {
-                            ref.refresh(watchThisProvider);
-                          },
-                        ),
-                        if (showBackButton)
-                          ElevatedButton.icon(
-                            icon: Icon(Icons.arrow_back),
-                            label: Text('Back'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+          data: (data) {
+            return builder(data, ref, child);
+          },
+          error: (Object e, StackTrace? stk) {
+            logger.severe(
+              errorMessage ?? 'Error Loading Data',
+              e,
+              stk,
+            );
+            return errorBuilder != null
+                ? errorBuilder!(e, stk)
+                : Material(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ChaseAppErrorWidget(
+                            onRefresh: () {
+                              ref.refresh(watchThisProvider);
                             },
                           ),
-                      ],
+                          if (showBackButton)
+                            ElevatedButton.icon(
+                              icon: const Icon(Icons.arrow_back),
+                              label: const Text('Back'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-        },
-        loading: () => loadingBuilder != null
-            ? loadingBuilder!()
-            : Material(
-                child: CircularAdaptiveProgressIndicatorWithBg(),
-              ));
+                  );
+          },
+          loading: () => loadingBuilder != null
+              ? loadingBuilder!()
+              : const Material(
+                  child: CircularAdaptiveProgressIndicatorWithBg(),
+                ),
+        );
   }
 }
 
@@ -178,10 +181,8 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(watchThisProvider).when(
-          data: (data) {
-            return builder(data);
-          },
-          error: (e, stk) {
+          data: builder,
+          error: (Object e, StackTrace? stk) {
             logger.severe(
               errorMessage ?? 'Error Loading Data',
               e,
@@ -200,7 +201,7 @@ class SliverProviderStateBuilder<T> extends ConsumerWidget {
           loading: () => SliverToBoxAdapter(
             child: loadingBuilder != null
                 ? loadingBuilder!()
-                : CircularAdaptiveProgressIndicatorWithBg(),
+                : const CircularAdaptiveProgressIndicatorWithBg(),
           ),
         );
   }

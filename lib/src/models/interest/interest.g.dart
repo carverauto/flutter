@@ -12,8 +12,7 @@ _$_Interest _$$_InterestFromJson(Map<String, dynamic> json) => _$_Interest(
       name: json['name'] as String,
       isCompulsory: json['isCompulsory'] as bool,
       isDefault: json['isDefault'] as bool,
-      createdAt: const DatetimeTimestampConverter()
-          .fromJson(json['createdAt'] as Timestamp),
+      createdAt: const DatetimeTimestampConverter().fromJson(json['createdAt']),
     );
 
 Map<String, dynamic> _$$_InterestToJson(_$_Interest instance) =>

@@ -3,6 +3,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,9 +11,8 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-final AutoDisposeProvider<FirebaseAuth> firebaseAuthProvider =
-    Provider.autoDispose<FirebaseAuth>(
-  (AutoDisposeProviderRef<FirebaseAuth> ref) {
+final Provider<FirebaseAuth> firebaseAuthProvider = Provider<FirebaseAuth>(
+  (ProviderRef<FirebaseAuth> ref) {
     return FirebaseAuth.instance;
   },
 );
@@ -60,4 +60,8 @@ final Provider<FirebaseRemoteConfig> firebaseRemoteConfigProvider =
 final Provider<FirebaseCrashlytics> firebaseCrashlyticsProvider =
     Provider<FirebaseCrashlytics>(
   (ProviderRef<FirebaseCrashlytics> ref) => FirebaseCrashlytics.instance,
+);
+final Provider<FirebaseDynamicLinks> firebaseDynamicLinksProvider =
+    Provider<FirebaseDynamicLinks>(
+  (ProviderRef<FirebaseDynamicLinks> ref) => FirebaseDynamicLinks.instance,
 );

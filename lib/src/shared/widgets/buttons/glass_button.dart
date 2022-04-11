@@ -25,10 +25,11 @@ class GlassButton extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       color: primaryColor.shade500.withOpacity(0.3),
       shape: shape,
-      borderRadius:
-          shape != null ? null : BorderRadius.circular(kBorderRadiusStandard),
+      type: MaterialType.button,
       child: InkWell(
         onTap: onTap,
+        borderRadius:
+            shape != null ? null : BorderRadius.circular(kBorderRadiusStandard),
         child: BackdropFilter(
           filter: ImageFilter.blur(
             sigmaX: blurValue,

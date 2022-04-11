@@ -8,7 +8,6 @@ import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
 import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
-import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
 import 'watch_youtube_video_button.dart';
@@ -28,8 +27,6 @@ class ChaseHeroSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool playVideo = ref.watch(playVideoProvider);
-    final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    final bool isKeyboardVisible = bottomPadding > 0;
     final bool isYoutubeUrlPresent =
         chase.networks?.any((ChaseNetwork network) {
               final String? url = network.url;
@@ -57,7 +54,7 @@ class ChaseHeroSection extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.primaryContainer,
                   child: chase.imageURL != null && chase.imageURL!.isNotEmpty
                       ? CachedNetworkImage(
-                          fit: isKeyboardVisible ? BoxFit.cover : BoxFit.fill,
+                          fit: BoxFit.cover,
                           maxWidthDiskCache: 750,
                           maxHeightDiskCache: 421,
                           memCacheHeight: 421,
@@ -98,9 +95,12 @@ class ClosePlayingVideo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GlassButton(
-      shape: const CircleBorder(),
-      onTap: () {
+    return ElevatedButton(
+      // shape: const CircleBorder(),
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+      ),
+      onPressed: () {
         ref.read(playVideoProvider.state).update((bool state) => false);
       },
       child: const Icon(

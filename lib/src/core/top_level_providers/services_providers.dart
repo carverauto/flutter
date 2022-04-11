@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../models/app_update_info/app_update_info.dart';
-import '../../models/chase/chase.dart';
 import '../../shared/util/firebase_collections.dart';
 import '../modules/chase/data/chase_db.dart';
 import '../modules/chase/data/chase_db_ab.dart';
@@ -27,12 +26,6 @@ final Provider<ChaseDbAB> chaseDbProvider = Provider<ChaseDbAB>(
 
 final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
   (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(read: ref.read),
-);
-
-final StreamProviderFamily<Chase, String> streamChaseProvider =
-    StreamProvider.family<Chase, String>(
-  (StreamProviderRef<Chase> ref, String chaseId) =>
-      ref.watch(chaseRepoProvider).streamChase(chaseId),
 );
 
 final StreamProvider<bool> isConnected =

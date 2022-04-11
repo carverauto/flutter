@@ -13,7 +13,7 @@ abstract class AuthRepositoryAB {
   );
   Future<UserData> fetchOrCreateUser(User user);
   Stream<User?> streamLogInStatus();
-  Stream<UserData> streamUserData(String uid);
+  Stream<UserData> streamUserData(String? uid);
   Future<void> subscribeToTopics();
   Future<void> saveDeviceTokenToDatabase(User user, String token);
   // Future<void> sendEmailVerification();

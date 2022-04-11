@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:developer' as dev;
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class PopupAnimationsView extends StatefulWidget {
+import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
+import '../providers/providers.dart';
+import 'rive_emojies.dart';
+
+class PopupAnimationsView extends ConsumerStatefulWidget {
   const PopupAnimationsView({
     Key? key,
     required this.controller,
@@ -14,70 +18,68 @@ class PopupAnimationsView extends StatefulWidget {
   final YoutubePlayerController controller;
 
   @override
-  State<PopupAnimationsView> createState() => _PopupAnimationsViewState();
+  ConsumerState<PopupAnimationsView> createState() =>
+      _PopupAnimationsViewState();
 }
 
-class _PopupAnimationsViewState extends State<PopupAnimationsView> {
-  Widget animatingChild = Container(
-    height: 50,
-    width: 50,
-    color: Colors.blue,
-  );
-  late PopUpAnimationMetaData popUpAnimationMetaData;
+class _PopupAnimationsViewState extends ConsumerState<PopupAnimationsView> {
+  Widget animatingChild = SizedBox.shrink(key: UniqueKey());
   Alignment prevAlignment = Alignment.center;
   Alignment nextAlignment = Alignment.center;
   Timer timer = Timer(Duration.zero, () {});
   bool isReady = false;
 
-  late final StreamController<PopUpAnimationMetaData> streamController;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    widget.controller.addListener(() {
-      if (!isReady && widget.controller.value.isPlaying) {
-        dev.log('Ready');
-        Timer.periodic(const Duration(seconds: 4), (Timer timer) {
-          final int index = Random().nextInt(9);
-          streamController.add(
-            popUpAnimationsList[index],
-          );
+  void eventListener(ChaseAnimationEvent event) {
+    if (mounted) {
+      dev.log('Event label-->${event.label}');
+      setState(() {
+        prevAlignment = nextAlignment;
+        nextAlignment = event.alignment;
+        animatingChild = RiveEmojies(
+          animationEvent: event,
+          key: UniqueKey(),
+        );
+        timer = Timer(const Duration(seconds: 5), () {
+          if (mounted) {
+            setState(() {
+              prevAlignment = nextAlignment;
+              nextAlignment = nextAlignment;
+              animatingChild = const SizedBox.shrink();
+            });
+          }
         });
+      });
+    }
+  }
+
+  void listener() {
+    if (!isReady && widget.controller.value.isPlaying) {
+      dev.log('Ready');
+
+      if (mounted) {
         setState(() {
           isReady = true;
         });
       }
-    });
-    streamController = StreamController<PopUpAnimationMetaData>();
+    }
+  }
 
-    streamController.stream.listen((PopUpAnimationMetaData event) {
-      setState(() {
-        prevAlignment = nextAlignment;
+  @override
+  void initState() {
+    super.initState();
+    ref.refresh(popupsEvetnsStreamControllerProvider);
 
-        nextAlignment = event.alignment;
-        animatingChild = Container(
-          height: 100,
-          width: 100,
-          key: UniqueKey(),
-          color: event.color,
-        );
-        timer.cancel();
+    ref.read(popupsEvetnsStreamControllerProvider).stream.listen(eventListener);
 
-        timer = Timer(const Duration(seconds: 3), () {
-          setState(() {
-            prevAlignment = nextAlignment;
-            nextAlignment = nextAlignment;
-            animatingChild = const SizedBox.shrink();
-          });
-        });
-      });
-    });
+    widget.controller.addListener(listener);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    streamController.close();
+    timer.cancel();
+
+    widget.controller.removeListener(listener);
+
     super.dispose();
   }
 
@@ -94,12 +96,12 @@ class _PopupAnimationsViewState extends State<PopupAnimationsView> {
                     alignment: nextAlignment,
                     child: child,
                   ),
-                  Align(
-                    alignment: prevAlignment,
-                    child: childrens.isNotEmpty
-                        ? childrens[0]
-                        : const SizedBox.shrink(),
-                  ),
+                  // Align(
+                  //   alignment: prevAlignment,
+                  //   child: childrens.isNotEmpty
+                  //       ? childrens[0]
+                  //       : const SizedBox.shrink(),
+                  // ),
                 ],
               );
             },
@@ -113,49 +115,3 @@ class _PopupAnimationsViewState extends State<PopupAnimationsView> {
           );
   }
 }
-
-class PopUpAnimationMetaData {
-  PopUpAnimationMetaData({required this.alignment, required this.color});
-
-  final Alignment alignment;
-  final Color color;
-}
-
-List<PopUpAnimationMetaData> popUpAnimationsList = [
-  PopUpAnimationMetaData(
-    alignment: Alignment.topLeft,
-    color: Colors.blue,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.topCenter,
-    color: Colors.yellow,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.topRight,
-    color: Colors.green,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.centerLeft,
-    color: Colors.orange,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.center,
-    color: Colors.white,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.centerRight,
-    color: Colors.black,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomLeft,
-    color: Colors.grey,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomCenter,
-    color: Colors.purple,
-  ),
-  PopUpAnimationMetaData(
-    alignment: Alignment.bottomRight,
-    color: Colors.pink,
-  ),
-];

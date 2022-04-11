@@ -65,41 +65,51 @@ class _NotificationSettingTileSwitchState
     isEnabled = widget.interest.isCompulsory || widget.isUsersInterest;
   }
 
+  Future<void> toggleSubscription(bool value) async {
+    try {
+      if (value) {
+        await ref
+            .read(pusherBeamsProvider)
+            .addDeviceInterest(widget.interest.name);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Subscribed to ${widget.displayName} notifications.',
+            ),
+          ),
+        );
+      } else {
+        await ref
+            .read(pusherBeamsProvider)
+            .removeDeviceInterest(widget.interest.name);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'UnSubscribed from ${widget.displayName} notifications.',
+            ),
+          ),
+        );
+      }
+      setState(() {
+        isEnabled = value;
+        ref.refresh(usersInterestsStreamProvider);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Something went wrong. Please try again later.',
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Switch(
       value: isEnabled,
-      onChanged: widget.interest.isCompulsory
-          ? null
-          : (bool value) async {
-              if (value) {
-                await ref
-                    .read(pusherBeamsProvider)
-                    .addDeviceInterest(widget.interest.name);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Subscribed to ${widget.displayName} notifications.',
-                    ),
-                  ),
-                );
-              } else {
-                await ref
-                    .read(pusherBeamsProvider)
-                    .removeDeviceInterest(widget.interest.name);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'UnSubscribed from ${widget.displayName} notifications.',
-                    ),
-                  ),
-                );
-              }
-              setState(() {
-                isEnabled = value;
-                ref.refresh(usersInterestsStreamProvider);
-              });
-            },
+      onChanged: widget.interest.isCompulsory ? null : toggleSubscription,
     );
   }
 }

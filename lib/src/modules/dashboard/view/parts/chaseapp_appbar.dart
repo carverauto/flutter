@@ -1,6 +1,7 @@
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notifications_appbar_button.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/images.dart';
+import '../../../notifications/view/parts/notifications_appbar_button.dart';
 
 class ChaseAppBar extends StatelessWidget {
   const ChaseAppBar({
@@ -9,7 +10,7 @@ class ChaseAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
+    return const SliverAppBar(
       centerTitle: true,
       // backgroundColor: Colors.transparent,
       title: ChaseAppLogoImage(),

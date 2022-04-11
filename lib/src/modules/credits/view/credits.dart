@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -37,38 +38,10 @@ While the Congress of the Republic endlessly debates this alarming chain of even
     fixedPlayer: AudioPlayer(),
   );
 
-  void playAnimation() async {
-    final double height = MediaQuery.of(context).size.height;
-    final double topOffset =
-        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
-            ? height * 0.8
-            : height / 1.5;
-    final double bottomOffset = -height * 0.8;
-    crawlTextposition =
-        Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
-            .animate(_animationController);
-    disappearCrawlText = Tween<double>(begin: 1, end: 0)
-        .chain(
-          CurveTween(
-            curve: const Interval(0.95, 1),
-          ),
-        )
-        .animate(_animationController);
-    await _animationController.forward();
-    _animationController.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.completed) {
-        _animationController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _animationController.forward();
-      }
-    });
-  }
-
   Future<void> playTrack() async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
     await audioPlayer.play(
       'audio/about_music.mp3',
-      volume: 0.01,
+      volume: 0.03,
     );
   }
 
@@ -81,12 +54,26 @@ While the Congress of the Republic endlessly debates this alarming chain of even
       duration: const Duration(seconds: 60),
     );
     playTrack();
+    disappearCrawlText = Tween<double>(begin: 1, end: 0)
+        .chain(
+          CurveTween(
+            curve: const Interval(0.95, 1),
+          ),
+        )
+        .animate(_animationController);
+    _animationController.forward();
+    _animationController.addStatusListener((AnimationStatus status) {
+      log(status.toString());
+      if (status == AnimationStatus.completed) {
+        _animationController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _animationController.forward();
+      }
+    });
   }
 
   @override
   void didChangeDependencies() {
-    playAnimation();
-
     super.didChangeDependencies();
   }
 
@@ -99,6 +86,16 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    final double topOffset =
+        Sizescaleconfig.screenwidth! <= Sizescaleconfig.mobileBreakpoint
+            ? height * 0.8
+            : height / 1.5;
+    final double bottomOffset = -height * 0.8;
+    crawlTextposition =
+        Tween(begin: Offset(0, topOffset), end: Offset(0, bottomOffset))
+            .animate(_animationController);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -106,11 +103,13 @@ While the Congress of the Republic endlessly debates this alarming chain of even
           clipBehavior: Clip.none,
           children: [
             Positioned.fill(
-              child: Image.asset(
-                'assets/galaxy.png',
-                fit: BoxFit.cover,
-                cacheHeight: 1294,
-                cacheWidth: 750,
+              child: RepaintBoundary(
+                child: Image.asset(
+                  'assets/galaxy.png',
+                  fit: BoxFit.cover,
+                  cacheHeight: 1294,
+                  cacheWidth: 750,
+                ),
               ),
             ),
             CrawlText(
@@ -119,18 +118,23 @@ While the Congress of the Republic endlessly debates this alarming chain of even
               crawlTextposition: crawlTextposition,
               disappearCrawlText: disappearCrawlText,
             ),
-            const BackButton(),
+            Positioned(
+              top: Sizescaleconfig.screenheight! * 0.02,
+              child: const RepaintBoundary(child: BackButton()),
+            ),
             // add mute button and vertical slider for volume in bottom right corner
             Positioned(
               bottom: kPaddingMediumConstant,
               right: 0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  VolumeController(
-                    audioController: audioPlayer,
-                  ),
-                ],
+              child: RepaintBoundary(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    VolumeController(
+                      audioController: audioPlayer,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -524,24 +528,21 @@ class BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: Sizescaleconfig.screenheight! * 0.02,
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        style: ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          primary: starWarsCrawlTextColor,
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(),
+        primary: starWarsCrawlTextColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 5,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 5,
-          ),
-          child: Icon(
-            Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
+        child: Icon(
+          Platform.isAndroid ? Icons.arrow_back : Icons.arrow_back_ios,
+          color: Colors.white,
         ),
       ),
     );

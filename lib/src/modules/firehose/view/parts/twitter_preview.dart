@@ -57,11 +57,18 @@ class EmbeddedTweetWebView extends StatefulWidget {
 class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
   bool isLoaded = false;
   late double previewHeight;
+  late WebViewController webViewController;
+  late final String initialUrl;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initialUrl = Uri.dataFromString(
+      getHtmlBody(widget.tweetId),
+      mimeType: 'text/html',
+      encoding: Encoding.getByName('utf-8'),
+    ).toString();
     previewHeight = Sizescaleconfig.screenheight! * 0.5;
   }
 
@@ -79,7 +86,14 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
             backgroundColor: Colors.black,
             javascriptMode: JavascriptMode.unrestricted,
             navigationDelegate: (NavigationRequest request) {
-              if (request.url.contains('twitter.com')) {
+              log('message');
+              if (request.url == initialUrl) {
+                return NavigationDecision.navigate;
+              } else if (request.url.contains('twitter.com')) {
+                if (isLoaded) {
+                  launchUrl(request.url);
+                  return NavigationDecision.prevent;
+                }
                 return NavigationDecision.navigate;
               } else {
                 if (isLoaded) {
@@ -108,12 +122,10 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
               ),
             onWebViewCreated: (WebViewController controller) {
               log('onWebViewCreated');
+              webViewController = controller;
+              setState(() {});
             },
-            initialUrl: Uri.dataFromString(
-              getHtmlBody(widget.tweetId),
-              mimeType: 'text/html',
-              encoding: Encoding.getByName('utf-8'),
-            ).toString(),
+            initialUrl: initialUrl,
           ),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),

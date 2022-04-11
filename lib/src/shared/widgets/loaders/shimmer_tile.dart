@@ -50,26 +50,28 @@ class _ShimmerTileState extends State<ShimmerTile>
       child: AnimatedBuilder(
         animation: animationController,
         builder: (BuildContext context, Widget? child) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-              gradient: LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                // transform: const GradientRotation(pi / 4),
-                colors: const [
-                  Colors.white38,
-                  Colors.white70,
-                  Colors.white38,
-                ],
-                stops: [
-                  0.0,
-                  shimmerAnimation.value,
-                  1.0,
-                ],
+          return SizedBox(
+            height: widget.height,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+                gradient: LinearGradient(
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
+                  // transform: const GradientRotation(pi / 4),
+                  colors: const [
+                    Colors.white38,
+                    Colors.white70,
+                    Colors.white38,
+                  ],
+                  stops: [
+                    0.0,
+                    shimmerAnimation.value,
+                    1.0,
+                  ],
+                ),
               ),
             ),
-            height: widget.height,
           );
         },
       ),
