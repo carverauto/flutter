@@ -18,11 +18,11 @@ final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
       await ref.read(popupsEvetnsStreamControllerProvider).close();
       await ref.read(theaterEvetnsStreamControllerProvider).close();
 
-      final bool isChannelInitialized =
-          await ref.read(chatChannelProvider(chaseId)).initialized;
-      if (isChannelInitialized) {
-        await ref.read(chatChannelProvider(chaseId)).stopWatching();
-      }
+      // final bool isChannelInitialized =
+      //     await ref.read(chatChannelProvider(chaseId)).initialized;
+      // if (isChannelInitialized) {
+      //   await ref.read(chatChannelProvider(chaseId)).stopWatching();
+      // }
 
       // await ref.read(streamChatClientProvider).disconnectUser();
     });

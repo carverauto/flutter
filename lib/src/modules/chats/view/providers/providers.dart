@@ -88,6 +88,14 @@ final AutoDisposeFutureProviderFamily<ChannelState, String>
   final Channel channel = ref.watch(chatChannelProvider(chaseId));
   final ChannelState watchState = await channel.watch();
 
+  ref.onDispose(() async {
+    final bool isChannelInitialized =
+        await ref.read(chatChannelProvider(chaseId)).initialized;
+    if (isChannelInitialized) {
+      await channel.stopWatching();
+    }
+  });
+
   return watchState;
 });
 
