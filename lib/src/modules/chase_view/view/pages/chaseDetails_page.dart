@@ -36,7 +36,7 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() => ref.watch(chatChannelProvider(widget.chaseId)));
+    Future.microtask(() => ref.refresh(chatChannelProvider(widget.chaseId)));
   }
 
   @override
