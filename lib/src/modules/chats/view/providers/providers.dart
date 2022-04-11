@@ -79,9 +79,10 @@ final ProviderFamily<Channel, String> chatChannelProvider =
   return channel;
 });
 
-final FutureProviderFamily<ChannelState, String> watcherStateProvider =
-    FutureProvider.family<ChannelState, String>((
-  FutureProviderRef<ChannelState> ref,
+final AutoDisposeFutureProviderFamily<ChannelState, String>
+    watcherStateProvider =
+    FutureProvider.autoDispose.family<ChannelState, String>((
+  AutoDisposeFutureProviderRef<ChannelState> ref,
   String chaseId,
 ) async {
   final Channel channel = ref.watch(chatChannelProvider(chaseId));
