@@ -42,11 +42,11 @@ final Provider<StreamChatClient> streamChatClientProvider =
   },
 );
 
-final AutoDisposeStateNotifierProvider<ChatStateNotifier, void>
+final StateNotifierProvider<ChatStateNotifier, void>
     chatsServiceStateNotifierProvider =
-    StateNotifierProvider.autoDispose<ChatStateNotifier, void>(
+    StateNotifierProvider<ChatStateNotifier, void>(
   (
-    AutoDisposeStateNotifierProviderRef<ChatStateNotifier, void> ref,
+    StateNotifierProviderRef<ChatStateNotifier, void> ref,
   ) =>
       ChatStateNotifier(
     read: ref.read,
