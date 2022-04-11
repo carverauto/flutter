@@ -69,10 +69,15 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   Future<void> subscribeToFeed() async {
     if (!isSubscribedToFeed) {
-      firehoseSubscription = await firehoseFeed.subscribe(
-        (feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message) {},
-      );
-      isSubscribedToFeed = true;
+      try {
+        firehoseSubscription = await firehoseFeed.subscribe(
+          (feed.RealtimeMessage<Object?, Object?, Object?, Object?>?
+              message) {},
+        );
+        isSubscribedToFeed = true;
+      } catch (e, stk) {
+        logger.warning('Failed to subscribe to Firehose feed.', e, stk);
+      }
     }
   }
 }

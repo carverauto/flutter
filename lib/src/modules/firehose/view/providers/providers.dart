@@ -24,10 +24,10 @@ final Provider<FirehoseRepoAB> firehoseRepoProvider = Provider<FirehoseRepoAB>(
   (ProviderRef<FirehoseRepoAB> ref) => FirehoseRepository(ref.read),
 );
 
-final AutoDisposeStateNotifierProvider<FirehoseStateNotifier, void>
+final StateNotifierProvider<FirehoseStateNotifier, void>
     firehoseServiceStateNotifierProvider =
-    StateNotifierProvider.autoDispose<FirehoseStateNotifier, void>(
-  (AutoDisposeStateNotifierProviderRef<FirehoseStateNotifier, void> ref) =>
+    StateNotifierProvider<FirehoseStateNotifier, void>(
+  (StateNotifierProviderRef<FirehoseStateNotifier, void> ref) =>
       FirehoseStateNotifier(
     read: ref.read,
     streamFeedClient: ref.read(
