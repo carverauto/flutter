@@ -237,7 +237,7 @@ class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    watchersCount = 0;
+    watchersCount = 1;
     ref.read(streamChatClientProvider).eventStream.listen((Event event) {
       final int? updatedCount = event.extraData['watcher_count'] as int?;
 
