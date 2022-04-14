@@ -1,9 +1,5 @@
 import 'dart:developer';
 
-import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
-import 'package:chaseapp/src/routes/routes.dart';
-import 'package:chaseapp/src/theme/theme.dart';
-// import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -11,8 +7,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logging/logging.dart';
+import 'package:logging/src/log_record.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
+// import 'package:device_preview/device_preview.dart';
+import 'flavors.dart';
+import 'src/const/colors.dart';
+import 'src/modules/chats/view/providers/providers.dart';
+import 'src/routes/routes.dart';
+import 'src/theme/theme.dart';
+
+final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,18 +28,19 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'ChaseApp',
+      scaffoldMessengerKey: scaffoldMessangerKey,
       initialRoute: '/',
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         return StreamChat(
           streamChatThemeData: StreamChatThemeData.dark().copyWith(
             // TODO: Need to debug why?
             // If not added then getStream API is overriding the
             // the user set accentColor in Custom Theme
             colorTheme: ColorTheme.dark(
-              accentPrimary: Color(0xFFFF8EC6),
+              accentPrimary: primaryColor.shade500,
             ),
           ),
-          client: ref.read(chatsServiceStateNotifierProvider.notifier).client,
+          client: ref.watch(streamChatClientProvider),
           child: child,
         );
       },
@@ -47,26 +55,32 @@ class MyApp extends ConsumerWidget {
 
 Future<void> setUpServices() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle());
-  FirebaseApp firebaseApp = await Firebase.initializeApp();
-  FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+  await SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
+  final FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+  // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
+  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
 
   if (kDebugMode) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
 
-  await remoteConfig.setConfigSettings(RemoteConfigSettings(
-    fetchTimeout: Duration(minutes: 1),
-    minimumFetchInterval: Duration(hours: 12),
-  ));
+  await remoteConfig.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: const Duration(minutes: 1),
+      minimumFetchInterval: const Duration(hours: 12),
+    ),
+  );
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  Logger.root.onRecord.listen((record) {
+  Logger.root.onRecord.listen((LogRecord record) {
     FirebaseCrashlytics.instance.recordError(
-      record.loggerName + " : " + record.message,
+      '${record.loggerName} : ${record.message}',
       record.stackTrace,
       reason: record.error,
       fatal: record.level == Level.SEVERE,
@@ -75,23 +89,15 @@ Future<void> setUpServices() async {
 
   log(firebaseApp.options.projectId);
 
-  // await PusherBeams.instance.start('36B6DDABE108628BE2413C4CA2A04288465FB979B2BAE81E373A22AE076BB520');
-  // await PusherBeams.instance.start('d1af4c7f-16b4-43b0-98ec-2eb2200e43bc');
-  // PusherBeams.instance.addDeviceInterest("hello");
-  //TODO: Start every new instance as we create them.
+  if (F.appFlavor == Flavor.DEV) {
+    const String instanceId = String.fromEnvironment('Dev_Pusher_Instance_Id');
+    await PusherBeams.instance.start(instanceId);
+  } else {
+    const String instanceId = String.fromEnvironment('Prod_Pusher_Instance_Id');
 
-  // if (F.appFlavor == Flavor.DEV) {
-  //   // TODO: this should say Dev_Pusher_Beams_Instance_Id
-  //   const instanceId = String.fromEnvironment("Dev_Pusher_Instance_Id");
-  //   await PusherBeams.instance.start(instanceId);
-  // } else {
-  //   // TODO: this should say Prod_Pusher_Beams_Instance_Id
-  //   const instanceId = String.fromEnvironment("Prod_Pusher_Instance_Id");
+    await PusherBeams.instance.start(instanceId);
+  }
 
-  //   await PusherBeams.instance.start(instanceId);
-  // }
-
-  // PusherBeams.instance.addDeviceInterest("hello");
   /*
   PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
   try {
@@ -115,4 +121,50 @@ Future<void> setUpServices() async {
     print("ERROR: $e");
   }
    */
+}
+
+class ProvidersLogger extends ProviderObserver {
+//   @override
+//   void didAddProvider(
+//     ProviderBase provider,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+//   @override
+//   void didUpdateProvider(
+//     ProviderBase provider,
+//     Object? previousValue,
+//     Object? newValue,
+//     ProviderContainer container,
+//   ) {
+//     print(
+//       '''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''',
+//     );
+//   }
+
+  @override
+  void didDisposeProvider(
+    ProviderBase provider,
+    ProviderContainer container,
+  ) {
+    log(
+      '''
+{
+  "provider": "${provider.name ?? provider.runtimeType}"
+}''',
+    );
+  }
 }

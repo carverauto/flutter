@@ -1,9 +1,10 @@
-import 'package:chaseapp/src/core/modules/auth/domain/auth_repo_ab.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../models/user/user_data.dart';
+import '../../../../shared/enums/social_logins.dart';
+import '../view/providers/providers.dart';
+import 'auth_repo_ab.dart';
 
 class AuthRepository implements AuthRepositoryAB {
   AuthRepository({
@@ -11,6 +12,7 @@ class AuthRepository implements AuthRepositoryAB {
   });
   final Reader read;
 
+  @override
   Stream<User?> streamLogInStatus() {
     return read(authDbProvider).streamLogInStatus();
   }
@@ -25,10 +27,10 @@ class AuthRepository implements AuthRepositoryAB {
     throw UnimplementedError();
   }
 
-  @override
-  Future<void> sendEmailVerification() {
-    throw UnimplementedError();
-  }
+  // @override
+  // Future<void> sendEmailVerification() {
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<void> signOut() {
@@ -36,7 +38,7 @@ class AuthRepository implements AuthRepositoryAB {
   }
 
   @override
-  Stream<UserData> streamUserData(String uid) {
+  Stream<UserData> streamUserData(String? uid) {
     return read(authDbProvider).streamUserData(uid);
   }
 
@@ -70,5 +72,15 @@ class AuthRepository implements AuthRepositoryAB {
       SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) {
     return read(authDbProvider)
         .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
+  }
+
+  @override
+  Future<void> sendSignInLinkToEmail(String email) async {
+    return read(authDbProvider).sendSignInLinkToEmail(email);
+  }
+
+  @override
+  Future<void> signInWithEmailAndLink(String email, String link) {
+    return read(authDbProvider).signInWithEmailAndLink(email, link);
   }
 }

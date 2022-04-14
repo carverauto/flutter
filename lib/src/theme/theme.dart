@@ -1,17 +1,19 @@
-import 'package:chaseapp/src/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../const/colors.dart';
 
 ThemeData getThemeData(BuildContext context) => ThemeData.dark().copyWith(
       colorScheme: ColorScheme.fromSwatch(
         primarySwatch: primaryColor,
-        cardColor: Color(0xffd2d1d0),
+        cardColor: const Color(0xffd2d1d0),
         backgroundColor: primaryColor.shade800,
-        accentColor: Color(0xFFFF8EC6),
+        accentColor: primaryColor.shade500,
       ),
       textTheme: GoogleFonts.poppinsTextTheme(
         Theme.of(context).textTheme,
       ),
+      toggleableActiveColor: primaryColor.shade500,
       // dividerColor: primaryColor,
     );
 

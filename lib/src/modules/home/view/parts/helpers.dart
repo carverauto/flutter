@@ -1,45 +1,31 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/shared/util/extensions/interest_enum.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-NotificationData getNotificationDataFromMessage(RemoteMessage message) {
-  final data = message.data;
-
-  final imageUrl = Platform.isAndroid
-      ? message.notification?.android?.imageUrl
-      : message.notification?.apple?.imageUrl;
-
-  final notificationData = NotificationData(
-    interest: data["interest"] as String,
-    title: message.notification?.title ?? "NA",
-    body: message.notification?.body ?? "NA",
-    image: data["image"] as String?,
-    data: data,
-    id: data["id"] as String?,
-    createdAt: data["createdAt"] as DateTime?,
-  );
-
-  return notificationData;
-}
+import '../../../../models/notification/notification.dart';
+import '../../../../shared/enums/interest_enum.dart';
+import '../../../../shared/notifications/notifications_helpers.dart';
+import '../../../../shared/util/extensions/interest_enum.dart';
+import '../../../notifications/view/providers/providers.dart';
 
 Future<void> handlebgmessage(RemoteMessage message) async {
-  if (message.data["interest"] != null) {
-    updateNotificationsPresentStatus(true);
-    final notificationData = getNotificationDataFromMessage(message);
+  //TODO: Update with new notification schema
 
-    log("Background message arrived--->" + notificationData.data.toString());
+  if (message.data['Interest'] != null) {
+    // updateNotificationsPresentStatus(true);
+    final ChaseAppNotification notificationData =
+        getNotificationDataFromMessage(message);
+
+    log('Background message arrived--->${notificationData.data}');
 
     switch (notificationData.getInterestEnumFromName) {
       case Interests.appUpdates:
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        final bool should_fetch =
-            notificationData.data?["config_state"] == "stale";
-        await prefs.setBool("should_fetch", should_fetch);
+        final bool shouldFetch = notificationData.data?.configState == 'stale';
+        await prefs.setBool('should_fetch', shouldFetch);
         break;
 
       default:
@@ -47,8 +33,14 @@ Future<void> handlebgmessage(RemoteMessage message) async {
   }
 }
 
-void updateNotificationsPresentStatus(bool isPresent) async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+void updateNotificationsPresentStatus(
+  WidgetRef ref,
+  bool isPresent,
+) async {
+  // final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  prefs.setBool("newNotificationsPresent", isPresent);
+  // prefs.setBool("newNotificationsPresent", isPresent);
+  ref
+      .read(newNotificationsPresentProvider.state)
+      .update((bool state) => isPresent);
 }

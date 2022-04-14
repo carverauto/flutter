@@ -1,19 +1,22 @@
 import 'dart:math';
 
-import 'package:chaseapp/src/const/other.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/shared/enums/social_logins.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/other.dart';
+import '../../../../const/sizings.dart';
+import '../../../../shared/enums/social_logins.dart';
 
 class GradientAnimationChildBuilder extends StatefulWidget {
   const GradientAnimationChildBuilder({
     Key? key,
     required this.child,
     required this.shouldAnimate,
+    this.padding,
   }) : super(key: key);
 
   final Widget child;
   final bool shouldAnimate;
+  final EdgeInsets? padding;
 
   @override
   _GradientAnimationChildBuilderState createState() =>
@@ -27,15 +30,14 @@ class _GradientAnimationChildBuilderState
   late final Animation<double> rotationAnimation;
   late final Animation<double> containerPaddingAnimation;
 
-  SIGNINMETHOD? signinmethod = null;
+  SIGNINMETHOD? signinmethod;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
 
     rotationAnimation = Tween<double>(begin: 0, end: pi * 2).animate(
@@ -47,50 +49,59 @@ class _GradientAnimationChildBuilderState
 
     animationController.addListener(() {
       if (animationController.isCompleted) {
-        if (mounted) animationController.repeat();
+        if (mounted) {
+          animationController.repeat();
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.shouldAnimate) {
-      animationController.forward();
-    } else {
-      animationController.reverse();
-    }
-    return AnimatedBuilder(
-      animation: animationController,
-      child: widget.child,
-      builder: (context, child) {
-        return Container(
-          padding: EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
-          decoration: BoxDecoration(
-            boxShadow: kElevationToShadow["12"],
-            gradient: widget.shouldAnimate
-                ? LinearGradient(
-                    transform: GradientRotation(rotationAnimation.value),
-                    colors: [
-                      Colors.blue,
-                      Colors.red,
-                    ],
-                  )
-                : null,
-            borderRadius: BorderRadius.circular(
-              kBorderRadiusStandard,
+    WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
+      if (widget.shouldAnimate) {
+        animationController.forward();
+      } else {
+        animationController.reverse();
+      }
+    });
+
+    return !widget.shouldAnimate
+        ? widget.child
+        : AnimatedBuilder(
+            animation: animationController,
+            child: Padding(
+              padding: widget.padding ??
+                  EdgeInsets.all(widget.shouldAnimate ? 5 : 0),
+              child: widget.child,
             ),
-          ),
-          child: child,
-        );
-      },
-    );
+            builder: (BuildContext context, Widget? child) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  boxShadow: kElevationToShadow['12'],
+                  gradient: widget.shouldAnimate
+                      ? LinearGradient(
+                          transform: GradientRotation(rotationAnimation.value),
+                          colors: const [
+                            Colors.blue,
+                            Colors.red,
+                          ],
+                        )
+                      : null,
+                  borderRadius: BorderRadius.circular(
+                    kBorderRadiusStandard,
+                  ),
+                ),
+                child: child,
+              );
+            },
+          );
   }
 }
 
@@ -105,7 +116,7 @@ class IconFloatingAnimation extends StatefulWidget {
   final bool shouldAnimate;
 
   @override
-  _IconFloatingAnimationState createState() => _IconFloatingAnimationState();
+  State<IconFloatingAnimation> createState() => _IconFloatingAnimationState();
 }
 
 class _IconFloatingAnimationState extends State<IconFloatingAnimation>
@@ -114,42 +125,45 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
   late final Animation<double> rotationAnimation;
   late final Animation<double> containerPaddingAnimation;
 
-  SIGNINMETHOD? signinmethod = null;
+  SIGNINMETHOD? signinmethod;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
 
     animationController.addListener(() {
       if (animationController.isCompleted) {
-        if (mounted) animationController.repeat(reverse: true);
+        if (mounted) {
+          animationController.repeat(reverse: true);
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.shouldAnimate) {
-      animationController.forward();
-    } else {
-      animationController.reverse();
-    }
+    WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
+      if (widget.shouldAnimate) {
+        animationController.forward();
+      } else {
+        animationController.reverse();
+      }
+    });
+
     return AnimatedBuilder(
       animation: animationController,
       child: widget.child,
-      builder: (context, child) {
+      builder: (BuildContext context, Widget? child) {
         return Padding(
           padding: EdgeInsets.only(
             bottom: animationController.value * 10,

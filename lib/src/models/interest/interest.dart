@@ -19,6 +19,7 @@ abstract class Interest implements _$Interest {
     required String instanceId,
     required String name,
     required bool isCompulsory,
+    required bool isDefault,
     @DatetimeTimestampConverter() required DateTime createdAt,
   }) = _Interest;
 

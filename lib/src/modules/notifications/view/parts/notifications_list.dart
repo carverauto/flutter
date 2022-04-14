@@ -1,13 +1,14 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/paginatedlist_bottom.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/scroll_to_top_button.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notifications_list_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../../const/sizings.dart';
+import '../../../../core/notifiers/pagination_notifier.dart';
+import '../../../../models/notification/notification.dart';
+import '../../../../models/pagination_state/pagination_notifier_state.dart';
+import '../../../dashboard/view/parts/paginatedlist_bottom.dart';
+import '../../../dashboard/view/parts/scroll_to_top_button.dart';
+import 'notifications_list_builder.dart';
 
 class NotificationsViewAll extends ConsumerWidget {
   NotificationsViewAll({
@@ -18,8 +19,9 @@ class NotificationsViewAll extends ConsumerWidget {
   final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('RecentChasesListView');
 
-  final StateNotifierProvider<PaginationNotifier<NotificationData>,
-      PaginationNotifierState<NotificationData>> chasesPaginationProvider;
+  final AutoDisposeStateNotifierProvider<
+      PaginationNotifier<ChaseAppNotification>,
+      PaginationNotifierState<ChaseAppNotification>> chasesPaginationProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,16 +31,17 @@ class NotificationsViewAll extends ConsumerWidget {
       //TODO:Update with custom refresh indicator
       body: CustomScrollView(
         controller: scrollController,
-        restorationId: "All Notifications",
+        restorationId: 'All Notifications',
         slivers: [
           // Error if removed (Need to report)
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(
               height: kPaddingMediumConstant,
             ),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
+            padding:
+                const EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
             sliver: NotificationsPaginatedListView(
               chasesPaginationProvider: chasesPaginationProvider,
               logger: logger,
@@ -47,8 +50,9 @@ class NotificationsViewAll extends ConsumerWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: PaginatedListBottom<NotificationData>(
-                chasesPaginationProvider: chasesPaginationProvider),
+            child: PaginatedListBottom<ChaseAppNotification>(
+              chasesPaginationProvider: chasesPaginationProvider,
+            ),
           ),
         ],
       ),

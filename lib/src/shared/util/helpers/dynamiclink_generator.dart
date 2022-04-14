@@ -1,44 +1,39 @@
 import 'dart:developer';
 
-import 'package:chaseapp/flavors.dart';
-import 'package:chaseapp/src/const/links.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
-Future<String> createChaseDynamicLink(Chase chase) async {
-  final fallbackUrl = Uri.parse("https://chaseapp.tv/chase/${chase.id}");
-  final shareImage = chase.imageURL != null || chase.imageURL!.isNotEmpty
-      ? parseImageUrl(chase.imageURL!, ImageDimensions.MEDIUM)
+import '../../../const/app_bundle_info.dart';
+import '../../../const/images.dart';
+import '../../../models/chase/chase.dart';
+import 'image_url_parser.dart';
+
+Future<String> createChaseDynamicLink(
+  Chase chase,
+  FirebaseDynamicLinks firebaseDynamicLinks,
+) async {
+  final Uri fallbackUrl = Uri.parse('https://chaseapp.tv/chase/${chase.id}');
+  final String shareImage = chase.imageURL != null && chase.imageURL!.isNotEmpty
+      ? parseImageUrl(chase.imageURL!)
       : defaultPhotoURL;
+  final String uriPrefix = AppBundleInfo.dynamicLinkHostUrl(false);
 
-  final prodBundleId = "com.carverauto.chaseapp";
+  final String linkPrefix = AppBundleInfo.dynamicLinkPrefix;
 
-  final devAndroidBundleId = 'com.carverauto.chasedev';
-  final devIosBundleId = 'com.carverauto.chaseapp.cdev';
-
-  final uriPrefix = F.appFlavor == Flavor.DEV
-      ? "https://carverauto.page.link"
-      : "https://m.chaseapp.tv";
-  final linkPrefix =
-      F.appFlavor == Flavor.DEV ? "carverauto.com" : "chaseapp.tv";
-
-  final link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
+  final Uri link = Uri.parse('https://$linkPrefix/chases?chaseId=${chase.id}');
   //Dynamic link generalization
   final DynamicLinkParameters parameters = DynamicLinkParameters(
     uriPrefix: uriPrefix,
     link: link,
     androidParameters: AndroidParameters(
-      packageName:
-          F.appFlavor == Flavor.DEV ? devAndroidBundleId : prodBundleId,
+      packageName: AppBundleInfo.androidBundleId,
       minimumVersion: 0,
       fallbackUrl: fallbackUrl,
     ),
     iosParameters: IOSParameters(
       minimumVersion: '0',
-      bundleId: F.appFlavor == Flavor.DEV ? devIosBundleId : prodBundleId,
+      bundleId: AppBundleInfo.iosBundleId,
       fallbackUrl: fallbackUrl,
-      appStoreId: "1462719760",
+      appStoreId: AppBundleInfo.appstoreId,
     ),
     socialMetaTagParameters: SocialMetaTagParameters(
       title: chase.name,
@@ -46,11 +41,13 @@ Future<String> createChaseDynamicLink(Chase chase) async {
       imageUrl: Uri.parse(shareImage),
     ),
   );
+
   //TODO:Need to report
   //Proper link is not generated if creating for custom domains using .buildLink()?
   //This is serious issue.
   final ShortDynamicLink shortDynamicLink =
-      await FirebaseDynamicLinks.instance.buildShortLink(parameters);
-  log(parameters.uriPrefix.toString());
+      await firebaseDynamicLinks.buildShortLink(parameters);
+  log(parameters.uriPrefix);
+
   return shortDynamicLink.shortUrl.toString();
 }

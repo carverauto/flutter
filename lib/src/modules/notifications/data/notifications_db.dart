@@ -1,38 +1,50 @@
-import 'package:chaseapp/src/models/interest/interest.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/modules/notifications/data/notifications_db_ab.dart';
-import 'package:chaseapp/src/shared/util/firebase_collections.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../../models/interest/interest.dart';
+import '../../../models/notification/notification.dart';
+import 'notifications_db_ab.dart';
 
 class NotificationsDatabase implements NotificationsDbAB {
-  NotificationsDatabase();
-
-  Future<List<NotificationData>> fetchNotifications(
-      NotificationData? notificationData,
-      String? notificationType,
-      String userId) async {
+  NotificationsDatabase({
+    required this.notificationsCollectionRef,
+    required this.interestsCollectionRef,
+  });
+  final CollectionReference<ChaseAppNotification> notificationsCollectionRef;
+  final CollectionReference<Interest> interestsCollectionRef;
+  //TODO remove firehose notifications from the list
+  @override
+  Future<List<ChaseAppNotification>> fetchNotifications(
+    ChaseAppNotification? notificationData,
+    String? notificationType,
+    String userId,
+  ) async {
     if (notificationData == null) {
-      final documentSnapshot = await notificationsCollectionRef
-          .where("uid", isEqualTo: userId)
-          .where("interest", isEqualTo: notificationType)
-          .orderBy("createdAt", descending: true)
-          .limit(20)
-          .get();
+      final QuerySnapshot<ChaseAppNotification> documentSnapshot =
+          await notificationsCollectionRef
+              .where('Interest', isEqualTo: notificationType)
+              .orderBy('CreatedAt', descending: true)
+              .limit(20)
+              .get();
+
       return documentSnapshot.docs
-          .map<NotificationData>(
-            (snapshot) => snapshot.data(),
+          .map<ChaseAppNotification>(
+            (QueryDocumentSnapshot<ChaseAppNotification> snapshot) =>
+                snapshot.data(),
           )
           .toList();
     } else {
-      final documentSnapshot = await notificationsCollectionRef
-          .where("uid", isEqualTo: userId)
-          .where("interest", isEqualTo: notificationType)
-          .orderBy("createdAt", descending: true)
-          .startAfter([notificationData.createdAt])
-          .limit(20)
-          .get();
+      final QuerySnapshot<ChaseAppNotification> documentSnapshot =
+          await notificationsCollectionRef
+              .where('Interest', isEqualTo: notificationType)
+              .orderBy('CreatedAt', descending: true)
+              .startAfter([notificationData.createdAt])
+              .limit(20)
+              .get();
+
       return documentSnapshot.docs
-          .map<NotificationData>(
-            (snapshot) => snapshot.data(),
+          .map<ChaseAppNotification>(
+            (QueryDocumentSnapshot<ChaseAppNotification> snapshot) =>
+                snapshot.data(),
           )
           .toList();
     }
@@ -40,8 +52,11 @@ class NotificationsDatabase implements NotificationsDbAB {
 
   @override
   Future<List<Interest>> fetchInterests() async {
-    final documentSnapshots = await interestsCollectionRef.get();
+    final QuerySnapshot<Interest> documentSnapshots =
+        await interestsCollectionRef.get();
 
-    return documentSnapshots.docs.map((doc) => doc.data()).toList();
+    return documentSnapshots.docs
+        .map((QueryDocumentSnapshot<Interest> doc) => doc.data())
+        .toList();
   }
 }

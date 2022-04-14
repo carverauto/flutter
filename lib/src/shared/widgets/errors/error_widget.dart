@@ -1,5 +1,6 @@
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+
+import '../../../const/sizings.dart';
 
 class ChaseAppErrorWidget extends StatelessWidget {
   const ChaseAppErrorWidget({
@@ -23,17 +24,18 @@ class ChaseAppErrorWidget extends StatelessWidget {
           children: [
             IconButton(
               onPressed: onRefresh,
-              icon: Icon(
+              icon: const Icon(
                 Icons.replay,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Colors.white,
               ),
             ),
             //Chip doesn't show label properly with multiline text
             Chip(
               label: Text(
-                message ?? "Something went wrong.",
+                message ?? 'Something went wrong.',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground),
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
               ),
             ),
           ],

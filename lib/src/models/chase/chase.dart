@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:chaseapp/src/models/chase/network/chase_network.dart';
 import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -24,7 +25,7 @@ abstract class Chase implements _$Chase {
     @JsonKey(name: 'Desc') required String? desc,
     @JsonKey(name: 'ImageURL') String? imageURL,
     @JsonKey(name: 'Votes') required int? votes,
-    @JsonKey(name: 'Networks') List<Map<String, dynamic>>? networks,
+    @JsonKey(name: 'Networks') List<ChaseNetwork>? networks,
     @JsonKey(name: 'sentiment') Map? sentiment,
     @JsonKey(name: 'Wheels') Map? wheels,
   }) = _Chase;

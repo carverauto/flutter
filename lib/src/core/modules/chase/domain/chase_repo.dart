@@ -32,7 +32,6 @@ class ChaseRepository implements ChaseRepoAB {
 
   @override
   Stream<List<Chase>> streamTopChases() {
-    // TODO: implement streamTopChases
     return read(chaseDbProvider).streamTopChases();
   }
 }

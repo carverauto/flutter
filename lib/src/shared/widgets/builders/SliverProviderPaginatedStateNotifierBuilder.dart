@@ -1,10 +1,11 @@
-import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../core/notifiers/pagination_notifier.dart';
+import '../../../models/pagination_state/pagination_notifier_state.dart';
+import '../errors/error_widget.dart';
+import '../loaders/loading.dart';
 
 class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
   const SliverProviderPaginatedStateNotifierBuilder({
@@ -14,12 +15,14 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.scrollController,
     required this.logger,
     required this.axis,
+    this.loadingBuilder,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
-      watchThisStateNotifierProvider;
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+      PaginationNotifierState<T>> watchThisStateNotifierProvider;
 
   final Widget Function(List<T> data, ScrollController controller) builder;
+  final Widget Function()? loadingBuilder;
 
   final ScrollController scrollController;
   final Logger logger;
@@ -28,24 +31,26 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     scrollController.addListener(() {
-      double maxScroll = scrollController.position.maxScrollExtent;
-      double currentScroll = scrollController.position.pixels;
-      double delta = axis == Axis.horizontal
+      final double maxScroll = scrollController.position.maxScrollExtent;
+      final double currentScroll = scrollController.position.pixels;
+      final double delta = axis == Axis.horizontal
           ? MediaQuery.of(context).size.width * 0.20
           : MediaQuery.of(context).size.height * 0.20;
       if (maxScroll - currentScroll <= delta) {
         ref.read(watchThisStateNotifierProvider.notifier).fetchNextPage();
       }
     });
+
     return ref.watch(watchThisStateNotifierProvider).when(
-      data: (data) {
+      data: (List<T> data) {
         return builder(
           data,
           scrollController,
         );
       },
-      error: (e, stk) {
-        logger.log(Level.SEVERE, "Error Fetching Data", e, stk);
+      error: (Object? e, StackTrace? stk) {
+        logger.log(Level.SEVERE, 'Error Fetching Data', e, stk);
+
         return SliverToBoxAdapter(
           child: ChaseAppErrorWidget(
             onRefresh: () {
@@ -56,18 +61,21 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
           ),
         );
       },
-      loading: (chases) {
+      loading: (List<T> chases) {
         return SliverToBoxAdapter(
-          child: CircularAdaptiveProgressIndicatorWithBg(),
+          child: RepaintBoundary(
+              child: loadingBuilder != null
+                  ? loadingBuilder!()
+                  : const CircularAdaptiveProgressIndicatorWithBg()),
         );
       },
-      onGoingLoading: (data) {
+      onGoingLoading: (List<T> data) {
         return builder(
           data,
           scrollController,
         );
       },
-      onGoingError: (data, error, stk) {
+      onGoingError: (List<T> data, Object? error, StackTrace? stk) {
         return builder(
           data,
           scrollController,

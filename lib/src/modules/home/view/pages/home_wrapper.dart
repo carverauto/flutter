@@ -1,18 +1,24 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
 
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
-import 'package:chaseapp/src/modules/home/view/pages/home_page.dart';
-import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_handler.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_pop_up_banner.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
+import '../../../../core/top_level_providers/firebase_providers.dart';
+import '../../../../models/notification/notification.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/notifications/notification_handler.dart';
+import '../../../../shared/notifications/notification_pop_up_banner.dart';
+import '../../../../shared/notifications/notifications_helpers.dart';
+import '../../../chats/view/providers/providers.dart';
+import '../parts/helpers.dart';
+import 'home_page.dart';
 
 class HomeWrapper extends ConsumerStatefulWidget {
   @override
@@ -21,15 +27,19 @@ class HomeWrapper extends ConsumerStatefulWidget {
 
 class _HomeWrapperState extends ConsumerState<HomeWrapper>
     with WidgetsBindingObserver {
-  final Logger logger = Logger("HomeWrapper");
+  final Logger logger = Logger('HomeWrapper');
   Timer? _timerLink;
 
   Future<void> navigateToView(Uri deepLink) async {
-    final chaseId = deepLink.queryParameters["chaseId"];
+    final String? chaseId = deepLink.queryParameters['chaseId'];
 
-    Navigator.pushNamed(context, RouteName.CHASE_VIEW, arguments: {
-      "chaseId": chaseId,
-    });
+    await Navigator.pushNamed(
+      context,
+      RouteName.CHASE_VIEW,
+      arguments: {
+        'chaseId': chaseId,
+      },
+    );
   }
 
   void handleDynamicLinkFromTerminatedState() async {
@@ -37,28 +47,37 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
 
-    if (deepLink != null) {
-      await navigateToView(deepLink);
+    if (!ref
+        .read(firebaseAuthProvider)
+        .isSignInWithEmailLink(deepLink.toString())) {
+      if (deepLink != null) {
+        await navigateToView(deepLink);
+      }
     }
   }
 
   void handlenotifications(RemoteMessage message) async {
-    log("Notification Message Arrived--->" + message.data.toString());
+    log('ChaseAppNotification Message Arrived--->${message.data}');
 
-    final data = message.data;
+    final Map<String, dynamic> data = message.data;
+    //TODO: Update with new notification schema
 
-    if (data["interest"] != null) {
-      updateNotificationsPresentStatus(true);
-      final notificationData = getNotificationDataFromMessage(message);
+    if (data['Interest'] != null && data['Type'] != null) {
+      updateNotificationsPresentStatus(ref, true);
+      final ChaseAppNotification notificationData =
+          getNotificationDataFromMessage(message);
 
-      notificationHandler(context, notificationData, read: ref.read);
+      await notificationHandler(context, notificationData, read: ref.read);
     } else {
-      logger.warning("Notification data didn't contained interest field");
+      logger.warning(
+        "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+      );
     }
   }
 
   Future<void> handleMessagesFromTerminatedState() async {
-    final message = await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? message =
+        await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
       handlenotifications(message);
@@ -66,46 +85,59 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   }
 
   Future<void> handlemessagesthatopenedtheappFromBackgroundState() async {
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
       if (event.data.isNotEmpty) {
         handlenotifications(event);
       }
     });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+    //   if (event.data.isNotEmpty) {
+    //     handlenotifications(event);
+    //   }
+    // });
   }
 
   void handleDynamicLinkOpenedFromBackgroundState() {
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLink) async {
-      log("Dynamic Link Recieved--->" + dynamicLink.link.toString());
-      final Uri? deepLink = dynamicLink.link;
-
-      if (deepLink != null) {
-        await navigateToView(deepLink);
-      }
-    }, onError: (Object error, StackTrace stackTrace) {
-      log("Error while recieving dynamic link", error: error);
-    });
+    FirebaseDynamicLinks.instance.onLink.listen(
+      (PendingDynamicLinkData dynamicLink) async {
+        log('Dynamic Link Recieved--->${dynamicLink.link}');
+        final Uri deepLink = dynamicLink.link;
+//TODO: Replace with FirebaseAuth.instance.isSignInWithEmailLink(emailLink) check
+        if (!ref
+            .read(firebaseAuthProvider)
+            .isSignInWithEmailLink(deepLink.toString())) {
+          if (deepLink != null) {
+            await navigateToView(deepLink);
+          }
+        }
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        log('Error while recieving dynamic link', error: error);
+      },
+    );
   }
 
   void handleNotificationInForegroundState() {
-    PusherBeams.instance.onMessageReceivedInTheForeground((notification) {
-      log("Pusher Message Recieved in the foreground--->" +
-          notification.toString());
-      final data = Map.castFrom<dynamic, dynamic, String, dynamic>(
-          notification["data"] as Map<dynamic, dynamic>);
-      if (data["interest"] != null) {
-        final notificationData = NotificationData(
-          interest: data["interest"] as String,
-          title: notification["title"] as String,
-          body: notification["body"] as String?,
-          data: data,
-          image: data["image"] as String?,
-          createdAt: notification["createdAt"] as DateTime?,
+    PusherBeams.instance
+        .onMessageReceivedInTheForeground((Map<Object?, Object?> message) {
+      log('Pusher Message Recieved in the foreground--->$message');
+      final Map<String, dynamic> data =
+          Map<String, dynamic>.from(message['data'] as Map<dynamic, dynamic>);
+      //TODO: Update with new notification schema
+      if (data['Interest'] != null && data['Type'] != null) {
+        final ChaseAppNotification notification = constructNotification(
+          math.Random().nextInt(10000).toString(),
+          message['title'] as String? ?? 'NA',
+          message['body'] as String? ?? 'NA',
+          data,
         );
-        updateNotificationsPresentStatus(true);
+        updateNotificationsPresentStatus(ref, true);
 
-        showNotificationBanner(context, notificationData);
+        showNotificationBanner(context, notification);
       } else {
-        logger.warning("Notification data didn't contained interest field");
+        logger.warning(
+          "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+        );
       }
     });
   }
@@ -131,22 +163,30 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handlemessagesthatopenedtheappFromBackgroundState();
   }
 
+  Future<void> connectUserAgain() async {
+    log(ref.read(streamChatClientProvider).state.currentUser.toString());
+
+    if (ref.read(streamChatClientProvider).state.currentUser != null &&
+        ref.read(streamChatClientProvider).wsConnectionStatus ==
+            ConnectionStatus.disconnected) {
+      await ref
+          .read(streamChatClientProvider)
+          .openConnection(includeUserDetailsInConnectCall: true);
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (mounted) {
-      if (state == AppLifecycleState.resumed) {
-        _timerLink = new Timer(
-          const Duration(milliseconds: 1000),
-          () {
-            //  handlemessagesthatopenedtheappFromBackgroundState();
-          },
-        );
-      }
+    // TODO: implement didChangeAppLifecycleState
+    if (state == AppLifecycleState.resumed) {
+      // connectUserAgain();
+    } else if (state == AppLifecycleState.paused) {
+      connectUserAgain();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Home();
+    return const Home();
   }
 }

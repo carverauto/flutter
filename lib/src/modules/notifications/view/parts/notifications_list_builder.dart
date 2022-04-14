@@ -1,8 +1,8 @@
 import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/notification_data/notification_data.dart';
+import 'package:chaseapp/src/models/notification/notification.dart';
 import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:chaseapp/src/modules/home/view/parts/helpers.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_tile.dart';
+import 'package:chaseapp/src/shared/notifications/notification_tile.dart';
 import 'package:chaseapp/src/shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,8 +18,9 @@ class NotificationsPaginatedListView extends ConsumerWidget {
     this.axis = Axis.horizontal,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<NotificationData>,
-      PaginationNotifierState<NotificationData>> chasesPaginationProvider;
+  final AutoDisposeStateNotifierProvider<
+      PaginationNotifier<ChaseAppNotification>,
+      PaginationNotifierState<ChaseAppNotification>> chasesPaginationProvider;
   final Logger logger;
   final ScrollController scrollController;
 
@@ -28,9 +29,9 @@ class NotificationsPaginatedListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     WidgetsBinding.instance!.addPostFrameCallback((t) {
-      updateNotificationsPresentStatus(false);
+      updateNotificationsPresentStatus(ref, false);
     });
-    return SliverProviderPaginatedStateNotifierBuilder<NotificationData>(
+    return SliverProviderPaginatedStateNotifierBuilder<ChaseAppNotification>(
         watchThisStateNotifierProvider: chasesPaginationProvider,
         logger: logger,
         scrollController: scrollController,
@@ -41,10 +42,15 @@ class NotificationsPaginatedListView extends ConsumerWidget {
                   child: Column(
                     children: [
                       Icon(
-                        Icons.notifications_none_outlined,
+                        Icons.notifications_none_rounded,
                       ),
                       Chip(
-                        label: Text("No Notifications!"),
+                        label: Text(
+                          "No New Notifications!",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorLight,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -52,8 +58,8 @@ class NotificationsPaginatedListView extends ConsumerWidget {
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return NotificationTIle(
-                        notificationData: notifications[index],
+                      return NotificationTile(
+                        notification: notifications[index],
                       );
                     },
                     childCount: notifications.length,

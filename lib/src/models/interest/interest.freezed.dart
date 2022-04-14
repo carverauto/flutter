@@ -27,12 +27,14 @@ class _$InterestTearOff {
       required String instanceId,
       required String name,
       required bool isCompulsory,
+      required bool isDefault,
       @DatetimeTimestampConverter() required DateTime createdAt}) {
     return _Interest(
       id: id,
       instanceId: instanceId,
       name: name,
       isCompulsory: isCompulsory,
+      isDefault: isDefault,
       createdAt: createdAt,
     );
   }
@@ -53,6 +55,7 @@ mixin _$Interest {
   String get instanceId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   bool get isCompulsory => throw _privateConstructorUsedError;
+  bool get isDefault => throw _privateConstructorUsedError;
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -71,6 +74,7 @@ abstract class $InterestCopyWith<$Res> {
       String instanceId,
       String name,
       bool isCompulsory,
+      bool isDefault,
       @DatetimeTimestampConverter() DateTime createdAt});
 }
 
@@ -88,6 +92,7 @@ class _$InterestCopyWithImpl<$Res> implements $InterestCopyWith<$Res> {
     Object? instanceId = freezed,
     Object? name = freezed,
     Object? isCompulsory = freezed,
+    Object? isDefault = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -107,6 +112,10 @@ class _$InterestCopyWithImpl<$Res> implements $InterestCopyWith<$Res> {
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDefault: isDefault == freezed
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -125,6 +134,7 @@ abstract class _$InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
       String instanceId,
       String name,
       bool isCompulsory,
+      bool isDefault,
       @DatetimeTimestampConverter() DateTime createdAt});
 }
 
@@ -143,6 +153,7 @@ class __$InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
     Object? instanceId = freezed,
     Object? name = freezed,
     Object? isCompulsory = freezed,
+    Object? isDefault = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_Interest(
@@ -162,6 +173,10 @@ class __$InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDefault: isDefault == freezed
+          ? _value.isDefault
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -179,6 +194,7 @@ class _$_Interest extends _Interest {
       required this.instanceId,
       required this.name,
       required this.isCompulsory,
+      required this.isDefault,
       @DatetimeTimestampConverter() required this.createdAt})
       : super._();
 
@@ -195,12 +211,14 @@ class _$_Interest extends _Interest {
   @override
   final bool isCompulsory;
   @override
+  final bool isDefault;
+  @override
   @DatetimeTimestampConverter()
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Interest(id: $id, instanceId: $instanceId, name: $name, isCompulsory: $isCompulsory, createdAt: $createdAt)';
+    return 'Interest(id: $id, instanceId: $instanceId, name: $name, isCompulsory: $isCompulsory, isDefault: $isDefault, createdAt: $createdAt)';
   }
 
   @override
@@ -214,6 +232,7 @@ class _$_Interest extends _Interest {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.isCompulsory, isCompulsory) &&
+            const DeepCollectionEquality().equals(other.isDefault, isDefault) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
@@ -224,6 +243,7 @@ class _$_Interest extends _Interest {
       const DeepCollectionEquality().hash(instanceId),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(isCompulsory),
+      const DeepCollectionEquality().hash(isDefault),
       const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
@@ -243,6 +263,7 @@ abstract class _Interest extends Interest {
       required String instanceId,
       required String name,
       required bool isCompulsory,
+      required bool isDefault,
       @DatetimeTimestampConverter() required DateTime createdAt}) = _$_Interest;
   const _Interest._() : super._();
 
@@ -257,6 +278,8 @@ abstract class _Interest extends Interest {
   String get name;
   @override
   bool get isCompulsory;
+  @override
+  bool get isDefault;
   @override
   @DatetimeTimestampConverter()
   DateTime get createdAt;

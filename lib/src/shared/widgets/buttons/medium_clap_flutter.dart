@@ -3,7 +3,7 @@ library medium_clap_flutter;
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chaseapp/src/const/assets.dart';
+import 'package:chaseapp/src/const/images.dart';
 import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -358,7 +358,6 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        //TODO: Fix the sizing here
         if (_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN)
           Flexible(
             child: widget.trailing(counter),

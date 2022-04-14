@@ -1,62 +1,85 @@
-import 'package:chaseapp/flavors.dart';
-import 'package:chaseapp/src/models/user/user_data.dart';
-import 'package:chaseapp/src/modules/chats/view/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart' as stream;
 
+import '../../../../core/top_level_providers/getstream_providers.dart';
+import '../../../../models/user/user_data.dart';
+
 class ChatStateNotifier extends StateNotifier<void> {
-  ChatStateNotifier(this.read) : super(null);
+  ChatStateNotifier({
+    required this.read,
+    // required this.chaseId,
+    required this.client,
+  }) : super(null);
+
+  // final String chaseId;
 
   final Reader read;
 
-  final Logger logger = Logger("ChatsServiceStateNotifier");
+  final Logger logger = Logger('ChatsServiceStateNotifier');
 
-  final _client = stream.StreamChatClient(
-    _getChatApiKey,
-    logLevel: Level.INFO,
-  );
+  late String userToken;
+  late bool isTokenInitialized = false;
 
-  static String get _getChatApiKey {
-    if (F.appFlavor == Flavor.DEV) {
-      const apiKey = String.fromEnvironment("Dev_GetStream_Chat_Api_Key");
-      return apiKey;
-    } else {
-      const apiKey = String.fromEnvironment("Prod_GetStream_Chat_Api_Key");
-      return apiKey;
-    }
-  }
+  final stream.StreamChatClient client;
 
-  stream.StreamChatClient get client => _client;
+  // // );
+
+  // static String get _getChatApiKey {
+  //   if (F.appFlavor == Flavor.DEV) {
+  //     const String apiKey =
+  //         String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
+
+  //     return apiKey;
+  //   } else {
+  //     const String apiKey =
+  //         String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
+
+  //     return apiKey;
+  //   }
+  // }
+
+  // stream.StreamChatClient get client => _client;
+
+  // Future<stream.ChannelState> watchChannel() async {
+  //   final stream.Channel channel = client.channel(
+  //     'livestream',
+  //     id: chaseId,
+  //   );
+
+  //   final stream.ChannelState channelState = await channel.watch();
+  //   //  channelState.channel.type;
+
+  //   return channelState;
+  // }
 
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
-      //TODO:generate token from server
-      //   final userToken = await client.devToken(userData.uid).rawValue;
-      final userToken =
-          await read(chatsRepoProvider).getUserToken(userData.uid);
+      if (!isTokenInitialized) {
+        userToken = await read(fetchUserTokenForGetStream(userData.uid).future);
+        isTokenInitialized = true;
+      }
 
-      //TODO: Need to discuss?
-      //Shouldn't this check be done within connectUser function instead?
-      if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected)
+      if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected) {
         await client.connectUser(
           stream.User(
             id: userData.uid,
-            name: userData.userName,
+            name: userData.userName?.split(' ')[0] ?? 'Unknown',
             image: userData.photoURL,
           ),
           userToken,
         );
+      }
     } catch (e, stk) {
-      logger.severe("Error while connecting user to getStream", e, stk);
+      logger.severe('Error while connecting user to getStream', e, stk);
     }
   }
 
-  Future<void> disconnectUser() async {
-    try {
-      await client.disconnectUser();
-    } catch (e, stk) {
-      logger.severe("Error while disconnecting user from getStream", e, stk);
-    }
-  }
+  // Future<void> disconnectUser() async {
+  //   try {
+  //     await client.disconnectUser();
+  //   } catch (e, stk) {
+  //     logger.severe('Error while disconnecting user from getStream', e, stk);
+  //   }
+  // }
 }

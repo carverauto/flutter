@@ -351,7 +351,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.7):
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
-  - cloud_firestore (3.1.6):
+  - cloud_firestore (3.1.11):
     - Firebase/Firestore (= 8.10.0)
     - firebase_core
     - Flutter
@@ -442,7 +442,7 @@ PODS:
     - Firebase/Analytics (= 8.10.0)
     - firebase_core
     - Flutter
-  - firebase_auth (3.3.5):
+  - firebase_auth (3.3.8):
     - Firebase/Auth (= 8.10.0)
     - firebase_core
     - Flutter
@@ -461,7 +461,7 @@ PODS:
     - Firebase/DynamicLinks (= 8.10.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (11.2.5):
+  - firebase_messaging (11.2.11):
     - Firebase/Messaging (= 8.10.0)
     - firebase_core
     - Flutter
@@ -657,6 +657,8 @@ PODS:
     - Flutter
   - image_picker (0.0.1):
     - Flutter
+  - integration_test (0.0.1):
+    - Flutter
   - launch_review (0.0.1):
     - Flutter
   - leveldb-library (1.22.1)
@@ -733,6 +735,8 @@ PODS:
     - libwebp
   - wakelock (0.0.1):
     - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
@@ -765,6 +769,7 @@ DEPENDENCIES:
   - GoogleUtilities/UserDefaults
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - NodleSDK
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -786,6 +791,7 @@ DEPENDENCIES:
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
@@ -882,6 +888,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info_plus:
@@ -916,13 +924,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_thumbnail/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
-  cloud_firestore: 03020d987c2828e9b2d87f6940d365ddb089394f
+  cloud_firestore: 5e5f56f6f23922438f69d6adf84e85140125e87a
   cloud_functions: 14b93d9218100febc841746dfcf8ff3904173d4a
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
@@ -934,12 +944,12 @@ SPEC CHECKSUMS:
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 44213362f1dcc52555b935dc925ed35ac55f1b20
   firebase_analytics: ab4a37ccfdc157e9fe43a2d47c230b39a405fbcc
-  firebase_auth: 9d959bddc3b255ddfb67cf630a5bbb6186964356
+  firebase_auth: 894d906bbd0ff0c54bea956e062a19bbe1d44c57
   firebase_core: 2ca2d6cc8a11693e701b37126afae4800be5dbac
   firebase_crashlytics: f4deda1b1b73132506f117b23c908bc9200eea7f
   firebase_database: 54f02e0bac6bac2d21436ac3d4c83f8f34a9f219
   firebase_dynamic_links: 6d11136201d2f929a3c7b124b9b478ae2e64a06e
-  firebase_messaging: c616c3449770c7e9f4db1ceb3fd2612b0b4d9283
+  firebase_messaging: 7c6a4e353c1e9031b7dea3a34f8e70bd41483307
   firebase_remote_config: 2f8d7c93f3b9b4ff18e196702b6c94682e600559
   firebase_storage: 740e81d4bef3360d50447dda37da9b8914a2acc0
   FirebaseABTesting: 1b05c92327b3f0a9545cea3bab4d93e82550e29b
@@ -972,6 +982,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   image_picker: 541dcbb3b9cf32d87eacbd957845d8651d6c62c3
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
@@ -1005,7 +1016,8 @@ SPEC CHECKSUMS:
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: ae416cd6c516bed85abb4b4d81ea8c9b7b462d04
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.10.2

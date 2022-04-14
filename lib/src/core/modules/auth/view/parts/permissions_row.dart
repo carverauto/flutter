@@ -21,7 +21,6 @@ class PermissionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Need to check on how I can set only some borders with new updates in stlying for buttons
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Theme.of(context).colorScheme.onBackground,
