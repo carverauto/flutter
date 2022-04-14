@@ -99,10 +99,9 @@ final AutoDisposeFutureProviderFamily<ChannelState, String>
   return watchState;
 });
 
-final AutoDisposeStreamProvider<ConnectionStatus>
-    chatWsConnectionStreamProvider =
-    StreamProvider.autoDispose<ConnectionStatus>((
-  AutoDisposeStreamProviderRef<ConnectionStatus> ref,
+final StreamProvider<ConnectionStatus> chatWsConnectionStreamProvider =
+    StreamProvider<ConnectionStatus>((
+  StreamProviderRef<ConnectionStatus> ref,
 ) async* {
   final UserData userData = await ref.watch(userStreamProvider.future);
 

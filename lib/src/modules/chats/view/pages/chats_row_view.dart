@@ -54,7 +54,10 @@ class ChatsViewRow extends ConsumerWidget {
                   const SizedBox(
                     width: kItemsSpacingSmallConstant,
                   ),
-                  UsersPresentCount(chaseId: chaseId, logger: logger),
+                  UsersPresentCount(
+                    chaseId: chaseId,
+                    logger: logger,
+                  ),
                   const Spacer(),
                   const Icon(
                     Icons.expand,
@@ -129,7 +132,8 @@ class ChatsViewRow extends ConsumerWidget {
                             );
                           },
                           child: StreamChannel(
-                            channel: channel,//ref.read(chatChannelProvider(chaseId)),
+                            channel:
+                                channel, //ref.read(chatChannelProvider(chaseId)),
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               onTap: () async {

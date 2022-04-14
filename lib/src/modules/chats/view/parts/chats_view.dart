@@ -7,6 +7,7 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../../../../const/colors.dart';
 import '../../../../const/other.dart';
 import '../../../../const/sizings.dart';
+import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/errors/error_widget.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../../../chase_view/view/providers/providers.dart';
@@ -242,9 +243,11 @@ class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
 
       if (updatedCount != null) {
         if (updatedCount != watchersCount) {
-          setState(() {
-            watchersCount = updatedCount;
-          });
+          if (mounted) {
+            setState(() {
+              watchersCount = updatedCount;
+            });
+          }
         }
       }
     });
@@ -257,86 +260,35 @@ class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
         Icons.remove_red_eye_rounded,
         size: 18,
       ),
-      label: Text(
-        watchersCount.toString(),
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-
-      //  ref.watch(chatWsConnectionStreamProvider).maybeWhen(
-      //       orElse: SizedBox.shrink,
-      //       data: (ConnectionStatus state) {
-      //         // ignore: prefer-conditional-expressions
-      //         if (state == ConnectionStatus.connected) {
-      //           return ProviderStateBuilder<ChannelState>(
-      //             watchThisProvider: watcherStateProvider(widget.chaseId),
-      //             logger: widget.logger,
-      //             loadingBuilder: SizedBox.shrink,
-      //             errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
-      //             builder: (
-      //               ChannelState channelState,
-      //               WidgetRef ref,
-      //               Widget? child,
-      //             ) {
-      //               final int count = channelState.watcherCount ?? 0;
-
-      //               ref
-      //                   .read(streamChatClientProvider)
-      //                   .eventStream
-      //                   .listen((Event event) {
-      //                 log(event.extraData['watcher_count'].toString());
-      //               });
-      //               // ref
-      //               //     .read(chatChannelProvider(widget.chaseId))
-      //               //     .state!
-      //               //     .watcherCountStream
-      //               //     .listen((int? count) {
-      //               //   // final int? realCount = ref
-      //               //   //     .read(chatChannelProvider(widget.chaseId))
-      //               //   //     .state!
-      //               //   //     .watcherCount;
-      //               //   log('Watchers count--->${channelState.watcherCount}');
-      //               //   // log('Users length ---> ${users.length}');
-      //               // });
-
-      //               return Text(
-      //                 count.toString(),
-      //                 style: const TextStyle(
-      //                   color: Colors.white,
-      //                   fontWeight: FontWeight.bold,
-      //                 ),
-      //               );
-      //               // return ProviderStateBuilder<ChannelState>(
-      //               //   loadingBuilder: SizedBox.shrink,
-      //               //   errorBuilder: (Object e, StackTrace? stk) =>
-      //               //       const Text('NA'),
-      //               //   builder: (
-      //               //     ChannelState channelState,
-      //               //     WidgetRef ref,
-      //               //     Widget? child,
-      //               //   ) {
-      //               //     final int count = channelState.watcherCount ?? 0;
-
-      //               //     return Text(
-      //               //       count.toString(),
-      //               //       style: const TextStyle(
-      //               //         color: Colors.white,
-      //               //         fontWeight: FontWeight.bold,
-      //               //       ),
-      //               //     );
-      //               //   },
-      //               //   watchThisProvider: watcherStateProvider(channel),
-      //               //   logger: logger,
-      //               // );
-      //             },
-      //           );
-      //         } else {
-      //           return const SizedBox.shrink();
-      //         }
-      //       },
-      //     ),
+      label: ref.watch(chatWsConnectionStreamProvider).maybeWhen(
+            orElse: SizedBox.shrink,
+            data: (ConnectionStatus state) {
+              // ignore: prefer-conditional-expressions
+              if (state == ConnectionStatus.connected) {
+                return ProviderStateBuilder<ChannelState>(
+                  watchThisProvider: watcherStateProvider(widget.chaseId),
+                  logger: widget.logger,
+                  loadingBuilder: SizedBox.shrink,
+                  errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
+                  builder: (
+                    ChannelState channelState,
+                    WidgetRef ref,
+                    Widget? child,
+                  ) {
+                    return Text(
+                      watchersCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
     );
   }
 }
