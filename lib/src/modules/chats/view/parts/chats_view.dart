@@ -7,7 +7,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../../../../const/colors.dart';
 import '../../../../const/other.dart';
 import '../../../../const/sizings.dart';
-import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/errors/error_widget.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../../../chase_view/view/providers/providers.dart';
@@ -215,7 +214,7 @@ class ChatsView extends ConsumerWidget {
   }
 }
 
-class UsersPresentCount extends ConsumerWidget {
+class UsersPresentCount extends ConsumerStatefulWidget {
   const UsersPresentCount({
     Key? key,
     required this.chaseId,
@@ -226,65 +225,118 @@ class UsersPresentCount extends ConsumerWidget {
   final Logger logger;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _UsersPresentCountState();
+}
+
+class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
+  late int watchersCount;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    watchersCount = 0;
+    ref.read(streamChatClientProvider).eventStream.listen((Event event) {
+      final int? updatedCount = event.extraData['watcher_count'] as int?;
+
+      if (updatedCount != null) {
+        if (updatedCount != watchersCount) {
+          setState(() {
+            watchersCount = updatedCount;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Chip(
       avatar: const Icon(
         Icons.remove_red_eye_rounded,
         size: 18,
       ),
-      label: ref.watch(chatWsConnectionStreamProvider).maybeWhen(
-            orElse: SizedBox.shrink,
-            data: (ConnectionStatus state) {
-              // ignore: prefer-conditional-expressions
-              if (state == ConnectionStatus.connected) {
-                return ProviderStateBuilder<ChannelState>(
-                  watchThisProvider: watcherStateProvider(chaseId),
-                  logger: logger,
-                  loadingBuilder: SizedBox.shrink,
-                  errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
-                  builder: (
-                    ChannelState channelState,
-                    WidgetRef ref,
-                    Widget? child,
-                  ) {
-                    final int count = channelState.watcherCount ?? 0;
+      label: Text(
+        watchersCount.toString(),
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
 
-                    return Text(
-                      count.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                    // return ProviderStateBuilder<ChannelState>(
-                    //   loadingBuilder: SizedBox.shrink,
-                    //   errorBuilder: (Object e, StackTrace? stk) =>
-                    //       const Text('NA'),
-                    //   builder: (
-                    //     ChannelState channelState,
-                    //     WidgetRef ref,
-                    //     Widget? child,
-                    //   ) {
-                    //     final int count = channelState.watcherCount ?? 0;
+      //  ref.watch(chatWsConnectionStreamProvider).maybeWhen(
+      //       orElse: SizedBox.shrink,
+      //       data: (ConnectionStatus state) {
+      //         // ignore: prefer-conditional-expressions
+      //         if (state == ConnectionStatus.connected) {
+      //           return ProviderStateBuilder<ChannelState>(
+      //             watchThisProvider: watcherStateProvider(widget.chaseId),
+      //             logger: widget.logger,
+      //             loadingBuilder: SizedBox.shrink,
+      //             errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
+      //             builder: (
+      //               ChannelState channelState,
+      //               WidgetRef ref,
+      //               Widget? child,
+      //             ) {
+      //               final int count = channelState.watcherCount ?? 0;
 
-                    //     return Text(
-                    //       count.toString(),
-                    //       style: const TextStyle(
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     );
-                    //   },
-                    //   watchThisProvider: watcherStateProvider(channel),
-                    //   logger: logger,
-                    // );
-                  },
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
+      //               ref
+      //                   .read(streamChatClientProvider)
+      //                   .eventStream
+      //                   .listen((Event event) {
+      //                 log(event.extraData['watcher_count'].toString());
+      //               });
+      //               // ref
+      //               //     .read(chatChannelProvider(widget.chaseId))
+      //               //     .state!
+      //               //     .watcherCountStream
+      //               //     .listen((int? count) {
+      //               //   // final int? realCount = ref
+      //               //   //     .read(chatChannelProvider(widget.chaseId))
+      //               //   //     .state!
+      //               //   //     .watcherCount;
+      //               //   log('Watchers count--->${channelState.watcherCount}');
+      //               //   // log('Users length ---> ${users.length}');
+      //               // });
+
+      //               return Text(
+      //                 count.toString(),
+      //                 style: const TextStyle(
+      //                   color: Colors.white,
+      //                   fontWeight: FontWeight.bold,
+      //                 ),
+      //               );
+      //               // return ProviderStateBuilder<ChannelState>(
+      //               //   loadingBuilder: SizedBox.shrink,
+      //               //   errorBuilder: (Object e, StackTrace? stk) =>
+      //               //       const Text('NA'),
+      //               //   builder: (
+      //               //     ChannelState channelState,
+      //               //     WidgetRef ref,
+      //               //     Widget? child,
+      //               //   ) {
+      //               //     final int count = channelState.watcherCount ?? 0;
+
+      //               //     return Text(
+      //               //       count.toString(),
+      //               //       style: const TextStyle(
+      //               //         color: Colors.white,
+      //               //         fontWeight: FontWeight.bold,
+      //               //       ),
+      //               //     );
+      //               //   },
+      //               //   watchThisProvider: watcherStateProvider(channel),
+      //               //   logger: logger,
+      //               // );
+      //             },
+      //           );
+      //         } else {
+      //           return const SizedBox.shrink();
+      //         }
+      //       },
+      //     ),
     );
   }
 }
