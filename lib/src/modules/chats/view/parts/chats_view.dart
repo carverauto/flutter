@@ -215,7 +215,7 @@ class ChatsView extends ConsumerWidget {
   }
 }
 
-class UsersPresentCount extends ConsumerWidget {
+class UsersPresentCount extends ConsumerStatefulWidget {
   const UsersPresentCount({
     Key? key,
     required this.chaseId,
@@ -226,7 +226,35 @@ class UsersPresentCount extends ConsumerWidget {
   final Logger logger;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _UsersPresentCountState();
+}
+
+class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
+  late int watchersCount;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    watchersCount = 1;
+    ref.read(streamChatClientProvider).eventStream.listen((Event event) {
+      final int? updatedCount = event.extraData['watcher_count'] as int?;
+
+      if (updatedCount != null) {
+        if (updatedCount != watchersCount) {
+          if (mounted) {
+            setState(() {
+              watchersCount = updatedCount;
+            });
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Chip(
       avatar: const Icon(
         Icons.remove_red_eye_rounded,
@@ -238,8 +266,8 @@ class UsersPresentCount extends ConsumerWidget {
               // ignore: prefer-conditional-expressions
               if (state == ConnectionStatus.connected) {
                 return ProviderStateBuilder<ChannelState>(
-                  watchThisProvider: watcherStateProvider(chaseId),
-                  logger: logger,
+                  watchThisProvider: watcherStateProvider(widget.chaseId),
+                  logger: widget.logger,
                   loadingBuilder: SizedBox.shrink,
                   errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
                   builder: (
@@ -247,37 +275,13 @@ class UsersPresentCount extends ConsumerWidget {
                     WidgetRef ref,
                     Widget? child,
                   ) {
-                    final int count = channelState.watcherCount ?? 0;
-
                     return Text(
-                      count.toString(),
+                      watchersCount.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     );
-                    // return ProviderStateBuilder<ChannelState>(
-                    //   loadingBuilder: SizedBox.shrink,
-                    //   errorBuilder: (Object e, StackTrace? stk) =>
-                    //       const Text('NA'),
-                    //   builder: (
-                    //     ChannelState channelState,
-                    //     WidgetRef ref,
-                    //     Widget? child,
-                    //   ) {
-                    //     final int count = channelState.watcherCount ?? 0;
-
-                    //     return Text(
-                    //       count.toString(),
-                    //       style: const TextStyle(
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     );
-                    //   },
-                    //   watchThisProvider: watcherStateProvider(channel),
-                    //   logger: logger,
-                    // );
                   },
                 );
               } else {

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/notification/notification.dart';
@@ -15,6 +16,7 @@ import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
 import '../../../../shared/notifications/notification_pop_up_banner.dart';
 import '../../../../shared/notifications/notifications_helpers.dart';
+import '../../../chats/view/providers/providers.dart';
 import '../parts/helpers.dart';
 import 'home_page.dart';
 
@@ -161,22 +163,26 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handlemessagesthatopenedtheappFromBackgroundState();
   }
 
+  Future<void> connectUserAgain() async {
+    log(ref.read(streamChatClientProvider).state.currentUser.toString());
+
+    if (ref.read(streamChatClientProvider).state.currentUser != null &&
+        ref.read(streamChatClientProvider).wsConnectionStatus ==
+            ConnectionStatus.disconnected) {
+      await ref
+          .read(streamChatClientProvider)
+          .openConnection(includeUserDetailsInConnectCall: true);
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // if (mounted) {
-    //   switch (state) {
-    //     case AppLifecycleState.resumed:
-    //       ref.refresh(firehosePaginatedStateNotifierProvier(logger));
-    //       break;
-    //     default:
-    //   }
-    //   // if (state == AppLifecycleState.resumed) {
-    //   //   _timerLink = Timer(
-    //   //     const Duration(milliseconds: 1000),
-    //   //     () {},
-    //   //   );
-    //   // }
-    // }
+    // TODO: implement didChangeAppLifecycleState
+    if (state == AppLifecycleState.resumed) {
+      // connectUserAgain();
+    } else if (state == AppLifecycleState.paused) {
+      connectUserAgain();
+    }
   }
 
   @override
