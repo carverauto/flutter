@@ -34,6 +34,25 @@ Add
 
 `MAPBOX_DOWNLOAD_TOKEN=<token>`
 
+## App Store / App Connect
+
+### Build
+
+Supply the correct Pusher Instance ID and Stream Chat API key:
+
+```
+flutter build ipa --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
+```
+
+### Distribute
+
+Open the build in xcode and hit distribute app
+
+```
+open /Users/mfreeman/src/flutter/build/ios/archive/Runner.xcarchive
+```
+
+
 ## Appcircle
 
 ### Custom Script
