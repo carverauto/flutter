@@ -54,9 +54,11 @@ class ChatsViewRow extends ConsumerWidget {
                   const SizedBox(
                     width: kItemsSpacingSmallConstant,
                   ),
-                  UsersPresentCount(
-                    chaseId: chaseId,
-                    logger: logger,
+                  RepaintBoundary(
+                    child: UsersPresentCount(
+                      chaseId: chaseId,
+                      logger: logger,
+                    ),
                   ),
                   const Spacer(),
                   const Icon(
