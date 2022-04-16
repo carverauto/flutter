@@ -232,21 +232,27 @@ class UsersPresentCount extends ConsumerStatefulWidget {
 
 class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
   late int watchersCount;
+  late String? channelId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    watchersCount = 1;
-    ref.read(streamChatClientProvider).eventStream.listen((Event event) {
-      final int? updatedCount = event.extraData['watcher_count'] as int?;
+    channelId = ref.read(chatChannelProvider(widget.chaseId)).id;
+    watchersCount =
+        ref.read(chatChannelProvider(widget.chaseId)).state?.watcherCount ?? 1;
 
-      if (updatedCount != null) {
-        if (updatedCount != watchersCount) {
-          if (mounted) {
-            setState(() {
-              watchersCount = updatedCount;
-            });
+    ref.read(streamChatClientProvider).eventStream.listen((Event event) {
+      if (event.channelId == channelId) {
+        final int? updatedCount = event.extraData['watcher_count'] as int?;
+
+        if (updatedCount != null) {
+          if (updatedCount != watchersCount) {
+            if (mounted) {
+              setState(() {
+                watchersCount = updatedCount;
+              });
+            }
           }
         }
       }
