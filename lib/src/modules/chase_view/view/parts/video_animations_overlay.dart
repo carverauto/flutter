@@ -188,20 +188,15 @@ class _VideoAnimationsOverlayState
     if (widget.chase.live ?? false) {
       Future<void>.microtask(subscribetoAnimationEvents);
     } else {
-      // Future<void>.microtask(fetchAnimationEvents);
+      Future<void>.microtask(() {
+        ref.watch(showVideoOverlayProvider.state).update((bool state) => false);
+      });
     }
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     timer.cancel();
-    // ref
-    //     .read(chaseEventsNotifierProvider(widget.chase.id).notifier)
-    //     .unsubscribeFeed();
-
-    // widget.controller.removeListener(listener);
-
     super.dispose();
   }
 
