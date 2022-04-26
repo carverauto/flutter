@@ -31,6 +31,9 @@ class _$ChaseTearOff {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           required DateTime? createdAt,
+      @JsonKey(name: 'EndedAt')
+      @DatetimeTimestampNullableConverter()
+          required DateTime? endedAt,
       @JsonKey(name: 'Desc')
           required String? desc,
       @JsonKey(name: 'ImageURL')
@@ -48,6 +51,7 @@ class _$ChaseTearOff {
       name: name,
       live: live,
       createdAt: createdAt,
+      endedAt: endedAt,
       desc: desc,
       imageURL: imageURL,
       votes: votes,
@@ -77,6 +81,9 @@ mixin _$Chase {
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampNullableConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'EndedAt')
+  @DatetimeTimestampNullableConverter()
+  DateTime? get endedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'Desc')
   String? get desc => throw _privateConstructorUsedError;
   @JsonKey(name: 'ImageURL')
@@ -108,6 +115,9 @@ abstract class $ChaseCopyWith<$Res> {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
+      @JsonKey(name: 'EndedAt')
+      @DatetimeTimestampNullableConverter()
+          DateTime? endedAt,
       @JsonKey(name: 'Desc')
           String? desc,
       @JsonKey(name: 'ImageURL')
@@ -136,6 +146,7 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
     Object? name = freezed,
     Object? live = freezed,
     Object? createdAt = freezed,
+    Object? endedAt = freezed,
     Object? desc = freezed,
     Object? imageURL = freezed,
     Object? votes = freezed,
@@ -159,6 +170,10 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endedAt: endedAt == freezed
+          ? _value.endedAt
+          : endedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       desc: desc == freezed
           ? _value.desc
@@ -202,6 +217,9 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           DateTime? createdAt,
+      @JsonKey(name: 'EndedAt')
+      @DatetimeTimestampNullableConverter()
+          DateTime? endedAt,
       @JsonKey(name: 'Desc')
           String? desc,
       @JsonKey(name: 'ImageURL')
@@ -231,6 +249,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
     Object? name = freezed,
     Object? live = freezed,
     Object? createdAt = freezed,
+    Object? endedAt = freezed,
     Object? desc = freezed,
     Object? imageURL = freezed,
     Object? votes = freezed,
@@ -254,6 +273,10 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endedAt: endedAt == freezed
+          ? _value.endedAt
+          : endedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       desc: desc == freezed
           ? _value.desc
@@ -296,6 +319,9 @@ class _$_Chase extends _Chase {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           required this.createdAt,
+      @JsonKey(name: 'EndedAt')
+      @DatetimeTimestampNullableConverter()
+          required this.endedAt,
       @JsonKey(name: 'Desc')
           required this.desc,
       @JsonKey(name: 'ImageURL')
@@ -327,6 +353,10 @@ class _$_Chase extends _Chase {
   @DatetimeTimestampNullableConverter()
   final DateTime? createdAt;
   @override
+  @JsonKey(name: 'EndedAt')
+  @DatetimeTimestampNullableConverter()
+  final DateTime? endedAt;
+  @override
   @JsonKey(name: 'Desc')
   final String? desc;
   @override
@@ -347,7 +377,7 @@ class _$_Chase extends _Chase {
 
   @override
   String toString() {
-    return 'Chase(id: $id, name: $name, live: $live, createdAt: $createdAt, desc: $desc, imageURL: $imageURL, votes: $votes, networks: $networks, sentiment: $sentiment, wheels: $wheels)';
+    return 'Chase(id: $id, name: $name, live: $live, createdAt: $createdAt, endedAt: $endedAt, desc: $desc, imageURL: $imageURL, votes: $votes, networks: $networks, sentiment: $sentiment, wheels: $wheels)';
   }
 
   @override
@@ -359,6 +389,7 @@ class _$_Chase extends _Chase {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.live, live) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.endedAt, endedAt) &&
             const DeepCollectionEquality().equals(other.desc, desc) &&
             const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
             const DeepCollectionEquality().equals(other.votes, votes) &&
@@ -374,6 +405,7 @@ class _$_Chase extends _Chase {
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(live),
       const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(endedAt),
       const DeepCollectionEquality().hash(desc),
       const DeepCollectionEquality().hash(imageURL),
       const DeepCollectionEquality().hash(votes),
@@ -402,6 +434,9 @@ abstract class _Chase extends Chase {
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
           required DateTime? createdAt,
+      @JsonKey(name: 'EndedAt')
+      @DatetimeTimestampNullableConverter()
+          required DateTime? endedAt,
       @JsonKey(name: 'Desc')
           required String? desc,
       @JsonKey(name: 'ImageURL')
@@ -431,6 +466,10 @@ abstract class _Chase extends Chase {
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampNullableConverter()
   DateTime? get createdAt;
+  @override
+  @JsonKey(name: 'EndedAt')
+  @DatetimeTimestampNullableConverter()
+  DateTime? get endedAt;
   @override
   @JsonKey(name: 'Desc')
   String? get desc;

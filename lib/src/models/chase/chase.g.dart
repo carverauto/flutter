@@ -12,6 +12,8 @@ _$_Chase _$$_ChaseFromJson(Map<String, dynamic> json) => _$_Chase(
       live: json['Live'] as bool?,
       createdAt: const DatetimeTimestampNullableConverter()
           .fromJson(json['CreatedAt'] as Timestamp?),
+      endedAt: const DatetimeTimestampNullableConverter()
+          .fromJson(json['EndedAt'] as Timestamp?),
       desc: json['Desc'] as String?,
       imageURL: json['ImageURL'] as String?,
       votes: json['Votes'] as int?,
@@ -28,6 +30,8 @@ Map<String, dynamic> _$$_ChaseToJson(_$_Chase instance) => <String, dynamic>{
       'Live': instance.live,
       'CreatedAt':
           const DatetimeTimestampNullableConverter().toJson(instance.createdAt),
+      'EndedAt':
+          const DatetimeTimestampNullableConverter().toJson(instance.endedAt),
       'Desc': instance.desc,
       'ImageURL': instance.imageURL,
       'Votes': instance.votes,

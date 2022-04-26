@@ -1,9 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:chaseapp/src/models/chase/network/chase_network.dart';
-import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../shared/util/convertors/datetimeconvertor.dart';
+import 'network/chase_network.dart';
 
 part 'chase.freezed.dart';
 part 'chase.g.dart';
@@ -22,6 +23,9 @@ abstract class Chase implements _$Chase {
     @JsonKey(name: 'CreatedAt')
     @DatetimeTimestampNullableConverter()
         required DateTime? createdAt,
+    @JsonKey(name: 'EndedAt')
+    @DatetimeTimestampNullableConverter()
+        required DateTime? endedAt,
     @JsonKey(name: 'Desc') required String? desc,
     @JsonKey(name: 'ImageURL') String? imageURL,
     @JsonKey(name: 'Votes') required int? votes,
