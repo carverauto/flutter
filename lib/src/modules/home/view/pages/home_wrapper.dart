@@ -16,7 +16,6 @@ import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
 import '../../../../shared/notifications/notification_pop_up_banner.dart';
 import '../../../../shared/notifications/notifications_helpers.dart';
-import '../../../chats/view/providers/providers.dart';
 import '../parts/helpers.dart';
 import 'home_page.dart';
 
@@ -163,17 +162,17 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handlemessagesthatopenedtheappFromBackgroundState();
   }
 
-  Future<void> connectUserAgain() async {
-    log(ref.read(streamChatClientProvider).state.currentUser.toString());
+  // Future<void> connectUserAgain() async {
+  //   log(ref.read(streamChatClientProvider).state.currentUser.toString());
 
-    if (ref.read(streamChatClientProvider).state.currentUser != null &&
-        ref.read(streamChatClientProvider).wsConnectionStatus ==
-            ConnectionStatus.disconnected) {
-      await ref
-          .read(streamChatClientProvider)
-          .openConnection(includeUserDetailsInConnectCall: true);
-    }
-  }
+  //   if (ref.read(streamChatClientProvider).state.currentUser != null &&
+  //       ref.read(streamChatClientProvider).wsConnectionStatus ==
+  //           ConnectionStatus.disconnected) {
+  //     await ref
+  //         .read(streamChatClientProvider)
+  //         .openConnection(includeUserDetailsInConnectCall: true);
+  //   }
+  // }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -181,7 +180,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     if (state == AppLifecycleState.resumed) {
       // connectUserAgain();
     } else if (state == AppLifecycleState.paused) {
-      connectUserAgain();
+      // connectUserAgain();
     }
   }
 
