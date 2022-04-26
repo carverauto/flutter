@@ -184,6 +184,35 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                         const SizedBox(
                           height: kItemsSpacingSmallConstant,
                         ),
+                        if (widget.chase.endedAt != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.timer,
+                                color: primaryColor.shade300,
+                              ),
+                              const SizedBox(
+                                width: kItemsSpacingSmallConstant / 2,
+                              ),
+                              GlassButton(
+                                child: Text(
+                                  chaseDuration(
+                                    widget.chase.createdAt!,
+                                    widget.chase.endedAt!,
+                                  ),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(
+                          height: kItemsSpacingSmallConstant,
+                        ),
                         Text(
                           'Sentiment Analysis :',
                           style: Theme.of(context)
