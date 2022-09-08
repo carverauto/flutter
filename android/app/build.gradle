@@ -48,7 +48,7 @@ android {
            
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -61,7 +61,7 @@ android {
     defaultConfig {
         applicationId "com.carverauto.chaseapp"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -98,4 +98,5 @@ dependencies {
     implementation "com.algolia:algoliasearch-client-kotlin:1.12.0"
     implementation "io.ktor:ktor-client-okhttp:1.6.4"
     implementation 'com.pusher:pusher-java-client:2.2.8'
+    
 }
