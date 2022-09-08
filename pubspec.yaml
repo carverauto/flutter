@@ -102,11 +102,10 @@ dependencies:
   cloud_functions: ^3.2.7
   
   # Pusher
-  pusher_beams: ^1.1.0
-  pusher_beams_android:
+  pusher_beams:
     git:
       url: https://github.com/chase-app/push-notifications-flutter.git
-      path: packages/pusher_beams_android
+      path: packages/pusher_beams
   pusher_channels_flutter: ^1.0.5
   
   
