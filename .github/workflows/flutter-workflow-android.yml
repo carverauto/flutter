@@ -14,9 +14,14 @@ jobs:
         with:
           java-version: '11.x'
       - uses: subosito/flutter-action@v1
+      env:
+        KEY_JKS: ${{ secrets.KEY_JKS }}
+        KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+        ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: echo $KEY_JKS > key.jks
       - run: flutter pub get
-      - run: flutter build apk --debug --flavor prod --target lib/main_prod.dart
+      - run: flutter build apk -v --flavor prod --target lib/main_prod.dart
       - uses: actions/upload-artifact@v1
         with:
-          name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
+          name: app-prod-release
+          path: build\app\outputs\flutter-apk\app-prod-release.apk
