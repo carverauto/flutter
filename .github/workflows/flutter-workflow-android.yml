@@ -15,7 +15,7 @@ jobs:
           java-version: '11.x'
       - uses: subosito/flutter-action@v1
       - run: flutter pub get
-      - run: flutter build apk --flavor prod --target lib/main_prod.dart
+      - run: flutter build apk --debug --flavor prod --target lib/main_prod.dart
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
