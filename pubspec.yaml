@@ -102,8 +102,9 @@ dependencies:
   cloud_functions: ^3.2.7
   
   # Pusher
-  pusher_channels_flutter: ^1.0.5
   pusher_beams: ^1.0.2
+  pusher_channels_flutter: ^1.0.2
+  
   
  # social_embed_webview: ^0.3.2
   webview_flutter: ^2.8.0
