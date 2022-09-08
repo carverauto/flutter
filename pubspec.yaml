@@ -100,7 +100,7 @@ dependencies:
   google_fonts: ^2.1.0
   carousel_slider: ^4.0.0
   cloud_functions: ^3.2.7
-D
+  
   # Pusher
   pusher_channels_flutter: ^1.0.5
   pusher_beams: ^1.0.2
