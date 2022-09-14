@@ -12,20 +12,18 @@ jobs:
       KEY_JKS: ${{ secrets.KEY_JKS }}
       KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
       ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-      run: echo $KEY_JKS > android/key.jks
-      run: ls android/
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
         with:
-          java-version: '11.x'
+          java-version: "11.x"
       - uses: subosito/flutter-action@v1
       - run: flutter clean
       - run: flutter pub get
+      - run: echo $KEY_JKS > android/key.jks
+      - run: ls android/
       - run: flutter build apk --flavor prod --target lib/main_prod.dart
       - uses: actions/upload-artifact@v1
         with:
           name: app-prod-release
           path: build\app\outputs\flutter-apk\app-prod-release.apk
-
-
