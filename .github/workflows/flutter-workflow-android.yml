@@ -30,11 +30,11 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: app-prod-release.aab
-          path: build/app/outputs/bundle/release/app-prod-release.aab
+          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
       - uses: actions/upload-artifact@v3
         with:
           name: mapping.txt
-          path: build/app/outputs/mapping/release/mapping.txt
+          path: build/app/outputs/mapping/prodRelease/mapping.txt
 
   deploy-play-store:
     needs: [build]
@@ -56,6 +56,6 @@ jobs:
           packageName: com.carverauto.chaseapp
           releaseFile: app-prod-release.aab
           track: internal
-          # userFraction: 0.50
-          status: draft
+          userFraction: 1.0
+          # status: internal
           mappingFile: mapping.txt
