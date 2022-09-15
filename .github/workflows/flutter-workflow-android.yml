@@ -3,7 +3,7 @@ name: Flutter CI (Android)
 on:
   push:
     branches:
-      - master
+      - staging
 
 jobs:
   build:
@@ -22,8 +22,40 @@ jobs:
       - run: echo $KEYSTORE | base64 --decode > android/key.jks
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter build apk --flavor prod --target lib/main_prod.dart
-      - uses: actions/upload-artifact@v1
+      - run: flutter build appbundle --flavor prod --target lib/main_prod.dart
+      # - uses: actions/upload-artifact@v1
+      #   with:
+      #     name: app-prod-release
+      #     path: build/app/outputs/flutter-apk/app-prod-release.apk
+      - uses: actions/upload-artifact@v3
         with:
-          name: app-prod-release
-          path: build/app/outputs/flutter-apk/app-prod-release.apk
+          name: app-prod-release.aab
+          path: build/app/outputs/bundle/release/app-prod-release.aab
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mapping.txt
+          path: build/app/outputs/mapping/release/mapping.txt
+
+  deploy-play-store:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      # 1
+      - uses: actions/download-artifact@master
+        with:
+          name: app-prod-release.aab
+      - uses: actions/download-artifact@master
+        with:
+          name: mapping.txt
+      # 2
+      # - name: Publish to Play Store internal test track
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
+          # 3
+          packageName: com.carverauto.chaseapp
+          releaseFile: app-prod-release.aab
+          track: internal
+          # userFraction: 0.50
+          status: draft
+          mappingFile: mapping.txt
