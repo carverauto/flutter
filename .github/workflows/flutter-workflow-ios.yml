@@ -54,7 +54,7 @@ jobs:
 
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
+        run: flutter build ipa -v --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
           
       # Collect the file and upload as artifact         
       - name: collect ipa artifacts
@@ -65,7 +65,7 @@ jobs:
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          security delete-keychain /tmp/app-signing.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
   
 #   Release job, upload the ipa to Firebase App Distribution
