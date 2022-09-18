@@ -20,6 +20,7 @@ jobs:
           BUILD_PROVISION_PROFILE_2_BASE64: ${{ secrets.MOBILEPROVISION_2_BASE64 }}
           BUILD_PROVISION_PROFILE_3_BASE64: ${{ secrets.MOBILEPROVISION_3_BASE64 }}
           BUILD_PROVISION_PROFILE_4_BASE64: ${{ secrets.MOBILEPROVISION_4_BASE64 }}
+          SERVICES_PLIST_BASE64: ${{ secrets.GOOGLESERVICES_IOS_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           KEYCHAIN_PATH: /tmp/app-signing.keychain-db
           PP_PATH: /tmp/*.mobileprovision
@@ -31,6 +32,7 @@ jobs:
           echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
           echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
           echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output /tmp/4.mobileprovision
+          echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output /Users/runner/work/flutter/flutter/ios/config/prod/GoogleService-Info.plist
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
@@ -54,7 +56,7 @@ jobs:
 
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa -v --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
+        run: flutter build ipa --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
           
       # Collect the file and upload as artifact         
       - name: collect ipa artifacts
