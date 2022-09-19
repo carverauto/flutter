@@ -63,3 +63,4 @@ jobs:
           # userFraction: 0.99
           status: completed
           mappingFile: mapping.txt
+          whatsNewDirectory: distribution_android/whatsnew
