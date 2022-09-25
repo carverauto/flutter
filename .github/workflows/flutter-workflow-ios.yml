@@ -41,7 +41,7 @@ jobs:
           echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
           echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
           echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output /tmp/4.mobileprovision
-          echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output /Users/runner/work/flutter/flutter/ios/config/prod/GoogleService-Info.plist
+          echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output ios/config/prod/GoogleService-Info.plist
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
