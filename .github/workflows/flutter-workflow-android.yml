@@ -20,7 +20,7 @@ jobs:
       Twitter_Secret_key: ${{ secrets.TWITTER_SECRET_KEY }}
       Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
       Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
-      SERVICES_JSON_BASE64: ${{ secrets.PROD_GOOGLESERVICES_ANDROID_BASE64 }}
+      # SERVICES_JSON_BASE64: ${{ secrets.PROD_GOOGLESERVICES_ANDROID_BASE64 }}
 
     steps:
       - uses: actions/checkout@v1
@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: "11.x"
       - uses: subosito/flutter-action@v1
-      - run: echo $SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
+      # - run: echo $SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
       - run: echo $KEYSTORE | base64 --decode > android/key.jks
       - run: flutter clean
       - run: flutter pub get
