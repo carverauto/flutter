@@ -1,0 +1,74 @@
+name: Flutter CI (Android)
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE: ${{ secrets.KEYSTORE }}
+      KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      ALIAS_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+      ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      Pusher_Instance_Id: ${{ secrets.PROD_PUSHER_INSTANCE_ID }}
+      GetStream_Chat_Api_Key: ${{ secrets.PROD_GETSTREAM_CHAT_API_KEY }}
+      Twitter_Token: ${{ secrets.TWITTER_TOKEN }}
+      Twitter_Api_key: ${{ secrets.TWITTER_API_KEY }}
+      Twitter_Secret_key: ${{ secrets.TWITTER_SECRET_KEY }}
+      Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
+      Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "11.x"
+      - uses: subosito/flutter-action@v1
+      - run: echo $KEYSTORE | base64 --decode > android/key.jks
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build appbundle --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
+
+      # - uses: actions/upload-artifact@v1
+      #   with:
+      #     name: app-prod-release
+      #     path: build/app/outputs/flutter-apk/app-prod-release.apk
+      - uses: actions/upload-artifact@v3
+        with:
+          name: app-prod-release.aab
+          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+      - uses: actions/upload-artifact@v3
+        with:
+          name: mapping.txt
+          path: build/app/outputs/mapping/prodRelease/mapping.txt
+
+  deploy-play-store:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: dawidd6/action-download-artifact@v2.23.0
+      #   with:
+      #     github_token: ${{secrets.LHCI_GITHUB_APP_TOKEN}}
+      #     run_id: 3062408982
+      # 1
+      - uses: actions/download-artifact@master
+        with:
+          name: app-prod-release.aab
+      - uses: actions/download-artifact@master
+        with:
+          name: mapping.txt
+      # 2
+      # - name: Publish to Play Store internal test track
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
+          # 3
+          packageName: com.carverauto.chaseapp
+          releaseFile: app-prod-release.aab
+          track: internal
+          # userFraction: 0.99
+          status: completed
+          mappingFile: mapping.txt
+          whatsNewDirectory: distribution_android/whatsnew

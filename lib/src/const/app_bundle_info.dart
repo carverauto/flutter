@@ -86,10 +86,12 @@ class EnvVaribales {
   static String get youtubeApiKey => _youtubeApiKey;
   static const String _youtubeToken = String.fromEnvironment('Youtube_Token');
   static String get youtubeToken => _youtubeToken;
-  static const String _devGetStreamChatApiKey =
-      String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
-  static String get devGetStreamChatApiKey => _devGetStreamChatApiKey;
-  static const String _prodGetStreamChatApiKey =
-      String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
-  static String get prodGetStreamChatApiKey => _prodGetStreamChatApiKey;
+  static const String _getStreamChatApiKey =
+      String.fromEnvironment('GetStream_Chat_Api_Key');
+  static String get getStreamChatApiKey => _getStreamChatApiKey;
+  // static const String _prodGetStreamChatApiKey =
+  //     String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
+  // static String get prodGetStreamChatApiKey => _prodGetStreamChatApiKey;
+
+  static const String instanceId = String.fromEnvironment('Pusher_Instance_Id');
 }
