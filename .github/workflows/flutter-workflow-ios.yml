@@ -26,6 +26,13 @@ jobs:
           KEYCHAIN_PATH: /tmp/app-signing.keychain-db
           PP_PATH: /tmp/*.mobileprovision
           CERTIFICATE_PATH: /tmp/build_certificate.p12
+          Pusher_Instance_Id: ${{ secrets.PROD_PUSHER_INSTANCE_ID }}
+          GetStream_Chat_Api_Key: ${{ secrets.PROD_GETSTREAM_CHAT_API_KEY }}
+          Twitter_Token: ${{ secrets.TWITTER_TOKEN }}
+          Twitter_Api_key: ${{ secrets.TWITTER_API_KEY }}
+          Twitter_Secret_key: ${{ secrets.TWITTER_SECRET_KEY }}
+          Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
+          Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           # import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
@@ -59,7 +66,7 @@ jobs:
 
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa -v --flavor prod --target lib/main_prod.dart --dart-define=Prod_Pusher_Instance_Id=4asdfasdf33 --dart-define=Prod_GetStream_Chat_Api_Key=sadfasdf
+        run: flutter build ipa -v --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
