@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
-import '../../../../../flavors.dart';
 import '../../../../const/app_bundle_info.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../models/user/user_data.dart';
@@ -20,9 +19,10 @@ final Provider<feed.StreamFeedClient> streamFeedClientProvider =
     Provider<feed.StreamFeedClient>(
   (ProviderRef<feed.StreamFeedClient> ref) {
     return feed.StreamFeedClient(
-      F.appFlavor == Flavor.DEV
-          ? EnvVaribales.devGetStreamChatApiKey
-          : EnvVaribales.prodGetStreamChatApiKey,
+      // F.appFlavor == Flavor.DEV
+      //     ?
+      EnvVaribales.getStreamChatApiKey,
+      //  : EnvVaribales.prodGetStreamChatApiKey,
       appId: '102359',
     );
   },
@@ -32,9 +32,10 @@ final Provider<StreamChatClient> streamChatClientProvider =
     Provider<StreamChatClient>(
   (ProviderRef<StreamChatClient> ref) {
     final StreamChatClient client = StreamChatClient(
-      F.appFlavor == Flavor.DEV
-          ? EnvVaribales.devGetStreamChatApiKey
-          : EnvVaribales.prodGetStreamChatApiKey,
+      // F.appFlavor == Flavor.DEV
+      //     ?
+      EnvVaribales.getStreamChatApiKey,
+      //   : EnvVaribales.prodGetStreamChatApiKey,
       logLevel: Level.INFO,
     );
 
