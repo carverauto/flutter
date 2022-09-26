@@ -11,7 +11,7 @@ jobs:
     runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       # Install the Apple certificate and provisioning profile
       - name: Install the Apple certificate and provisioning profile
@@ -58,7 +58,7 @@ jobs:
 
       # Install flutter
       - name: Flutter get
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.0.5"
           architecture: x64
@@ -72,7 +72,7 @@ jobs:
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
-        uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v2
         with:
           path: build/ios/ipa/*.ipa
 
