@@ -52,6 +52,15 @@ Open the build in xcode and hit distribute app
 open /Users/mfreeman/src/flutter/build/ios/archive/Runner.xcarchive
 ```
 
+### Github Actions CI/CD
+
+To trigger the CI/CD workflow for store deployment for android and ios,
+push a tagged commit with the latest version tag like follow,
+
+```
+git tag v0.1 -a -m "Release v0.1"
+git push --follow-tags
+```
 
 ## Appcircle
 
