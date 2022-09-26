@@ -28,7 +28,7 @@ jobs:
           SERVICES_PLIST_BASE64: ${{ secrets.GOOGLESERVICES_IOS_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           KEYCHAIN_PATH: /tmp/app-signing.keychain-db
-          PP_PATH: /tmp/*.mobileprovision
+          PP_PATH: /tmp/build_pp.mobileprovision
           CERTIFICATE_PATH: /tmp/build_certificate.p12
           Pusher_Instance_Id: ${{ secrets.PROD_PUSHER_INSTANCE_ID }}
           GetStream_Chat_Api_Key: ${{ secrets.PROD_GETSTREAM_CHAT_API_KEY }}
