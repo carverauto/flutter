@@ -34,14 +34,14 @@ jobs:
           Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
+          echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output ios/config/prod/GoogleService-Info.plist
           # import certificate and provisioning profile from secrets
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output /tmp/sign_certificate.p12
           echo -n "$BUILD_PROVISION_PROFILE_1_BASE64" | base64 --decode --output /tmp/1.mobileprovision
-          echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
-          echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
-          echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output /tmp/4.mobileprovision
-          echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output ios/config/prod/GoogleService-Info.plist
+          # echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output /tmp/4.mobileprovision
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
