@@ -20,6 +20,7 @@ jobs:
           APPLE_DEV_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEV_CERTIFICATE_PASSWORD }}
           P12_PASSWORD: ${{ secrets.APPSTORE_CERT_PASSWORD }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          BUILD_APPIMAGE_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_APPIMAGE_PROVISION_PROFILE_BASE64 }}
           # BUILD_PROVISION_PROFILE_1_BASE64: ${{ secrets.MOBILEPROVISION_1_BASE64 }}
           # BUILD_PROVISION_PROFILE_2_BASE64: ${{ secrets.MOBILEPROVISION_2_BASE64 }}
           # BUILD_PROVISION_PROFILE_3_BASE64: ${{ secrets.MOBILEPROVISION_3_BASE64 }}
@@ -42,6 +43,7 @@ jobs:
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
           echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output /tmp/sign_certificate.p12
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output /tmp/build_pp.mobileprovision
+          echo -n "$BUILD_APPIMAGE_PROVISION_PROFILE_BASE64" | base64 --decode --output /tmp/build_appimage_pp.mobileprovision
           # echo -n "$BUILD_PROVISION_PROFILE_1_BASE64" | base64 --decode --output /tmp/1.mobileprovision
           # echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
           # echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
