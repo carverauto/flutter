@@ -37,7 +37,7 @@ jobs:
       - name: Install Distribution Certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
-          create-keychain: false
+          create-keychain: "false"
           p12-file-base64: ${{ secrets.APPSTORE_DISTRO_CERT_BASE64 }}
           p12-password: ${{ secrets.APPSTORE_CERT_PASSWORD }}
       # Install the Apple certificate and provisioning profile
