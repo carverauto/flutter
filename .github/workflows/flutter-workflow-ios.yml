@@ -27,9 +27,6 @@ jobs:
           # BUILD_PROVISION_PROFILE_4_BASE64: ${{ secrets.MOBILEPROVISION_4_BASE64 }}
           SERVICES_PLIST_BASE64: ${{ secrets.GOOGLESERVICES_IOS_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-          KEYCHAIN_PATH: /tmp/app-signing.keychain-db
-          PP_PATH: /tmp/*.mobileprovision
-          CERTIFICATE_PATH: /tmp/build_certificate.p12
           Pusher_Instance_Id: ${{ secrets.PROD_PUSHER_INSTANCE_ID }}
           GetStream_Chat_Api_Key: ${{ secrets.PROD_GETSTREAM_CHAT_API_KEY }}
           Twitter_Token: ${{ secrets.TWITTER_TOKEN }}
@@ -38,25 +35,40 @@ jobs:
           Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
+          # create variables
+          KEYCHAIN_PATH: $RUNNER_TEMP/app-signing.keychain-db
+          PP_PATH: $RUNNER_TEMP/*.mobileprovision
+          CERTIFICATE_PATH: $RUNNER_TEMP/build_certificate.p12
+          DISTRIBUTION_CERTIFICATE_PATH: $RUNNER_TEMP/sign_certificate.p12
+
+          # echo Firebase services file
           echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output ios/config/prod/GoogleService-Info.plist
+
           # import certificate and provisioning profile from secrets
+
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
-          # echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output /tmp/sign_certificate.p12
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output /tmp/build_pp.mobileprovision
-          echo -n "$BUILD_APPIMAGE_PROVISION_PROFILE_BASE64" | base64 --decode --output /tmp/build_appimage_pp.mobileprovision
-          # echo -n "$BUILD_PROVISION_PROFILE_1_BASE64" | base64 --decode --output /tmp/1.mobileprovision
-          # echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output /tmp/2.mobileprovision
-          # echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output /tmp/3.mobileprovision
-          # echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output /tmp/4.mobileprovision
+          # echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output $DISTRIBUTION_CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $RUNNER_TEMP/build_pp.mobileprovision
+          echo -n "$BUILD_APPIMAGE_PROVISION_PROFILE_BASE64" | base64 --decode --output $RUNNER_TEMP/build_appimage_pp.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_1_BASE64" | base64 --decode --output $RUNNER_TEMP/1.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_2_BASE64" | base64 --decode --output $RUNNER_TEMP/2.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_3_BASE64" | base64 --decode --output $RUNNER_TEMP/3.mobileprovision
+          # echo -n "$BUILD_PROVISION_PROFILE_4_BASE64" | base64 --decode --output $RUNNER_TEMP/4.mobileprovision
+
           # create temporary keychain
+
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
           # import certificate to keychain
+
           security import $CERTIFICATE_PATH -P "$APPLE_DEV_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          # security import /tmp/sign_certificate.p12 -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          # security import $DISTRIBUTION_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
+
           # apply provisioning profile
+
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
@@ -83,8 +95,8 @@ jobs:
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
-          security delete-keychain /tmp/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
   testflight-upload:
     needs: [build]
