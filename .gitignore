@@ -80,3 +80,5 @@ pubspec.lock
 .fvm/
 
 distribution/
+
+youtube_player_flutter
