@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      KEYSTORE: ${{ secrets.KEYSTORE }}
+      ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
       ALIAS_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
       ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
@@ -30,8 +30,8 @@ jobs:
         with:
           java-version: "11.x"
       - uses: subosito/flutter-action@v1
-      # - run: echo $SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
-      - run: echo $KEYSTORE | base64 --decode > android/key.jks
+      # - run: echo -n $SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
+      - run: echo -n $ANDROID_KEYSTORE | base64 --decode > android/key.jks
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build appbundle --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
