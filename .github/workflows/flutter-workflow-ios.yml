@@ -2,9 +2,9 @@ name: "ChaseApp - iOS"
 on:
   push:
     branches:
-      - master
-#     # tags:
-#     #   - "v*"
+      - staging
+    # tags:
+    #   - "v*"
 jobs:
   build:
     runs-on: [self-hosted, macOS]
