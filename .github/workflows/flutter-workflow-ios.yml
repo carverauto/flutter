@@ -20,7 +20,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.0.5"
+          flutter-version: "3.0.1"
           architecture: x64
       # - name: Setup Xcode
       #   uses: maxim-lobanov/setup-xcode@v1
@@ -102,8 +102,6 @@ jobs:
 
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
-      - run: flutter clean
 
       # Install your project's dependencies
       - run: flutter pub get
