@@ -22,10 +22,6 @@ jobs:
         with:
           flutter-version: "3.0.5"
           architecture: x64
-      - run: |
-          security delete-keychain $RUNNER_TEMP/signing_temp.keychain
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
-
       # - name: Setup Xcode
       #   uses: maxim-lobanov/setup-xcode@v1
       #   with:
@@ -35,6 +31,7 @@ jobs:
       - name: Install Development Certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
+          create-keychain: false
           p12-file-base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
           p12-password: ${{ secrets.APPLE_DEV_CERTIFICATE_PASSWORD }}
       # Install Distribution Certificate
@@ -123,6 +120,7 @@ jobs:
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
+          security delete-keychain signing_temp.keychain
           security delete-keychain $RUNNER_TEMP/signing_temp.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
