@@ -55,6 +55,12 @@ jobs:
     steps:
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
+          name: app-prod-release.aab
+          github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
+          run_id: 3135509352
+      - uses: dawidd6/action-download-artifact@v2.23.0
+        with:
+          name: mapping.txt
           github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
           run_id: 3135509352
       # 1
