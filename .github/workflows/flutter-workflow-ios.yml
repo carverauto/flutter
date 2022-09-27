@@ -47,7 +47,7 @@ jobs:
           # import certificate and provisioning profile from secrets
 
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
-          # echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output $DISTRIBUTION_CERTIFICATE_PATH
+          echo -n "$DISTRO_CERTIFICATE_BASE64" | base64 --decode --output $DISTRIBUTION_CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $RUNNER_TEMP/build_pp.mobileprovision
           echo -n "$BUILD_APPIMAGE_PROVISION_PROFILE_BASE64" | base64 --decode --output $RUNNER_TEMP/build_appimage_pp.mobileprovision
           # echo -n "$BUILD_PROVISION_PROFILE_1_BASE64" | base64 --decode --output $RUNNER_TEMP/1.mobileprovision
@@ -64,7 +64,7 @@ jobs:
           # import certificate to keychain
 
           security import $CERTIFICATE_PATH -P "$APPLE_DEV_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          # security import $DISTRIBUTION_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $DISTRIBUTION_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
