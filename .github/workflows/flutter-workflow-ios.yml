@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: [self-hosted, macOS]
     steps:
-      - run: security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
       - name: Checkout repository
         uses: actions/checkout@v2
 
