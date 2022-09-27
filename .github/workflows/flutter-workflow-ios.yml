@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: [self-hosted, macOS]
     steps:
+      - run: security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -31,7 +32,6 @@ jobs:
       - name: Install Development Certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
-          create-keychain: false
           p12-file-base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
           p12-password: ${{ secrets.APPLE_DEV_CERTIFICATE_PASSWORD }}
       # Install Distribution Certificate
@@ -120,7 +120,7 @@ jobs:
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
-          security delete-keychain signing_temp.keychain
+          security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
           security delete-keychain $RUNNER_TEMP/signing_temp.keychain-db
           rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
 
