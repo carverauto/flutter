@@ -36,10 +36,10 @@ jobs:
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           # create variables
-          KEYCHAIN_PATH: $RUNNER_TEMP/app-signing.keychain-db
-          PP_PATH: $RUNNER_TEMP/*.mobileprovision
-          CERTIFICATE_PATH: $RUNNER_TEMP/build_certificate.p12
-          DISTRIBUTION_CERTIFICATE_PATH: $RUNNER_TEMP/sign_certificate.p12
+          KEYCHAIN_PATH:$RUNNER_TEMP/app-signing.keychain-db
+          PP_PATH:$RUNNER_TEMP/*.mobileprovision
+          CERTIFICATE_PATH:$RUNNER_TEMP/build_certificate.p12
+          DISTRIBUTION_CERTIFICATE_PATH:$RUNNER_TEMP/sign_certificate.p12
 
           # echo Firebase services file
           echo -n "$SERVICES_PLIST_BASE64" | base64 --decode --output ios/config/prod/GoogleService-Info.plist
