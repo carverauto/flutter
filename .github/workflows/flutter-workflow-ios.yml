@@ -28,11 +28,11 @@ jobs:
       #   with:
       #     xcode-version: "13.4.1"
       # Install Development Certificate
-      - name: Install Development Certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
-          p12-password: ${{ secrets.APPLE_DEV_CERTIFICATE_PASSWORD }}
+      # - name: Install Development Certificate
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.APPSTORE_CERT_BASE64 }}
+      #     p12-password: ${{ secrets.APPLE_DEV_CERTIFICATE_PASSWORD }}
       # Install Distribution Certificate
       - name: Install Distribution Certificate
         uses: apple-actions/import-codesign-certs@v1
