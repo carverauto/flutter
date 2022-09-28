@@ -8,6 +8,8 @@
 		<string>com.apple.usernotifications.service</string>
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationService</string>
+		<key>App Uses Non-Exempt Encryption</key>
+		<NO/>
 	</dict>
 </dict>
 </plist>
