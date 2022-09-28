@@ -242,7 +242,9 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> twitterLogin() async {
     // Create a TwitterLogin instance
-
+    print('object');
+    print(EnvVaribales.twitterApiKey);
+    print(EnvVaribales.twitterSecretKey);
     final TwitterLogin twitterLogin = TwitterLogin(
       apiKey: EnvVaribales.twitterApiKey,
       apiSecretKey: EnvVaribales.twitterSecretKey,

@@ -9,7 +9,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationService</string>
 		<key>App Uses Non-Exempt Encryption</key>
-		<NO/>
+		<false/>
 	</dict>
 </dict>
 </plist>
