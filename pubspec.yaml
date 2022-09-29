@@ -43,7 +43,7 @@ dependencies:
   google_sign_in: ^5.2.1
   sign_in_with_apple: ^3.3.0
   flutter_facebook_auth: ^3.5.0
-  twitter_login: ^4.0.1
+  twitter_login: ^4.2.2
 
   # State Management
   flutter_riverpod: ^1.0.3
