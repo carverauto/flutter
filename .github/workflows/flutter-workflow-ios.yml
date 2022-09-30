@@ -127,7 +127,7 @@ jobs:
 
       # Build and sign the ipa using a single flutter command
       - name: Building IPA
-        run: flutter build ipa --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
+        run: flutter build ipa --flavor prod --target lib/main_prod.dart -v --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
