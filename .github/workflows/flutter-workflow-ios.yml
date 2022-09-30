@@ -22,10 +22,10 @@ jobs:
         with:
           flutter-version: "3.0.1"
           architecture: x64
-      # - name: Setup Xcode
-      #   uses: maxim-lobanov/setup-xcode@v1
-      #   with:
-      #     xcode-version: "13.4.1"
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "14.0"
       # Install Development Certificate
 
       # - name: Install Development Certificate
