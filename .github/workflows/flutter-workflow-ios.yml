@@ -117,9 +117,9 @@ jobs:
           flutter clean
           flutter pub get
           cd ios
-          pod install --repo-update
           # pod repo update
-          # pod update Firebase/Auth
+          pod update Firebase/Auth
+          pod install --repo-update
           cd ..
 
       # Install your project's dependencies
