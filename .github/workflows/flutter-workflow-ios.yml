@@ -120,11 +120,11 @@ jobs:
       - run: |
           flutter clean
           flutter pub get
-          # cd ios
-          # # pod repo update
-          # pod update Firebase/Auth
-          # # pod install --repo-update
-          # cd ..
+          cd ios
+          # pod repo update
+          pod update Firebase/Auth
+          # pod install --repo-update
+          cd ..
 
       # Install your project's dependencies
       - run: flutter pub get
