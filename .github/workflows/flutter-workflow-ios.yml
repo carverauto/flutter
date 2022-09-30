@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: [self-hosted, macOS]
     steps:
+      - run: |
+          sudo xcode-select -s /Applications/Xcode_14.0.app/Contents/Developer
+          xcode-select -v 
+          /usr/bin/xcodebuild -version
       - name: Checkout repository
         uses: actions/checkout@v2
 
