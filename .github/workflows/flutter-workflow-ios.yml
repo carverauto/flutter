@@ -65,7 +65,7 @@ jobs:
           Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
-          security delete-keychain $RUNNER_TEMP/signing_temp.keychain-db
+          security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
 
           # Install the Apple certificate and provisioning profile
           # create variables
