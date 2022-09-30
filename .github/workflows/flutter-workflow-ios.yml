@@ -112,7 +112,7 @@ jobs:
           echo ls ~/Library/MobileDevice/Provisioning\ Profiles
 
       # Running Flutter clean
-      - run: flutter clean
+      # - run: flutter clean
 
       # Install your project's dependencies
       - run: flutter pub get
