@@ -113,12 +113,13 @@ jobs:
           echo ls ~/Library/MobileDevice/Provisioning\ Profiles
 
       # Running Flutter clean
-      - run: flutter clean
-      #     flutter pub get
-      #     cd ios
-      #     # pod repo update
-      #     pod update Firebase/Auth
-      #     cd ..
+      - run: |
+          flutter clean
+          flutter pub get
+          cd ios
+          # pod repo update
+          pod update Firebase/Auth
+          cd ..
 
       # Install your project's dependencies
       - run: flutter pub get
