@@ -115,6 +115,7 @@ jobs:
       # Running Flutter clean
       - run: |
           flutter clean
+          flutter pub get
           cd ios
           # pod repo update
           pod update Firebase/Auth
