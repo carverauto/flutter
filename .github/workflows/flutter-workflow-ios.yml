@@ -119,7 +119,7 @@ jobs:
           cd ios
           # pod repo update
           pod update Firebase/Auth
-          pod install --repo-update
+          # pod install --repo-update
           cd ..
 
       # Install your project's dependencies
