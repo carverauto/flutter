@@ -7,12 +7,12 @@ on:
     #   - "v*"
 jobs:
   build:
-    runs-on: [self-hosted, macOS]
+    runs-on: macos-latest
     steps:
-      - run: |
-          sudo xcode-select -s /Applications/Xcode_14.0.app/Contents/Developer
-          xcode-select -v 
-          /usr/bin/xcodebuild -version
+      # - run: |
+      #     sudo xcode-select -s /Applications/Xcode_14.0.app/Contents/Developer
+      #     xcode-select -v
+      #     /usr/bin/xcodebuild -version
       - name: Checkout repository
         uses: actions/checkout@v2
 
