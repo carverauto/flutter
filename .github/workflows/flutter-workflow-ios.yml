@@ -190,33 +190,38 @@ jobs:
       - name: collect ipa artifacts
         uses: actions/upload-artifact@v2
         with:
+          name: chaseapp.ipa
           path: build/ios/ipa/*.ipa
 
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
           rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
-          security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+          # security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
           # security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
 
   testflight-upload:
     needs: [build]
-    runs-on: "macos-latest"
+    runs-on: [self-hosted, macOS]
     env:
-      APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
-      APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+      # APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+      # APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+      issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+      api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
       GH_TOKEN: ${{secrets.GIT_TOKEN}}
     steps:
-      - uses: actions/download-artifact@master
-        with:
-          name: pong.ipa
-      # - uses: dawidd6/action-download-artifact@v2.23.0
+      # - uses: actions/download-artifact@master
       #   with:
-      #     github_token: ${{secrets.GIT_TOKEN}}
-      #     run_id: 3071273970
-      #     name: pong.ipa
+      #     name: chaseapp.ipa
+      - uses: dawidd6/action-download-artifact@v2.23.0
+        with:
+          github_token: ${{secrets.GIT_TOKEN}}
+          run_id: 3189707390
+          name: chaseapp.ipa
       - run: |
-          xcrun altool --upload-app -t ios -f "pong.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "pong.ipa" --apiKey "$api-private-key" --apiIssuer "$issuer-id"
+          #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
 #   Release job, upload the ipa to Firebase App Distribution
 #  release:
