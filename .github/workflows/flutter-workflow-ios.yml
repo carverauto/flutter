@@ -49,8 +49,8 @@ jobs:
 
       # Install the Apple certificate and provisioning profile
       #download provisioning profiles
-      - name: "Download Dev Provisioning Profiles"
-        id: provisioning
+      - name: "Download Dev Provisioning Profiles for Flutter target"
+        id: provisioning1
         uses: apple-actions/download-provisioning-profiles@v1
         with:
           bundle-id: "com.carverauto.chaseapp"
@@ -59,8 +59,8 @@ jobs:
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
-      - name: "Download Dev Provisioning Profiles"
-        id: provisioning
+      - name: "Download Dev Provisioning Profiles for AppImageNotification target"
+        id: provisioning2
         uses: apple-actions/download-provisioning-profiles@v1
         with:
           bundle-id: "com.carverauto.chaseapp.AppImageNotification"
@@ -69,8 +69,8 @@ jobs:
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
-      - name: "Download Distribution Provisioning Profiles"
-        id: provisioning
+      - name: "Download Distribution Provisioning Profiles for Flutter target"
+        id: provisioning3
         uses: apple-actions/download-provisioning-profiles@v1
         with:
           bundle-id: "com.carverauto.chaseapp"
@@ -79,8 +79,8 @@ jobs:
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
-      - name: "Download Distribution Provisioning Profiles"
-        id: provisioning
+      - name: "Download Distribution Provisioning Profiles for AppImageNotification target"
+        id: provisioning4
         uses: apple-actions/download-provisioning-profiles@v1
         with:
           bundle-id: "*"
