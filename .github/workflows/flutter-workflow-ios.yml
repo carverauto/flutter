@@ -223,7 +223,7 @@ jobs:
           name: chaseapp.ipa
       - run: |
           echo $api-private-key
-          echo $apiIssuer
+          echo $issuer-id
           xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "$api-private-key" --apiIssuer "$issuer-id"
           #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
