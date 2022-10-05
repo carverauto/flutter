@@ -9,6 +9,8 @@ jobs:
   build:
     runs-on: [self-hosted, macOS]
     steps:
+      - run: security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
+
       #     sudo xcode-select -s /Applications/Xcode_14.0.app/Contents/Developer
       #     xcode-select -v
 
@@ -198,7 +200,7 @@ jobs:
         run: |
           rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
           # security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          # security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
+          security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain-db
 
   testflight-upload:
     needs: [build]
@@ -211,16 +213,16 @@ jobs:
       api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
       GH_TOKEN: ${{secrets.GIT_TOKEN}}
     steps:
-      # - uses: actions/download-artifact@master
-      #   with:
-      #     name: chaseapp.ipa
-      - uses: dawidd6/action-download-artifact@v2.23.0
+      - uses: actions/download-artifact@master
         with:
-          github_token: ${{secrets.GIT_TOKEN}}
-          run_id: 3189707390
           name: chaseapp.ipa
+      # - uses: dawidd6/action-download-artifact@v2.23.0
+      #   with:
+      #     github_token: ${{secrets.GIT_TOKEN}}
+      #     run_id: 3189707390
+      #     name: chaseapp.ipa
       - run: |
-          xcrun altool --upload-app -t ios -f "pong.ipa" --apiKey "$api-private-key" --apiIssuer "$issuer-id"
+          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "$api-private-key" --apiIssuer "$issuer-id"
           #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
 #   Release job, upload the ipa to Firebase App Distribution
