@@ -208,23 +208,25 @@ jobs:
     env:
       # APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
       # APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-      issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-      api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-      api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+      issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      api_key_id: ${{ secrets.APPSTORE_KEY_ID }}
+      api_private_key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
       GH_TOKEN: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
     steps:
       # - uses: actions/download-artifact@master
       #   with:
       #     name: chaseapp.ipa
+      - run: echo -n "$api_private_key" | base64 --decode --output ./apikey.p8
+
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
           github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
           run_id: 3189992801
           name: chaseapp.ipa
       - run: |
-          echo ${{api-private-key}} 
-          echo ${{issuer-id}}
-          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey ${{api-private-key}} --apiIssuer ${{issuer-id}}
+          echo $api_private_key
+          echo $issuer_id
+          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "$api_private_key" --apiIssuer "$issuer_id"
           #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 
 #   Release job, upload the ipa to Firebase App Distribution
