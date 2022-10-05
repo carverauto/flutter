@@ -9,9 +9,9 @@ import '../../../../shared/util/helpers/sizescaleconfig.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 
 class TweetPreview extends StatelessWidget {
+  const TweetPreview({required this.tweetId, this.showMedia = true});
   final String tweetId;
   final bool showMedia;
-  const TweetPreview({required this.tweetId, this.showMedia = true});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
       child: Stack(
         children: [
           WebView(
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.transparent,
             javascriptMode: JavascriptMode.unrestricted,
             navigationDelegate: (NavigationRequest request) {
               log('message');
@@ -158,6 +158,13 @@ String getHtmlBody(String tweetId) {
            
             *{box-sizing: border-box;margin:0px; padding:0px;}
               #widget {
+                        display: flex;
+                        justify-content: center;
+                        margin: 0 auto;
+                        max-width:100%;
+                        max-height:100%;
+                    }      
+              #container {
                         display: flex;
                         justify-content: center;
                         margin: 0 auto;

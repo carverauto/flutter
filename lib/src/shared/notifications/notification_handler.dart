@@ -73,6 +73,7 @@ Future<void> _showFirehosePreview(
             borderRadius: BorderRadius.circular(kPaddingMediumConstant),
           ),
           clipBehavior: Clip.hardEdge,
+          backgroundColor: Colors.transparent,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
