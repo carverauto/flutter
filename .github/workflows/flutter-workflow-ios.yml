@@ -228,9 +228,9 @@ jobs:
           run_id: 3189992801
           name: chaseapp.ipa
 
-      - run: xcrun altool --validate-app -t ios -f "chaseapp.ipa" --apiKey "Github_deployment" --apiIssuer "$issuer_id" --show-progress --verbose
+      - run: xcrun altool --validate-app -t ios -f "chaseapp.ipa" --apiKey "~/private_keys/AuthKey_Github_deployment.p8" --apiIssuer "$issuer_id" --show-progress --verbose
       - run:
-          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "Github_deployment" --apiIssuer "$issuer_id"
+          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "~/private_keys/AuthKey_Github_deployment.p8" --apiIssuer "$issuer_id"
           # --apiKey "Github_deployment" --apiIssuer "$issuer_id"
           #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
 #   Release job, upload the ipa to Firebase App Distribution
