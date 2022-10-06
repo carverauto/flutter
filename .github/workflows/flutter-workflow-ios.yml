@@ -217,10 +217,10 @@ jobs:
       #   with:
       #     name: chaseapp.ipa
 
-      # - run: |
-      #     mkdir -p ~/private_keys/
-      #     # echo -n "$api_private_key" | base64 --decode --output ~/private_keys/AuthKey_Github_deployment.p8
-      #     echo "$api_private_key" > ~/private_keys/AuthKey_Github_deployment.p8
+      - run: |
+          mkdir -p ~/private_keys/
+          # echo -n "$api_private_key" | base64 --decode --output ~/private_keys/AuthKey_Github_deployment.p8
+          echo "$api_private_key" > ~/private_keys/AuthKey_Github_deployment.p8
 
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
