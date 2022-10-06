@@ -206,32 +206,33 @@ jobs:
     # needs: [build]
     runs-on: [self-hosted, macOS]
     env:
-      # APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
-      # APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-      issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
-      api_key_id: ${{ secrets.APPSTORE_KEY_ID }}
-      api_private_key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+      APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+      APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+      # issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      # api_key_id: ${{ secrets.APPSTORE_KEY_ID }}
+      # api_private_key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
       GH_TOKEN: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
     steps:
       # - uses: actions/download-artifact@master
       #   with:
       #     name: chaseapp.ipa
 
-      - run: |
-          mkdir -p ~/private_keys/
-          # echo -n "$api_private_key" | base64 --decode --output ~/private_keys/AuthKey_Github_deployment.p8
-          echo "$api_private_key" > ~/private_keys/AuthKey_Github_deployment.p8
+      # - run: |
+      #     mkdir -p ~/private_keys/
+      #     # echo -n "$api_private_key" | base64 --decode --output ~/private_keys/AuthKey_Github_deployment.p8
+      #     echo "$api_private_key" > ~/private_keys/AuthKey_Github_deployment.p8
 
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
           github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
           run_id: 3189992801
           name: chaseapp.ipa
-      - run: |
 
-          xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey "Github_deployment" --apiIssuer "$issuer_id"
+      - run: xcrun altool --validate-app -t ios -f "chaseapp.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+      - run:
+          xcrun altool --upload-app -t ios -f "chaseapp.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          # --apiKey "Github_deployment" --apiIssuer "$issuer_id"
           #  -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
-
 #   Release job, upload the ipa to Firebase App Distribution
 #  release:
 #    name: Release ipa to Firebase
