@@ -228,7 +228,7 @@ jobs:
           run_id: 3189992801
           name: chaseapp.ipa
 
-      - run: xcrun altool --validate-app -t ios -f "chaseapp.ipa" --apiKey "AuthKey_Github_deployment.p8" --apiIssuer "$issuer_id" --show-progress --verbose
+      - run: xcrun altool --validate-app -t ios -f "chaseapp.ipa" --apiKey $api_private_key --apiIssuer $issuer_id --show-progress --verbose
       - run:
           xcrun altool --upload-app -t ios -f "chaseapp.ipa" --apiKey $api_private_key --apiIssuer $issuer_id
           # --apiKey "Github_deployment" --apiIssuer "$issuer_id"
