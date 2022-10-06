@@ -206,11 +206,11 @@ jobs:
     # needs: [build]
     runs-on: [self-hosted, macOS]
     env:
-      APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
-      APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-      # issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
-      # api_key_id: ${{ secrets.APPSTORE_KEY_ID }}
-      # api_private_key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+      # APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
+      # APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+      issuer_id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      api_key_id: ${{ secrets.APPSTORE_KEY_ID }}
+      api_private_key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
       GH_TOKEN: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
     steps:
       # - uses: actions/download-artifact@master
