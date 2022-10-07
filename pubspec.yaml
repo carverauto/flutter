@@ -105,7 +105,7 @@ dependencies:
     git:
       url: https://github.com/chase-app/push-notifications-flutter.git
       path: packages/pusher_beams
-  pusher_channels_flutter: ^1.0.5
+  pusher_channels_flutter: ^2.0.2
 
   # social_embed_webview: ^0.3.2
   webview_flutter: ^2.8.0
