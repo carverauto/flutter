@@ -14,16 +14,15 @@ import '../providers/providers.dart';
 
 // import 'package:chaseapp/pages/chat_page.dart';
 class ChaseDetailsView extends ConsumerStatefulWidget {
-  final String chaseId;
-  final Animation<Offset> appBarOffsetAnimation;
-  final Animation<Offset> bottomListAnimation;
-
   const ChaseDetailsView({
     Key? key,
     required this.chaseId,
     required this.appBarOffsetAnimation,
     required this.bottomListAnimation,
   }) : super(key: key);
+  final String chaseId;
+  final Animation<Offset> appBarOffsetAnimation;
+  final Animation<Offset> bottomListAnimation;
 
   @override
   ConsumerState<ChaseDetailsView> createState() => _ChaseDetailsViewState();
@@ -44,7 +43,6 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
     final String chaseId = widget.chaseId;
 
     ref.watch(playVideoProvider);
-
     return ChaseDetailsProviderStateBuilder<Chase>(
       watchThisProvider: streamChaseProvider(chaseId),
       logger: logger,
