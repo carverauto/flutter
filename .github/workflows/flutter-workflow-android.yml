@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS]
     env:
       ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -51,7 +51,7 @@ jobs:
 
   deploy-play-store:
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS]
     steps:
       # - uses: dawidd6/action-download-artifact@v2.23.0
       #   with:
