@@ -94,4 +94,8 @@ class EnvVaribales {
   // static String get prodGetStreamChatApiKey => _prodGetStreamChatApiKey;
 
   static const String instanceId = String.fromEnvironment('Pusher_Instance_Id');
+
+  static const String _mapboxPublicAccessToken =
+      String.fromEnvironment('MapBoxACCESS_TOKEN');
+  static String get getMapBoxPublicAccessToken => _mapboxPublicAccessToken;
 }

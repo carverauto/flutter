@@ -13,6 +13,7 @@ import '../../../chases/view/pages/recent_chases/recent_chases.dart';
 import '../../../chases/view/pages/top_chases/top_chases.dart';
 import '../../../chases/view/providers/providers.dart';
 import '../../../firehose/view/pages/firehose_view_all.dart';
+import '../../../map/map_view.dart';
 import '../parts/chaseapp_appbar.dart';
 import '../parts/chaseapp_drawer.dart';
 import '../parts/connectivity_status.dart';
@@ -29,12 +30,14 @@ class Dashboard extends StatelessWidget {
             PaginationNotifierState<Chase>> chasesPaginationProvider =
         chasesPaginatedStreamProvider(logger);
 
-    return Scaffold(
-      drawer: const ChaseAppDrawer(),
-      body: _DashboardMainView(
-        chasesPaginationProvider: chasesPaginationProvider,
-        logger: logger,
-      ),
+    return const Scaffold(
+      drawer: ChaseAppDrawer(),
+      body: MapBoxView(),
+
+      //  _DashboardMainView(
+      //   chasesPaginationProvider: chasesPaginationProvider,
+      //   logger: logger,
+      // ),
 
       //  ProviderStateBuilder(
       //     errorBuilder: (context, stk) => DashboardMainView(
@@ -220,7 +223,7 @@ class _DashboardMainView extends ConsumerWidget {
                   height: kItemsSpacingSmallConstant,
                 ),
               ),
-              FirehoseListViewAll(
+              const FirehoseListViewAll(
                 showLimited: true,
               ),
               const SliverToBoxAdapter(

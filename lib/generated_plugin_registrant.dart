@@ -21,6 +21,7 @@ import 'package:firebase_storage_web/firebase_storage_web.dart';
 import 'package:flutter_facebook_auth_web/flutter_facebook_auth_web.dart';
 import 'package:google_sign_in_web/google_sign_in_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
+import 'package:mapbox_gl_web/mapbox_gl_web.dart';
 import 'package:package_info_plus_web/package_info_plus_web.dart';
 import 'package:pusher_beams_web/pusher_beams_web.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter_web.dart';
@@ -50,6 +51,7 @@ void registerPlugins(Registrar registrar) {
   FlutterFacebookAuthPlugin.registerWith(registrar);
   GoogleSignInPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
+  MapboxMapPlugin.registerWith(registrar);
   PackageInfoPlugin.registerWith(registrar);
   PusherBeams.registerWith(registrar);
   PusherChannelsFlutterWeb.registerWith(registrar);
