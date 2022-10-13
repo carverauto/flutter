@@ -7,8 +7,8 @@ part of 'adsb.dart';
 // **************************************************************************
 
 _$_ADSB _$$_ADSBFromJson(Map<String, dynamic> json) => _$_ADSB(
-      flight: json['flight'] as String,
-      group: json['group'] as String,
+      flight: json['flight'] as String?,
+      group: json['group'] as String?,
       lat: (json['lat'] as num).toDouble(),
       lon: (json['lon'] as num).toDouble(),
       track: (json['track'] as num?)?.toDouble(),

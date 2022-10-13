@@ -56,6 +56,7 @@ class _MapBoxViewState extends State<MapBoxView> {
 
     final ByteData heli = await rootBundle.load('assets/helicopter.png');
     final ByteData plane = await rootBundle.load('assets/plane.png');
+    final ByteData boat = await rootBundle.load('assets/boat.png');
 
     await mapboxMapController.addImage(
       'heli',
@@ -64,6 +65,10 @@ class _MapBoxViewState extends State<MapBoxView> {
     await mapboxMapController.addImage(
       'plane',
       plane.buffer.asUint8List(),
+    );
+    await mapboxMapController.addImage(
+      'boat',
+      boat.buffer.asUint8List(),
     );
     await mapboxMapController.setSymbolIconAllowOverlap(true);
     // await mapboxMapController.setSymbolTextAllowOverlap(true);
@@ -105,7 +110,7 @@ class _MapBoxViewState extends State<MapBoxView> {
         SymbolOptions(
           geometry: LatLng(ship.lat, ship.lon),
 
-          // iconImage: 'testimage',
+          iconImage: 'boat',
           // iconSize: 0.1,
           iconRotate: ship.heading,
         ),

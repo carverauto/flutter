@@ -24,9 +24,9 @@ mixin _$ADSB {
 // All documents must have an id
 // required String id,
   @JsonKey(name: 'flight')
-  String get flight => throw _privateConstructorUsedError;
+  String? get flight => throw _privateConstructorUsedError;
   @JsonKey(name: 'group')
-  String get group => throw _privateConstructorUsedError;
+  String? get group => throw _privateConstructorUsedError;
   @JsonKey(name: 'lat')
   double get lat => throw _privateConstructorUsedError;
   @JsonKey(name: 'lon')
@@ -46,8 +46,8 @@ abstract class $ADSBCopyWith<$Res> {
   factory $ADSBCopyWith(ADSB value, $Res Function(ADSB) then) =
       _$ADSBCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'flight') String flight,
-      @JsonKey(name: 'group') String group,
+      {@JsonKey(name: 'flight') String? flight,
+      @JsonKey(name: 'group') String? group,
       @JsonKey(name: 'lat') double lat,
       @JsonKey(name: 'lon') double lon,
       @JsonKey(name: 'track') double? track,
@@ -75,11 +75,11 @@ class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
       flight: flight == freezed
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       lat: lat == freezed
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
@@ -106,8 +106,8 @@ abstract class _$$_ADSBCopyWith<$Res> implements $ADSBCopyWith<$Res> {
       __$$_ADSBCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'flight') String flight,
-      @JsonKey(name: 'group') String group,
+      {@JsonKey(name: 'flight') String? flight,
+      @JsonKey(name: 'group') String? group,
       @JsonKey(name: 'lat') double lat,
       @JsonKey(name: 'lon') double lon,
       @JsonKey(name: 'track') double? track,
@@ -136,11 +136,11 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
       flight: flight == freezed
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       lat: lat == freezed
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
@@ -166,8 +166,8 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_ADSB extends _ADSB {
   const _$_ADSB(
-      {@JsonKey(name: 'flight') required this.flight,
-      @JsonKey(name: 'group') required this.group,
+      {@JsonKey(name: 'flight') this.flight,
+      @JsonKey(name: 'group') this.group,
       @JsonKey(name: 'lat') required this.lat,
       @JsonKey(name: 'lon') required this.lon,
       @JsonKey(name: 'track') this.track,
@@ -181,10 +181,10 @@ class _$_ADSB extends _ADSB {
 // required String id,
   @override
   @JsonKey(name: 'flight')
-  final String flight;
+  final String? flight;
   @override
   @JsonKey(name: 'group')
-  final String group;
+  final String? group;
   @override
   @JsonKey(name: 'lat')
   final double lat;
@@ -242,8 +242,8 @@ class _$_ADSB extends _ADSB {
 
 abstract class _ADSB extends ADSB {
   const factory _ADSB(
-      {@JsonKey(name: 'flight') required final String flight,
-      @JsonKey(name: 'group') required final String group,
+      {@JsonKey(name: 'flight') final String? flight,
+      @JsonKey(name: 'group') final String? group,
       @JsonKey(name: 'lat') required final double lat,
       @JsonKey(name: 'lon') required final double lon,
       @JsonKey(name: 'track') final double? track,
@@ -256,10 +256,10 @@ abstract class _ADSB extends ADSB {
 // All documents must have an id
 // required String id,
   @JsonKey(name: 'flight')
-  String get flight;
+  String? get flight;
   @override
   @JsonKey(name: 'group')
-  String get group;
+  String? get group;
   @override
   @JsonKey(name: 'lat')
   double get lat;

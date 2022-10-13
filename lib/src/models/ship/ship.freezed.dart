@@ -24,9 +24,9 @@ mixin _$Ship {
 // All documents must have an id
 // required String id,
   @JsonKey(name: 'name')
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'mmsi')
-  int get mmsi => throw _privateConstructorUsedError;
+  int? get mmsi => throw _privateConstructorUsedError;
   @JsonKey(name: 'type')
   int get type => throw _privateConstructorUsedError;
   @JsonKey(name: 'latitude')
@@ -46,8 +46,8 @@ abstract class $ShipCopyWith<$Res> {
   factory $ShipCopyWith(Ship value, $Res Function(Ship) then) =
       _$ShipCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'name') String name,
-      @JsonKey(name: 'mmsi') int mmsi,
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'mmsi') int? mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
       @JsonKey(name: 'longitude') double lon,
@@ -75,11 +75,11 @@ class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       mmsi: mmsi == freezed
           ? _value.mmsi
           : mmsi // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -106,8 +106,8 @@ abstract class _$$_ShipCopyWith<$Res> implements $ShipCopyWith<$Res> {
       __$$_ShipCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'name') String name,
-      @JsonKey(name: 'mmsi') int mmsi,
+      {@JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'mmsi') int? mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
       @JsonKey(name: 'longitude') double lon,
@@ -136,11 +136,11 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       mmsi: mmsi == freezed
           ? _value.mmsi
           : mmsi // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -166,8 +166,8 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_Ship extends _Ship {
   const _$_Ship(
-      {@JsonKey(name: 'name') required this.name,
-      @JsonKey(name: 'mmsi') required this.mmsi,
+      {@JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'mmsi') this.mmsi,
       @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'latitude') required this.lat,
       @JsonKey(name: 'longitude') required this.lon,
@@ -181,10 +181,10 @@ class _$_Ship extends _Ship {
 // required String id,
   @override
   @JsonKey(name: 'name')
-  final String name;
+  final String? name;
   @override
   @JsonKey(name: 'mmsi')
-  final int mmsi;
+  final int? mmsi;
   @override
   @JsonKey(name: 'type')
   final int type;
@@ -242,8 +242,8 @@ class _$_Ship extends _Ship {
 
 abstract class _Ship extends Ship {
   const factory _Ship(
-      {@JsonKey(name: 'name') required final String name,
-      @JsonKey(name: 'mmsi') required final int mmsi,
+      {@JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'mmsi') final int? mmsi,
       @JsonKey(name: 'type') required final int type,
       @JsonKey(name: 'latitude') required final double lat,
       @JsonKey(name: 'longitude') required final double lon,
@@ -256,10 +256,10 @@ abstract class _Ship extends Ship {
 // All documents must have an id
 // required String id,
   @JsonKey(name: 'name')
-  String get name;
+  String? get name;
   @override
   @JsonKey(name: 'mmsi')
-  int get mmsi;
+  int? get mmsi;
   @override
   @JsonKey(name: 'type')
   int get type;

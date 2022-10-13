@@ -7,8 +7,8 @@ part of 'ship.dart';
 // **************************************************************************
 
 _$_Ship _$$_ShipFromJson(Map<String, dynamic> json) => _$_Ship(
-      name: json['name'] as String,
-      mmsi: json['mmsi'] as int,
+      name: json['name'] as String?,
+      mmsi: json['mmsi'] as int?,
       type: json['type'] as int,
       lat: (json['latitude'] as num).toDouble(),
       lon: (json['longitude'] as num).toDouble(),

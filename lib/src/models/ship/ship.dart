@@ -13,8 +13,8 @@ abstract class Ship implements _$Ship {
     // TODO: Marking as optional for the moment but shoudln't be
     // All documents must have an id
     // required String id,
-    @JsonKey(name: 'name') required String name,
-    @JsonKey(name: 'mmsi') required int mmsi,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'mmsi') int? mmsi,
     @JsonKey(name: 'type') required int type,
     @JsonKey(name: 'latitude') required double lat,
     @JsonKey(name: 'longitude') required double lon,
