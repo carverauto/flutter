@@ -12,40 +12,11 @@ part of 'tweet_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 TweetData _$TweetDataFromJson(Map<String, dynamic> json) {
   return _TweetData.fromJson(json);
 }
-
-/// @nodoc
-class _$TweetDataTearOff {
-  const _$TweetDataTearOff();
-
-  _TweetData call(
-      {required String tweetId,
-      required String text,
-      required String userId,
-      required String userName,
-      required String name,
-      required String profileImageUrl}) {
-    return _TweetData(
-      tweetId: tweetId,
-      text: text,
-      userId: userId,
-      userName: userName,
-      name: name,
-      profileImageUrl: profileImageUrl,
-    );
-  }
-
-  TweetData fromJson(Map<String, Object?> json) {
-    return TweetData.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $TweetData = _$TweetDataTearOff();
 
 /// @nodoc
 mixin _$TweetData {
@@ -122,10 +93,10 @@ class _$TweetDataCopyWithImpl<$Res> implements $TweetDataCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$TweetDataCopyWith<$Res> implements $TweetDataCopyWith<$Res> {
-  factory _$TweetDataCopyWith(
-          _TweetData value, $Res Function(_TweetData) then) =
-      __$TweetDataCopyWithImpl<$Res>;
+abstract class _$$_TweetDataCopyWith<$Res> implements $TweetDataCopyWith<$Res> {
+  factory _$$_TweetDataCopyWith(
+          _$_TweetData value, $Res Function(_$_TweetData) then) =
+      __$$_TweetDataCopyWithImpl<$Res>;
   @override
   $Res call(
       {String tweetId,
@@ -137,13 +108,14 @@ abstract class _$TweetDataCopyWith<$Res> implements $TweetDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$TweetDataCopyWithImpl<$Res> extends _$TweetDataCopyWithImpl<$Res>
-    implements _$TweetDataCopyWith<$Res> {
-  __$TweetDataCopyWithImpl(_TweetData _value, $Res Function(_TweetData) _then)
-      : super(_value, (v) => _then(v as _TweetData));
+class __$$_TweetDataCopyWithImpl<$Res> extends _$TweetDataCopyWithImpl<$Res>
+    implements _$$_TweetDataCopyWith<$Res> {
+  __$$_TweetDataCopyWithImpl(
+      _$_TweetData _value, $Res Function(_$_TweetData) _then)
+      : super(_value, (v) => _then(v as _$_TweetData));
 
   @override
-  _TweetData get _value => super._value as _TweetData;
+  _$_TweetData get _value => super._value as _$_TweetData;
 
   @override
   $Res call({
@@ -154,7 +126,7 @@ class __$TweetDataCopyWithImpl<$Res> extends _$TweetDataCopyWithImpl<$Res>
     Object? name = freezed,
     Object? profileImageUrl = freezed,
   }) {
-    return _then(_TweetData(
+    return _then(_$_TweetData(
       tweetId: tweetId == freezed
           ? _value.tweetId
           : tweetId // ignore: cast_nullable_to_non_nullable
@@ -221,7 +193,7 @@ class _$_TweetData extends _TweetData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TweetData &&
+            other is _$_TweetData &&
             const DeepCollectionEquality().equals(other.tweetId, tweetId) &&
             const DeepCollectionEquality().equals(other.text, text) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
@@ -231,6 +203,7 @@ class _$_TweetData extends _TweetData {
                 .equals(other.profileImageUrl, profileImageUrl));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -243,23 +216,25 @@ class _$_TweetData extends _TweetData {
 
   @JsonKey(ignore: true)
   @override
-  _$TweetDataCopyWith<_TweetData> get copyWith =>
-      __$TweetDataCopyWithImpl<_TweetData>(this, _$identity);
+  _$$_TweetDataCopyWith<_$_TweetData> get copyWith =>
+      __$$_TweetDataCopyWithImpl<_$_TweetData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TweetDataToJson(this);
+    return _$$_TweetDataToJson(
+      this,
+    );
   }
 }
 
 abstract class _TweetData extends TweetData {
   const factory _TweetData(
-      {required String tweetId,
-      required String text,
-      required String userId,
-      required String userName,
-      required String name,
-      required String profileImageUrl}) = _$_TweetData;
+      {required final String tweetId,
+      required final String text,
+      required final String userId,
+      required final String userName,
+      required final String name,
+      required final String profileImageUrl}) = _$_TweetData;
   const _TweetData._() : super._();
 
   factory _TweetData.fromJson(Map<String, dynamic> json) =
@@ -279,6 +254,6 @@ abstract class _TweetData extends TweetData {
   String get profileImageUrl;
   @override
   @JsonKey(ignore: true)
-  _$TweetDataCopyWith<_TweetData> get copyWith =>
+  _$$_TweetDataCopyWith<_$_TweetData> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -17,8 +17,8 @@ Map<String, dynamic> _$$_PushTokenToJson(_$_PushToken instance) =>
     <String, dynamic>{
       'token': instance.token,
       'created_at': instance.created_at,
-      'device': _$DeviceOSEnumMap[instance.device],
-      'type': _$TokenTypeEnumMap[instance.type],
+      'device': _$DeviceOSEnumMap[instance.device]!,
+      'type': _$TokenTypeEnumMap[instance.type]!,
     };
 
 const _$DeviceOSEnumMap = {

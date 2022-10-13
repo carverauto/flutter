@@ -12,42 +12,11 @@ part of 'user_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 UserData _$UserDataFromJson(Map<String, dynamic> json) {
   return _UserData.fromJson(json);
 }
-
-/// @nodoc
-class _$UserDataTearOff {
-  const _$UserDataTearOff();
-
-  _UserData call(
-      {required String uid,
-      String? userName,
-      required String email,
-      String? photoURL,
-      required int lastUpdated,
-      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<PushToken>? tokens}) {
-    return _UserData(
-      uid: uid,
-      userName: userName,
-      email: email,
-      photoURL: photoURL,
-      lastUpdated: lastUpdated,
-      lastTokenUpdate: lastTokenUpdate,
-      tokens: tokens,
-    );
-  }
-
-  UserData fromJson(Map<String, Object?> json) {
-    return UserData.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $UserData = _$UserDataTearOff();
 
 /// @nodoc
 mixin _$UserData {
@@ -132,9 +101,10 @@ class _$UserDataCopyWithImpl<$Res> implements $UserDataCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
-  factory _$UserDataCopyWith(_UserData value, $Res Function(_UserData) then) =
-      __$UserDataCopyWithImpl<$Res>;
+abstract class _$$_UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
+  factory _$$_UserDataCopyWith(
+          _$_UserData value, $Res Function(_$_UserData) then) =
+      __$$_UserDataCopyWithImpl<$Res>;
   @override
   $Res call(
       {String uid,
@@ -147,13 +117,14 @@ abstract class _$UserDataCopyWith<$Res> implements $UserDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
-    implements _$UserDataCopyWith<$Res> {
-  __$UserDataCopyWithImpl(_UserData _value, $Res Function(_UserData) _then)
-      : super(_value, (v) => _then(v as _UserData));
+class __$$_UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
+    implements _$$_UserDataCopyWith<$Res> {
+  __$$_UserDataCopyWithImpl(
+      _$_UserData _value, $Res Function(_$_UserData) _then)
+      : super(_value, (v) => _then(v as _$_UserData));
 
   @override
-  _UserData get _value => super._value as _UserData;
+  _$_UserData get _value => super._value as _$_UserData;
 
   @override
   $Res call({
@@ -165,7 +136,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
     Object? lastTokenUpdate = freezed,
     Object? tokens = freezed,
   }) {
-    return _then(_UserData(
+    return _then(_$_UserData(
       uid: uid == freezed
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -191,7 +162,7 @@ class __$UserDataCopyWithImpl<$Res> extends _$UserDataCopyWithImpl<$Res>
           : lastTokenUpdate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       tokens: tokens == freezed
-          ? _value.tokens
+          ? _value._tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as List<PushToken>?,
     ));
@@ -209,8 +180,9 @@ class _$_UserData extends _UserData {
       this.photoURL,
       required this.lastUpdated,
       @DatetimeTimestampNullableConverter() this.lastTokenUpdate,
-      this.tokens})
-      : super._();
+      final List<PushToken>? tokens})
+      : _tokens = tokens,
+        super._();
 
   factory _$_UserData.fromJson(Map<String, dynamic> json) =>
       _$$_UserDataFromJson(json);
@@ -228,8 +200,14 @@ class _$_UserData extends _UserData {
   @override
   @DatetimeTimestampNullableConverter()
   final DateTime? lastTokenUpdate;
+  final List<PushToken>? _tokens;
   @override
-  final List<PushToken>? tokens;
+  List<PushToken>? get tokens {
+    final value = _tokens;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
@@ -240,7 +218,7 @@ class _$_UserData extends _UserData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UserData &&
+            other is _$_UserData &&
             const DeepCollectionEquality().equals(other.uid, uid) &&
             const DeepCollectionEquality().equals(other.userName, userName) &&
             const DeepCollectionEquality().equals(other.email, email) &&
@@ -249,9 +227,10 @@ class _$_UserData extends _UserData {
                 .equals(other.lastUpdated, lastUpdated) &&
             const DeepCollectionEquality()
                 .equals(other.lastTokenUpdate, lastTokenUpdate) &&
-            const DeepCollectionEquality().equals(other.tokens, tokens));
+            const DeepCollectionEquality().equals(other._tokens, _tokens));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -261,28 +240,30 @@ class _$_UserData extends _UserData {
       const DeepCollectionEquality().hash(photoURL),
       const DeepCollectionEquality().hash(lastUpdated),
       const DeepCollectionEquality().hash(lastTokenUpdate),
-      const DeepCollectionEquality().hash(tokens));
+      const DeepCollectionEquality().hash(_tokens));
 
   @JsonKey(ignore: true)
   @override
-  _$UserDataCopyWith<_UserData> get copyWith =>
-      __$UserDataCopyWithImpl<_UserData>(this, _$identity);
+  _$$_UserDataCopyWith<_$_UserData> get copyWith =>
+      __$$_UserDataCopyWithImpl<_$_UserData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserDataToJson(this);
+    return _$$_UserDataToJson(
+      this,
+    );
   }
 }
 
 abstract class _UserData extends UserData {
   const factory _UserData(
-      {required String uid,
-      String? userName,
-      required String email,
-      String? photoURL,
-      required int lastUpdated,
-      @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
-      List<PushToken>? tokens}) = _$_UserData;
+      {required final String uid,
+      final String? userName,
+      required final String email,
+      final String? photoURL,
+      required final int lastUpdated,
+      @DatetimeTimestampNullableConverter() final DateTime? lastTokenUpdate,
+      final List<PushToken>? tokens}) = _$_UserData;
   const _UserData._() : super._();
 
   factory _UserData.fromJson(Map<String, dynamic> json) = _$_UserData.fromJson;
@@ -304,6 +285,6 @@ abstract class _UserData extends UserData {
   List<PushToken>? get tokens;
   @override
   @JsonKey(ignore: true)
-  _$UserDataCopyWith<_UserData> get copyWith =>
+  _$$_UserDataCopyWith<_$_UserData> get copyWith =>
       throw _privateConstructorUsedError;
 }

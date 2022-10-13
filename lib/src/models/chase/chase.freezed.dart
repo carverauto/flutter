@@ -12,58 +12,11 @@ part of 'chase.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Chase _$ChaseFromJson(Map<String, dynamic> json) {
   return _Chase.fromJson(json);
 }
-
-/// @nodoc
-class _$ChaseTearOff {
-  const _$ChaseTearOff();
-
-  _Chase call(
-      {required String id,
-      @JsonKey(name: 'Name')
-          required String? name,
-      @JsonKey(name: 'Live')
-          required bool? live,
-      @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampNullableConverter()
-          required DateTime? createdAt,
-      @JsonKey(name: 'Desc')
-          required String? desc,
-      @JsonKey(name: 'ImageURL')
-          String? imageURL,
-      @JsonKey(name: 'Votes')
-          required int? votes,
-      @JsonKey(name: 'Networks')
-          List<ChaseNetwork>? networks,
-      @JsonKey(name: 'sentiment')
-          Map<dynamic, dynamic>? sentiment,
-      @JsonKey(name: 'Wheels')
-          Map<dynamic, dynamic>? wheels}) {
-    return _Chase(
-      id: id,
-      name: name,
-      live: live,
-      createdAt: createdAt,
-      desc: desc,
-      imageURL: imageURL,
-      votes: votes,
-      networks: networks,
-      sentiment: sentiment,
-      wheels: wheels,
-    );
-  }
-
-  Chase fromJson(Map<String, Object?> json) {
-    return Chase.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Chase = _$ChaseTearOff();
 
 /// @nodoc
 mixin _$Chase {
@@ -189,9 +142,9 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
-  factory _$ChaseCopyWith(_Chase value, $Res Function(_Chase) then) =
-      __$ChaseCopyWithImpl<$Res>;
+abstract class _$$_ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
+  factory _$$_ChaseCopyWith(_$_Chase value, $Res Function(_$_Chase) then) =
+      __$$_ChaseCopyWithImpl<$Res>;
   @override
   $Res call(
       {String id,
@@ -217,13 +170,13 @@ abstract class _$ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
-    implements _$ChaseCopyWith<$Res> {
-  __$ChaseCopyWithImpl(_Chase _value, $Res Function(_Chase) _then)
-      : super(_value, (v) => _then(v as _Chase));
+class __$$_ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
+    implements _$$_ChaseCopyWith<$Res> {
+  __$$_ChaseCopyWithImpl(_$_Chase _value, $Res Function(_$_Chase) _then)
+      : super(_value, (v) => _then(v as _$_Chase));
 
   @override
-  _Chase get _value => super._value as _Chase;
+  _$_Chase get _value => super._value as _$_Chase;
 
   @override
   $Res call({
@@ -238,7 +191,7 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
     Object? sentiment = freezed,
     Object? wheels = freezed,
   }) {
-    return _then(_Chase(
+    return _then(_$_Chase(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -268,15 +221,15 @@ class __$ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
           : votes // ignore: cast_nullable_to_non_nullable
               as int?,
       networks: networks == freezed
-          ? _value.networks
+          ? _value._networks
           : networks // ignore: cast_nullable_to_non_nullable
               as List<ChaseNetwork>?,
       sentiment: sentiment == freezed
-          ? _value.sentiment
+          ? _value._sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
       wheels: wheels == freezed
-          ? _value.wheels
+          ? _value._wheels
           : wheels // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
     ));
@@ -303,18 +256,22 @@ class _$_Chase extends _Chase {
       @JsonKey(name: 'Votes')
           required this.votes,
       @JsonKey(name: 'Networks')
-          this.networks,
+          final List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
-          this.sentiment,
+          final Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          this.wheels})
-      : super._();
+          final Map<dynamic, dynamic>? wheels})
+      : _networks = networks,
+        _sentiment = sentiment,
+        _wheels = wheels,
+        super._();
 
   factory _$_Chase.fromJson(Map<String, dynamic> json) =>
       _$$_ChaseFromJson(json);
 
-  @override // TODO: Marking as optional for the moment but shoudln't be
+// TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
+  @override
   final String id;
   @override
   @JsonKey(name: 'Name')
@@ -335,15 +292,35 @@ class _$_Chase extends _Chase {
   @override
   @JsonKey(name: 'Votes')
   final int? votes;
+  final List<ChaseNetwork>? _networks;
   @override
   @JsonKey(name: 'Networks')
-  final List<ChaseNetwork>? networks;
+  List<ChaseNetwork>? get networks {
+    final value = _networks;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final Map<dynamic, dynamic>? _sentiment;
   @override
   @JsonKey(name: 'sentiment')
-  final Map<dynamic, dynamic>? sentiment;
+  Map<dynamic, dynamic>? get sentiment {
+    final value = _sentiment;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  final Map<dynamic, dynamic>? _wheels;
   @override
   @JsonKey(name: 'Wheels')
-  final Map<dynamic, dynamic>? wheels;
+  Map<dynamic, dynamic>? get wheels {
+    final value = _wheels;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
@@ -354,7 +331,7 @@ class _$_Chase extends _Chase {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Chase &&
+            other is _$_Chase &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.live, live) &&
@@ -362,11 +339,13 @@ class _$_Chase extends _Chase {
             const DeepCollectionEquality().equals(other.desc, desc) &&
             const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
             const DeepCollectionEquality().equals(other.votes, votes) &&
-            const DeepCollectionEquality().equals(other.networks, networks) &&
-            const DeepCollectionEquality().equals(other.sentiment, sentiment) &&
-            const DeepCollectionEquality().equals(other.wheels, wheels));
+            const DeepCollectionEquality().equals(other._networks, _networks) &&
+            const DeepCollectionEquality()
+                .equals(other._sentiment, _sentiment) &&
+            const DeepCollectionEquality().equals(other._wheels, _wheels));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -377,43 +356,45 @@ class _$_Chase extends _Chase {
       const DeepCollectionEquality().hash(desc),
       const DeepCollectionEquality().hash(imageURL),
       const DeepCollectionEquality().hash(votes),
-      const DeepCollectionEquality().hash(networks),
-      const DeepCollectionEquality().hash(sentiment),
-      const DeepCollectionEquality().hash(wheels));
+      const DeepCollectionEquality().hash(_networks),
+      const DeepCollectionEquality().hash(_sentiment),
+      const DeepCollectionEquality().hash(_wheels));
 
   @JsonKey(ignore: true)
   @override
-  _$ChaseCopyWith<_Chase> get copyWith =>
-      __$ChaseCopyWithImpl<_Chase>(this, _$identity);
+  _$$_ChaseCopyWith<_$_Chase> get copyWith =>
+      __$$_ChaseCopyWithImpl<_$_Chase>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ChaseToJson(this);
+    return _$$_ChaseToJson(
+      this,
+    );
   }
 }
 
 abstract class _Chase extends Chase {
   const factory _Chase(
-      {required String id,
+      {required final String id,
       @JsonKey(name: 'Name')
-          required String? name,
+          required final String? name,
       @JsonKey(name: 'Live')
-          required bool? live,
+          required final bool? live,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampNullableConverter()
-          required DateTime? createdAt,
+          required final DateTime? createdAt,
       @JsonKey(name: 'Desc')
-          required String? desc,
+          required final String? desc,
       @JsonKey(name: 'ImageURL')
-          String? imageURL,
+          final String? imageURL,
       @JsonKey(name: 'Votes')
-          required int? votes,
+          required final int? votes,
       @JsonKey(name: 'Networks')
-          List<ChaseNetwork>? networks,
+          final List<ChaseNetwork>? networks,
       @JsonKey(name: 'sentiment')
-          Map<dynamic, dynamic>? sentiment,
+          final Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          Map<dynamic, dynamic>? wheels}) = _$_Chase;
+          final Map<dynamic, dynamic>? wheels}) = _$_Chase;
   const _Chase._() : super._();
 
   factory _Chase.fromJson(Map<String, dynamic> json) = _$_Chase.fromJson;
@@ -451,5 +432,6 @@ abstract class _Chase extends Chase {
   Map<dynamic, dynamic>? get wheels;
   @override
   @JsonKey(ignore: true)
-  _$ChaseCopyWith<_Chase> get copyWith => throw _privateConstructorUsedError;
+  _$$_ChaseCopyWith<_$_Chase> get copyWith =>
+      throw _privateConstructorUsedError;
 }

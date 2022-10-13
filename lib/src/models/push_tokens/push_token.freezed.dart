@@ -12,36 +12,11 @@ part of 'push_token.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 PushToken _$PushTokenFromJson(Map<String, dynamic> json) {
   return _PushToken.fromJson(json);
 }
-
-/// @nodoc
-class _$PushTokenTearOff {
-  const _$PushTokenTearOff();
-
-  _PushToken call(
-      {required String token,
-      required int created_at,
-      required DeviceOS device,
-      required TokenType type}) {
-    return _PushToken(
-      token: token,
-      created_at: created_at,
-      device: device,
-      type: type,
-    );
-  }
-
-  PushToken fromJson(Map<String, Object?> json) {
-    return PushToken.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $PushToken = _$PushTokenTearOff();
 
 /// @nodoc
 mixin _$PushToken {
@@ -100,22 +75,23 @@ class _$PushTokenCopyWithImpl<$Res> implements $PushTokenCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$PushTokenCopyWith<$Res> implements $PushTokenCopyWith<$Res> {
-  factory _$PushTokenCopyWith(
-          _PushToken value, $Res Function(_PushToken) then) =
-      __$PushTokenCopyWithImpl<$Res>;
+abstract class _$$_PushTokenCopyWith<$Res> implements $PushTokenCopyWith<$Res> {
+  factory _$$_PushTokenCopyWith(
+          _$_PushToken value, $Res Function(_$_PushToken) then) =
+      __$$_PushTokenCopyWithImpl<$Res>;
   @override
   $Res call({String token, int created_at, DeviceOS device, TokenType type});
 }
 
 /// @nodoc
-class __$PushTokenCopyWithImpl<$Res> extends _$PushTokenCopyWithImpl<$Res>
-    implements _$PushTokenCopyWith<$Res> {
-  __$PushTokenCopyWithImpl(_PushToken _value, $Res Function(_PushToken) _then)
-      : super(_value, (v) => _then(v as _PushToken));
+class __$$_PushTokenCopyWithImpl<$Res> extends _$PushTokenCopyWithImpl<$Res>
+    implements _$$_PushTokenCopyWith<$Res> {
+  __$$_PushTokenCopyWithImpl(
+      _$_PushToken _value, $Res Function(_$_PushToken) _then)
+      : super(_value, (v) => _then(v as _$_PushToken));
 
   @override
-  _PushToken get _value => super._value as _PushToken;
+  _$_PushToken get _value => super._value as _$_PushToken;
 
   @override
   $Res call({
@@ -124,7 +100,7 @@ class __$PushTokenCopyWithImpl<$Res> extends _$PushTokenCopyWithImpl<$Res>
     Object? device = freezed,
     Object? type = freezed,
   }) {
-    return _then(_PushToken(
+    return _then(_$_PushToken(
       token: token == freezed
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -177,7 +153,7 @@ class _$_PushToken extends _PushToken {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _PushToken &&
+            other is _$_PushToken &&
             const DeepCollectionEquality().equals(other.token, token) &&
             const DeepCollectionEquality()
                 .equals(other.created_at, created_at) &&
@@ -185,6 +161,7 @@ class _$_PushToken extends _PushToken {
             const DeepCollectionEquality().equals(other.type, type));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -195,21 +172,23 @@ class _$_PushToken extends _PushToken {
 
   @JsonKey(ignore: true)
   @override
-  _$PushTokenCopyWith<_PushToken> get copyWith =>
-      __$PushTokenCopyWithImpl<_PushToken>(this, _$identity);
+  _$$_PushTokenCopyWith<_$_PushToken> get copyWith =>
+      __$$_PushTokenCopyWithImpl<_$_PushToken>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PushTokenToJson(this);
+    return _$$_PushTokenToJson(
+      this,
+    );
   }
 }
 
 abstract class _PushToken extends PushToken {
   const factory _PushToken(
-      {required String token,
-      required int created_at,
-      required DeviceOS device,
-      required TokenType type}) = _$_PushToken;
+      {required final String token,
+      required final int created_at,
+      required final DeviceOS device,
+      required final TokenType type}) = _$_PushToken;
   const _PushToken._() : super._();
 
   factory _PushToken.fromJson(Map<String, dynamic> json) =
@@ -225,6 +204,6 @@ abstract class _PushToken extends PushToken {
   TokenType get type;
   @override
   @JsonKey(ignore: true)
-  _$PushTokenCopyWith<_PushToken> get copyWith =>
+  _$$_PushTokenCopyWith<_$_PushToken> get copyWith =>
       throw _privateConstructorUsedError;
 }

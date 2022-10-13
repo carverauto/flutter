@@ -12,48 +12,11 @@ part of 'chase_animation_event.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 ChaseAnimationEvent _$ChaseAnimationEventFromJson(Map<String, dynamic> json) {
   return _ChaseAnimationEvent.fromJson(json);
 }
-
-/// @nodoc
-class _$ChaseAnimationEventTearOff {
-  const _$ChaseAnimationEventTearOff();
-
-  _ChaseAnimationEvent call(
-      {required String id,
-      @AnimTypeConvertor() required AnimType animtype,
-      required String endpoint,
-      required String animstate,
-      @EventLabelTimestampConverter() required int label,
-      required String videoId,
-      required String artboard,
-      required List<String> animations,
-      @AlignmentConvertor() required Alignment alignment,
-      @DatetimeTimestampConverter() required DateTime createdAt}) {
-    return _ChaseAnimationEvent(
-      id: id,
-      animtype: animtype,
-      endpoint: endpoint,
-      animstate: animstate,
-      label: label,
-      videoId: videoId,
-      artboard: artboard,
-      animations: animations,
-      alignment: alignment,
-      createdAt: createdAt,
-    );
-  }
-
-  ChaseAnimationEvent fromJson(Map<String, Object?> json) {
-    return ChaseAnimationEvent.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ChaseAnimationEvent = _$ChaseAnimationEventTearOff();
 
 /// @nodoc
 mixin _$ChaseAnimationEvent {
@@ -71,7 +34,7 @@ mixin _$ChaseAnimationEvent {
   List<String> get animations => throw _privateConstructorUsedError;
   @AlignmentConvertor()
   Alignment get alignment =>
-      throw _privateConstructorUsedError; // required String alignment,
+      throw _privateConstructorUsedError; // // required String alignment,
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -167,11 +130,11 @@ class _$ChaseAnimationEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ChaseAnimationEventCopyWith<$Res>
+abstract class _$$_ChaseAnimationEventCopyWith<$Res>
     implements $ChaseAnimationEventCopyWith<$Res> {
-  factory _$ChaseAnimationEventCopyWith(_ChaseAnimationEvent value,
-          $Res Function(_ChaseAnimationEvent) then) =
-      __$ChaseAnimationEventCopyWithImpl<$Res>;
+  factory _$$_ChaseAnimationEventCopyWith(_$_ChaseAnimationEvent value,
+          $Res Function(_$_ChaseAnimationEvent) then) =
+      __$$_ChaseAnimationEventCopyWithImpl<$Res>;
   @override
   $Res call(
       {String id,
@@ -187,15 +150,15 @@ abstract class _$ChaseAnimationEventCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ChaseAnimationEventCopyWithImpl<$Res>
+class __$$_ChaseAnimationEventCopyWithImpl<$Res>
     extends _$ChaseAnimationEventCopyWithImpl<$Res>
-    implements _$ChaseAnimationEventCopyWith<$Res> {
-  __$ChaseAnimationEventCopyWithImpl(
-      _ChaseAnimationEvent _value, $Res Function(_ChaseAnimationEvent) _then)
-      : super(_value, (v) => _then(v as _ChaseAnimationEvent));
+    implements _$$_ChaseAnimationEventCopyWith<$Res> {
+  __$$_ChaseAnimationEventCopyWithImpl(_$_ChaseAnimationEvent _value,
+      $Res Function(_$_ChaseAnimationEvent) _then)
+      : super(_value, (v) => _then(v as _$_ChaseAnimationEvent));
 
   @override
-  _ChaseAnimationEvent get _value => super._value as _ChaseAnimationEvent;
+  _$_ChaseAnimationEvent get _value => super._value as _$_ChaseAnimationEvent;
 
   @override
   $Res call({
@@ -210,7 +173,7 @@ class __$ChaseAnimationEventCopyWithImpl<$Res>
     Object? alignment = freezed,
     Object? createdAt = freezed,
   }) {
-    return _then(_ChaseAnimationEvent(
+    return _then(_$_ChaseAnimationEvent(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -240,7 +203,7 @@ class __$ChaseAnimationEventCopyWithImpl<$Res>
           : artboard // ignore: cast_nullable_to_non_nullable
               as String,
       animations: animations == freezed
-          ? _value.animations
+          ? _value._animations
           : animations // ignore: cast_nullable_to_non_nullable
               as List<String>,
       alignment: alignment == freezed
@@ -267,16 +230,18 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
       @EventLabelTimestampConverter() required this.label,
       required this.videoId,
       required this.artboard,
-      required this.animations,
+      required final List<String> animations,
       @AlignmentConvertor() required this.alignment,
       @DatetimeTimestampConverter() required this.createdAt})
-      : super._();
+      : _animations = animations,
+        super._();
 
   factory _$_ChaseAnimationEvent.fromJson(Map<String, dynamic> json) =>
       _$$_ChaseAnimationEventFromJson(json);
 
-  @override // TODO: Marking as optional for the moment but shoudln't be
+// TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
+  @override
   final String id;
   @override
   @AnimTypeConvertor()
@@ -292,12 +257,18 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
   final String videoId;
   @override
   final String artboard;
+  final List<String> _animations;
   @override
-  final List<String> animations;
+  List<String> get animations {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_animations);
+  }
+
   @override
   @AlignmentConvertor()
   final Alignment alignment;
-  @override // required String alignment,
+// // required String alignment,
+  @override
   @DatetimeTimestampConverter()
   final DateTime createdAt;
 
@@ -310,7 +281,7 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ChaseAnimationEvent &&
+            other is _$_ChaseAnimationEvent &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.animtype, animtype) &&
             const DeepCollectionEquality().equals(other.endpoint, endpoint) &&
@@ -319,11 +290,12 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
             const DeepCollectionEquality().equals(other.videoId, videoId) &&
             const DeepCollectionEquality().equals(other.artboard, artboard) &&
             const DeepCollectionEquality()
-                .equals(other.animations, animations) &&
+                .equals(other._animations, _animations) &&
             const DeepCollectionEquality().equals(other.alignment, alignment) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -334,34 +306,36 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
       const DeepCollectionEquality().hash(label),
       const DeepCollectionEquality().hash(videoId),
       const DeepCollectionEquality().hash(artboard),
-      const DeepCollectionEquality().hash(animations),
+      const DeepCollectionEquality().hash(_animations),
       const DeepCollectionEquality().hash(alignment),
       const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override
-  _$ChaseAnimationEventCopyWith<_ChaseAnimationEvent> get copyWith =>
-      __$ChaseAnimationEventCopyWithImpl<_ChaseAnimationEvent>(
+  _$$_ChaseAnimationEventCopyWith<_$_ChaseAnimationEvent> get copyWith =>
+      __$$_ChaseAnimationEventCopyWithImpl<_$_ChaseAnimationEvent>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ChaseAnimationEventToJson(this);
+    return _$$_ChaseAnimationEventToJson(
+      this,
+    );
   }
 }
 
 abstract class _ChaseAnimationEvent extends ChaseAnimationEvent {
   const factory _ChaseAnimationEvent(
-          {required String id,
-          @AnimTypeConvertor() required AnimType animtype,
-          required String endpoint,
-          required String animstate,
-          @EventLabelTimestampConverter() required int label,
-          required String videoId,
-          required String artboard,
-          required List<String> animations,
-          @AlignmentConvertor() required Alignment alignment,
-          @DatetimeTimestampConverter() required DateTime createdAt}) =
+          {required final String id,
+          @AnimTypeConvertor() required final AnimType animtype,
+          required final String endpoint,
+          required final String animstate,
+          @EventLabelTimestampConverter() required final int label,
+          required final String videoId,
+          required final String artboard,
+          required final List<String> animations,
+          @AlignmentConvertor() required final Alignment alignment,
+          @DatetimeTimestampConverter() required final DateTime createdAt}) =
       _$_ChaseAnimationEvent;
   const _ChaseAnimationEvent._() : super._();
 
@@ -390,11 +364,11 @@ abstract class _ChaseAnimationEvent extends ChaseAnimationEvent {
   @override
   @AlignmentConvertor()
   Alignment get alignment;
-  @override // required String alignment,
+  @override // // required String alignment,
   @DatetimeTimestampConverter()
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$ChaseAnimationEventCopyWith<_ChaseAnimationEvent> get copyWith =>
+  _$$_ChaseAnimationEventCopyWith<_$_ChaseAnimationEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }

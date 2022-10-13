@@ -12,40 +12,11 @@ part of 'notification_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) {
   return _NotificationData.fromJson(json);
 }
-
-/// @nodoc
-class _$NotificationDataTearOff {
-  const _$NotificationDataTearOff();
-
-  _NotificationData call(
-      {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Image') String? image,
-      @JsonKey(name: 'YoutubeId') String? youtubeId,
-      @JsonKey(name: 'ChannelId') String? channelId,
-      @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData}) {
-    return _NotificationData(
-      id: id,
-      image: image,
-      youtubeId: youtubeId,
-      channelId: channelId,
-      configState: configState,
-      tweetData: tweetData,
-    );
-  }
-
-  NotificationData fromJson(Map<String, Object?> json) {
-    return NotificationData.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $NotificationData = _$NotificationDataTearOff();
 
 /// @nodoc
 mixin _$NotificationData {
@@ -142,11 +113,11 @@ class _$NotificationDataCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$NotificationDataCopyWith<$Res>
+abstract class _$$_NotificationDataCopyWith<$Res>
     implements $NotificationDataCopyWith<$Res> {
-  factory _$NotificationDataCopyWith(
-          _NotificationData value, $Res Function(_NotificationData) then) =
-      __$NotificationDataCopyWithImpl<$Res>;
+  factory _$$_NotificationDataCopyWith(
+          _$_NotificationData value, $Res Function(_$_NotificationData) then) =
+      __$$_NotificationDataCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(name: 'Id') String? id,
@@ -161,15 +132,15 @@ abstract class _$NotificationDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$NotificationDataCopyWithImpl<$Res>
+class __$$_NotificationDataCopyWithImpl<$Res>
     extends _$NotificationDataCopyWithImpl<$Res>
-    implements _$NotificationDataCopyWith<$Res> {
-  __$NotificationDataCopyWithImpl(
-      _NotificationData _value, $Res Function(_NotificationData) _then)
-      : super(_value, (v) => _then(v as _NotificationData));
+    implements _$$_NotificationDataCopyWith<$Res> {
+  __$$_NotificationDataCopyWithImpl(
+      _$_NotificationData _value, $Res Function(_$_NotificationData) _then)
+      : super(_value, (v) => _then(v as _$_NotificationData));
 
   @override
-  _NotificationData get _value => super._value as _NotificationData;
+  _$_NotificationData get _value => super._value as _$_NotificationData;
 
   @override
   $Res call({
@@ -180,7 +151,7 @@ class __$NotificationDataCopyWithImpl<$Res>
     Object? configState = freezed,
     Object? tweetData = freezed,
   }) {
-    return _then(_NotificationData(
+    return _then(_$_NotificationData(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -252,7 +223,7 @@ class _$_NotificationData extends _NotificationData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _NotificationData &&
+            other is _$_NotificationData &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.image, image) &&
             const DeepCollectionEquality().equals(other.youtubeId, youtubeId) &&
@@ -262,6 +233,7 @@ class _$_NotificationData extends _NotificationData {
             const DeepCollectionEquality().equals(other.tweetData, tweetData));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -274,23 +246,25 @@ class _$_NotificationData extends _NotificationData {
 
   @JsonKey(ignore: true)
   @override
-  _$NotificationDataCopyWith<_NotificationData> get copyWith =>
-      __$NotificationDataCopyWithImpl<_NotificationData>(this, _$identity);
+  _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>
+      __$$_NotificationDataCopyWithImpl<_$_NotificationData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_NotificationDataToJson(this);
+    return _$$_NotificationDataToJson(
+      this,
+    );
   }
 }
 
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
-      {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Image') String? image,
-      @JsonKey(name: 'YoutubeId') String? youtubeId,
-      @JsonKey(name: 'ChannelId') String? channelId,
-      @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData}) = _$_NotificationData;
+      {@JsonKey(name: 'Id') final String? id,
+      @JsonKey(name: 'Image') final String? image,
+      @JsonKey(name: 'YoutubeId') final String? youtubeId,
+      @JsonKey(name: 'ChannelId') final String? channelId,
+      @JsonKey(name: 'ConfigState') final String? configState,
+      final TweetData? tweetData}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
   factory _NotificationData.fromJson(Map<String, dynamic> json) =
@@ -315,6 +289,6 @@ abstract class _NotificationData extends NotificationData {
   TweetData? get tweetData;
   @override
   @JsonKey(ignore: true)
-  _$NotificationDataCopyWith<_NotificationData> get copyWith =>
+  _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>
       throw _privateConstructorUsedError;
 }

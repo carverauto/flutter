@@ -12,40 +12,11 @@ part of 'interest.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Interest _$InterestFromJson(Map<String, dynamic> json) {
   return _Interest.fromJson(json);
 }
-
-/// @nodoc
-class _$InterestTearOff {
-  const _$InterestTearOff();
-
-  _Interest call(
-      {required String id,
-      required String instanceId,
-      required String name,
-      required bool isCompulsory,
-      required bool isDefault,
-      @DatetimeTimestampConverter() required DateTime createdAt}) {
-    return _Interest(
-      id: id,
-      instanceId: instanceId,
-      name: name,
-      isCompulsory: isCompulsory,
-      isDefault: isDefault,
-      createdAt: createdAt,
-    );
-  }
-
-  Interest fromJson(Map<String, Object?> json) {
-    return Interest.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Interest = _$InterestTearOff();
 
 /// @nodoc
 mixin _$Interest {
@@ -125,9 +96,10 @@ class _$InterestCopyWithImpl<$Res> implements $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
-  factory _$InterestCopyWith(_Interest value, $Res Function(_Interest) then) =
-      __$InterestCopyWithImpl<$Res>;
+abstract class _$$_InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
+  factory _$$_InterestCopyWith(
+          _$_Interest value, $Res Function(_$_Interest) then) =
+      __$$_InterestCopyWithImpl<$Res>;
   @override
   $Res call(
       {String id,
@@ -139,13 +111,14 @@ abstract class _$InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
-    implements _$InterestCopyWith<$Res> {
-  __$InterestCopyWithImpl(_Interest _value, $Res Function(_Interest) _then)
-      : super(_value, (v) => _then(v as _Interest));
+class __$$_InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
+    implements _$$_InterestCopyWith<$Res> {
+  __$$_InterestCopyWithImpl(
+      _$_Interest _value, $Res Function(_$_Interest) _then)
+      : super(_value, (v) => _then(v as _$_Interest));
 
   @override
-  _Interest get _value => super._value as _Interest;
+  _$_Interest get _value => super._value as _$_Interest;
 
   @override
   $Res call({
@@ -156,7 +129,7 @@ class __$InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
     Object? isDefault = freezed,
     Object? createdAt = freezed,
   }) {
-    return _then(_Interest(
+    return _then(_$_Interest(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -201,8 +174,9 @@ class _$_Interest extends _Interest {
   factory _$_Interest.fromJson(Map<String, dynamic> json) =>
       _$$_InterestFromJson(json);
 
-  @override // TODO: Marking as optional for the moment but shoudln't be
+// TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
+  @override
   final String id;
   @override
   final String instanceId;
@@ -225,7 +199,7 @@ class _$_Interest extends _Interest {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Interest &&
+            other is _$_Interest &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.instanceId, instanceId) &&
@@ -236,6 +210,7 @@ class _$_Interest extends _Interest {
             const DeepCollectionEquality().equals(other.createdAt, createdAt));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -248,23 +223,26 @@ class _$_Interest extends _Interest {
 
   @JsonKey(ignore: true)
   @override
-  _$InterestCopyWith<_Interest> get copyWith =>
-      __$InterestCopyWithImpl<_Interest>(this, _$identity);
+  _$$_InterestCopyWith<_$_Interest> get copyWith =>
+      __$$_InterestCopyWithImpl<_$_Interest>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_InterestToJson(this);
+    return _$$_InterestToJson(
+      this,
+    );
   }
 }
 
 abstract class _Interest extends Interest {
   const factory _Interest(
-      {required String id,
-      required String instanceId,
-      required String name,
-      required bool isCompulsory,
-      required bool isDefault,
-      @DatetimeTimestampConverter() required DateTime createdAt}) = _$_Interest;
+          {required final String id,
+          required final String instanceId,
+          required final String name,
+          required final bool isCompulsory,
+          required final bool isDefault,
+          @DatetimeTimestampConverter() required final DateTime createdAt}) =
+      _$_Interest;
   const _Interest._() : super._();
 
   factory _Interest.fromJson(Map<String, dynamic> json) = _$_Interest.fromJson;
@@ -285,6 +263,6 @@ abstract class _Interest extends Interest {
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$InterestCopyWith<_Interest> get copyWith =>
+  _$$_InterestCopyWith<_$_Interest> get copyWith =>
       throw _privateConstructorUsedError;
 }
