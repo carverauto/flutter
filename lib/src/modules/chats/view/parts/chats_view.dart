@@ -129,7 +129,7 @@ class ChatsView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Expanded(
-                        child: MessageListView(
+                        child: StreamMessageListView(
                           // initialAlignment: 0,
                           loadingBuilder: (BuildContext context) =>
                               const CircularAdaptiveProgressIndicatorWithBg(),
@@ -145,7 +145,7 @@ class ChatsView extends ConsumerWidget {
                         ),
                       ),
                       const RepaintBoundary(
-                        child: MessageInput(
+                        child: StreamMessageInput(
                           disableAttachments: true,
                           maxHeight: 100,
                         ),

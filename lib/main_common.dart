@@ -36,7 +36,7 @@ class MyApp extends ConsumerWidget {
             // TODO: Need to debug why?
             // If not added then getStream API is overriding the
             // the user set accentColor in Custom Theme
-            colorTheme: ColorTheme.dark(
+            colorTheme: StreamColorTheme.dark(
               accentPrimary: primaryColor.shade500,
             ),
           ),

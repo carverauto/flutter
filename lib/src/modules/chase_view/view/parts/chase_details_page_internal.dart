@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
