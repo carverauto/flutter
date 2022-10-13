@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../const/app_bundle_info.dart';
 import '../../models/adsb/adsb.dart';
@@ -37,12 +36,12 @@ class _MapBoxViewState extends State<MapBoxView> {
   late final MapboxMapController mapboxMapController;
 
   Symbol? infosymbol;
-  bool? isLocationOn;
+  // bool? isLocationOn;
 
   Future<void> _onMapCreated(MapboxMapController controller) async {
     mapboxMapController = controller;
     await loadMarkers();
-    isLocationOn = await Permission.locationWhenInUse.isGranted;
+    // isLocationOn = await Permission.locationWhenInUse.isGranted;
     setState(() {});
   }
 
@@ -167,23 +166,25 @@ class _MapBoxViewState extends State<MapBoxView> {
     return Scaffold(
       body: Column(
         children: [
-          if (isLocationOn != null && isLocationOn == false)
-            const Flexible(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                ),
-                child: Text(
-                  'Location is turned off. Turn on location to see your location on the map and get accurate information.',
-                ),
-              ),
-            ),
+          // if (isLocationOn != null && isLocationOn == false)
+          // const Flexible(
+          //   child: DecoratedBox(
+          //     decoration: BoxDecoration(
+          //       color: Colors.red,
+          //     ),
+          //     child: Text(
+          //       'Location is turned off. Turn on location to see your location on the map and get accurate information.',
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: MapboxMap(
               styleString: MapboxStyles.DARK,
               accessToken: EnvVaribales.getMapBoxPublicAccessToken,
               onMapCreated: _onMapCreated,
-              myLocationEnabled: true,
+              // myLocationEnabled: true,
+
+              myLocationRenderMode: MyLocationRenderMode.NORMAL,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(
                   31.284788,
