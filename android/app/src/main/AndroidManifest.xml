@@ -87,6 +87,7 @@ found in the LICENSE file. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="live" />
+        <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="Add GoogleMapsApiKey"/> -->
       
     </application>
     <queries>

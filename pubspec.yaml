@@ -118,7 +118,7 @@ dependencies:
   google_sign_in_mocks: ^0.2.1
   fake_cloud_firestore: ^1.2.2
   mapbox_gl: 0.15.0
-  platform_maps_flutter: ^1.0.2
+  # platform_maps_flutter: ^1.0.2
   collection: ^1.16.0
 
 dependency_overrides:

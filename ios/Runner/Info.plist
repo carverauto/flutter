@@ -76,18 +76,23 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSBluetoothAlwaysUsageDescription</key>
+	<!-- For bluetooth permissions -->
+	<!-- <key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Need for our bluetooth scan</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Need for our bluetooth scan</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need for our bluetooth scan</string> -->
+	<!-- End of bluetooth permissions -->
+
+	<!-- For location permissions -->
+	<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Need for our location request</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Need for our location request</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Need for our location request</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need for our location request</string>
+	<string>Need for our location request</string> -->
+	<!-- End of location permissions -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need for profile picture</string>
 	<key>UIBackgroundModes</key>
@@ -115,7 +120,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<!-- For apple maps preview -->
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
+	<!-- <key>io.flutter.embedded_views_preview</key>
+	<true/> -->
 </dict>
 </plist>
