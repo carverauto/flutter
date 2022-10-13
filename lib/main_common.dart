@@ -8,11 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/src/log_record.dart';
-import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 // import 'package:device_preview/device_preview.dart';
-import 'src/const/app_bundle_info.dart';
 import 'src/const/colors.dart';
 import 'src/modules/chats/view/providers/providers.dart';
 import 'src/routes/routes.dart';
@@ -91,7 +89,7 @@ Future<void> setUpServices() async {
 
   // if (F.appFlavor == Flavor.DEV) {
   // const String instanceId = String.fromEnvironment('Pusher_Instance_Id');
-  await PusherBeams.instance.start(EnvVaribales.instanceId);
+//  await PusherBeams.instance.start(EnvVaribales.instanceId);
   // } else {
   //   const String instanceId = String.fromEnvironment('Prod_Pusher_Instance_Id');
 

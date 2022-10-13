@@ -156,6 +156,13 @@ class _MapBoxViewState extends State<MapBoxView> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    mapboxMapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(

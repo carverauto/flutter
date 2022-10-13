@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+import 'package:pusher_beams/pusher_beams.dart';
 
+import '../../const/app_bundle_info.dart';
 import '../../models/interest/interest.dart';
 import '../../models/push_tokens/push_token.dart';
 import '../../models/user/user_data.dart';
@@ -26,6 +28,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions(User user, UserData userData) async {
     if (!isInitialized) {
       try {
+        await PusherBeams.instance.start(EnvVaribales.instanceId);
         await _initFirebaseActions(user, userData);
 
         await checkUsersInterests();
