@@ -33,6 +33,8 @@ mixin _$Ship {
   double get lat => throw _privateConstructorUsedError;
   @JsonKey(name: 'longitude')
   double get lon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'heading')
+  double get heading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $ShipCopyWith<$Res> {
       @JsonKey(name: 'mmsi') int mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
-      @JsonKey(name: 'longitude') double lon});
+      @JsonKey(name: 'longitude') double lon,
+      @JsonKey(name: 'heading') double heading});
 }
 
 /// @nodoc
@@ -66,6 +69,7 @@ class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
     Object? type = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
+    Object? heading = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -88,6 +92,10 @@ class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
+      heading: heading == freezed
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -102,7 +110,8 @@ abstract class _$$_ShipCopyWith<$Res> implements $ShipCopyWith<$Res> {
       @JsonKey(name: 'mmsi') int mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
-      @JsonKey(name: 'longitude') double lon});
+      @JsonKey(name: 'longitude') double lon,
+      @JsonKey(name: 'heading') double heading});
 }
 
 /// @nodoc
@@ -121,6 +130,7 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
     Object? type = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
+    Object? heading = freezed,
   }) {
     return _then(_$_Ship(
       name: name == freezed
@@ -143,6 +153,10 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
+      heading: heading == freezed
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -156,7 +170,8 @@ class _$_Ship extends _Ship {
       @JsonKey(name: 'mmsi') required this.mmsi,
       @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'latitude') required this.lat,
-      @JsonKey(name: 'longitude') required this.lon})
+      @JsonKey(name: 'longitude') required this.lon,
+      @JsonKey(name: 'heading') required this.heading})
       : super._();
 
   factory _$_Ship.fromJson(Map<String, dynamic> json) => _$$_ShipFromJson(json);
@@ -179,10 +194,13 @@ class _$_Ship extends _Ship {
   @override
   @JsonKey(name: 'longitude')
   final double lon;
+  @override
+  @JsonKey(name: 'heading')
+  final double heading;
 
   @override
   String toString() {
-    return 'Ship(name: $name, mmsi: $mmsi, type: $type, lat: $lat, lon: $lon)';
+    return 'Ship(name: $name, mmsi: $mmsi, type: $type, lat: $lat, lon: $lon, heading: $heading)';
   }
 
   @override
@@ -194,7 +212,8 @@ class _$_Ship extends _Ship {
             const DeepCollectionEquality().equals(other.mmsi, mmsi) &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.lat, lat) &&
-            const DeepCollectionEquality().equals(other.lon, lon));
+            const DeepCollectionEquality().equals(other.lon, lon) &&
+            const DeepCollectionEquality().equals(other.heading, heading));
   }
 
   @JsonKey(ignore: true)
@@ -205,7 +224,8 @@ class _$_Ship extends _Ship {
       const DeepCollectionEquality().hash(mmsi),
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(lat),
-      const DeepCollectionEquality().hash(lon));
+      const DeepCollectionEquality().hash(lon),
+      const DeepCollectionEquality().hash(heading));
 
   @JsonKey(ignore: true)
   @override
@@ -226,7 +246,8 @@ abstract class _Ship extends Ship {
       @JsonKey(name: 'mmsi') required final int mmsi,
       @JsonKey(name: 'type') required final int type,
       @JsonKey(name: 'latitude') required final double lat,
-      @JsonKey(name: 'longitude') required final double lon}) = _$_Ship;
+      @JsonKey(name: 'longitude') required final double lon,
+      @JsonKey(name: 'heading') required final double heading}) = _$_Ship;
   const _Ship._() : super._();
 
   factory _Ship.fromJson(Map<String, dynamic> json) = _$_Ship.fromJson;
@@ -248,6 +269,9 @@ abstract class _Ship extends Ship {
   @override
   @JsonKey(name: 'longitude')
   double get lon;
+  @override
+  @JsonKey(name: 'heading')
+  double get heading;
   @override
   @JsonKey(ignore: true)
   _$$_ShipCopyWith<_$_Ship> get copyWith => throw _privateConstructorUsedError;

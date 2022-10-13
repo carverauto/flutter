@@ -17,6 +17,8 @@ abstract class ADSB implements _$ADSB {
     @JsonKey(name: 'group') required String group,
     @JsonKey(name: 'lat') required double lat,
     @JsonKey(name: 'lon') required double lon,
+    @JsonKey(name: 'track') double? track,
+    @JsonKey(name: 'type') required String type,
   }) = _ADSB;
   const ADSB._();
 

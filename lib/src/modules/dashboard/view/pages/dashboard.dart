@@ -30,24 +30,12 @@ class Dashboard extends StatelessWidget {
             PaginationNotifierState<Chase>> chasesPaginationProvider =
         chasesPaginatedStreamProvider(logger);
 
-    return const Scaffold(
-      drawer: ChaseAppDrawer(),
-      body: MapBoxView(),
-
-      //  _DashboardMainView(
-      //   chasesPaginationProvider: chasesPaginationProvider,
-      //   logger: logger,
-      // ),
-
-      //  ProviderStateBuilder(
-      //     errorBuilder: (context, stk) => DashboardMainView(
-      //         chasesPaginationProvider: chasesPaginationProvider,
-      //         logger: logger),
-      //     builder: (data, ref, child) => DashboardMainView(
-      //         chasesPaginationProvider: chasesPaginationProvider,
-      //         logger: logger),
-      //     watchThisProvider: topChasesStreamProvider,
-      //     logger: logger),
+    return Scaffold(
+      drawer: const ChaseAppDrawer(),
+      body: _DashboardMainView(
+        chasesPaginationProvider: chasesPaginationProvider,
+        logger: logger,
+      ),
     );
   }
 }
@@ -134,13 +122,28 @@ class _DashboardMainView extends ConsumerWidget {
                 ),
               ),
               // Chases Map
-              // ChasesMap(),
-              // For Clusters
-              //  SliverToBoxAdapter(
-              //   child: SizedBox(
-              //     height: kPaddingMediumConstant,
-              //   ),
-              // ),
+
+              SliverToBoxAdapter(
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  // GEstureDetector won't work?
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return const MapBoxFullView();
+                          },
+                        ),
+                      );
+                    },
+                    child: const IgnorePointer(
+                      child: MapBoxView(),
+                    ),
+                  ),
+                ),
+              ),
 
               //Top Chases
               const SliverToBoxAdapter(

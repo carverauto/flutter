@@ -11,6 +11,8 @@ _$_ADSB _$$_ADSBFromJson(Map<String, dynamic> json) => _$_ADSB(
       group: json['group'] as String,
       lat: (json['lat'] as num).toDouble(),
       lon: (json['lon'] as num).toDouble(),
+      track: (json['track'] as num?)?.toDouble(),
+      type: json['type'] as String,
     );
 
 Map<String, dynamic> _$$_ADSBToJson(_$_ADSB instance) => <String, dynamic>{
@@ -18,4 +20,6 @@ Map<String, dynamic> _$$_ADSBToJson(_$_ADSB instance) => <String, dynamic>{
       'group': instance.group,
       'lat': instance.lat,
       'lon': instance.lon,
+      'track': instance.track,
+      'type': instance.type,
     };

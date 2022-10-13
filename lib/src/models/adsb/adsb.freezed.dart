@@ -31,6 +31,10 @@ mixin _$ADSB {
   double get lat => throw _privateConstructorUsedError;
   @JsonKey(name: 'lon')
   double get lon => throw _privateConstructorUsedError;
+  @JsonKey(name: 'track')
+  double? get track => throw _privateConstructorUsedError;
+  @JsonKey(name: 'type')
+  String get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +49,9 @@ abstract class $ADSBCopyWith<$Res> {
       {@JsonKey(name: 'flight') String flight,
       @JsonKey(name: 'group') String group,
       @JsonKey(name: 'lat') double lat,
-      @JsonKey(name: 'lon') double lon});
+      @JsonKey(name: 'lon') double lon,
+      @JsonKey(name: 'track') double? track,
+      @JsonKey(name: 'type') String type});
 }
 
 /// @nodoc
@@ -62,6 +68,8 @@ class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
     Object? group = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
+    Object? track = freezed,
+    Object? type = freezed,
   }) {
     return _then(_value.copyWith(
       flight: flight == freezed
@@ -80,6 +88,14 @@ class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
+      track: track == freezed
+          ? _value.track
+          : track // ignore: cast_nullable_to_non_nullable
+              as double?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -93,7 +109,9 @@ abstract class _$$_ADSBCopyWith<$Res> implements $ADSBCopyWith<$Res> {
       {@JsonKey(name: 'flight') String flight,
       @JsonKey(name: 'group') String group,
       @JsonKey(name: 'lat') double lat,
-      @JsonKey(name: 'lon') double lon});
+      @JsonKey(name: 'lon') double lon,
+      @JsonKey(name: 'track') double? track,
+      @JsonKey(name: 'type') String type});
 }
 
 /// @nodoc
@@ -111,6 +129,8 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
     Object? group = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
+    Object? track = freezed,
+    Object? type = freezed,
   }) {
     return _then(_$_ADSB(
       flight: flight == freezed
@@ -129,6 +149,14 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
+      track: track == freezed
+          ? _value.track
+          : track // ignore: cast_nullable_to_non_nullable
+              as double?,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -141,7 +169,9 @@ class _$_ADSB extends _ADSB {
       {@JsonKey(name: 'flight') required this.flight,
       @JsonKey(name: 'group') required this.group,
       @JsonKey(name: 'lat') required this.lat,
-      @JsonKey(name: 'lon') required this.lon})
+      @JsonKey(name: 'lon') required this.lon,
+      @JsonKey(name: 'track') this.track,
+      @JsonKey(name: 'type') required this.type})
       : super._();
 
   factory _$_ADSB.fromJson(Map<String, dynamic> json) => _$$_ADSBFromJson(json);
@@ -161,10 +191,16 @@ class _$_ADSB extends _ADSB {
   @override
   @JsonKey(name: 'lon')
   final double lon;
+  @override
+  @JsonKey(name: 'track')
+  final double? track;
+  @override
+  @JsonKey(name: 'type')
+  final String type;
 
   @override
   String toString() {
-    return 'ADSB(flight: $flight, group: $group, lat: $lat, lon: $lon)';
+    return 'ADSB(flight: $flight, group: $group, lat: $lat, lon: $lon, track: $track, type: $type)';
   }
 
   @override
@@ -175,7 +211,9 @@ class _$_ADSB extends _ADSB {
             const DeepCollectionEquality().equals(other.flight, flight) &&
             const DeepCollectionEquality().equals(other.group, group) &&
             const DeepCollectionEquality().equals(other.lat, lat) &&
-            const DeepCollectionEquality().equals(other.lon, lon));
+            const DeepCollectionEquality().equals(other.lon, lon) &&
+            const DeepCollectionEquality().equals(other.track, track) &&
+            const DeepCollectionEquality().equals(other.type, type));
   }
 
   @JsonKey(ignore: true)
@@ -185,7 +223,9 @@ class _$_ADSB extends _ADSB {
       const DeepCollectionEquality().hash(flight),
       const DeepCollectionEquality().hash(group),
       const DeepCollectionEquality().hash(lat),
-      const DeepCollectionEquality().hash(lon));
+      const DeepCollectionEquality().hash(lon),
+      const DeepCollectionEquality().hash(track),
+      const DeepCollectionEquality().hash(type));
 
   @JsonKey(ignore: true)
   @override
@@ -205,7 +245,9 @@ abstract class _ADSB extends ADSB {
       {@JsonKey(name: 'flight') required final String flight,
       @JsonKey(name: 'group') required final String group,
       @JsonKey(name: 'lat') required final double lat,
-      @JsonKey(name: 'lon') required final double lon}) = _$_ADSB;
+      @JsonKey(name: 'lon') required final double lon,
+      @JsonKey(name: 'track') final double? track,
+      @JsonKey(name: 'type') required final String type}) = _$_ADSB;
   const _ADSB._() : super._();
 
   factory _ADSB.fromJson(Map<String, dynamic> json) = _$_ADSB.fromJson;
@@ -224,6 +266,12 @@ abstract class _ADSB extends ADSB {
   @override
   @JsonKey(name: 'lon')
   double get lon;
+  @override
+  @JsonKey(name: 'track')
+  double? get track;
+  @override
+  @JsonKey(name: 'type')
+  String get type;
   @override
   @JsonKey(ignore: true)
   _$$_ADSBCopyWith<_$_ADSB> get copyWith => throw _privateConstructorUsedError;

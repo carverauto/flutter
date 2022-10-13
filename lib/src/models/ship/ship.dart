@@ -18,6 +18,7 @@ abstract class Ship implements _$Ship {
     @JsonKey(name: 'type') required int type,
     @JsonKey(name: 'latitude') required double lat,
     @JsonKey(name: 'longitude') required double lon,
+    @JsonKey(name: 'heading') required double heading,
   }) = _Ship;
   const Ship._();
 
