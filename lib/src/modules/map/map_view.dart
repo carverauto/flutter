@@ -75,7 +75,13 @@ class _MapBoxViewState extends State<MapBoxView> {
   Future<void> onSymbolTapped(Symbol symbol) async {
     log('Symbol tapped');
     if (infosymbol != null) {
-      await mapboxMapController.removeSymbol(infosymbol!);
+      final List<Symbol> allInfoSymbols = mapboxMapController.symbols
+          .where((Symbol info) => info.options.iconImage == 'infoWindow')
+          .toList();
+      for (final Symbol element in allInfoSymbols) {
+        await mapboxMapController.removeSymbol(element);
+      }
+      // await mapboxMapController.removeSymbol(infosymbol!);
     }
     final String title = symbol.data!['title'] as String;
     final bool isShip = symbol.data!['type'] == 'ship';

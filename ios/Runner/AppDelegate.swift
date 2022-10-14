@@ -1,13 +1,13 @@
 import UIKit
 import Flutter
-import SwiftCBOR
-import SwiftProtobuf
-// import NodleSDK
-import SQLite
+// import SwiftCBOR
+// import SwiftProtobuf
+// // import NodleSDK
+// import SQLite
 // import CoreLocation
 // import CoreBluetooth
-import simd
-import grpc
+// import simd
+// import grpc
 
 //let nodle = Nodle.sharedInstance
 // private var nodle: Nodle?
@@ -19,7 +19,7 @@ import grpc
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     
-      let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
+      // let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
 
       // let nodleChannel = FlutterMethodChannel(name: "com.carverauto.chaseapp/nodle",
       //                                         binaryMessenger: controller.binaryMessenger)

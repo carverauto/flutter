@@ -67,13 +67,13 @@ post_install do |installer|
         '$(inherited)',
 
         ## dart: [PermissionGroup.location, PermissionGroup.locationAlways, PermissionGroup.locationWhenInUse]
-        'PERMISSION_LOCATION=1',
+        # 'PERMISSION_LOCATION=0',
        
         ## dart: PermissionGroup.notification
         'PERMISSION_NOTIFICATIONS=1',  
         
         ## dart: PermissionGroup.bluetooth
-        'PERMISSION_BLUETOOTH=1',
+        # 'PERMISSION_BLUETOOTH=0',
     ]
     # End
     end
