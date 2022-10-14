@@ -45,7 +45,7 @@ target 'Runner' do
   use_frameworks!
   # use_modular_headers!
 
-  pod 'NodleSDK'
+  # pod 'NodleSDK'
   pod 'SQLite.swift', '~> 0.13.2'
   pod 'SwiftCBOR', '~> 0.4.4'
   pod 'SwiftProtobuf', '~> 1.18.0'

@@ -18,10 +18,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url "http://maven.nodle.io/io/home/runner/.m2/repository/"
-            allowInsecureProtocol = true
-        }
+        // maven {
+        //     url "http://maven.nodle.io/io/home/runner/.m2/repository/"
+        //     allowInsecureProtocol = true
+        // }
     }
 }
 

@@ -94,7 +94,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'org.slf4j:slf4j-simple:1.7.30'
-    implementation 'io.nodle:nodlesdk-rc-lp:92bd58f9e2'
+    // implementation 'io.nodle:nodlesdk-rc-lp:92bd58f9e2'
     implementation "com.algolia:algoliasearch-client-kotlin:1.12.0"
     implementation "io.ktor:ktor-client-okhttp:1.6.4"
     implementation 'com.pusher:pusher-java-client:2.2.8'
