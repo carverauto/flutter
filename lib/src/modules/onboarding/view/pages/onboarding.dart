@@ -1,11 +1,11 @@
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/info.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/modules/dashboard/view/parts/chaseapp_appbar.dart';
-import 'package:chaseapp/src/modules/onboarding/view/parts/onboarding_page.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../../const/images.dart';
+import '../../../../const/info.dart';
+import '../../../../const/sizings.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../dashboard/view/parts/chaseapp_appbar.dart';
+import '../parts/onboarding_page.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -16,8 +16,6 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   int pageIndex = 0;
-
-  bool activateContinueButton = false;
 
   final PageController pageController = PageController();
 
@@ -31,7 +29,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             foregroundDecoration: BoxDecoration(
               color: Colors.black.withOpacity(0.4),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage(
@@ -45,42 +43,21 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               SizedBox(
                 height: kItemsSpacingLarge,
               ),
-              ChaseAppLogoImage(),
+              const ChaseAppLogoImage(),
               Expanded(
                 child: PageView(
                   controller: pageController,
-                  padEnds: true,
-                  onPageChanged: (index) {
+                  onPageChanged: (int index) {
                     setState(() {
                       pageIndex = index;
-                      if (index == 1) activateContinueButton = true;
                     });
                   },
                   children: [
                     OnboardingPage(
-                      title: Text(
-                        "Welcome To ChaseApp!",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
-                      ),
-                      message: chaseAppMessage,
-                      onTap: () {
-                        pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.linear,
-                        );
-                      },
-                      pageIndex: pageIndex,
-                    ),
-                    OnboardingPage(
                       title: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Powered by",
+                            'Welcome To ChaseApp!',
                             textAlign: TextAlign.center,
                             style:
                                 Theme.of(context).textTheme.headline4!.copyWith(
@@ -90,24 +67,54 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                                           .onBackground,
                                     ),
                           ),
-                          SizedBox(
-                            width: kItemsSpacingSmallConstant,
-                          ),
-                          SvgPicture.asset(
-                            "assets/icon/nodle.svg",
-                            height: kIconSizeLargeConstant,
-                          ),
                         ],
                       ),
-                      message: nodleUsageMessage,
+                      message: chaseAppMessage,
                       onTap: () {
                         Navigator.pushReplacementNamed(
                           context,
                           RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
                         );
+                        // pageController.nextPage(
+                        //   duration: const Duration(milliseconds: 300),
+                        //   curve: Curves.linear,
+                        // );
                       },
                       pageIndex: pageIndex,
                     ),
+                    // OnboardingPage(
+                    //   title: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       Text(
+                    //         "Powered by",
+                    //         textAlign: TextAlign.center,
+                    //         style:
+                    //             Theme.of(context).textTheme.headline4!.copyWith(
+                    //                   fontWeight: FontWeight.bold,
+                    //                   color: Theme.of(context)
+                    //                       .colorScheme
+                    //                       .onBackground,
+                    //                 ),
+                    //       ),
+                    //       SizedBox(
+                    //         width: kItemsSpacingSmallConstant,
+                    //       ),
+                    //       SvgPicture.asset(
+                    //         "assets/icon/nodle.svg",
+                    //         height: kIconSizeLargeConstant,
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   message: nodleUsageMessage,
+                    //   onTap: () {
+                    //     Navigator.pushReplacementNamed(
+                    //       context,
+                    //       RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER,
+                    //     );
+                    //   },
+                    //   pageIndex: pageIndex,
+                    // ),
                   ],
                 ),
               ),

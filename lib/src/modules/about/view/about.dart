@@ -1,9 +1,12 @@
-import 'package:chaseapp/src/const/links.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../const/info.dart';
+import '../../../const/links.dart';
+import '../../../const/sizings.dart';
+import '../../../shared/util/helpers/launchLink.dart';
+import '../../dashboard/view/parts/chaseapp_appbar.dart';
 
 class AboutUsView extends ConsumerStatefulWidget {
   const AboutUsView({Key? key}) : super(key: key);
@@ -13,14 +16,14 @@ class AboutUsView extends ConsumerStatefulWidget {
 }
 
 class _AboutUsViewState extends ConsumerState<AboutUsView> {
-  final Logger logger = Logger("About");
+  final Logger logger = Logger('About');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         elevation: kElevation,
-        title: Text("About us"),
+        title: const Text('About us'),
       ),
       body: Column(
         children: [
@@ -29,13 +32,21 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               horizontal: kPaddingMediumConstant,
               vertical: kPaddingMediumConstant,
             ),
-            child: Text(
-              'This app captures device location and bluetooth scan data at regular intervals.\n\nChaseApp earns a small fee based on the quality of data that is uploaded.\n\nWhen the app is closed or not in use, location and bluetooth scan data may be captured in the background depending on the user-selected mode.',
-              style: TextStyle(color: Colors.white),
+            child: Column(
+              children: const [
+                ChaseAppLogoImage(),
+                SizedBox(
+                  height: kPaddingMediumConstant,
+                ),
+                Text(
+                  chaseAppMessage,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ),
-          Spacer(),
-          Divider(
+          const Spacer(),
+          const Divider(
             height: kItemsSpacingLargeConstant,
           ),
           TextButton(
@@ -43,12 +54,12 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
               launchUrl(chaseAppWebsite);
             },
             child: Text(
-              "Visit Us",
+              'Visit Us',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

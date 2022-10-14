@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/const/textstyles.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../const/colors.dart';
+import '../../../../const/sizings.dart';
+import '../../../../const/textstyles.dart';
+import '../../../../shared/util/helpers/sizescaleconfig.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({
@@ -26,21 +27,21 @@ class OnboardingPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
+          const SizedBox(
             height: kItemsSpacingMediumConstant,
           ),
           title,
-          SizedBox(
+          const SizedBox(
             height: kItemsSpacingMediumConstant,
           ),
           Expanded(
             child: Center(
               child: Container(
                 clipBehavior: Clip.hardEdge,
-                padding: EdgeInsets.all(
+                padding: const EdgeInsets.all(
                   kPaddingMediumConstant,
                 ),
-                margin: EdgeInsets.all(
+                margin: const EdgeInsets.all(
                   kPaddingMediumConstant,
                 ).copyWith(
                   bottom: 0,
@@ -58,7 +59,7 @@ class OnboardingPage extends StatelessWidget {
                   ),
                   child: ListView(
                     shrinkWrap: true,
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     children: [
                       Text(
                         message,
@@ -77,7 +78,7 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: kItemsSpacingMediumConstant,
           ),
           Divider(
@@ -89,11 +90,12 @@ class OnboardingPage extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 width: double.maxFinite,
                 alignment: Alignment.center,
                 child: Text(
-                  pageIndex == 0 ? "Next" : "Continue",
+                  // pageIndex == 0 ? "Next" :
+                  'Continue',
                   style: getButtonStyle(context),
                 ),
               ),
