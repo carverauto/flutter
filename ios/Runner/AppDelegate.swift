@@ -4,8 +4,8 @@ import SwiftCBOR
 import SwiftProtobuf
 // import NodleSDK
 import SQLite
-import CoreLocation
-import CoreBluetooth
+// import CoreLocation
+// import CoreBluetooth
 import simd
 import grpc
 
