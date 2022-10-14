@@ -10,6 +10,7 @@ import '../../models/interest/interest.dart';
 import '../../models/push_tokens/push_token.dart';
 import '../../models/user/user_data.dart';
 import '../../modules/notifications/view/providers/providers.dart';
+import '../../shared/util/helpers/request_permissions.dart';
 import '../modules/auth/view/providers/providers.dart';
 import '../top_level_providers/firebase_providers.dart';
 import '../top_level_providers/services_providers.dart';
@@ -33,10 +34,11 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
         await checkUsersInterests();
 
+        await checkRequestPermissions();
         isInitialized = true;
       } catch (e, stk) {
         logger.severe('Error initializing post login actions', e, stk);
-      }
+      } finally {}
     }
   }
 

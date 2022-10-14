@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +14,9 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 // import 'package:device_preview/device_preview.dart';
 import 'src/const/colors.dart';
 import 'src/modules/chats/view/providers/providers.dart';
+import 'src/routes/routeNames.dart';
 import 'src/routes/routes.dart';
+import 'src/shared/util/helpers/request_permissions.dart';
 import 'src/theme/theme.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
@@ -44,10 +47,37 @@ class MyApp extends ConsumerWidget {
       },
       // locale: Locale('en'), // Add the locale here
       // builder: DevicePreview.appBuilder,
+
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
+      navigatorObservers: [
+        RoutesObserver(),
+      ],
       theme: getThemeData(context),
     );
+  }
+}
+
+class RoutesObserver extends NavigatorObserver {
+  final Logger routesObserverLogger = Logger('RoutesObserverLogger');
+
+  @override
+  Future<void> didPop(Route route, Route? previousRoute) async {
+    // TODO: implement didPop
+    if (route.settings.name == RouteName.CHASE_VIEW) {
+      Timer(const Duration(milliseconds: 500), () async {
+        try {
+          await checkRequestPermissions();
+        } catch (e, stk) {
+          routesObserverLogger.warning(
+            'Error while trying to check for permissions/requesting permissions.',
+            e,
+            stk,
+          );
+        }
+      });
+    }
+    super.didPop(route, previousRoute);
   }
 }
 

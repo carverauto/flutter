@@ -2,8 +2,35 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<bool> checkForPermissionsStatuses() async {
+Future<void> updateisFirstChaseViewedStatus() async {
+  final SharedPreferences sharedPreferances =
+      await SharedPreferences.getInstance();
+  final bool isFirstChaseViewed =
+      sharedPreferances.getBool('isFirstChaseViewed') ?? false;
+
+  if (!isFirstChaseViewed) {
+    await sharedPreferances.setBool('isFirstChaseViewed', true);
+  }
+}
+
+Future<void> checkRequestPermissions() async {
+  final SharedPreferences sharedPreferances =
+      await SharedPreferences.getInstance();
+  final bool isFirstChaseViewed =
+      sharedPreferances.getBool('isFirstChaseViewed') ?? false;
+
+  if (isFirstChaseViewed) {
+    final bool isGrantedPermissions = await _checkForPermissionsStatuses();
+
+    if (!isGrantedPermissions) {
+      await _requestPermissions();
+    }
+  }
+}
+
+Future<bool> _checkForPermissionsStatuses() async {
   // final bool bluetoothStatus = await Permission.bluetooth.isGranted;
   // final bool bluetoothScanStatus =
   //     Platform.isAndroid ? await Permission.bluetoothScan.isGranted : true;
@@ -21,7 +48,7 @@ Future<bool> checkForPermissionsStatuses() async {
   //     notificationStatus;
 }
 
-Future<UsersPermissionStatuses> requestPermissions() async {
+Future<UsersPermissionStatuses> _requestPermissions() async {
   final Map<Permission, PermissionStatus> statuses = await [
     // Permission.bluetooth,
     // if (Platform.isAndroid) ...[
