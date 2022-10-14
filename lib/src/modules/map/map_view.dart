@@ -1,5 +1,8 @@
+import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -181,8 +184,20 @@ class _MapBoxViewState extends State<MapBoxView> {
             child: MapboxMap(
               styleString: MapboxStyles.DARK,
               accessToken: EnvVaribales.getMapBoxPublicAccessToken,
+              attributionButtonMargins: const Point(-200, 0),
+
+              logoViewMargins: const Point(-200, 0),
               onMapCreated: _onMapCreated,
               // myLocationEnabled: true,
+              // ignore: prefer_collection_literals
+              gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>[
+                Factory<OneSequenceGestureRecognizer>(
+                  VerticalDragGestureRecognizer.new,
+                ),
+                Factory<DragGestureRecognizer>(
+                  HorizontalDragGestureRecognizer.new,
+                ),
+              ].toSet(),
 
               myLocationRenderMode: MyLocationRenderMode.NORMAL,
               initialCameraPosition: const CameraPosition(

@@ -13,7 +13,6 @@ import '../../../chases/view/pages/recent_chases/recent_chases.dart';
 import '../../../chases/view/pages/top_chases/top_chases.dart';
 import '../../../chases/view/providers/providers.dart';
 import '../../../firehose/view/pages/firehose_view_all.dart';
-import '../../../map/map_view.dart';
 import '../parts/chaseapp_appbar.dart';
 import '../parts/chaseapp_drawer.dart';
 import '../parts/connectivity_status.dart';
@@ -41,7 +40,7 @@ class Dashboard extends StatelessWidget {
 }
 
 class _DashboardMainView extends ConsumerWidget {
-  const _DashboardMainView({
+  _DashboardMainView({
     Key? key,
     required this.chasesPaginationProvider,
     required this.logger,
@@ -50,6 +49,7 @@ class _DashboardMainView extends ConsumerWidget {
   final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
+  final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,6 +111,7 @@ class _DashboardMainView extends ConsumerWidget {
           CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             restorationId: 'Chases List',
+            controller: controller,
             slivers: [
               // AppBar
               const ChaseAppBar(),
@@ -118,32 +119,38 @@ class _DashboardMainView extends ConsumerWidget {
               // Error if removed (Need to report)
               const SliverToBoxAdapter(
                 child: SizedBox(
-                  height: kPaddingMediumConstant,
+                  height: kPaddingSmallConstant,
                 ),
               ),
               // Chases Map
 
-              SliverToBoxAdapter(
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  // GEstureDetector won't work?
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push<void>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return const MapBoxFullView();
-                          },
-                        ),
-                      );
-                    },
-                    child: const IgnorePointer(
-                      child: MapBoxView(),
-                    ),
-                  ),
-                ),
-              ),
+              // SliverList(
+              //   delegate: SliverChildListDelegate([
+              //     const AspectRatio(
+              //       aspectRatio: 16 / 9,
+              //       // GEstureDetector won't work?
+              //       child: MapBoxView(),
+              //     )
+              //   ]),
+              // ),
+
+              // SliverToBoxAdapter(
+              //   child: AspectRatio(
+              //     aspectRatio: 16 / 9,
+              //     child: ListView(
+              //       shrinkWrap: true,
+              //       primary: true,
+              //       children: [
+              //         for (int i = 0; i < 10; i++) const Text('Hello')
+              //         // AspectRatio(
+              //         //   aspectRatio: 16 / 9,
+              //         //   // GEstureDetector won't work?
+              //         //   child: MapBoxView(),
+              //         // )
+              //       ],
+              //     ),
+              //   ),
+              // ),
 
               //Top Chases
               const SliverToBoxAdapter(
