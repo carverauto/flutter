@@ -7,6 +7,7 @@ part of 'ship.dart';
 // **************************************************************************
 
 _$_Ship _$$_ShipFromJson(Map<String, dynamic> json) => _$_Ship(
+      id: json['id'] as String,
       name: json['name'] as String?,
       mmsi: json['mmsi'] as int?,
       type: json['type'] as int,
@@ -16,6 +17,7 @@ _$_Ship _$$_ShipFromJson(Map<String, dynamic> json) => _$_Ship(
     );
 
 Map<String, dynamic> _$$_ShipToJson(_$_Ship instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'mmsi': instance.mmsi,
       'type': instance.type,

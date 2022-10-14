@@ -22,7 +22,7 @@ Ship _$ShipFromJson(Map<String, dynamic> json) {
 mixin _$Ship {
 // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'mmsi')
@@ -46,7 +46,8 @@ abstract class $ShipCopyWith<$Res> {
   factory $ShipCopyWith(Ship value, $Res Function(Ship) then) =
       _$ShipCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'name') String? name,
+      {String id,
+      @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'mmsi') int? mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
@@ -64,6 +65,7 @@ class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? mmsi = freezed,
     Object? type = freezed,
@@ -72,6 +74,10 @@ class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
     Object? heading = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -106,7 +112,8 @@ abstract class _$$_ShipCopyWith<$Res> implements $ShipCopyWith<$Res> {
       __$$_ShipCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'name') String? name,
+      {String id,
+      @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'mmsi') int? mmsi,
       @JsonKey(name: 'type') int type,
       @JsonKey(name: 'latitude') double lat,
@@ -125,6 +132,7 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? mmsi = freezed,
     Object? type = freezed,
@@ -133,6 +141,10 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
     Object? heading = freezed,
   }) {
     return _then(_$_Ship(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -166,7 +178,8 @@ class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_Ship extends _Ship {
   const _$_Ship(
-      {@JsonKey(name: 'name') this.name,
+      {required this.id,
+      @JsonKey(name: 'name') this.name,
       @JsonKey(name: 'mmsi') this.mmsi,
       @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'latitude') required this.lat,
@@ -178,7 +191,8 @@ class _$_Ship extends _Ship {
 
 // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  @override
+  final String id;
   @override
   @JsonKey(name: 'name')
   final String? name;
@@ -200,7 +214,7 @@ class _$_Ship extends _Ship {
 
   @override
   String toString() {
-    return 'Ship(name: $name, mmsi: $mmsi, type: $type, lat: $lat, lon: $lon, heading: $heading)';
+    return 'Ship(id: $id, name: $name, mmsi: $mmsi, type: $type, lat: $lat, lon: $lon, heading: $heading)';
   }
 
   @override
@@ -208,6 +222,7 @@ class _$_Ship extends _Ship {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Ship &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.mmsi, mmsi) &&
             const DeepCollectionEquality().equals(other.type, type) &&
@@ -220,6 +235,7 @@ class _$_Ship extends _Ship {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(mmsi),
       const DeepCollectionEquality().hash(type),
@@ -242,7 +258,8 @@ class _$_Ship extends _Ship {
 
 abstract class _Ship extends Ship {
   const factory _Ship(
-      {@JsonKey(name: 'name') final String? name,
+      {required final String id,
+      @JsonKey(name: 'name') final String? name,
       @JsonKey(name: 'mmsi') final int? mmsi,
       @JsonKey(name: 'type') required final int type,
       @JsonKey(name: 'latitude') required final double lat,
@@ -254,7 +271,8 @@ abstract class _Ship extends Ship {
 
   @override // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  String get id;
+  @override
   @JsonKey(name: 'name')
   String? get name;
   @override

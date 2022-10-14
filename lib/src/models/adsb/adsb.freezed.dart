@@ -22,7 +22,7 @@ ADSB _$ADSBFromJson(Map<String, dynamic> json) {
 mixin _$ADSB {
 // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'flight')
   String? get flight => throw _privateConstructorUsedError;
   @JsonKey(name: 'group')
@@ -35,6 +35,8 @@ mixin _$ADSB {
   double? get track => throw _privateConstructorUsedError;
   @JsonKey(name: 'type')
   String get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'imageUrl')
+  String? get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,12 +48,14 @@ abstract class $ADSBCopyWith<$Res> {
   factory $ADSBCopyWith(ADSB value, $Res Function(ADSB) then) =
       _$ADSBCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'flight') String? flight,
+      {String id,
+      @JsonKey(name: 'flight') String? flight,
       @JsonKey(name: 'group') String? group,
       @JsonKey(name: 'lat') double lat,
       @JsonKey(name: 'lon') double lon,
       @JsonKey(name: 'track') double? track,
-      @JsonKey(name: 'type') String type});
+      @JsonKey(name: 'type') String type,
+      @JsonKey(name: 'imageUrl') String? imageUrl});
 }
 
 /// @nodoc
@@ -64,14 +68,20 @@ class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? flight = freezed,
     Object? group = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
     Object? track = freezed,
     Object? type = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       flight: flight == freezed
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
@@ -96,6 +106,10 @@ class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -106,12 +120,14 @@ abstract class _$$_ADSBCopyWith<$Res> implements $ADSBCopyWith<$Res> {
       __$$_ADSBCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'flight') String? flight,
+      {String id,
+      @JsonKey(name: 'flight') String? flight,
       @JsonKey(name: 'group') String? group,
       @JsonKey(name: 'lat') double lat,
       @JsonKey(name: 'lon') double lon,
       @JsonKey(name: 'track') double? track,
-      @JsonKey(name: 'type') String type});
+      @JsonKey(name: 'type') String type,
+      @JsonKey(name: 'imageUrl') String? imageUrl});
 }
 
 /// @nodoc
@@ -125,14 +141,20 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? flight = freezed,
     Object? group = freezed,
     Object? lat = freezed,
     Object? lon = freezed,
     Object? track = freezed,
     Object? type = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(_$_ADSB(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       flight: flight == freezed
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
@@ -157,6 +179,10 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
+      imageUrl: imageUrl == freezed
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -166,19 +192,22 @@ class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$_ADSB extends _ADSB {
   const _$_ADSB(
-      {@JsonKey(name: 'flight') this.flight,
+      {required this.id,
+      @JsonKey(name: 'flight') this.flight,
       @JsonKey(name: 'group') this.group,
       @JsonKey(name: 'lat') required this.lat,
       @JsonKey(name: 'lon') required this.lon,
       @JsonKey(name: 'track') this.track,
-      @JsonKey(name: 'type') required this.type})
+      @JsonKey(name: 'type') required this.type,
+      @JsonKey(name: 'imageUrl') this.imageUrl})
       : super._();
 
   factory _$_ADSB.fromJson(Map<String, dynamic> json) => _$$_ADSBFromJson(json);
 
 // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  @override
+  final String id;
   @override
   @JsonKey(name: 'flight')
   final String? flight;
@@ -197,10 +226,13 @@ class _$_ADSB extends _ADSB {
   @override
   @JsonKey(name: 'type')
   final String type;
+  @override
+  @JsonKey(name: 'imageUrl')
+  final String? imageUrl;
 
   @override
   String toString() {
-    return 'ADSB(flight: $flight, group: $group, lat: $lat, lon: $lon, track: $track, type: $type)';
+    return 'ADSB(id: $id, flight: $flight, group: $group, lat: $lat, lon: $lon, track: $track, type: $type, imageUrl: $imageUrl)';
   }
 
   @override
@@ -208,24 +240,28 @@ class _$_ADSB extends _ADSB {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ADSB &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.flight, flight) &&
             const DeepCollectionEquality().equals(other.group, group) &&
             const DeepCollectionEquality().equals(other.lat, lat) &&
             const DeepCollectionEquality().equals(other.lon, lon) &&
             const DeepCollectionEquality().equals(other.track, track) &&
-            const DeepCollectionEquality().equals(other.type, type));
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(flight),
       const DeepCollectionEquality().hash(group),
       const DeepCollectionEquality().hash(lat),
       const DeepCollectionEquality().hash(lon),
       const DeepCollectionEquality().hash(track),
-      const DeepCollectionEquality().hash(type));
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(imageUrl));
 
   @JsonKey(ignore: true)
   @override
@@ -242,19 +278,22 @@ class _$_ADSB extends _ADSB {
 
 abstract class _ADSB extends ADSB {
   const factory _ADSB(
-      {@JsonKey(name: 'flight') final String? flight,
+      {required final String id,
+      @JsonKey(name: 'flight') final String? flight,
       @JsonKey(name: 'group') final String? group,
       @JsonKey(name: 'lat') required final double lat,
       @JsonKey(name: 'lon') required final double lon,
       @JsonKey(name: 'track') final double? track,
-      @JsonKey(name: 'type') required final String type}) = _$_ADSB;
+      @JsonKey(name: 'type') required final String type,
+      @JsonKey(name: 'imageUrl') final String? imageUrl}) = _$_ADSB;
   const _ADSB._() : super._();
 
   factory _ADSB.fromJson(Map<String, dynamic> json) = _$_ADSB.fromJson;
 
   @override // TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
-// required String id,
+  String get id;
+  @override
   @JsonKey(name: 'flight')
   String? get flight;
   @override
@@ -272,6 +311,9 @@ abstract class _ADSB extends ADSB {
   @override
   @JsonKey(name: 'type')
   String get type;
+  @override
+  @JsonKey(name: 'imageUrl')
+  String? get imageUrl;
   @override
   @JsonKey(ignore: true)
   _$$_ADSBCopyWith<_$_ADSB> get copyWith => throw _privateConstructorUsedError;
