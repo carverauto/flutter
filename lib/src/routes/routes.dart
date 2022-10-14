@@ -12,7 +12,6 @@ import '../modules/about/view/about.dart';
 import '../modules/chase_view/view/pages/chaseDetails_page.dart';
 import '../modules/chases/view/pages/recent_chases/recent_chases_view_all.dart';
 import '../modules/check_permissions/view/pages/check_permissions_status.dart';
-import '../modules/check_permissions/view/pages/request_permissions.dart';
 import '../modules/credits/view/credits.dart';
 import '../modules/firehose/view/pages/firehose_view_all.dart';
 import '../modules/home/view/pages/home_wrapper.dart';
@@ -43,10 +42,10 @@ class Routes {
         return MaterialPageRoute<void>(
           builder: (BuildContext context) => CheckPermissionsViewWrapper(),
         );
-      case RouteName.REQUEST_PERMISSIONS_VIEW:
-        return MaterialPageRoute<void>(
-          builder: (BuildContext context) => const RequestPermissionsView(),
-        );
+      // case RouteName.REQUEST_PERMISSIONS_VIEW:
+      //   return MaterialPageRoute<void>(
+      //     builder: (BuildContext context) => const RequestPermissionsView(),
+      //   );
       case RouteName.AUTH_VIEW_WRAPPER:
         return MaterialPageRoute<void>(
           builder: (BuildContext context) => AuthViewWrapper(),
@@ -59,7 +58,11 @@ class Routes {
         return MaterialPageRoute<void>(builder: (_) => HomeWrapper());
       case RouteName.CHASE_VIEW:
         final String chaseId = arguments['chaseId'] as String;
-        return _createRoute(chaseId);
+
+        return _createRoute(
+          chaseId,
+          settings,
+        );
       case RouteName.RECENT_CHASESS_VIEW_ALL:
         final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
                 PaginationNotifierState<Chase>> chasesPaginationProvider =
@@ -74,7 +77,7 @@ class Routes {
         );
       case RouteName.FIREHOSE_VIEW_ALL:
         return MaterialPageRoute<void>(
-          builder: (_) => FirehoseListViewAll(
+          builder: (_) => const FirehoseListViewAll(
             showLimited: false,
           ),
         );
@@ -110,8 +113,9 @@ class Routes {
   }
 }
 
-Route<void> _createRoute(String chaseId) {
+Route<void> _createRoute(String chaseId, RouteSettings settings) {
   return PageRouteBuilder<void>(
+    settings: settings,
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,
