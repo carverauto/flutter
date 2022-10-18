@@ -31,7 +31,9 @@ class ChaseAppBar extends StatelessWidget {
                 Navigator.of(context).push<void>(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const MapBoxFullView();
+                      return const MapBoxView(
+                        showAppBar: true,
+                      );
                     },
                   ),
                 );

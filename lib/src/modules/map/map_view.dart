@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:math' as math;
 import 'dart:typed_data';
@@ -18,23 +19,14 @@ import 'data/mapdb.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 //TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
-class MapBoxFullView extends StatelessWidget {
-  const MapBoxFullView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map'),
-        centerTitle: false,
-      ),
-      body: const MapBoxView(),
-    );
-  }
-}
 
 class MapBoxView extends StatefulWidget {
-  const MapBoxView({super.key});
+  const MapBoxView({
+    super.key,
+    this.showAppBar = false,
+  });
+
+  final bool showAppBar;
 
   @override
   State<MapBoxView> createState() => _MapBoxViewState();
@@ -42,6 +34,8 @@ class MapBoxView extends StatefulWidget {
 
 class _MapBoxViewState extends State<MapBoxView> {
   late final MapboxMapController mapboxMapController;
+  StreamSubscription<List<Ship>>? shipsStreamSubscription;
+  StreamSubscription<List<ADSB>>? adsbStreamSubscription;
 
   Symbol? infosymbol;
   final MapDB mapDB = MapDB();
@@ -162,7 +156,8 @@ class _MapBoxViewState extends State<MapBoxView> {
   // }
 
   void loadADSBSymbols() {
-    mapDB.adsbStream().listen((List<ADSB> adsbList) async {
+    adsbStreamSubscription =
+        mapDB.adsbStream().listen((List<ADSB> adsbList) async {
       log('ADSB Data Update');
       for (final ADSB adsb in adsbList) {
         final String image = adsb.type == 'plane' ? 'plane' : 'heli';
@@ -210,7 +205,8 @@ class _MapBoxViewState extends State<MapBoxView> {
   }
 
   void loadShipssymbols() {
-    mapDB.shipsStream().listen((List<Ship> adsbList) async {
+    shipsStreamSubscription =
+        mapDB.shipsStream().listen((List<Ship> adsbList) async {
       log('Ships Data Update');
       for (final Ship ship in adsbList) {
         final Set<Symbol> presentSymbols = mapboxMapController.symbols;
@@ -260,8 +256,10 @@ class _MapBoxViewState extends State<MapBoxView> {
   @override
   void dispose() {
     // TODO: implement dispose
-    mapboxMapController.dispose();
+    shipsStreamSubscription?.cancel();
+    adsbStreamSubscription?.cancel();
     mapboxMapController.onSymbolTapped.remove(onSymbolTapped);
+    mapboxMapController.dispose();
 
     super.dispose();
   }
@@ -269,6 +267,12 @@ class _MapBoxViewState extends State<MapBoxView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: const Text('Map'),
+              centerTitle: false,
+            )
+          : null,
       body: Column(
         children: [
           Expanded(
