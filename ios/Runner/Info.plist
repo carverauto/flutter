@@ -80,7 +80,7 @@
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>App does not use this. Required by some underlying packages.</string>
 	<!-- <key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Need for our bluetooth scan</string> --> -->
+	<string>Need for our bluetooth scan</string> -->
 	<!-- End of bluetooth permissions -->
 
 	<!-- For location permissions -->

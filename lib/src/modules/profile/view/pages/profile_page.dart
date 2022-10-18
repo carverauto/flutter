@@ -1,13 +1,19 @@
+import 'dart:io'; // flutter_ignore: dart_io_import.
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:logging/logging.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
+import '../../../onboarding/view/pages/onboarding.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -61,20 +67,148 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                 ),
                 const Spacer(),
-                const Divider(),
-                TextButton(
-                  onPressed: () async {
-                    // await ref
-                    //     .read(chatsServiceStateNotifierProvider.notifier)
-                    //     .disconnectUser();
-                    Navigator.pop(context, true);
-                  },
-                  child: Text(
-                    'Log out',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                      ),
                     ),
                   ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      fixedSize: const Size.fromWidth(double.maxFinite),
+                    ),
+                    onPressed: () async {
+                      // await ref
+                      //     .read(chatsServiceStateNotifierProvider.notifier)
+                      //     .disconnectUser();
+                      Navigator.pop(context, true);
+                    },
+                    child: Text(
+                      'Log out',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: kPaddingLargeConstant,
+                ),
+                Row(
+                  children: const [
+                    SizedBox(
+                      width: kPaddingMediumConstant,
+                    ),
+                    Text(
+                      'Danger Zone',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: kPaddingSmallConstant,
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: kPaddingMediumConstant,
+                ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                      ),
+                    ),
+                  ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      fixedSize: const Size.fromWidth(double.maxFinite),
+                    ),
+                    onPressed: () async {
+                      final bool? shouldDelete = await showDialog<bool?>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Platform.isIOS
+                              ? CupertinoAlertDialog(
+                                  title: const Text('Delete Account'),
+                                  content: const Text(
+                                    'Are you sure you want to delete your account?',
+                                  ),
+                                  actions: <Widget>[
+                                    CupertinoDialogAction(
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.pop(context, false);
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: const Text('Delete'),
+                                      onPressed: () {
+                                        Navigator.pop(context, true);
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : AlertDialog(
+                                  title: const Text('Delete Account'),
+                                  content: const Text(
+                                    'Are you sure you want to delete your account?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, false);
+                                      },
+                                      child: const Text('No'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context, true);
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                  ],
+                                );
+                        },
+                      );
+
+                      if (mounted) {
+                        if (shouldDelete != null && shouldDelete) {
+                          // clear local keys
+                          await ref.read(sharedPreferancesProvider).clear();
+
+                          await ref.read(authRepoProvider).signOut();
+
+                          // ignore: use_build_context_synchronously
+                          await Navigator.pushAndRemoveUntil<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  const OnBoardingView(),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        }
+                      }
+                    },
+                    child: Text(
+                      'Delete Account',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: kPaddingLargeConstant,
                 ),
               ],
             ),
