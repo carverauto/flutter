@@ -98,4 +98,8 @@ class EnvVaribales {
   static const String _mapboxPublicAccessToken =
       String.fromEnvironment('MapBoxACCESS_TOKEN');
   static String get getMapBoxPublicAccessToken => _mapboxPublicAccessToken;
+
+  static const String _gcpServerApiKey =
+      String.fromEnvironment('GCP_SERVER_API_KEY');
+  static String get getGCPServerApiKey => _gcpServerApiKey;
 }

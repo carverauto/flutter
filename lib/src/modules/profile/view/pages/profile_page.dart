@@ -1,4 +1,6 @@
-import 'dart:io'; // flutter_ignore: dart_io_import.
+// flutter_ignore: dart_io_import.
+
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +17,7 @@ import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
+import '../../../firehose/view/providers/providers.dart';
 import '../../../onboarding/view/pages/onboarding.dart';
 
 class ProfileView extends StatefulWidget {
@@ -205,7 +208,6 @@ class _ProfileViewState extends State<ProfileView> {
                                 setState(() {
                                   deletingAccount = true;
                                 });
-
                                 await ref
                                     .read(sharedPreferancesProvider)
                                     .clear();
@@ -215,8 +217,22 @@ class _ProfileViewState extends State<ProfileView> {
                                   );
                                   // return;
                                   await ref
+                                      .read(
+                                        firehoseServiceStateNotifierProvider
+                                            .notifier,
+                                      )
+                                      .streamFeedClient
+                                      .deleteUser(userId);
+                                  ref
+                                      .read(
+                                        firehoseServiceStateNotifierProvider
+                                            .notifier,
+                                      )
+                                      .dispose();
+                                  await ref
                                       .read(authRepoProvider)
                                       .deleteUserAccount(userId);
+
                                   setState(() {
                                     deletingAccount = false;
                                   });

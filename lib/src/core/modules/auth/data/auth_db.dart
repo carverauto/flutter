@@ -294,6 +294,7 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> deleteUserAccount(String userId) async {
     final String projectId = firebaseAuth.app.options.projectId;
+    final String apiKey = EnvVaribales.getGCPServerApiKey;
     final Uri url = Uri.parse(
       'https://us-central1-$projectId.cloudfunctions.net/DeleteUser',
     );
@@ -301,7 +302,7 @@ class AuthDatabase implements AuthDB {
     final http.Response responce = await http.post(
       url,
       headers: {
-        //  "Content-Type": "application/json",
+        'X-ApiKey': apiKey,
       },
       body: jsonEncode({
         'id': userId,
