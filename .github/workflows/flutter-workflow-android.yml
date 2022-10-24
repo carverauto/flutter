@@ -53,7 +53,7 @@ jobs:
 
   deploy-play-store:
     needs: [build]
-    runs-on: [self-hosted, macOS]
+    runs-on: [self-hosted, Linux]
     steps:
       # - uses: dawidd6/action-download-artifact@v2.23.0
       #   with:
