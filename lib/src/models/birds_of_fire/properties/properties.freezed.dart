@@ -43,7 +43,8 @@ mixin _$BofProperties {
 abstract class $BofPropertiesCopyWith<$Res> {
   factory $BofPropertiesCopyWith(
           BofProperties value, $Res Function(BofProperties) then) =
-      _$BofPropertiesCopyWithImpl<$Res>;
+      _$BofPropertiesCopyWithImpl<$Res, BofProperties>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'title') String title,
       @JsonKey(name: 'imageUrl') String imageUrl,
@@ -53,44 +54,46 @@ abstract class $BofPropertiesCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$BofPropertiesCopyWithImpl<$Res>
+class _$BofPropertiesCopyWithImpl<$Res, $Val extends BofProperties>
     implements $BofPropertiesCopyWith<$Res> {
   _$BofPropertiesCopyWithImpl(this._value, this._then);
 
-  final BofProperties _value;
   // ignore: unused_field
-  final $Res Function(BofProperties) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = freezed,
-    Object? imageUrl = freezed,
-    Object? type = freezed,
-    Object? group = freezed,
-    Object? dbscan = freezed,
+    Object? title = null,
+    Object? imageUrl = null,
+    Object? type = null,
+    Object? group = null,
+    Object? dbscan = null,
   }) {
     return _then(_value.copyWith(
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: imageUrl == freezed
+      imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      group: group == freezed
+      group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String,
-      dbscan: dbscan == freezed
+      dbscan: null == dbscan
           ? _value.dbscan
           : dbscan // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -101,6 +104,7 @@ abstract class _$$_BofPropertiesCopyWith<$Res>
           _$_BofProperties value, $Res Function(_$_BofProperties) then) =
       __$$_BofPropertiesCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'title') String title,
       @JsonKey(name: 'imageUrl') String imageUrl,
@@ -111,41 +115,39 @@ abstract class _$$_BofPropertiesCopyWith<$Res>
 
 /// @nodoc
 class __$$_BofPropertiesCopyWithImpl<$Res>
-    extends _$BofPropertiesCopyWithImpl<$Res>
+    extends _$BofPropertiesCopyWithImpl<$Res, _$_BofProperties>
     implements _$$_BofPropertiesCopyWith<$Res> {
   __$$_BofPropertiesCopyWithImpl(
       _$_BofProperties _value, $Res Function(_$_BofProperties) _then)
-      : super(_value, (v) => _then(v as _$_BofProperties));
+      : super(_value, _then);
 
-  @override
-  _$_BofProperties get _value => super._value as _$_BofProperties;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = freezed,
-    Object? imageUrl = freezed,
-    Object? type = freezed,
-    Object? group = freezed,
-    Object? dbscan = freezed,
+    Object? title = null,
+    Object? imageUrl = null,
+    Object? type = null,
+    Object? group = null,
+    Object? dbscan = null,
   }) {
     return _then(_$_BofProperties(
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: imageUrl == freezed
+      imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      group: group == freezed
+      group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String,
-      dbscan: dbscan == freezed
+      dbscan: null == dbscan
           ? _value.dbscan
           : dbscan // ignore: cast_nullable_to_non_nullable
               as String,
@@ -196,25 +198,22 @@ class _$_BofProperties extends _BofProperties {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BofProperties &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.group, group) &&
-            const DeepCollectionEquality().equals(other.dbscan, dbscan));
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.group, group) || other.group == group) &&
+            (identical(other.dbscan, dbscan) || other.dbscan == dbscan));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(imageUrl),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(group),
-      const DeepCollectionEquality().hash(dbscan));
+  int get hashCode =>
+      Object.hash(runtimeType, title, imageUrl, type, group, dbscan);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_BofPropertiesCopyWith<_$_BofProperties> get copyWith =>
       __$$_BofPropertiesCopyWithImpl<_$_BofProperties>(this, _$identity);
 

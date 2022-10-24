@@ -38,7 +38,8 @@ mixin _$BirdsOfFire {
 abstract class $BirdsOfFireCopyWith<$Res> {
   factory $BirdsOfFireCopyWith(
           BirdsOfFire value, $Res Function(BirdsOfFire) then) =
-      _$BirdsOfFireCopyWithImpl<$Res>;
+      _$BirdsOfFireCopyWithImpl<$Res, BirdsOfFire>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'geometry') BOFGeometry geometry,
       @JsonKey(name: 'properties') BofProperties properties});
@@ -48,41 +49,46 @@ abstract class $BirdsOfFireCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$BirdsOfFireCopyWithImpl<$Res> implements $BirdsOfFireCopyWith<$Res> {
+class _$BirdsOfFireCopyWithImpl<$Res, $Val extends BirdsOfFire>
+    implements $BirdsOfFireCopyWith<$Res> {
   _$BirdsOfFireCopyWithImpl(this._value, this._then);
 
-  final BirdsOfFire _value;
   // ignore: unused_field
-  final $Res Function(BirdsOfFire) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? geometry = freezed,
-    Object? properties = freezed,
+    Object? geometry = null,
+    Object? properties = null,
   }) {
     return _then(_value.copyWith(
-      geometry: geometry == freezed
+      geometry: null == geometry
           ? _value.geometry
           : geometry // ignore: cast_nullable_to_non_nullable
               as BOFGeometry,
-      properties: properties == freezed
+      properties: null == properties
           ? _value.properties
           : properties // ignore: cast_nullable_to_non_nullable
               as BofProperties,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $BOFGeometryCopyWith<$Res> get geometry {
     return $BOFGeometryCopyWith<$Res>(_value.geometry, (value) {
-      return _then(_value.copyWith(geometry: value));
+      return _then(_value.copyWith(geometry: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $BofPropertiesCopyWith<$Res> get properties {
     return $BofPropertiesCopyWith<$Res>(_value.properties, (value) {
-      return _then(_value.copyWith(properties: value));
+      return _then(_value.copyWith(properties: value) as $Val);
     });
   }
 }
@@ -94,6 +100,7 @@ abstract class _$$_BirdsOfFireCopyWith<$Res>
           _$_BirdsOfFire value, $Res Function(_$_BirdsOfFire) then) =
       __$$_BirdsOfFireCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'geometry') BOFGeometry geometry,
       @JsonKey(name: 'properties') BofProperties properties});
@@ -105,26 +112,25 @@ abstract class _$$_BirdsOfFireCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_BirdsOfFireCopyWithImpl<$Res> extends _$BirdsOfFireCopyWithImpl<$Res>
+class __$$_BirdsOfFireCopyWithImpl<$Res>
+    extends _$BirdsOfFireCopyWithImpl<$Res, _$_BirdsOfFire>
     implements _$$_BirdsOfFireCopyWith<$Res> {
   __$$_BirdsOfFireCopyWithImpl(
       _$_BirdsOfFire _value, $Res Function(_$_BirdsOfFire) _then)
-      : super(_value, (v) => _then(v as _$_BirdsOfFire));
+      : super(_value, _then);
 
-  @override
-  _$_BirdsOfFire get _value => super._value as _$_BirdsOfFire;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? geometry = freezed,
-    Object? properties = freezed,
+    Object? geometry = null,
+    Object? properties = null,
   }) {
     return _then(_$_BirdsOfFire(
-      geometry: geometry == freezed
+      geometry: null == geometry
           ? _value.geometry
           : geometry // ignore: cast_nullable_to_non_nullable
               as BOFGeometry,
-      properties: properties == freezed
+      properties: null == properties
           ? _value.properties
           : properties // ignore: cast_nullable_to_non_nullable
               as BofProperties,
@@ -164,20 +170,19 @@ class _$_BirdsOfFire extends _BirdsOfFire {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BirdsOfFire &&
-            const DeepCollectionEquality().equals(other.geometry, geometry) &&
-            const DeepCollectionEquality()
-                .equals(other.properties, properties));
+            (identical(other.geometry, geometry) ||
+                other.geometry == geometry) &&
+            (identical(other.properties, properties) ||
+                other.properties == properties));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(geometry),
-      const DeepCollectionEquality().hash(properties));
+  int get hashCode => Object.hash(runtimeType, geometry, properties);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_BirdsOfFireCopyWith<_$_BirdsOfFire> get copyWith =>
       __$$_BirdsOfFireCopyWithImpl<_$_BirdsOfFire>(this, _$identity);
 

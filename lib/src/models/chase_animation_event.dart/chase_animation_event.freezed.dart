@@ -48,7 +48,8 @@ mixin _$ChaseAnimationEvent {
 abstract class $ChaseAnimationEventCopyWith<$Res> {
   factory $ChaseAnimationEventCopyWith(
           ChaseAnimationEvent value, $Res Function(ChaseAnimationEvent) then) =
-      _$ChaseAnimationEventCopyWithImpl<$Res>;
+      _$ChaseAnimationEventCopyWithImpl<$Res, ChaseAnimationEvent>;
+  @useResult
   $Res call(
       {String id,
       @AnimTypeConvertor() AnimType animtype,
@@ -63,69 +64,71 @@ abstract class $ChaseAnimationEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChaseAnimationEventCopyWithImpl<$Res>
+class _$ChaseAnimationEventCopyWithImpl<$Res, $Val extends ChaseAnimationEvent>
     implements $ChaseAnimationEventCopyWith<$Res> {
   _$ChaseAnimationEventCopyWithImpl(this._value, this._then);
 
-  final ChaseAnimationEvent _value;
   // ignore: unused_field
-  final $Res Function(ChaseAnimationEvent) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? animtype = freezed,
-    Object? endpoint = freezed,
-    Object? animstate = freezed,
-    Object? label = freezed,
-    Object? videoId = freezed,
-    Object? artboard = freezed,
-    Object? animations = freezed,
-    Object? alignment = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? animtype = null,
+    Object? endpoint = null,
+    Object? animstate = null,
+    Object? label = null,
+    Object? videoId = null,
+    Object? artboard = null,
+    Object? animations = null,
+    Object? alignment = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      animtype: animtype == freezed
+      animtype: null == animtype
           ? _value.animtype
           : animtype // ignore: cast_nullable_to_non_nullable
               as AnimType,
-      endpoint: endpoint == freezed
+      endpoint: null == endpoint
           ? _value.endpoint
           : endpoint // ignore: cast_nullable_to_non_nullable
               as String,
-      animstate: animstate == freezed
+      animstate: null == animstate
           ? _value.animstate
           : animstate // ignore: cast_nullable_to_non_nullable
               as String,
-      label: label == freezed
+      label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as int,
-      videoId: videoId == freezed
+      videoId: null == videoId
           ? _value.videoId
           : videoId // ignore: cast_nullable_to_non_nullable
               as String,
-      artboard: artboard == freezed
+      artboard: null == artboard
           ? _value.artboard
           : artboard // ignore: cast_nullable_to_non_nullable
               as String,
-      animations: animations == freezed
+      animations: null == animations
           ? _value.animations
           : animations // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      alignment: alignment == freezed
+      alignment: null == alignment
           ? _value.alignment
           : alignment // ignore: cast_nullable_to_non_nullable
               as Alignment,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-    ));
+    ) as $Val);
   }
 }
 
@@ -136,6 +139,7 @@ abstract class _$$_ChaseAnimationEventCopyWith<$Res>
           $Res Function(_$_ChaseAnimationEvent) then) =
       __$$_ChaseAnimationEventCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       @AnimTypeConvertor() AnimType animtype,
@@ -151,66 +155,64 @@ abstract class _$$_ChaseAnimationEventCopyWith<$Res>
 
 /// @nodoc
 class __$$_ChaseAnimationEventCopyWithImpl<$Res>
-    extends _$ChaseAnimationEventCopyWithImpl<$Res>
+    extends _$ChaseAnimationEventCopyWithImpl<$Res, _$_ChaseAnimationEvent>
     implements _$$_ChaseAnimationEventCopyWith<$Res> {
   __$$_ChaseAnimationEventCopyWithImpl(_$_ChaseAnimationEvent _value,
       $Res Function(_$_ChaseAnimationEvent) _then)
-      : super(_value, (v) => _then(v as _$_ChaseAnimationEvent));
+      : super(_value, _then);
 
-  @override
-  _$_ChaseAnimationEvent get _value => super._value as _$_ChaseAnimationEvent;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? animtype = freezed,
-    Object? endpoint = freezed,
-    Object? animstate = freezed,
-    Object? label = freezed,
-    Object? videoId = freezed,
-    Object? artboard = freezed,
-    Object? animations = freezed,
-    Object? alignment = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? animtype = null,
+    Object? endpoint = null,
+    Object? animstate = null,
+    Object? label = null,
+    Object? videoId = null,
+    Object? artboard = null,
+    Object? animations = null,
+    Object? alignment = null,
+    Object? createdAt = null,
   }) {
     return _then(_$_ChaseAnimationEvent(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      animtype: animtype == freezed
+      animtype: null == animtype
           ? _value.animtype
           : animtype // ignore: cast_nullable_to_non_nullable
               as AnimType,
-      endpoint: endpoint == freezed
+      endpoint: null == endpoint
           ? _value.endpoint
           : endpoint // ignore: cast_nullable_to_non_nullable
               as String,
-      animstate: animstate == freezed
+      animstate: null == animstate
           ? _value.animstate
           : animstate // ignore: cast_nullable_to_non_nullable
               as String,
-      label: label == freezed
+      label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as int,
-      videoId: videoId == freezed
+      videoId: null == videoId
           ? _value.videoId
           : videoId // ignore: cast_nullable_to_non_nullable
               as String,
-      artboard: artboard == freezed
+      artboard: null == artboard
           ? _value.artboard
           : artboard // ignore: cast_nullable_to_non_nullable
               as String,
-      animations: animations == freezed
+      animations: null == animations
           ? _value._animations
           : animations // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      alignment: alignment == freezed
+      alignment: null == alignment
           ? _value.alignment
           : alignment // ignore: cast_nullable_to_non_nullable
               as Alignment,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
@@ -282,36 +284,43 @@ class _$_ChaseAnimationEvent extends _ChaseAnimationEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ChaseAnimationEvent &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.animtype, animtype) &&
-            const DeepCollectionEquality().equals(other.endpoint, endpoint) &&
-            const DeepCollectionEquality().equals(other.animstate, animstate) &&
-            const DeepCollectionEquality().equals(other.label, label) &&
-            const DeepCollectionEquality().equals(other.videoId, videoId) &&
-            const DeepCollectionEquality().equals(other.artboard, artboard) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.animtype, animtype) ||
+                other.animtype == animtype) &&
+            (identical(other.endpoint, endpoint) ||
+                other.endpoint == endpoint) &&
+            (identical(other.animstate, animstate) ||
+                other.animstate == animstate) &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.videoId, videoId) || other.videoId == videoId) &&
+            (identical(other.artboard, artboard) ||
+                other.artboard == artboard) &&
             const DeepCollectionEquality()
                 .equals(other._animations, _animations) &&
-            const DeepCollectionEquality().equals(other.alignment, alignment) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            (identical(other.alignment, alignment) ||
+                other.alignment == alignment) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(animtype),
-      const DeepCollectionEquality().hash(endpoint),
-      const DeepCollectionEquality().hash(animstate),
-      const DeepCollectionEquality().hash(label),
-      const DeepCollectionEquality().hash(videoId),
-      const DeepCollectionEquality().hash(artboard),
+      id,
+      animtype,
+      endpoint,
+      animstate,
+      label,
+      videoId,
+      artboard,
       const DeepCollectionEquality().hash(_animations),
-      const DeepCollectionEquality().hash(alignment),
-      const DeepCollectionEquality().hash(createdAt));
+      alignment,
+      createdAt);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ChaseAnimationEventCopyWith<_$_ChaseAnimationEvent> get copyWith =>
       __$$_ChaseAnimationEventCopyWithImpl<_$_ChaseAnimationEvent>(
           this, _$identity);

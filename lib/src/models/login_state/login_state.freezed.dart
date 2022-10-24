@@ -28,12 +28,12 @@ mixin _$LogInState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? data,
-    TResult Function(
+    TResult? Function()? data,
+    TResult? Function(
             List<String> existingAuthProviers, AuthCredential authCredential)?
         multiAuth,
-    TResult Function()? loading,
-    TResult Function(ChaseAppCallException e, StackTrace? stk)? error,
+    TResult? Function()? loading,
+    TResult? Function(ChaseAppCallException e, StackTrace? stk)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,10 +57,10 @@ mixin _$LogInState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data value)? data,
-    TResult Function(_MultiAuth value)? multiAuth,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_MultiAuth value)? multiAuth,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -78,16 +78,18 @@ mixin _$LogInState {
 abstract class $LogInStateCopyWith<$Res> {
   factory $LogInStateCopyWith(
           LogInState value, $Res Function(LogInState) then) =
-      _$LogInStateCopyWithImpl<$Res>;
+      _$LogInStateCopyWithImpl<$Res, LogInState>;
 }
 
 /// @nodoc
-class _$LogInStateCopyWithImpl<$Res> implements $LogInStateCopyWith<$Res> {
+class _$LogInStateCopyWithImpl<$Res, $Val extends LogInState>
+    implements $LogInStateCopyWith<$Res> {
   _$LogInStateCopyWithImpl(this._value, this._then);
 
-  final LogInState _value;
   // ignore: unused_field
-  final $Res Function(LogInState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
@@ -97,13 +99,11 @@ abstract class _$$_DataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_DataCopyWithImpl<$Res> extends _$LogInStateCopyWithImpl<$Res>
+class __$$_DataCopyWithImpl<$Res>
+    extends _$LogInStateCopyWithImpl<$Res, _$_Data>
     implements _$$_DataCopyWith<$Res> {
   __$$_DataCopyWithImpl(_$_Data _value, $Res Function(_$_Data) _then)
-      : super(_value, (v) => _then(v as _$_Data));
-
-  @override
-  _$_Data get _value => super._value as _$_Data;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -141,12 +141,12 @@ class _$_Data implements _Data {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? data,
-    TResult Function(
+    TResult? Function()? data,
+    TResult? Function(
             List<String> existingAuthProviers, AuthCredential authCredential)?
         multiAuth,
-    TResult Function()? loading,
-    TResult Function(ChaseAppCallException e, StackTrace? stk)? error,
+    TResult? Function()? loading,
+    TResult? Function(ChaseAppCallException e, StackTrace? stk)? error,
   }) {
     return data?.call();
   }
@@ -182,10 +182,10 @@ class _$_Data implements _Data {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data value)? data,
-    TResult Function(_MultiAuth value)? multiAuth,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_MultiAuth value)? multiAuth,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Error value)? error,
   }) {
     return data?.call(this);
   }
@@ -215,30 +215,30 @@ abstract class _$$_MultiAuthCopyWith<$Res> {
   factory _$$_MultiAuthCopyWith(
           _$_MultiAuth value, $Res Function(_$_MultiAuth) then) =
       __$$_MultiAuthCopyWithImpl<$Res>;
+  @useResult
   $Res call({List<String> existingAuthProviers, AuthCredential authCredential});
 }
 
 /// @nodoc
-class __$$_MultiAuthCopyWithImpl<$Res> extends _$LogInStateCopyWithImpl<$Res>
+class __$$_MultiAuthCopyWithImpl<$Res>
+    extends _$LogInStateCopyWithImpl<$Res, _$_MultiAuth>
     implements _$$_MultiAuthCopyWith<$Res> {
   __$$_MultiAuthCopyWithImpl(
       _$_MultiAuth _value, $Res Function(_$_MultiAuth) _then)
-      : super(_value, (v) => _then(v as _$_MultiAuth));
+      : super(_value, _then);
 
-  @override
-  _$_MultiAuth get _value => super._value as _$_MultiAuth;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? existingAuthProviers = freezed,
-    Object? authCredential = freezed,
+    Object? existingAuthProviers = null,
+    Object? authCredential = null,
   }) {
     return _then(_$_MultiAuth(
-      existingAuthProviers == freezed
+      null == existingAuthProviers
           ? _value._existingAuthProviers
           : existingAuthProviers // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      authCredential == freezed
+      null == authCredential
           ? _value.authCredential
           : authCredential // ignore: cast_nullable_to_non_nullable
               as AuthCredential,
@@ -275,18 +275,19 @@ class _$_MultiAuth implements _MultiAuth {
             other is _$_MultiAuth &&
             const DeepCollectionEquality()
                 .equals(other._existingAuthProviers, _existingAuthProviers) &&
-            const DeepCollectionEquality()
-                .equals(other.authCredential, authCredential));
+            (identical(other.authCredential, authCredential) ||
+                other.authCredential == authCredential));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_existingAuthProviers),
-      const DeepCollectionEquality().hash(authCredential));
+      authCredential);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_MultiAuthCopyWith<_$_MultiAuth> get copyWith =>
       __$$_MultiAuthCopyWithImpl<_$_MultiAuth>(this, _$identity);
 
@@ -306,12 +307,12 @@ class _$_MultiAuth implements _MultiAuth {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? data,
-    TResult Function(
+    TResult? Function()? data,
+    TResult? Function(
             List<String> existingAuthProviers, AuthCredential authCredential)?
         multiAuth,
-    TResult Function()? loading,
-    TResult Function(ChaseAppCallException e, StackTrace? stk)? error,
+    TResult? Function()? loading,
+    TResult? Function(ChaseAppCallException e, StackTrace? stk)? error,
   }) {
     return multiAuth?.call(existingAuthProviers, authCredential);
   }
@@ -347,10 +348,10 @@ class _$_MultiAuth implements _MultiAuth {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data value)? data,
-    TResult Function(_MultiAuth value)? multiAuth,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_MultiAuth value)? multiAuth,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Error value)? error,
   }) {
     return multiAuth?.call(this);
   }
@@ -390,13 +391,11 @@ abstract class _$$_LoadingCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res> extends _$LogInStateCopyWithImpl<$Res>
+class __$$_LoadingCopyWithImpl<$Res>
+    extends _$LogInStateCopyWithImpl<$Res, _$_Loading>
     implements _$$_LoadingCopyWith<$Res> {
   __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
-      : super(_value, (v) => _then(v as _$_Loading));
-
-  @override
-  _$_Loading get _value => super._value as _$_Loading;
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -434,12 +433,12 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? data,
-    TResult Function(
+    TResult? Function()? data,
+    TResult? Function(
             List<String> existingAuthProviers, AuthCredential authCredential)?
         multiAuth,
-    TResult Function()? loading,
-    TResult Function(ChaseAppCallException e, StackTrace? stk)? error,
+    TResult? Function()? loading,
+    TResult? Function(ChaseAppCallException e, StackTrace? stk)? error,
   }) {
     return loading?.call();
   }
@@ -475,10 +474,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data value)? data,
-    TResult Function(_MultiAuth value)? multiAuth,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_MultiAuth value)? multiAuth,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
   }
@@ -507,29 +506,29 @@ abstract class _Loading implements LogInState {
 abstract class _$$_ErrorCopyWith<$Res> {
   factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
       __$$_ErrorCopyWithImpl<$Res>;
+  @useResult
   $Res call({ChaseAppCallException e, StackTrace? stk});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res> extends _$LogInStateCopyWithImpl<$Res>
+class __$$_ErrorCopyWithImpl<$Res>
+    extends _$LogInStateCopyWithImpl<$Res, _$_Error>
     implements _$$_ErrorCopyWith<$Res> {
   __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
-      : super(_value, (v) => _then(v as _$_Error));
+      : super(_value, _then);
 
-  @override
-  _$_Error get _value => super._value as _$_Error;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? e = freezed,
+    Object? e = null,
     Object? stk = freezed,
   }) {
     return _then(_$_Error(
-      e == freezed
+      null == e
           ? _value.e
           : e // ignore: cast_nullable_to_non_nullable
               as ChaseAppCallException,
-      stk == freezed
+      freezed == stk
           ? _value.stk
           : stk // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
@@ -557,18 +556,16 @@ class _$_Error implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Error &&
-            const DeepCollectionEquality().equals(other.e, e) &&
-            const DeepCollectionEquality().equals(other.stk, stk));
+            (identical(other.e, e) || other.e == e) &&
+            (identical(other.stk, stk) || other.stk == stk));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(e),
-      const DeepCollectionEquality().hash(stk));
+  int get hashCode => Object.hash(runtimeType, e, stk);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ErrorCopyWith<_$_Error> get copyWith =>
       __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
 
@@ -588,12 +585,12 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? data,
-    TResult Function(
+    TResult? Function()? data,
+    TResult? Function(
             List<String> existingAuthProviers, AuthCredential authCredential)?
         multiAuth,
-    TResult Function()? loading,
-    TResult Function(ChaseAppCallException e, StackTrace? stk)? error,
+    TResult? Function()? loading,
+    TResult? Function(ChaseAppCallException e, StackTrace? stk)? error,
   }) {
     return error?.call(e, stk);
   }
@@ -629,10 +626,10 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data value)? data,
-    TResult Function(_MultiAuth value)? multiAuth,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Error value)? error,
+    TResult? Function(_Data value)? data,
+    TResult? Function(_MultiAuth value)? multiAuth,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
   }

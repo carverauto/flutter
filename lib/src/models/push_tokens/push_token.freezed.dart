@@ -34,43 +34,47 @@ mixin _$PushToken {
 /// @nodoc
 abstract class $PushTokenCopyWith<$Res> {
   factory $PushTokenCopyWith(PushToken value, $Res Function(PushToken) then) =
-      _$PushTokenCopyWithImpl<$Res>;
+      _$PushTokenCopyWithImpl<$Res, PushToken>;
+  @useResult
   $Res call({String token, int created_at, DeviceOS device, TokenType type});
 }
 
 /// @nodoc
-class _$PushTokenCopyWithImpl<$Res> implements $PushTokenCopyWith<$Res> {
+class _$PushTokenCopyWithImpl<$Res, $Val extends PushToken>
+    implements $PushTokenCopyWith<$Res> {
   _$PushTokenCopyWithImpl(this._value, this._then);
 
-  final PushToken _value;
   // ignore: unused_field
-  final $Res Function(PushToken) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = freezed,
-    Object? created_at = freezed,
-    Object? device = freezed,
-    Object? type = freezed,
+    Object? token = null,
+    Object? created_at = null,
+    Object? device = null,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
-      token: token == freezed
+      token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      created_at: created_at == freezed
+      created_at: null == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
               as int,
-      device: device == freezed
+      device: null == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
               as DeviceOS,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TokenType,
-    ));
+    ) as $Val);
   }
 }
 
@@ -80,40 +84,40 @@ abstract class _$$_PushTokenCopyWith<$Res> implements $PushTokenCopyWith<$Res> {
           _$_PushToken value, $Res Function(_$_PushToken) then) =
       __$$_PushTokenCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String token, int created_at, DeviceOS device, TokenType type});
 }
 
 /// @nodoc
-class __$$_PushTokenCopyWithImpl<$Res> extends _$PushTokenCopyWithImpl<$Res>
+class __$$_PushTokenCopyWithImpl<$Res>
+    extends _$PushTokenCopyWithImpl<$Res, _$_PushToken>
     implements _$$_PushTokenCopyWith<$Res> {
   __$$_PushTokenCopyWithImpl(
       _$_PushToken _value, $Res Function(_$_PushToken) _then)
-      : super(_value, (v) => _then(v as _$_PushToken));
+      : super(_value, _then);
 
-  @override
-  _$_PushToken get _value => super._value as _$_PushToken;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? token = freezed,
-    Object? created_at = freezed,
-    Object? device = freezed,
-    Object? type = freezed,
+    Object? token = null,
+    Object? created_at = null,
+    Object? device = null,
+    Object? type = null,
   }) {
     return _then(_$_PushToken(
-      token: token == freezed
+      token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      created_at: created_at == freezed
+      created_at: null == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
               as int,
-      device: device == freezed
+      device: null == device
           ? _value.device
           : device // ignore: cast_nullable_to_non_nullable
               as DeviceOS,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as TokenType,
@@ -154,24 +158,20 @@ class _$_PushToken extends _PushToken {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PushToken &&
-            const DeepCollectionEquality().equals(other.token, token) &&
-            const DeepCollectionEquality()
-                .equals(other.created_at, created_at) &&
-            const DeepCollectionEquality().equals(other.device, device) &&
-            const DeepCollectionEquality().equals(other.type, type));
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.created_at, created_at) ||
+                other.created_at == created_at) &&
+            (identical(other.device, device) || other.device == device) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(token),
-      const DeepCollectionEquality().hash(created_at),
-      const DeepCollectionEquality().hash(device),
-      const DeepCollectionEquality().hash(type));
+  int get hashCode => Object.hash(runtimeType, token, created_at, device, type);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_PushTokenCopyWith<_$_PushToken> get copyWith =>
       __$$_PushTokenCopyWithImpl<_$_PushToken>(this, _$identity);
 

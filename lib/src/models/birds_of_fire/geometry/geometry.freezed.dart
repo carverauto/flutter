@@ -37,35 +37,39 @@ mixin _$BOFGeometry {
 abstract class $BOFGeometryCopyWith<$Res> {
   factory $BOFGeometryCopyWith(
           BOFGeometry value, $Res Function(BOFGeometry) then) =
-      _$BOFGeometryCopyWithImpl<$Res>;
+      _$BOFGeometryCopyWithImpl<$Res, BOFGeometry>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'coordinates') List<double> coordinates,
       @JsonKey(name: 'type') String type});
 }
 
 /// @nodoc
-class _$BOFGeometryCopyWithImpl<$Res> implements $BOFGeometryCopyWith<$Res> {
+class _$BOFGeometryCopyWithImpl<$Res, $Val extends BOFGeometry>
+    implements $BOFGeometryCopyWith<$Res> {
   _$BOFGeometryCopyWithImpl(this._value, this._then);
 
-  final BOFGeometry _value;
   // ignore: unused_field
-  final $Res Function(BOFGeometry) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? coordinates = freezed,
-    Object? type = freezed,
+    Object? coordinates = null,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
-      coordinates: coordinates == freezed
+      coordinates: null == coordinates
           ? _value.coordinates
           : coordinates // ignore: cast_nullable_to_non_nullable
               as List<double>,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -76,32 +80,32 @@ abstract class _$$_BOFGeometryCopyWith<$Res>
           _$_BOFGeometry value, $Res Function(_$_BOFGeometry) then) =
       __$$_BOFGeometryCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'coordinates') List<double> coordinates,
       @JsonKey(name: 'type') String type});
 }
 
 /// @nodoc
-class __$$_BOFGeometryCopyWithImpl<$Res> extends _$BOFGeometryCopyWithImpl<$Res>
+class __$$_BOFGeometryCopyWithImpl<$Res>
+    extends _$BOFGeometryCopyWithImpl<$Res, _$_BOFGeometry>
     implements _$$_BOFGeometryCopyWith<$Res> {
   __$$_BOFGeometryCopyWithImpl(
       _$_BOFGeometry _value, $Res Function(_$_BOFGeometry) _then)
-      : super(_value, (v) => _then(v as _$_BOFGeometry));
+      : super(_value, _then);
 
-  @override
-  _$_BOFGeometry get _value => super._value as _$_BOFGeometry;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? coordinates = freezed,
-    Object? type = freezed,
+    Object? coordinates = null,
+    Object? type = null,
   }) {
     return _then(_$_BOFGeometry(
-      coordinates: coordinates == freezed
+      coordinates: null == coordinates
           ? _value._coordinates
           : coordinates // ignore: cast_nullable_to_non_nullable
               as List<double>,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
@@ -150,18 +154,17 @@ class _$_BOFGeometry extends _BOFGeometry {
             other is _$_BOFGeometry &&
             const DeepCollectionEquality()
                 .equals(other._coordinates, _coordinates) &&
-            const DeepCollectionEquality().equals(other.type, type));
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_coordinates),
-      const DeepCollectionEquality().hash(type));
+      runtimeType, const DeepCollectionEquality().hash(_coordinates), type);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_BOFGeometryCopyWith<_$_BOFGeometry> get copyWith =>
       __$$_BOFGeometryCopyWithImpl<_$_BOFGeometry>(this, _$identity);
 

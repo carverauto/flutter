@@ -42,7 +42,8 @@ mixin _$NotificationData {
 abstract class $NotificationDataCopyWith<$Res> {
   factory $NotificationDataCopyWith(
           NotificationData value, $Res Function(NotificationData) then) =
-      _$NotificationDataCopyWithImpl<$Res>;
+      _$NotificationDataCopyWithImpl<$Res, NotificationData>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
@@ -55,14 +56,16 @@ abstract class $NotificationDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$NotificationDataCopyWithImpl<$Res>
+class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
     implements $NotificationDataCopyWith<$Res> {
   _$NotificationDataCopyWithImpl(this._value, this._then);
 
-  final NotificationData _value;
   // ignore: unused_field
-  final $Res Function(NotificationData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = freezed,
@@ -73,41 +76,42 @@ class _$NotificationDataCopyWithImpl<$Res>
     Object? tweetData = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      image: image == freezed
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      youtubeId: youtubeId == freezed
+      youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
-      channelId: channelId == freezed
+      channelId: freezed == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as String?,
-      configState: configState == freezed
+      configState: freezed == configState
           ? _value.configState
           : configState // ignore: cast_nullable_to_non_nullable
               as String?,
-      tweetData: tweetData == freezed
+      tweetData: freezed == tweetData
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $TweetDataCopyWith<$Res>? get tweetData {
     if (_value.tweetData == null) {
       return null;
     }
 
     return $TweetDataCopyWith<$Res>(_value.tweetData!, (value) {
-      return _then(_value.copyWith(tweetData: value));
+      return _then(_value.copyWith(tweetData: value) as $Val);
     });
   }
 }
@@ -119,6 +123,7 @@ abstract class _$$_NotificationDataCopyWith<$Res>
           _$_NotificationData value, $Res Function(_$_NotificationData) then) =
       __$$_NotificationDataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
@@ -133,15 +138,13 @@ abstract class _$$_NotificationDataCopyWith<$Res>
 
 /// @nodoc
 class __$$_NotificationDataCopyWithImpl<$Res>
-    extends _$NotificationDataCopyWithImpl<$Res>
+    extends _$NotificationDataCopyWithImpl<$Res, _$_NotificationData>
     implements _$$_NotificationDataCopyWith<$Res> {
   __$$_NotificationDataCopyWithImpl(
       _$_NotificationData _value, $Res Function(_$_NotificationData) _then)
-      : super(_value, (v) => _then(v as _$_NotificationData));
+      : super(_value, _then);
 
-  @override
-  _$_NotificationData get _value => super._value as _$_NotificationData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = freezed,
@@ -152,27 +155,27 @@ class __$$_NotificationDataCopyWithImpl<$Res>
     Object? tweetData = freezed,
   }) {
     return _then(_$_NotificationData(
-      id: id == freezed
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      image: image == freezed
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      youtubeId: youtubeId == freezed
+      youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
-      channelId: channelId == freezed
+      channelId: freezed == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as String?,
-      configState: configState == freezed
+      configState: freezed == configState
           ? _value.configState
           : configState // ignore: cast_nullable_to_non_nullable
               as String?,
-      tweetData: tweetData == freezed
+      tweetData: freezed == tweetData
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
@@ -224,28 +227,26 @@ class _$_NotificationData extends _NotificationData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NotificationData &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.image, image) &&
-            const DeepCollectionEquality().equals(other.youtubeId, youtubeId) &&
-            const DeepCollectionEquality().equals(other.channelId, channelId) &&
-            const DeepCollectionEquality()
-                .equals(other.configState, configState) &&
-            const DeepCollectionEquality().equals(other.tweetData, tweetData));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.youtubeId, youtubeId) ||
+                other.youtubeId == youtubeId) &&
+            (identical(other.channelId, channelId) ||
+                other.channelId == channelId) &&
+            (identical(other.configState, configState) ||
+                other.configState == configState) &&
+            (identical(other.tweetData, tweetData) ||
+                other.tweetData == tweetData));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(image),
-      const DeepCollectionEquality().hash(youtubeId),
-      const DeepCollectionEquality().hash(channelId),
-      const DeepCollectionEquality().hash(configState),
-      const DeepCollectionEquality().hash(tweetData));
+      runtimeType, id, image, youtubeId, channelId, configState, tweetData);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>
       __$$_NotificationDataCopyWithImpl<_$_NotificationData>(this, _$identity);
 

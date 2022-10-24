@@ -28,11 +28,11 @@ mixin _$PaginationNotifierState<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,11 +56,11 @@ mixin _$PaginationNotifierState<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,42 +79,44 @@ mixin _$PaginationNotifierState<T> {
 abstract class $PaginationNotifierStateCopyWith<T, $Res> {
   factory $PaginationNotifierStateCopyWith(PaginationNotifierState<T> value,
           $Res Function(PaginationNotifierState<T>) then) =
-      _$PaginationNotifierStateCopyWithImpl<T, $Res>;
+      _$PaginationNotifierStateCopyWithImpl<T, $Res,
+          PaginationNotifierState<T>>;
 }
 
 /// @nodoc
-class _$PaginationNotifierStateCopyWithImpl<T, $Res>
+class _$PaginationNotifierStateCopyWithImpl<T, $Res,
+        $Val extends PaginationNotifierState<T>>
     implements $PaginationNotifierStateCopyWith<T, $Res> {
   _$PaginationNotifierStateCopyWithImpl(this._value, this._then);
 
-  final PaginationNotifierState<T> _value;
   // ignore: unused_field
-  final $Res Function(PaginationNotifierState<T>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 }
 
 /// @nodoc
 abstract class _$$_DataCopyWith<T, $Res> {
   factory _$$_DataCopyWith(_$_Data<T> value, $Res Function(_$_Data<T>) then) =
       __$$_DataCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({List<T> items});
 }
 
 /// @nodoc
 class __$$_DataCopyWithImpl<T, $Res>
-    extends _$PaginationNotifierStateCopyWithImpl<T, $Res>
+    extends _$PaginationNotifierStateCopyWithImpl<T, $Res, _$_Data<T>>
     implements _$$_DataCopyWith<T, $Res> {
   __$$_DataCopyWithImpl(_$_Data<T> _value, $Res Function(_$_Data<T>) _then)
-      : super(_value, (v) => _then(v as _$_Data<T>));
+      : super(_value, _then);
 
-  @override
-  _$_Data<T> get _value => super._value as _$_Data<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? items = freezed,
+    Object? items = null,
   }) {
     return _then(_$_Data<T>(
-      items == freezed
+      null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
               as List<T>,
@@ -153,6 +155,7 @@ class _$_Data<T> implements _Data<T> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_DataCopyWith<T, _$_Data<T>> get copyWith =>
       __$$_DataCopyWithImpl<T, _$_Data<T>>(this, _$identity);
 
@@ -172,11 +175,11 @@ class _$_Data<T> implements _Data<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) {
     return data?.call(items);
   }
@@ -212,11 +215,11 @@ class _$_Data<T> implements _Data<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) {
     return data?.call(this);
   }
@@ -252,26 +255,25 @@ abstract class _$$_LoadingCopyWith<T, $Res> {
   factory _$$_LoadingCopyWith(
           _$_Loading<T> value, $Res Function(_$_Loading<T>) then) =
       __$$_LoadingCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({List<T> movies});
 }
 
 /// @nodoc
 class __$$_LoadingCopyWithImpl<T, $Res>
-    extends _$PaginationNotifierStateCopyWithImpl<T, $Res>
+    extends _$PaginationNotifierStateCopyWithImpl<T, $Res, _$_Loading<T>>
     implements _$$_LoadingCopyWith<T, $Res> {
   __$$_LoadingCopyWithImpl(
       _$_Loading<T> _value, $Res Function(_$_Loading<T>) _then)
-      : super(_value, (v) => _then(v as _$_Loading<T>));
+      : super(_value, _then);
 
-  @override
-  _$_Loading<T> get _value => super._value as _$_Loading<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? movies = freezed,
+    Object? movies = null,
   }) {
     return _then(_$_Loading<T>(
-      movies == freezed
+      null == movies
           ? _value._movies
           : movies // ignore: cast_nullable_to_non_nullable
               as List<T>,
@@ -310,6 +312,7 @@ class _$_Loading<T> implements _Loading<T> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_LoadingCopyWith<T, _$_Loading<T>> get copyWith =>
       __$$_LoadingCopyWithImpl<T, _$_Loading<T>>(this, _$identity);
 
@@ -329,11 +332,11 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) {
     return loading?.call(movies);
   }
@@ -369,11 +372,11 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) {
     return loading?.call(this);
   }
@@ -409,27 +412,26 @@ abstract class _$$_ErrorCopyWith<T, $Res> {
   factory _$$_ErrorCopyWith(
           _$_Error<T> value, $Res Function(_$_Error<T>) then) =
       __$$_ErrorCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({Object? e, StackTrace? stk});
 }
 
 /// @nodoc
 class __$$_ErrorCopyWithImpl<T, $Res>
-    extends _$PaginationNotifierStateCopyWithImpl<T, $Res>
+    extends _$PaginationNotifierStateCopyWithImpl<T, $Res, _$_Error<T>>
     implements _$$_ErrorCopyWith<T, $Res> {
   __$$_ErrorCopyWithImpl(_$_Error<T> _value, $Res Function(_$_Error<T>) _then)
-      : super(_value, (v) => _then(v as _$_Error<T>));
+      : super(_value, _then);
 
-  @override
-  _$_Error<T> get _value => super._value as _$_Error<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? e = freezed,
     Object? stk = freezed,
   }) {
     return _then(_$_Error<T>(
-      e == freezed ? _value.e : e,
-      stk == freezed
+      freezed == e ? _value.e : e,
+      freezed == stk
           ? _value.stk
           : stk // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
@@ -458,17 +460,16 @@ class _$_Error<T> implements _Error<T> {
         (other.runtimeType == runtimeType &&
             other is _$_Error<T> &&
             const DeepCollectionEquality().equals(other.e, e) &&
-            const DeepCollectionEquality().equals(other.stk, stk));
+            (identical(other.stk, stk) || other.stk == stk));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(e),
-      const DeepCollectionEquality().hash(stk));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(e), stk);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
       __$$_ErrorCopyWithImpl<T, _$_Error<T>>(this, _$identity);
 
@@ -488,11 +489,11 @@ class _$_Error<T> implements _Error<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) {
     return error?.call(e, stk);
   }
@@ -528,11 +529,11 @@ class _$_Error<T> implements _Error<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) {
     return error?.call(this);
   }
@@ -569,26 +570,25 @@ abstract class _$$_OnGoingLoadingCopyWith<T, $Res> {
   factory _$$_OnGoingLoadingCopyWith(_$_OnGoingLoading<T> value,
           $Res Function(_$_OnGoingLoading<T>) then) =
       __$$_OnGoingLoadingCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({List<T> items});
 }
 
 /// @nodoc
 class __$$_OnGoingLoadingCopyWithImpl<T, $Res>
-    extends _$PaginationNotifierStateCopyWithImpl<T, $Res>
+    extends _$PaginationNotifierStateCopyWithImpl<T, $Res, _$_OnGoingLoading<T>>
     implements _$$_OnGoingLoadingCopyWith<T, $Res> {
   __$$_OnGoingLoadingCopyWithImpl(
       _$_OnGoingLoading<T> _value, $Res Function(_$_OnGoingLoading<T>) _then)
-      : super(_value, (v) => _then(v as _$_OnGoingLoading<T>));
+      : super(_value, _then);
 
-  @override
-  _$_OnGoingLoading<T> get _value => super._value as _$_OnGoingLoading<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? items = freezed,
+    Object? items = null,
   }) {
     return _then(_$_OnGoingLoading<T>(
-      items == freezed
+      null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
               as List<T>,
@@ -627,6 +627,7 @@ class _$_OnGoingLoading<T> implements _OnGoingLoading<T> {
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_OnGoingLoadingCopyWith<T, _$_OnGoingLoading<T>> get copyWith =>
       __$$_OnGoingLoadingCopyWithImpl<T, _$_OnGoingLoading<T>>(
           this, _$identity);
@@ -647,11 +648,11 @@ class _$_OnGoingLoading<T> implements _OnGoingLoading<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) {
     return onGoingLoading?.call(items);
   }
@@ -687,11 +688,11 @@ class _$_OnGoingLoading<T> implements _OnGoingLoading<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) {
     return onGoingLoading?.call(this);
   }
@@ -727,33 +728,32 @@ abstract class _$$_OnGoingErrorCopyWith<T, $Res> {
   factory _$$_OnGoingErrorCopyWith(
           _$_OnGoingError<T> value, $Res Function(_$_OnGoingError<T>) then) =
       __$$_OnGoingErrorCopyWithImpl<T, $Res>;
+  @useResult
   $Res call({List<T> items, Object? e, StackTrace? stk});
 }
 
 /// @nodoc
 class __$$_OnGoingErrorCopyWithImpl<T, $Res>
-    extends _$PaginationNotifierStateCopyWithImpl<T, $Res>
+    extends _$PaginationNotifierStateCopyWithImpl<T, $Res, _$_OnGoingError<T>>
     implements _$$_OnGoingErrorCopyWith<T, $Res> {
   __$$_OnGoingErrorCopyWithImpl(
       _$_OnGoingError<T> _value, $Res Function(_$_OnGoingError<T>) _then)
-      : super(_value, (v) => _then(v as _$_OnGoingError<T>));
+      : super(_value, _then);
 
-  @override
-  _$_OnGoingError<T> get _value => super._value as _$_OnGoingError<T>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? items = freezed,
+    Object? items = null,
     Object? e = freezed,
     Object? stk = freezed,
   }) {
     return _then(_$_OnGoingError<T>(
-      items == freezed
+      null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
               as List<T>,
-      e == freezed ? _value.e : e,
-      stk == freezed
+      freezed == e ? _value.e : e,
+      freezed == stk
           ? _value.stk
           : stk // ignore: cast_nullable_to_non_nullable
               as StackTrace?,
@@ -791,7 +791,7 @@ class _$_OnGoingError<T> implements _OnGoingError<T> {
             other is _$_OnGoingError<T> &&
             const DeepCollectionEquality().equals(other._items, _items) &&
             const DeepCollectionEquality().equals(other.e, e) &&
-            const DeepCollectionEquality().equals(other.stk, stk));
+            (identical(other.stk, stk) || other.stk == stk));
   }
 
   @override
@@ -799,10 +799,11 @@ class _$_OnGoingError<T> implements _OnGoingError<T> {
       runtimeType,
       const DeepCollectionEquality().hash(_items),
       const DeepCollectionEquality().hash(e),
-      const DeepCollectionEquality().hash(stk));
+      stk);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_OnGoingErrorCopyWith<T, _$_OnGoingError<T>> get copyWith =>
       __$$_OnGoingErrorCopyWithImpl<T, _$_OnGoingError<T>>(this, _$identity);
 
@@ -822,11 +823,11 @@ class _$_OnGoingError<T> implements _OnGoingError<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<T> items)? data,
-    TResult Function(List<T> movies)? loading,
-    TResult Function(Object? e, StackTrace? stk)? error,
-    TResult Function(List<T> items)? onGoingLoading,
-    TResult Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
+    TResult? Function(List<T> items)? data,
+    TResult? Function(List<T> movies)? loading,
+    TResult? Function(Object? e, StackTrace? stk)? error,
+    TResult? Function(List<T> items)? onGoingLoading,
+    TResult? Function(List<T> items, Object? e, StackTrace? stk)? onGoingError,
   }) {
     return onGoingError?.call(items, e, stk);
   }
@@ -862,11 +863,11 @@ class _$_OnGoingError<T> implements _OnGoingError<T> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(_Data<T> value)? data,
-    TResult Function(_Loading<T> value)? loading,
-    TResult Function(_Error<T> value)? error,
-    TResult Function(_OnGoingLoading<T> value)? onGoingLoading,
-    TResult Function(_OnGoingError<T> value)? onGoingError,
+    TResult? Function(_Data<T> value)? data,
+    TResult? Function(_Loading<T> value)? loading,
+    TResult? Function(_Error<T> value)? error,
+    TResult? Function(_OnGoingLoading<T> value)? onGoingLoading,
+    TResult? Function(_OnGoingError<T> value)? onGoingError,
   }) {
     return onGoingError?.call(this);
   }

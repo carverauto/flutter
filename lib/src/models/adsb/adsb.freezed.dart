@@ -46,7 +46,8 @@ mixin _$ADSB {
 /// @nodoc
 abstract class $ADSBCopyWith<$Res> {
   factory $ADSBCopyWith(ADSB value, $Res Function(ADSB) then) =
-      _$ADSBCopyWithImpl<$Res>;
+      _$ADSBCopyWithImpl<$Res, ADSB>;
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'flight') String? flight,
@@ -59,58 +60,61 @@ abstract class $ADSBCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ADSBCopyWithImpl<$Res> implements $ADSBCopyWith<$Res> {
+class _$ADSBCopyWithImpl<$Res, $Val extends ADSB>
+    implements $ADSBCopyWith<$Res> {
   _$ADSBCopyWithImpl(this._value, this._then);
 
-  final ADSB _value;
   // ignore: unused_field
-  final $Res Function(ADSB) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? flight = freezed,
     Object? group = freezed,
-    Object? lat = freezed,
-    Object? lon = freezed,
+    Object? lat = null,
+    Object? lon = null,
     Object? track = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      flight: flight == freezed
+      flight: freezed == flight
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
               as String?,
-      group: group == freezed
+      group: freezed == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String?,
-      lat: lat == freezed
+      lat: null == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      lon: lon == freezed
+      lon: null == lon
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
-      track: track == freezed
+      track: freezed == track
           ? _value.track
           : track // ignore: cast_nullable_to_non_nullable
               as double?,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: imageUrl == freezed
+      imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -119,6 +123,7 @@ abstract class _$$_ADSBCopyWith<$Res> implements $ADSBCopyWith<$Res> {
   factory _$$_ADSBCopyWith(_$_ADSB value, $Res Function(_$_ADSB) then) =
       __$$_ADSBCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'flight') String? flight,
@@ -131,55 +136,53 @@ abstract class _$$_ADSBCopyWith<$Res> implements $ADSBCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res>
+class __$$_ADSBCopyWithImpl<$Res> extends _$ADSBCopyWithImpl<$Res, _$_ADSB>
     implements _$$_ADSBCopyWith<$Res> {
   __$$_ADSBCopyWithImpl(_$_ADSB _value, $Res Function(_$_ADSB) _then)
-      : super(_value, (v) => _then(v as _$_ADSB));
+      : super(_value, _then);
 
-  @override
-  _$_ADSB get _value => super._value as _$_ADSB;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? flight = freezed,
     Object? group = freezed,
-    Object? lat = freezed,
-    Object? lon = freezed,
+    Object? lat = null,
+    Object? lon = null,
     Object? track = freezed,
-    Object? type = freezed,
+    Object? type = null,
     Object? imageUrl = freezed,
   }) {
     return _then(_$_ADSB(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      flight: flight == freezed
+      flight: freezed == flight
           ? _value.flight
           : flight // ignore: cast_nullable_to_non_nullable
               as String?,
-      group: group == freezed
+      group: freezed == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String?,
-      lat: lat == freezed
+      lat: null == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      lon: lon == freezed
+      lon: null == lon
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
-      track: track == freezed
+      track: freezed == track
           ? _value.track
           : track // ignore: cast_nullable_to_non_nullable
               as double?,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: imageUrl == freezed
+      imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -240,31 +243,25 @@ class _$_ADSB extends _ADSB {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ADSB &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.flight, flight) &&
-            const DeepCollectionEquality().equals(other.group, group) &&
-            const DeepCollectionEquality().equals(other.lat, lat) &&
-            const DeepCollectionEquality().equals(other.lon, lon) &&
-            const DeepCollectionEquality().equals(other.track, track) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.flight, flight) || other.flight == flight) &&
+            (identical(other.group, group) || other.group == group) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lon, lon) || other.lon == lon) &&
+            (identical(other.track, track) || other.track == track) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(flight),
-      const DeepCollectionEquality().hash(group),
-      const DeepCollectionEquality().hash(lat),
-      const DeepCollectionEquality().hash(lon),
-      const DeepCollectionEquality().hash(track),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(imageUrl));
+      runtimeType, id, flight, group, lat, lon, track, type, imageUrl);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ADSBCopyWith<_$_ADSB> get copyWith =>
       __$$_ADSBCopyWithImpl<_$_ADSB>(this, _$identity);
 

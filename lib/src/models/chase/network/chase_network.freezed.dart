@@ -41,7 +41,8 @@ mixin _$ChaseNetwork {
 abstract class $ChaseNetworkCopyWith<$Res> {
   factory $ChaseNetworkCopyWith(
           ChaseNetwork value, $Res Function(ChaseNetwork) then) =
-      _$ChaseNetworkCopyWithImpl<$Res>;
+      _$ChaseNetworkCopyWithImpl<$Res, ChaseNetwork>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'Logo') String? logo,
       @JsonKey(name: 'Name') String? name,
@@ -51,13 +52,16 @@ abstract class $ChaseNetworkCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChaseNetworkCopyWithImpl<$Res> implements $ChaseNetworkCopyWith<$Res> {
+class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
+    implements $ChaseNetworkCopyWith<$Res> {
   _$ChaseNetworkCopyWithImpl(this._value, this._then);
 
-  final ChaseNetwork _value;
   // ignore: unused_field
-  final $Res Function(ChaseNetwork) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? logo = freezed,
@@ -67,27 +71,27 @@ class _$ChaseNetworkCopyWithImpl<$Res> implements $ChaseNetworkCopyWith<$Res> {
     Object? url = freezed,
   }) {
     return _then(_value.copyWith(
-      logo: logo == freezed
+      logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      other: other == freezed
+      other: freezed == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as String?,
-      tier: tier == freezed
+      tier: freezed == tier
           ? _value.tier
           : tier // ignore: cast_nullable_to_non_nullable
               as int?,
-      url: url == freezed
+      url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -98,6 +102,7 @@ abstract class _$$_ChaseNetworkCopyWith<$Res>
           _$_ChaseNetwork value, $Res Function(_$_ChaseNetwork) then) =
       __$$_ChaseNetworkCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'Logo') String? logo,
       @JsonKey(name: 'Name') String? name,
@@ -108,15 +113,13 @@ abstract class _$$_ChaseNetworkCopyWith<$Res>
 
 /// @nodoc
 class __$$_ChaseNetworkCopyWithImpl<$Res>
-    extends _$ChaseNetworkCopyWithImpl<$Res>
+    extends _$ChaseNetworkCopyWithImpl<$Res, _$_ChaseNetwork>
     implements _$$_ChaseNetworkCopyWith<$Res> {
   __$$_ChaseNetworkCopyWithImpl(
       _$_ChaseNetwork _value, $Res Function(_$_ChaseNetwork) _then)
-      : super(_value, (v) => _then(v as _$_ChaseNetwork));
+      : super(_value, _then);
 
-  @override
-  _$_ChaseNetwork get _value => super._value as _$_ChaseNetwork;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? logo = freezed,
@@ -126,23 +129,23 @@ class __$$_ChaseNetworkCopyWithImpl<$Res>
     Object? url = freezed,
   }) {
     return _then(_$_ChaseNetwork(
-      logo: logo == freezed
+      logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      other: other == freezed
+      other: freezed == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as String?,
-      tier: tier == freezed
+      tier: freezed == tier
           ? _value.tier
           : tier // ignore: cast_nullable_to_non_nullable
               as int?,
-      url: url == freezed
+      url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -191,25 +194,20 @@ class _$_ChaseNetwork extends _ChaseNetwork {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ChaseNetwork &&
-            const DeepCollectionEquality().equals(other.logo, logo) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.other, this.other) &&
-            const DeepCollectionEquality().equals(other.tier, tier) &&
-            const DeepCollectionEquality().equals(other.url, url));
+            (identical(other.logo, logo) || other.logo == logo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.other, this.other) || other.other == this.other) &&
+            (identical(other.tier, tier) || other.tier == tier) &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(logo),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(other),
-      const DeepCollectionEquality().hash(tier),
-      const DeepCollectionEquality().hash(url));
+  int get hashCode => Object.hash(runtimeType, logo, name, other, tier, url);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ChaseNetworkCopyWith<_$_ChaseNetwork> get copyWith =>
       __$$_ChaseNetworkCopyWithImpl<_$_ChaseNetwork>(this, _$identity);
 

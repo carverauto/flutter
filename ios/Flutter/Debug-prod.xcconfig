@@ -4,3 +4,4 @@
 FLUTTER_TARGET=lib/main_prod.dart
 FLAVOR_APP_NAME=ChaseApp
 APP_ID=1:1020122644146:ios:a7c74506e3fc1b69cc13ab
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64

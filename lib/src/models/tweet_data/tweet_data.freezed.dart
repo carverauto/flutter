@@ -36,7 +36,8 @@ mixin _$TweetData {
 /// @nodoc
 abstract class $TweetDataCopyWith<$Res> {
   factory $TweetDataCopyWith(TweetData value, $Res Function(TweetData) then) =
-      _$TweetDataCopyWithImpl<$Res>;
+      _$TweetDataCopyWithImpl<$Res, TweetData>;
+  @useResult
   $Res call(
       {String tweetId,
       String text,
@@ -47,48 +48,51 @@ abstract class $TweetDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TweetDataCopyWithImpl<$Res> implements $TweetDataCopyWith<$Res> {
+class _$TweetDataCopyWithImpl<$Res, $Val extends TweetData>
+    implements $TweetDataCopyWith<$Res> {
   _$TweetDataCopyWithImpl(this._value, this._then);
 
-  final TweetData _value;
   // ignore: unused_field
-  final $Res Function(TweetData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tweetId = freezed,
-    Object? text = freezed,
-    Object? userId = freezed,
-    Object? userName = freezed,
-    Object? name = freezed,
-    Object? profileImageUrl = freezed,
+    Object? tweetId = null,
+    Object? text = null,
+    Object? userId = null,
+    Object? userName = null,
+    Object? name = null,
+    Object? profileImageUrl = null,
   }) {
     return _then(_value.copyWith(
-      tweetId: tweetId == freezed
+      tweetId: null == tweetId
           ? _value.tweetId
           : tweetId // ignore: cast_nullable_to_non_nullable
               as String,
-      text: text == freezed
+      text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
+      userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: userName == freezed
+      userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImageUrl: profileImageUrl == freezed
+      profileImageUrl: null == profileImageUrl
           ? _value.profileImageUrl
           : profileImageUrl // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -98,6 +102,7 @@ abstract class _$$_TweetDataCopyWith<$Res> implements $TweetDataCopyWith<$Res> {
           _$_TweetData value, $Res Function(_$_TweetData) then) =
       __$$_TweetDataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String tweetId,
       String text,
@@ -108,46 +113,45 @@ abstract class _$$_TweetDataCopyWith<$Res> implements $TweetDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_TweetDataCopyWithImpl<$Res> extends _$TweetDataCopyWithImpl<$Res>
+class __$$_TweetDataCopyWithImpl<$Res>
+    extends _$TweetDataCopyWithImpl<$Res, _$_TweetData>
     implements _$$_TweetDataCopyWith<$Res> {
   __$$_TweetDataCopyWithImpl(
       _$_TweetData _value, $Res Function(_$_TweetData) _then)
-      : super(_value, (v) => _then(v as _$_TweetData));
+      : super(_value, _then);
 
-  @override
-  _$_TweetData get _value => super._value as _$_TweetData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tweetId = freezed,
-    Object? text = freezed,
-    Object? userId = freezed,
-    Object? userName = freezed,
-    Object? name = freezed,
-    Object? profileImageUrl = freezed,
+    Object? tweetId = null,
+    Object? text = null,
+    Object? userId = null,
+    Object? userName = null,
+    Object? name = null,
+    Object? profileImageUrl = null,
   }) {
     return _then(_$_TweetData(
-      tweetId: tweetId == freezed
+      tweetId: null == tweetId
           ? _value.tweetId
           : tweetId // ignore: cast_nullable_to_non_nullable
               as String,
-      text: text == freezed
+      text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
+      userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      userName: userName == freezed
+      userName: null == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImageUrl: profileImageUrl == freezed
+      profileImageUrl: null == profileImageUrl
           ? _value.profileImageUrl
           : profileImageUrl // ignore: cast_nullable_to_non_nullable
               as String,
@@ -194,28 +198,24 @@ class _$_TweetData extends _TweetData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TweetData &&
-            const DeepCollectionEquality().equals(other.tweetId, tweetId) &&
-            const DeepCollectionEquality().equals(other.text, text) &&
-            const DeepCollectionEquality().equals(other.userId, userId) &&
-            const DeepCollectionEquality().equals(other.userName, userName) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.profileImageUrl, profileImageUrl));
+            (identical(other.tweetId, tweetId) || other.tweetId == tweetId) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.profileImageUrl, profileImageUrl) ||
+                other.profileImageUrl == profileImageUrl));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(tweetId),
-      const DeepCollectionEquality().hash(text),
-      const DeepCollectionEquality().hash(userId),
-      const DeepCollectionEquality().hash(userName),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(profileImageUrl));
+      runtimeType, tweetId, text, userId, userName, name, profileImageUrl);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_TweetDataCopyWith<_$_TweetData> get copyWith =>
       __$$_TweetDataCopyWithImpl<_$_TweetData>(this, _$identity);
 

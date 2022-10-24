@@ -44,7 +44,8 @@ mixin _$Ship {
 /// @nodoc
 abstract class $ShipCopyWith<$Res> {
   factory $ShipCopyWith(Ship value, $Res Function(Ship) then) =
-      _$ShipCopyWithImpl<$Res>;
+      _$ShipCopyWithImpl<$Res, Ship>;
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'name') String? name,
@@ -56,53 +57,56 @@ abstract class $ShipCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ShipCopyWithImpl<$Res> implements $ShipCopyWith<$Res> {
+class _$ShipCopyWithImpl<$Res, $Val extends Ship>
+    implements $ShipCopyWith<$Res> {
   _$ShipCopyWithImpl(this._value, this._then);
 
-  final Ship _value;
   // ignore: unused_field
-  final $Res Function(Ship) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? name = freezed,
     Object? mmsi = freezed,
-    Object? type = freezed,
-    Object? lat = freezed,
-    Object? lon = freezed,
-    Object? heading = freezed,
+    Object? type = null,
+    Object? lat = null,
+    Object? lon = null,
+    Object? heading = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      mmsi: mmsi == freezed
+      mmsi: freezed == mmsi
           ? _value.mmsi
           : mmsi // ignore: cast_nullable_to_non_nullable
               as int?,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as int,
-      lat: lat == freezed
+      lat: null == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      lon: lon == freezed
+      lon: null == lon
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
-      heading: heading == freezed
+      heading: null == heading
           ? _value.heading
           : heading // ignore: cast_nullable_to_non_nullable
               as double,
-    ));
+    ) as $Val);
   }
 }
 
@@ -111,6 +115,7 @@ abstract class _$$_ShipCopyWith<$Res> implements $ShipCopyWith<$Res> {
   factory _$$_ShipCopyWith(_$_Ship value, $Res Function(_$_Ship) then) =
       __$$_ShipCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'name') String? name,
@@ -122,50 +127,48 @@ abstract class _$$_ShipCopyWith<$Res> implements $ShipCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res>
+class __$$_ShipCopyWithImpl<$Res> extends _$ShipCopyWithImpl<$Res, _$_Ship>
     implements _$$_ShipCopyWith<$Res> {
   __$$_ShipCopyWithImpl(_$_Ship _value, $Res Function(_$_Ship) _then)
-      : super(_value, (v) => _then(v as _$_Ship));
+      : super(_value, _then);
 
-  @override
-  _$_Ship get _value => super._value as _$_Ship;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? name = freezed,
     Object? mmsi = freezed,
-    Object? type = freezed,
-    Object? lat = freezed,
-    Object? lon = freezed,
-    Object? heading = freezed,
+    Object? type = null,
+    Object? lat = null,
+    Object? lon = null,
+    Object? heading = null,
   }) {
     return _then(_$_Ship(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      mmsi: mmsi == freezed
+      mmsi: freezed == mmsi
           ? _value.mmsi
           : mmsi // ignore: cast_nullable_to_non_nullable
               as int?,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as int,
-      lat: lat == freezed
+      lat: null == lat
           ? _value.lat
           : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      lon: lon == freezed
+      lon: null == lon
           ? _value.lon
           : lon // ignore: cast_nullable_to_non_nullable
               as double,
-      heading: heading == freezed
+      heading: null == heading
           ? _value.heading
           : heading // ignore: cast_nullable_to_non_nullable
               as double,
@@ -222,29 +225,23 @@ class _$_Ship extends _Ship {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Ship &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.mmsi, mmsi) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.lat, lat) &&
-            const DeepCollectionEquality().equals(other.lon, lon) &&
-            const DeepCollectionEquality().equals(other.heading, heading));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.mmsi, mmsi) || other.mmsi == mmsi) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lon, lon) || other.lon == lon) &&
+            (identical(other.heading, heading) || other.heading == heading));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(mmsi),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(lat),
-      const DeepCollectionEquality().hash(lon),
-      const DeepCollectionEquality().hash(heading));
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, mmsi, type, lat, lon, heading);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ShipCopyWith<_$_Ship> get copyWith =>
       __$$_ShipCopyWithImpl<_$_Ship>(this, _$identity);
 

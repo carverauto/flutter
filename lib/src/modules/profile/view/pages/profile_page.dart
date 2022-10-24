@@ -78,7 +78,7 @@ class _ProfileViewState extends State<ProfileView> {
                               ),
                         ),
                       Text(
-                        user.email,
+                        user.email ?? '',
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),

@@ -39,7 +39,8 @@ mixin _$Interest {
 /// @nodoc
 abstract class $InterestCopyWith<$Res> {
   factory $InterestCopyWith(Interest value, $Res Function(Interest) then) =
-      _$InterestCopyWithImpl<$Res>;
+      _$InterestCopyWithImpl<$Res, Interest>;
+  @useResult
   $Res call(
       {String id,
       String instanceId,
@@ -50,48 +51,51 @@ abstract class $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$InterestCopyWithImpl<$Res> implements $InterestCopyWith<$Res> {
+class _$InterestCopyWithImpl<$Res, $Val extends Interest>
+    implements $InterestCopyWith<$Res> {
   _$InterestCopyWithImpl(this._value, this._then);
 
-  final Interest _value;
   // ignore: unused_field
-  final $Res Function(Interest) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? instanceId = freezed,
-    Object? name = freezed,
-    Object? isCompulsory = freezed,
-    Object? isDefault = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? instanceId = null,
+    Object? name = null,
+    Object? isCompulsory = null,
+    Object? isDefault = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      instanceId: instanceId == freezed
+      instanceId: null == instanceId
           ? _value.instanceId
           : instanceId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompulsory: isCompulsory == freezed
+      isCompulsory: null == isCompulsory
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-    ));
+    ) as $Val);
   }
 }
 
@@ -101,6 +105,7 @@ abstract class _$$_InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
           _$_Interest value, $Res Function(_$_Interest) then) =
       __$$_InterestCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String instanceId,
@@ -111,46 +116,45 @@ abstract class _$$_InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
+class __$$_InterestCopyWithImpl<$Res>
+    extends _$InterestCopyWithImpl<$Res, _$_Interest>
     implements _$$_InterestCopyWith<$Res> {
   __$$_InterestCopyWithImpl(
       _$_Interest _value, $Res Function(_$_Interest) _then)
-      : super(_value, (v) => _then(v as _$_Interest));
+      : super(_value, _then);
 
-  @override
-  _$_Interest get _value => super._value as _$_Interest;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? instanceId = freezed,
-    Object? name = freezed,
-    Object? isCompulsory = freezed,
-    Object? isDefault = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? instanceId = null,
+    Object? name = null,
+    Object? isCompulsory = null,
+    Object? isDefault = null,
+    Object? createdAt = null,
   }) {
     return _then(_$_Interest(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      instanceId: instanceId == freezed
+      instanceId: null == instanceId
           ? _value.instanceId
           : instanceId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompulsory: isCompulsory == freezed
+      isCompulsory: null == isCompulsory
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
@@ -200,29 +204,26 @@ class _$_Interest extends _Interest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Interest &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality()
-                .equals(other.instanceId, instanceId) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.isCompulsory, isCompulsory) &&
-            const DeepCollectionEquality().equals(other.isDefault, isDefault) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.instanceId, instanceId) ||
+                other.instanceId == instanceId) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isCompulsory, isCompulsory) ||
+                other.isCompulsory == isCompulsory) &&
+            (identical(other.isDefault, isDefault) ||
+                other.isDefault == isDefault) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(instanceId),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(isCompulsory),
-      const DeepCollectionEquality().hash(isDefault),
-      const DeepCollectionEquality().hash(createdAt));
+      runtimeType, id, instanceId, name, isCompulsory, isDefault, createdAt);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InterestCopyWith<_$_Interest> get copyWith =>
       __$$_InterestCopyWithImpl<_$_Interest>(this, _$identity);
 

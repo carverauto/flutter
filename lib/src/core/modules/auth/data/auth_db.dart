@@ -142,7 +142,7 @@ class AuthDatabase implements AuthDB {
         uid: user.uid,
         userName: user.displayName,
         //TODO: Should we allow facebook login that doesn't have email?
-        email: user.email!,
+        email: user.email,
         photoURL: user.photoURL,
         lastUpdated: DateTime.now().millisecondsSinceEpoch,
       );

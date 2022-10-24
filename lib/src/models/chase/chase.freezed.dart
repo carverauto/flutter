@@ -51,7 +51,8 @@ mixin _$Chase {
 /// @nodoc
 abstract class $ChaseCopyWith<$Res> {
   factory $ChaseCopyWith(Chase value, $Res Function(Chase) then) =
-      _$ChaseCopyWithImpl<$Res>;
+      _$ChaseCopyWithImpl<$Res, Chase>;
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'Name')
@@ -76,16 +77,19 @@ abstract class $ChaseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
+class _$ChaseCopyWithImpl<$Res, $Val extends Chase>
+    implements $ChaseCopyWith<$Res> {
   _$ChaseCopyWithImpl(this._value, this._then);
 
-  final Chase _value;
   // ignore: unused_field
-  final $Res Function(Chase) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? name = freezed,
     Object? live = freezed,
     Object? createdAt = freezed,
@@ -97,47 +101,47 @@ class _$ChaseCopyWithImpl<$Res> implements $ChaseCopyWith<$Res> {
     Object? wheels = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      live: live == freezed
+      live: freezed == live
           ? _value.live
           : live // ignore: cast_nullable_to_non_nullable
               as bool?,
-      createdAt: createdAt == freezed
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      desc: desc == freezed
+      desc: freezed == desc
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
               as String?,
-      imageURL: imageURL == freezed
+      imageURL: freezed == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String?,
-      votes: votes == freezed
+      votes: freezed == votes
           ? _value.votes
           : votes // ignore: cast_nullable_to_non_nullable
               as int?,
-      networks: networks == freezed
+      networks: freezed == networks
           ? _value.networks
           : networks // ignore: cast_nullable_to_non_nullable
               as List<ChaseNetwork>?,
-      sentiment: sentiment == freezed
+      sentiment: freezed == sentiment
           ? _value.sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
-      wheels: wheels == freezed
+      wheels: freezed == wheels
           ? _value.wheels
           : wheels // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -146,6 +150,7 @@ abstract class _$$_ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
   factory _$$_ChaseCopyWith(_$_Chase value, $Res Function(_$_Chase) then) =
       __$$_ChaseCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       @JsonKey(name: 'Name')
@@ -170,17 +175,15 @@ abstract class _$$_ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
+class __$$_ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res, _$_Chase>
     implements _$$_ChaseCopyWith<$Res> {
   __$$_ChaseCopyWithImpl(_$_Chase _value, $Res Function(_$_Chase) _then)
-      : super(_value, (v) => _then(v as _$_Chase));
+      : super(_value, _then);
 
-  @override
-  _$_Chase get _value => super._value as _$_Chase;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
     Object? name = freezed,
     Object? live = freezed,
     Object? createdAt = freezed,
@@ -192,43 +195,43 @@ class __$$_ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res>
     Object? wheels = freezed,
   }) {
     return _then(_$_Chase(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      live: live == freezed
+      live: freezed == live
           ? _value.live
           : live // ignore: cast_nullable_to_non_nullable
               as bool?,
-      createdAt: createdAt == freezed
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      desc: desc == freezed
+      desc: freezed == desc
           ? _value.desc
           : desc // ignore: cast_nullable_to_non_nullable
               as String?,
-      imageURL: imageURL == freezed
+      imageURL: freezed == imageURL
           ? _value.imageURL
           : imageURL // ignore: cast_nullable_to_non_nullable
               as String?,
-      votes: votes == freezed
+      votes: freezed == votes
           ? _value.votes
           : votes // ignore: cast_nullable_to_non_nullable
               as int?,
-      networks: networks == freezed
+      networks: freezed == networks
           ? _value._networks
           : networks // ignore: cast_nullable_to_non_nullable
               as List<ChaseNetwork>?,
-      sentiment: sentiment == freezed
+      sentiment: freezed == sentiment
           ? _value._sentiment
           : sentiment // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
-      wheels: wheels == freezed
+      wheels: freezed == wheels
           ? _value._wheels
           : wheels // ignore: cast_nullable_to_non_nullable
               as Map<dynamic, dynamic>?,
@@ -332,13 +335,15 @@ class _$_Chase extends _Chase {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Chase &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.live, live) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.desc, desc) &&
-            const DeepCollectionEquality().equals(other.imageURL, imageURL) &&
-            const DeepCollectionEquality().equals(other.votes, votes) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.live, live) || other.live == live) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.desc, desc) || other.desc == desc) &&
+            (identical(other.imageURL, imageURL) ||
+                other.imageURL == imageURL) &&
+            (identical(other.votes, votes) || other.votes == votes) &&
             const DeepCollectionEquality().equals(other._networks, _networks) &&
             const DeepCollectionEquality()
                 .equals(other._sentiment, _sentiment) &&
@@ -349,19 +354,20 @@ class _$_Chase extends _Chase {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(live),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(desc),
-      const DeepCollectionEquality().hash(imageURL),
-      const DeepCollectionEquality().hash(votes),
+      id,
+      name,
+      live,
+      createdAt,
+      desc,
+      imageURL,
+      votes,
       const DeepCollectionEquality().hash(_networks),
       const DeepCollectionEquality().hash(_sentiment),
       const DeepCollectionEquality().hash(_wheels));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ChaseCopyWith<_$_Chase> get copyWith =>
       __$$_ChaseCopyWithImpl<_$_Chase>(this, _$identity);
 
