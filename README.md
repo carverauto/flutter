@@ -52,7 +52,7 @@ Open the build in xcode and hit distribute app
 open /Users/mfreeman/src/flutter/build/ios/archive/Runner.xcarchive
 ```
 
-### Github Actions CI/CD
+## Github Actions CI/CD
 
 To trigger the CI/CD workflow for store deployment for android and ios,
 push a tagged commit with the latest version tag like follow,
@@ -61,6 +61,42 @@ push a tagged commit with the latest version tag like follow,
 git tag v0.1 -a -m "Release v0.1"
 git push --follow-tags
 ```
+
+### For Ios build : 
+
+Flutter target Identifier: com.carverauto.chaseapp --> Production
+
+AppImageNotification target Identifier: com.carverauto.chaseapp.AppImageNotification 
+
+Profiles and certificates used for creating `Prod` release for above identifiers.
+
+### Profiles:
+
+Development Profile for target Flutter: `Chaseapp-prod`
+Development Certificate used: Used any one of the dev certificate as the profile includes all of them.
+
+Development Profile for target AppImageNotification: `AppImage`
+Development Certificate used: Used any one of the dev certificate as the profile includes all of them.
+
+Distribution Profile for target Flutter: `sep17-provisionProfile`
+Distribution Certificate used: `2022/12/28`
+
+Development Profile for target AppImageNotification: `wildcard`
+Development Certificate used: `2022/12/28`
+
+### Archive export: 
+
+We are using manual signing and provisioning profiles are set likewise in the xcode. And the `flutter build ipa` command throws error when exporting archive when manual signing is used.
+That's why we are providing `ExportOptions.plist` file which includes manual signing settings to use while exporting archive. If any changes are need to be made in export profiles, then updated ExportOptions.plist needs to be updated here.
+
+ExportOptions.plist can be generated once by manually exporting the archive through xcode.
+
+Steps :
+ 1. Build archive through `flutter build ipa ...other parameters`
+ 2. Open archive in xcode and export it.
+ 3. Copy updated ExportOptions.plist from the exported archive folder within build folder in project dir.
+
+
 
 ## Appcircle
 
