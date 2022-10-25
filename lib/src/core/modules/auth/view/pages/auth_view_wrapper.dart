@@ -69,11 +69,15 @@ class AuthViewWrapper extends ConsumerWidget {
             return HomeWrapper();
           },
           errorBuilder: (Object e, StackTrace? stk) {
+            const String message =
+                'Something went wrong. Please try again or contact us.';
+
             return Scaffold(
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ChaseAppErrorWidget(
+                    message: message,
                     onRefresh: () {
                       ref.refresh(streamLogInStatus);
                     },

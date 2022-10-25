@@ -30,11 +30,19 @@ class ChaseAppErrorWidget extends StatelessWidget {
               ),
             ),
             //Chip doesn't show label properly with multiline text
-            Chip(
-              label: Text(
-                message ?? 'Something went wrong.',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onSurface,
+                borderRadius: BorderRadius.circular(kBorderRadiusLargeConstant),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(kPaddingXSmallConstant),
+                child: Text(
+                  message ?? 'Something went wrong.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
               ),
             ),
