@@ -59,14 +59,14 @@ class _LogInViewState extends ConsumerState<LogInView>
     });
   }
 
-  void signInWith(SIGNINMETHOD method) async {
+  Future<void> signInWith(SIGNINMETHOD method) async {
     setState(() {
       signinmethod = method;
     });
     await ref.read(signInProvider.notifier).signIn(method);
   }
 
-  void logInuser(String link) async {
+  Future<void> logInuser(String link) async {
     if (emailAddress != null) {
       setState(() {
         signinmethod = SIGNINMETHOD.Email;
@@ -94,7 +94,7 @@ class _LogInViewState extends ConsumerState<LogInView>
       if (ref
           .read(firebaseAuthProvider)
           .isSignInWithEmailLink(deepLink.toString())) {
-        logInuser(deepLink.toString());
+        await logInuser(deepLink.toString());
       }
     }
   }
@@ -108,7 +108,7 @@ class _LogInViewState extends ConsumerState<LogInView>
           if (ref
               .read(firebaseAuthProvider)
               .isSignInWithEmailLink(deepLink.toString())) {
-            logInuser(deepLink.toString());
+            await logInuser(deepLink.toString());
           }
         }
       },
@@ -203,7 +203,9 @@ class _LogInViewState extends ConsumerState<LogInView>
           });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(e.message),
+              content: Text(
+                e.message ?? 'Something went wrong. Please try again.',
+              ),
             ),
           );
         },
