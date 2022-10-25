@@ -8,10 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../const/app_bundle_info.dart';
+import '../../const/images.dart';
 import '../../models/adsb/adsb.dart';
 import '../../models/ship/ship.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
@@ -83,9 +83,17 @@ class _MapBoxViewState extends State<MapBoxView> {
 
     final String? imageUrl = symbol.data!['imageUrl'] as String?;
     log(imageUrl.toString());
-    final http.Response? groupImage =
-        imageUrl != null ? await http.get(Uri.parse(imageUrl)) : null;
-    final Uint8List? groupImageBytes = groupImage?.bodyBytes;
+    // final http.Response? groupImage =
+    //     imageUrl != null ? await http.get(Uri.parse(imageUrl)) : null;
+    // final Uint8List? groupImageBytes = groupImage?.bodyBytes;
+
+    if (!isShip) {
+      if (imageUrl != null) {
+        await precacheImage(NetworkImage(imageUrl), context);
+      }
+      // imasbImagegBytes = await createImageFromWidget(adsbImage);
+    }
+
     final Widget infoWindow = MediaQuery(
       data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
       child: DecoratedBox(
@@ -98,12 +106,33 @@ class _MapBoxViewState extends State<MapBoxView> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (groupImageBytes != null)
-                CircleAvatar(
-                  backgroundImage: Image.memory(
-                    groupImageBytes,
-                  ).image,
-                ),
+              if (!isShip)
+                MediaQuery(
+                  data:
+                      MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+                  child: ClipOval(
+                    child: CircleAvatar(
+                      // backgroundImage: Image.memory(
+                      //   groupImageBytes,
+                      // ).image,
+                      child: imageUrl == null
+                          ? Image.asset(chaseAppLogoAssetImage)
+                          : Image.network(imageUrl),
+                    ),
+                  ),
+                )
+              else
+                const Icon(Icons.directions_boat),
+              // ClipOval(
+              //   child: CircleAvatar(
+              //     // backgroundImage: Image.memory(
+              //     //   groupImageBytes,
+              //     // ).image,
+              //     child: imageUrl == null
+              //         ? Image.asset('assets/chaseapplogo.png')
+              //         : Image.memory(imageBytes!),
+              //   ),
+              // ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
