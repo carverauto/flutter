@@ -15,6 +15,7 @@ import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 import '../../../../const/app_bundle_info.dart';
+import '../../../../models/api_exception/api_exception.dart';
 import '../../../../models/push_tokens/push_token.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../shared/enums/device.dart';
@@ -180,7 +181,9 @@ class AuthDatabase implements AuthDB {
         if (document.data() != null) {
           return document.data()!;
         } else {
-          throw UnimplementedError();
+          throw ChaseAppCallException(
+            message: 'User found but user data is null.',
+          );
         }
       } else {
         return await createUser(user);
