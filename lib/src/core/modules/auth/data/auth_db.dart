@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fauth;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart' as sa;
 import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/twitter_login.dart';
@@ -140,7 +142,7 @@ class AuthDatabase implements AuthDB {
         uid: user.uid,
         userName: user.displayName,
         //TODO: Should we allow facebook login that doesn't have email?
-        email: user.email!,
+        email: user.email,
         photoURL: user.photoURL,
         lastUpdated: DateTime.now().millisecondsSinceEpoch,
       );
@@ -287,5 +289,29 @@ class AuthDatabase implements AuthDB {
   @override
   Future<void> signInWithEmailAndLink(String email, String link) async {
     await firebaseAuth.signInWithEmailLink(email: email, emailLink: link);
+  }
+
+  @override
+  Future<void> deleteUserAccount(String userId) async {
+    final String projectId = firebaseAuth.app.options.projectId;
+    final String apiKey = EnvVaribales.getGCPServerApiKey;
+    final Uri url = Uri.parse(
+      'https://us-central1-$projectId.cloudfunctions.net/DeleteUser',
+    );
+
+    final http.Response responce = await http.post(
+      url,
+      headers: {
+        'X-ApiKey': apiKey,
+      },
+      body: jsonEncode({
+        'id': userId,
+      }),
+    );
+
+    log(responce.body);
+
+    // final Map<String, dynamic> decodedData =
+    //     jsonDecode(responce.body) as Map<String, dynamic>;
   }
 }

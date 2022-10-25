@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,7 +14,6 @@ part 'chase_animation_event.g.dart';
 
 @freezed
 abstract class ChaseAnimationEvent implements _$ChaseAnimationEvent {
-  const ChaseAnimationEvent._();
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory ChaseAnimationEvent({
@@ -30,9 +28,10 @@ abstract class ChaseAnimationEvent implements _$ChaseAnimationEvent {
     required String artboard,
     required List<String> animations,
     @AlignmentConvertor() required Alignment alignment,
-    // required String alignment,
+    // // required String alignment,
     @DatetimeTimestampConverter() required DateTime createdAt,
   }) = _ChaseAnimationEvent;
+  const ChaseAnimationEvent._();
 
   factory ChaseAnimationEvent.fromJson(Map<String, dynamic> json) =>
       _$ChaseAnimationEventFromJson(json);

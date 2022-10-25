@@ -12,7 +12,6 @@ import '../../../../../modules/home/view/pages/home_wrapper.dart';
 import '../../../../../modules/signin/view/pages/signin_page.dart';
 import '../../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../../shared/widgets/errors/error_widget.dart';
-import '../../../../top_level_providers/nodle_provider.dart';
 import '../../../../top_level_providers/services_providers.dart';
 import '../providers/providers.dart';
 
@@ -45,7 +44,7 @@ class AuthViewWrapper extends ConsumerWidget {
       logger: logger,
       errorMessage: 'Error while loading users login status.',
       builder: (User? user, WidgetRef ref, Widget? child) {
-        WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
+        WidgetsBinding.instance.addPostFrameCallback((Duration t) {
           ref.read(checkForUpdateStateNotifier.notifier).checkForUpdate();
         });
         if (user == null) {
@@ -57,8 +56,8 @@ class AuthViewWrapper extends ConsumerWidget {
           logger: logger,
           errorMessage: 'Error while loading users data.',
           builder: (UserData userData, WidgetRef ref, Widget? child) {
-            WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
-              ref.read(nodleProvider.notifier).initializeNodle();
+            WidgetsBinding.instance.addPostFrameCallback((Duration t) {
+              // ref.read(nodleProvider.notifier).initializeNodle();
               // ref
               //     .read(chatsServiceStateNotifierProvider.notifier)
               //     .connectUserToGetStream(userData);

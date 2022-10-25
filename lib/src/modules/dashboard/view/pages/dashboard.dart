@@ -35,22 +35,12 @@ class Dashboard extends StatelessWidget {
         chasesPaginationProvider: chasesPaginationProvider,
         logger: logger,
       ),
-
-      //  ProviderStateBuilder(
-      //     errorBuilder: (context, stk) => DashboardMainView(
-      //         chasesPaginationProvider: chasesPaginationProvider,
-      //         logger: logger),
-      //     builder: (data, ref, child) => DashboardMainView(
-      //         chasesPaginationProvider: chasesPaginationProvider,
-      //         logger: logger),
-      //     watchThisProvider: topChasesStreamProvider,
-      //     logger: logger),
     );
   }
 }
 
 class _DashboardMainView extends ConsumerWidget {
-  const _DashboardMainView({
+  _DashboardMainView({
     Key? key,
     required this.chasesPaginationProvider,
     required this.logger,
@@ -59,6 +49,7 @@ class _DashboardMainView extends ConsumerWidget {
   final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
+  final ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,6 +111,7 @@ class _DashboardMainView extends ConsumerWidget {
           CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             restorationId: 'Chases List',
+            controller: controller,
             slivers: [
               // AppBar
               const ChaseAppBar(),
@@ -127,15 +119,36 @@ class _DashboardMainView extends ConsumerWidget {
               // Error if removed (Need to report)
               const SliverToBoxAdapter(
                 child: SizedBox(
-                  height: kPaddingMediumConstant,
+                  height: kPaddingSmallConstant,
                 ),
               ),
               // Chases Map
-              // ChasesMap(),
-              // For Clusters
-              //  SliverToBoxAdapter(
-              //   child: SizedBox(
-              //     height: kPaddingMediumConstant,
+
+              // SliverList(
+              //   delegate: SliverChildListDelegate([
+              //     const AspectRatio(
+              //       aspectRatio: 16 / 9,
+              //       // GEstureDetector won't work?
+              //       child: MapBoxView(),
+              //     )
+              //   ]),
+              // ),
+
+              // SliverToBoxAdapter(
+              //   child: AspectRatio(
+              //     aspectRatio: 16 / 9,
+              //     child: ListView(
+              //       shrinkWrap: true,
+              //       primary: true,
+              //       children: [
+              //         for (int i = 0; i < 10; i++) const Text('Hello')
+              //         // AspectRatio(
+              //         //   aspectRatio: 16 / 9,
+              //         //   // GEstureDetector won't work?
+              //         //   child: MapBoxView(),
+              //         // )
+              //       ],
+              //     ),
               //   ),
               // ),
 
@@ -220,7 +233,7 @@ class _DashboardMainView extends ConsumerWidget {
                   height: kItemsSpacingSmallConstant,
                 ),
               ),
-              FirehoseListViewAll(
+              const FirehoseListViewAll(
                 showLimited: true,
               ),
               const SliverToBoxAdapter(

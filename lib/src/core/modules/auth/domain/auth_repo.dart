@@ -69,7 +69,9 @@ class AuthRepository implements AuthRepositoryAB {
 
   @override
   Future<void> handleMutliProviderSignIn(
-      SIGNINMETHOD signinmethod, AuthCredential providerOAuthCredential) {
+    SIGNINMETHOD signinmethod,
+    AuthCredential providerOAuthCredential,
+  ) {
     return read(authDbProvider)
         .handleMutliProviderSignIn(signinmethod, providerOAuthCredential);
   }
@@ -82,5 +84,10 @@ class AuthRepository implements AuthRepositoryAB {
   @override
   Future<void> signInWithEmailAndLink(String email, String link) {
     return read(authDbProvider).signInWithEmailAndLink(email, link);
+  }
+
+  @override
+  Future<void> deleteUserAccount(String userId) {
+    return read(authDbProvider).deleteUserAccount(userId);
   }
 }

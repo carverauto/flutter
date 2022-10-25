@@ -12,38 +12,11 @@ part of 'chase_network.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 ChaseNetwork _$ChaseNetworkFromJson(Map<String, dynamic> json) {
   return _ChaseNetwork.fromJson(json);
 }
-
-/// @nodoc
-class _$ChaseNetworkTearOff {
-  const _$ChaseNetworkTearOff();
-
-  _ChaseNetwork call(
-      {@JsonKey(name: 'Logo') required String? logo,
-      @JsonKey(name: 'Name') required String? name,
-      @JsonKey(name: 'Other') required String? other,
-      @JsonKey(name: 'Tier') required int? tier,
-      @JsonKey(name: 'URL') String? url}) {
-    return _ChaseNetwork(
-      logo: logo,
-      name: name,
-      other: other,
-      tier: tier,
-      url: url,
-    );
-  }
-
-  ChaseNetwork fromJson(Map<String, Object?> json) {
-    return ChaseNetwork.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ChaseNetwork = _$ChaseNetworkTearOff();
 
 /// @nodoc
 mixin _$ChaseNetwork {
@@ -68,7 +41,8 @@ mixin _$ChaseNetwork {
 abstract class $ChaseNetworkCopyWith<$Res> {
   factory $ChaseNetworkCopyWith(
           ChaseNetwork value, $Res Function(ChaseNetwork) then) =
-      _$ChaseNetworkCopyWithImpl<$Res>;
+      _$ChaseNetworkCopyWithImpl<$Res, ChaseNetwork>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'Logo') String? logo,
       @JsonKey(name: 'Name') String? name,
@@ -78,13 +52,16 @@ abstract class $ChaseNetworkCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChaseNetworkCopyWithImpl<$Res> implements $ChaseNetworkCopyWith<$Res> {
+class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
+    implements $ChaseNetworkCopyWith<$Res> {
   _$ChaseNetworkCopyWithImpl(this._value, this._then);
 
-  final ChaseNetwork _value;
   // ignore: unused_field
-  final $Res Function(ChaseNetwork) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? logo = freezed,
@@ -94,37 +71,38 @@ class _$ChaseNetworkCopyWithImpl<$Res> implements $ChaseNetworkCopyWith<$Res> {
     Object? url = freezed,
   }) {
     return _then(_value.copyWith(
-      logo: logo == freezed
+      logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      other: other == freezed
+      other: freezed == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as String?,
-      tier: tier == freezed
+      tier: freezed == tier
           ? _value.tier
           : tier // ignore: cast_nullable_to_non_nullable
               as int?,
-      url: url == freezed
+      url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$ChaseNetworkCopyWith<$Res>
+abstract class _$$_ChaseNetworkCopyWith<$Res>
     implements $ChaseNetworkCopyWith<$Res> {
-  factory _$ChaseNetworkCopyWith(
-          _ChaseNetwork value, $Res Function(_ChaseNetwork) then) =
-      __$ChaseNetworkCopyWithImpl<$Res>;
+  factory _$$_ChaseNetworkCopyWith(
+          _$_ChaseNetwork value, $Res Function(_$_ChaseNetwork) then) =
+      __$$_ChaseNetworkCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'Logo') String? logo,
       @JsonKey(name: 'Name') String? name,
@@ -134,15 +112,14 @@ abstract class _$ChaseNetworkCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ChaseNetworkCopyWithImpl<$Res> extends _$ChaseNetworkCopyWithImpl<$Res>
-    implements _$ChaseNetworkCopyWith<$Res> {
-  __$ChaseNetworkCopyWithImpl(
-      _ChaseNetwork _value, $Res Function(_ChaseNetwork) _then)
-      : super(_value, (v) => _then(v as _ChaseNetwork));
+class __$$_ChaseNetworkCopyWithImpl<$Res>
+    extends _$ChaseNetworkCopyWithImpl<$Res, _$_ChaseNetwork>
+    implements _$$_ChaseNetworkCopyWith<$Res> {
+  __$$_ChaseNetworkCopyWithImpl(
+      _$_ChaseNetwork _value, $Res Function(_$_ChaseNetwork) _then)
+      : super(_value, _then);
 
-  @override
-  _ChaseNetwork get _value => super._value as _ChaseNetwork;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? logo = freezed,
@@ -151,24 +128,24 @@ class __$ChaseNetworkCopyWithImpl<$Res> extends _$ChaseNetworkCopyWithImpl<$Res>
     Object? tier = freezed,
     Object? url = freezed,
   }) {
-    return _then(_ChaseNetwork(
-      logo: logo == freezed
+    return _then(_$_ChaseNetwork(
+      logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      other: other == freezed
+      other: freezed == other
           ? _value.other
           : other // ignore: cast_nullable_to_non_nullable
               as String?,
-      tier: tier == freezed
+      tier: freezed == tier
           ? _value.tier
           : tier // ignore: cast_nullable_to_non_nullable
               as int?,
-      url: url == freezed
+      url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -216,41 +193,39 @@ class _$_ChaseNetwork extends _ChaseNetwork {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ChaseNetwork &&
-            const DeepCollectionEquality().equals(other.logo, logo) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.other, this.other) &&
-            const DeepCollectionEquality().equals(other.tier, tier) &&
-            const DeepCollectionEquality().equals(other.url, url));
+            other is _$_ChaseNetwork &&
+            (identical(other.logo, logo) || other.logo == logo) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.other, this.other) || other.other == this.other) &&
+            (identical(other.tier, tier) || other.tier == tier) &&
+            (identical(other.url, url) || other.url == url));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(logo),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(other),
-      const DeepCollectionEquality().hash(tier),
-      const DeepCollectionEquality().hash(url));
 
   @JsonKey(ignore: true)
   @override
-  _$ChaseNetworkCopyWith<_ChaseNetwork> get copyWith =>
-      __$ChaseNetworkCopyWithImpl<_ChaseNetwork>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, logo, name, other, tier, url);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ChaseNetworkCopyWith<_$_ChaseNetwork> get copyWith =>
+      __$$_ChaseNetworkCopyWithImpl<_$_ChaseNetwork>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ChaseNetworkToJson(this);
+    return _$$_ChaseNetworkToJson(
+      this,
+    );
   }
 }
 
 abstract class _ChaseNetwork extends ChaseNetwork {
   const factory _ChaseNetwork(
-      {@JsonKey(name: 'Logo') required String? logo,
-      @JsonKey(name: 'Name') required String? name,
-      @JsonKey(name: 'Other') required String? other,
-      @JsonKey(name: 'Tier') required int? tier,
-      @JsonKey(name: 'URL') String? url}) = _$_ChaseNetwork;
+      {@JsonKey(name: 'Logo') required final String? logo,
+      @JsonKey(name: 'Name') required final String? name,
+      @JsonKey(name: 'Other') required final String? other,
+      @JsonKey(name: 'Tier') required final int? tier,
+      @JsonKey(name: 'URL') final String? url}) = _$_ChaseNetwork;
   const _ChaseNetwork._() : super._();
 
   factory _ChaseNetwork.fromJson(Map<String, dynamic> json) =
@@ -273,6 +248,6 @@ abstract class _ChaseNetwork extends ChaseNetwork {
   String? get url;
   @override
   @JsonKey(ignore: true)
-  _$ChaseNetworkCopyWith<_ChaseNetwork> get copyWith =>
+  _$$_ChaseNetworkCopyWith<_$_ChaseNetwork> get copyWith =>
       throw _privateConstructorUsedError;
 }

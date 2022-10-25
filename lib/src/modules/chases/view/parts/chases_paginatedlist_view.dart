@@ -90,8 +90,11 @@ class ChasesPaginatedListView extends ConsumerWidget {
                             child: TweenAnimationBuilder<double>(
                               duration: const Duration(milliseconds: 300),
                               tween: Tween<double>(begin: 0.8, end: 1),
-                              builder: (BuildContext context, double value,
-                                  Widget? child) {
+                              builder: (
+                                BuildContext context,
+                                double value,
+                                Widget? child,
+                              ) {
                                 return ScaleTransition(
                                   scale: AlwaysStoppedAnimation(value),
                                   child: child,
@@ -125,14 +128,17 @@ class ChasesPaginatedListView extends ConsumerWidget {
                     children: chases
                         .map<Widget>(
                           (Chase chase) => Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: kPaddingMediumConstant,
+                            padding: const EdgeInsets.all(
+                              kPaddingSmallConstant,
                             ),
                             child: TweenAnimationBuilder<double>(
                               duration: const Duration(milliseconds: 300),
                               tween: Tween<double>(begin: 0.8, end: 1),
-                              builder: (BuildContext context, double value,
-                                  Widget? child) {
+                              builder: (
+                                BuildContext context,
+                                double value,
+                                Widget? child,
+                              ) {
                                 return ScaleTransition(
                                   scale: AlwaysStoppedAnimation(value),
                                   child: child,

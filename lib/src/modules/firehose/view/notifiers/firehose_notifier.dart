@@ -18,7 +18,7 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   final Logger logger = Logger('FirehoseServiceStateNotifier');
 
-  late final String userToken;
+  late String userToken;
 
   bool isUserTokenInitialized = false;
 
@@ -35,6 +35,8 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   void dispose() {
     if (isSubscribedToFeed) {
       firehoseSubscription.cancel();
+      isUserTokenInitialized = false;
+      isSubscribedToFeed = false;
     }
     super.dispose();
   }
@@ -71,8 +73,9 @@ class FirehoseStateNotifier extends StateNotifier<void> {
     if (!isSubscribedToFeed) {
       try {
         firehoseSubscription = await firehoseFeed.subscribe(
-          (feed.RealtimeMessage<Object?, Object?, Object?, Object?>?
-              message) {},
+          (
+            feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message,
+          ) {},
         );
         isSubscribedToFeed = true;
       } catch (e, stk) {

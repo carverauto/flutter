@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -8,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/src/log_record.dart';
-import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 // import 'package:device_preview/device_preview.dart';
-import 'src/const/app_bundle_info.dart';
 import 'src/const/colors.dart';
 import 'src/modules/chats/view/providers/providers.dart';
+import 'src/routes/routeNames.dart';
 import 'src/routes/routes.dart';
+import 'src/shared/util/helpers/request_permissions.dart';
 import 'src/theme/theme.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
@@ -36,7 +37,7 @@ class MyApp extends ConsumerWidget {
             // TODO: Need to debug why?
             // If not added then getStream API is overriding the
             // the user set accentColor in Custom Theme
-            colorTheme: ColorTheme.dark(
+            colorTheme: StreamColorTheme.dark(
               accentPrimary: primaryColor.shade500,
             ),
           ),
@@ -46,10 +47,37 @@ class MyApp extends ConsumerWidget {
       },
       // locale: Locale('en'), // Add the locale here
       // builder: DevicePreview.appBuilder,
+
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
+      navigatorObservers: [
+        RoutesObserver(),
+      ],
       theme: getThemeData(context),
     );
+  }
+}
+
+class RoutesObserver extends NavigatorObserver {
+  final Logger routesObserverLogger = Logger('RoutesObserverLogger');
+
+  @override
+  Future<void> didPop(Route route, Route? previousRoute) async {
+    // TODO: implement didPop
+    if (route.settings.name == RouteName.CHASE_VIEW) {
+      Timer(const Duration(milliseconds: 500), () async {
+        try {
+          await checkRequestPermissions();
+        } catch (e, stk) {
+          routesObserverLogger.warning(
+            'Error while trying to check for permissions/requesting permissions.',
+            e,
+            stk,
+          );
+        }
+      });
+    }
+    super.didPop(route, previousRoute);
   }
 }
 
@@ -91,7 +119,7 @@ Future<void> setUpServices() async {
 
   // if (F.appFlavor == Flavor.DEV) {
   // const String instanceId = String.fromEnvironment('Pusher_Instance_Id');
-  await PusherBeams.instance.start(EnvVaribales.instanceId);
+//  await PusherBeams.instance.start(EnvVaribales.instanceId);
   // } else {
   //   const String instanceId = String.fromEnvironment('Prod_Pusher_Instance_Id');
 

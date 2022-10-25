@@ -24,4 +24,5 @@ abstract class AuthDB {
   Future<void> signInWithEmailAndLink(String email, String link);
   Future<void> signOut();
   void updateTokenWhenRefreshed(User user);
+  Future<void> deleteUserAccount(String userId);
 }

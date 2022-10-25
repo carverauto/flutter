@@ -12,49 +12,11 @@ part of 'notification.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 ChaseAppNotification _$ChaseAppNotificationFromJson(Map<String, dynamic> json) {
   return _ChaseAppNotification.fromJson(json);
 }
-
-/// @nodoc
-class _$ChaseAppNotificationTearOff {
-  const _$ChaseAppNotificationTearOff();
-
-  _ChaseAppNotification call(
-      {@JsonKey(name: 'Interest')
-          required String interest,
-      required String id,
-      @JsonKey(name: 'Type')
-          required String type,
-      @JsonKey(name: 'Title')
-          required String title,
-      @JsonKey(name: 'Body')
-          required String body,
-      @JsonKey(name: 'CreatedAt')
-      @DatetimeTimestampConverter()
-          required DateTime createdAt,
-      @JsonKey(name: 'Data')
-          NotificationData? data}) {
-    return _ChaseAppNotification(
-      interest: interest,
-      id: id,
-      type: type,
-      title: title,
-      body: body,
-      createdAt: createdAt,
-      data: data,
-    );
-  }
-
-  ChaseAppNotification fromJson(Map<String, Object?> json) {
-    return ChaseAppNotification.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $ChaseAppNotification = _$ChaseAppNotificationTearOff();
 
 /// @nodoc
 mixin _$ChaseAppNotification {
@@ -84,7 +46,8 @@ mixin _$ChaseAppNotification {
 abstract class $ChaseAppNotificationCopyWith<$Res> {
   factory $ChaseAppNotificationCopyWith(ChaseAppNotification value,
           $Res Function(ChaseAppNotification) then) =
-      _$ChaseAppNotificationCopyWithImpl<$Res>;
+      _$ChaseAppNotificationCopyWithImpl<$Res, ChaseAppNotification>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'Interest')
           String interest,
@@ -105,75 +68,80 @@ abstract class $ChaseAppNotificationCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ChaseAppNotificationCopyWithImpl<$Res>
+class _$ChaseAppNotificationCopyWithImpl<$Res,
+        $Val extends ChaseAppNotification>
     implements $ChaseAppNotificationCopyWith<$Res> {
   _$ChaseAppNotificationCopyWithImpl(this._value, this._then);
 
-  final ChaseAppNotification _value;
   // ignore: unused_field
-  final $Res Function(ChaseAppNotification) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? interest = freezed,
-    Object? id = freezed,
-    Object? type = freezed,
-    Object? title = freezed,
-    Object? body = freezed,
-    Object? createdAt = freezed,
+    Object? interest = null,
+    Object? id = null,
+    Object? type = null,
+    Object? title = null,
+    Object? body = null,
+    Object? createdAt = null,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      interest: interest == freezed
+      interest: null == interest
           ? _value.interest
           : interest // ignore: cast_nullable_to_non_nullable
               as String,
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      body: body == freezed
+      body: null == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      data: data == freezed
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as NotificationData?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $NotificationDataCopyWith<$Res>? get data {
     if (_value.data == null) {
       return null;
     }
 
     return $NotificationDataCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value));
+      return _then(_value.copyWith(data: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$ChaseAppNotificationCopyWith<$Res>
+abstract class _$$_ChaseAppNotificationCopyWith<$Res>
     implements $ChaseAppNotificationCopyWith<$Res> {
-  factory _$ChaseAppNotificationCopyWith(_ChaseAppNotification value,
-          $Res Function(_ChaseAppNotification) then) =
-      __$ChaseAppNotificationCopyWithImpl<$Res>;
+  factory _$$_ChaseAppNotificationCopyWith(_$_ChaseAppNotification value,
+          $Res Function(_$_ChaseAppNotification) then) =
+      __$$_ChaseAppNotificationCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'Interest')
           String interest,
@@ -195,52 +163,50 @@ abstract class _$ChaseAppNotificationCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ChaseAppNotificationCopyWithImpl<$Res>
-    extends _$ChaseAppNotificationCopyWithImpl<$Res>
-    implements _$ChaseAppNotificationCopyWith<$Res> {
-  __$ChaseAppNotificationCopyWithImpl(
-      _ChaseAppNotification _value, $Res Function(_ChaseAppNotification) _then)
-      : super(_value, (v) => _then(v as _ChaseAppNotification));
+class __$$_ChaseAppNotificationCopyWithImpl<$Res>
+    extends _$ChaseAppNotificationCopyWithImpl<$Res, _$_ChaseAppNotification>
+    implements _$$_ChaseAppNotificationCopyWith<$Res> {
+  __$$_ChaseAppNotificationCopyWithImpl(_$_ChaseAppNotification _value,
+      $Res Function(_$_ChaseAppNotification) _then)
+      : super(_value, _then);
 
-  @override
-  _ChaseAppNotification get _value => super._value as _ChaseAppNotification;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? interest = freezed,
-    Object? id = freezed,
-    Object? type = freezed,
-    Object? title = freezed,
-    Object? body = freezed,
-    Object? createdAt = freezed,
+    Object? interest = null,
+    Object? id = null,
+    Object? type = null,
+    Object? title = null,
+    Object? body = null,
+    Object? createdAt = null,
     Object? data = freezed,
   }) {
-    return _then(_ChaseAppNotification(
-      interest: interest == freezed
+    return _then(_$_ChaseAppNotification(
+      interest: null == interest
           ? _value.interest
           : interest // ignore: cast_nullable_to_non_nullable
               as String,
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      title: title == freezed
+      title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      body: body == freezed
+      body: null == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      data: data == freezed
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as NotificationData?,
@@ -286,7 +252,8 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   @override
   @JsonKey(name: 'Body')
   final String body;
-  @override // @JsonKey(name: 'Image') String? image,
+// @JsonKey(name: 'Image') String? image,
+  @override
   @JsonKey(name: 'CreatedAt')
   @DatetimeTimestampConverter()
   final DateTime createdAt;
@@ -303,55 +270,54 @@ class _$_ChaseAppNotification extends _ChaseAppNotification {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ChaseAppNotification &&
-            const DeepCollectionEquality().equals(other.interest, interest) &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.body, body) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.data, data));
+            other is _$_ChaseAppNotification &&
+            (identical(other.interest, interest) ||
+                other.interest == interest) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.body, body) || other.body == body) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.data, data) || other.data == data));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(interest),
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(body),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
-  _$ChaseAppNotificationCopyWith<_ChaseAppNotification> get copyWith =>
-      __$ChaseAppNotificationCopyWithImpl<_ChaseAppNotification>(
+  int get hashCode => Object.hash(
+      runtimeType, interest, id, type, title, body, createdAt, data);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ChaseAppNotificationCopyWith<_$_ChaseAppNotification> get copyWith =>
+      __$$_ChaseAppNotificationCopyWithImpl<_$_ChaseAppNotification>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ChaseAppNotificationToJson(this);
+    return _$$_ChaseAppNotificationToJson(
+      this,
+    );
   }
 }
 
 abstract class _ChaseAppNotification extends ChaseAppNotification {
   const factory _ChaseAppNotification(
       {@JsonKey(name: 'Interest')
-          required String interest,
-      required String id,
+          required final String interest,
+      required final String id,
       @JsonKey(name: 'Type')
-          required String type,
+          required final String type,
       @JsonKey(name: 'Title')
-          required String title,
+          required final String title,
       @JsonKey(name: 'Body')
-          required String body,
+          required final String body,
       @JsonKey(name: 'CreatedAt')
       @DatetimeTimestampConverter()
-          required DateTime createdAt,
+          required final DateTime createdAt,
       @JsonKey(name: 'Data')
-          NotificationData? data}) = _$_ChaseAppNotification;
+          final NotificationData? data}) = _$_ChaseAppNotification;
   const _ChaseAppNotification._() : super._();
 
   factory _ChaseAppNotification.fromJson(Map<String, dynamic> json) =
@@ -380,6 +346,6 @@ abstract class _ChaseAppNotification extends ChaseAppNotification {
   NotificationData? get data;
   @override
   @JsonKey(ignore: true)
-  _$ChaseAppNotificationCopyWith<_ChaseAppNotification> get copyWith =>
+  _$$_ChaseAppNotificationCopyWith<_$_ChaseAppNotification> get copyWith =>
       throw _privateConstructorUsedError;
 }

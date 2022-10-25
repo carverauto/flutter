@@ -12,40 +12,11 @@ part of 'notification_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 NotificationData _$NotificationDataFromJson(Map<String, dynamic> json) {
   return _NotificationData.fromJson(json);
 }
-
-/// @nodoc
-class _$NotificationDataTearOff {
-  const _$NotificationDataTearOff();
-
-  _NotificationData call(
-      {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Image') String? image,
-      @JsonKey(name: 'YoutubeId') String? youtubeId,
-      @JsonKey(name: 'ChannelId') String? channelId,
-      @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData}) {
-    return _NotificationData(
-      id: id,
-      image: image,
-      youtubeId: youtubeId,
-      channelId: channelId,
-      configState: configState,
-      tweetData: tweetData,
-    );
-  }
-
-  NotificationData fromJson(Map<String, Object?> json) {
-    return NotificationData.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $NotificationData = _$NotificationDataTearOff();
 
 /// @nodoc
 mixin _$NotificationData {
@@ -71,7 +42,8 @@ mixin _$NotificationData {
 abstract class $NotificationDataCopyWith<$Res> {
   factory $NotificationDataCopyWith(
           NotificationData value, $Res Function(NotificationData) then) =
-      _$NotificationDataCopyWithImpl<$Res>;
+      _$NotificationDataCopyWithImpl<$Res, NotificationData>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
@@ -84,14 +56,16 @@ abstract class $NotificationDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$NotificationDataCopyWithImpl<$Res>
+class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
     implements $NotificationDataCopyWith<$Res> {
   _$NotificationDataCopyWithImpl(this._value, this._then);
 
-  final NotificationData _value;
   // ignore: unused_field
-  final $Res Function(NotificationData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = freezed,
@@ -102,52 +76,54 @@ class _$NotificationDataCopyWithImpl<$Res>
     Object? tweetData = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      image: image == freezed
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      youtubeId: youtubeId == freezed
+      youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
-      channelId: channelId == freezed
+      channelId: freezed == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as String?,
-      configState: configState == freezed
+      configState: freezed == configState
           ? _value.configState
           : configState // ignore: cast_nullable_to_non_nullable
               as String?,
-      tweetData: tweetData == freezed
+      tweetData: freezed == tweetData
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $TweetDataCopyWith<$Res>? get tweetData {
     if (_value.tweetData == null) {
       return null;
     }
 
     return $TweetDataCopyWith<$Res>(_value.tweetData!, (value) {
-      return _then(_value.copyWith(tweetData: value));
+      return _then(_value.copyWith(tweetData: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$NotificationDataCopyWith<$Res>
+abstract class _$$_NotificationDataCopyWith<$Res>
     implements $NotificationDataCopyWith<$Res> {
-  factory _$NotificationDataCopyWith(
-          _NotificationData value, $Res Function(_NotificationData) then) =
-      __$NotificationDataCopyWithImpl<$Res>;
+  factory _$$_NotificationDataCopyWith(
+          _$_NotificationData value, $Res Function(_$_NotificationData) then) =
+      __$$_NotificationDataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
@@ -161,16 +137,14 @@ abstract class _$NotificationDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$NotificationDataCopyWithImpl<$Res>
-    extends _$NotificationDataCopyWithImpl<$Res>
-    implements _$NotificationDataCopyWith<$Res> {
-  __$NotificationDataCopyWithImpl(
-      _NotificationData _value, $Res Function(_NotificationData) _then)
-      : super(_value, (v) => _then(v as _NotificationData));
+class __$$_NotificationDataCopyWithImpl<$Res>
+    extends _$NotificationDataCopyWithImpl<$Res, _$_NotificationData>
+    implements _$$_NotificationDataCopyWith<$Res> {
+  __$$_NotificationDataCopyWithImpl(
+      _$_NotificationData _value, $Res Function(_$_NotificationData) _then)
+      : super(_value, _then);
 
-  @override
-  _NotificationData get _value => super._value as _NotificationData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = freezed,
@@ -180,28 +154,28 @@ class __$NotificationDataCopyWithImpl<$Res>
     Object? configState = freezed,
     Object? tweetData = freezed,
   }) {
-    return _then(_NotificationData(
-      id: id == freezed
+    return _then(_$_NotificationData(
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      image: image == freezed
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
-      youtubeId: youtubeId == freezed
+      youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
-      channelId: channelId == freezed
+      channelId: freezed == channelId
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as String?,
-      configState: configState == freezed
+      configState: freezed == configState
           ? _value.configState
           : configState // ignore: cast_nullable_to_non_nullable
               as String?,
-      tweetData: tweetData == freezed
+      tweetData: freezed == tweetData
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
@@ -252,45 +226,46 @@ class _$_NotificationData extends _NotificationData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _NotificationData &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.image, image) &&
-            const DeepCollectionEquality().equals(other.youtubeId, youtubeId) &&
-            const DeepCollectionEquality().equals(other.channelId, channelId) &&
-            const DeepCollectionEquality()
-                .equals(other.configState, configState) &&
-            const DeepCollectionEquality().equals(other.tweetData, tweetData));
+            other is _$_NotificationData &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.youtubeId, youtubeId) ||
+                other.youtubeId == youtubeId) &&
+            (identical(other.channelId, channelId) ||
+                other.channelId == channelId) &&
+            (identical(other.configState, configState) ||
+                other.configState == configState) &&
+            (identical(other.tweetData, tweetData) ||
+                other.tweetData == tweetData));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(image),
-      const DeepCollectionEquality().hash(youtubeId),
-      const DeepCollectionEquality().hash(channelId),
-      const DeepCollectionEquality().hash(configState),
-      const DeepCollectionEquality().hash(tweetData));
 
   @JsonKey(ignore: true)
   @override
-  _$NotificationDataCopyWith<_NotificationData> get copyWith =>
-      __$NotificationDataCopyWithImpl<_NotificationData>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType, id, image, youtubeId, channelId, configState, tweetData);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>
+      __$$_NotificationDataCopyWithImpl<_$_NotificationData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_NotificationDataToJson(this);
+    return _$$_NotificationDataToJson(
+      this,
+    );
   }
 }
 
 abstract class _NotificationData extends NotificationData {
   const factory _NotificationData(
-      {@JsonKey(name: 'Id') String? id,
-      @JsonKey(name: 'Image') String? image,
-      @JsonKey(name: 'YoutubeId') String? youtubeId,
-      @JsonKey(name: 'ChannelId') String? channelId,
-      @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData}) = _$_NotificationData;
+      {@JsonKey(name: 'Id') final String? id,
+      @JsonKey(name: 'Image') final String? image,
+      @JsonKey(name: 'YoutubeId') final String? youtubeId,
+      @JsonKey(name: 'ChannelId') final String? channelId,
+      @JsonKey(name: 'ConfigState') final String? configState,
+      final TweetData? tweetData}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
   factory _NotificationData.fromJson(Map<String, dynamic> json) =
@@ -315,6 +290,6 @@ abstract class _NotificationData extends NotificationData {
   TweetData? get tweetData;
   @override
   @JsonKey(ignore: true)
-  _$NotificationDataCopyWith<_NotificationData> get copyWith =>
+  _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>
       throw _privateConstructorUsedError;
 }

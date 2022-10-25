@@ -1,33 +1,61 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<bool> checkForPermissionsStatuses() async {
-  final bool bluetoothStatus = await Permission.bluetooth.isGranted;
-  final bool bluetoothScanStatus =
-      Platform.isAndroid ? await Permission.bluetoothScan.isGranted : true;
-  final bool bluetoothConnectStatus =
-      Platform.isAndroid ? await Permission.bluetoothConnect.isGranted : true;
-  final bool locationStatus = await Permission.locationWhenInUse.isGranted;
-  final bool notificationStatus = await Permission.notification.isGranted;
+Future<void> updateisFirstChaseViewedStatus() async {
+  final SharedPreferences sharedPreferances =
+      await SharedPreferences.getInstance();
+  final bool isFirstChaseViewed =
+      sharedPreferances.getBool('isFirstChaseViewed') ?? false;
 
-  return bluetoothStatus &&
-      bluetoothScanStatus &&
-      bluetoothConnectStatus &&
-      locationStatus &&
-      notificationStatus;
+  if (!isFirstChaseViewed) {
+    await sharedPreferances.setBool('isFirstChaseViewed', true);
+  }
 }
 
-Future<UsersPermissionStatuses> requestPermissions() async {
+Future<void> checkRequestPermissions() async {
+  final SharedPreferences sharedPreferances =
+      await SharedPreferences.getInstance();
+  final bool isFirstChaseViewed =
+      sharedPreferances.getBool('isFirstChaseViewed') ?? false;
+
+  if (isFirstChaseViewed) {
+    final bool isGrantedPermissions = await _checkForPermissionsStatuses();
+
+    if (!isGrantedPermissions) {
+      await _requestPermissions();
+    }
+  }
+}
+
+Future<bool> _checkForPermissionsStatuses() async {
+  // final bool bluetoothStatus = await Permission.bluetooth.isGranted;
+  // final bool bluetoothScanStatus =
+  //     Platform.isAndroid ? await Permission.bluetoothScan.isGranted : true;
+  // final bool bluetoothConnectStatus =
+  //     Platform.isAndroid ? await Permission.bluetoothConnect.isGranted : true;
+  // final bool locationStatus = await Permission.locationWhenInUse.isGranted;
+  final bool notificationStatus = await Permission.notification.isGranted;
+
+  return notificationStatus;
+
+  // return bluetoothStatus &&
+  //     bluetoothScanStatus &&
+  //     bluetoothConnectStatus &&
+  //     locationStatus &&
+  //     notificationStatus;
+}
+
+Future<UsersPermissionStatuses> _requestPermissions() async {
   final Map<Permission, PermissionStatus> statuses = await [
-    Permission.bluetooth,
-    if (Platform.isAndroid) ...[
-      Permission.bluetoothScan,
-      Permission.bluetoothConnect,
-    ],
-    Permission.locationWhenInUse,
+    // Permission.bluetooth,
+    // if (Platform.isAndroid) ...[
+    //   Permission.bluetoothScan,
+    //   Permission.bluetoothConnect,
+    // ],
+    // Permission.locationWhenInUse,
     Permission.notification,
   ].request();
 

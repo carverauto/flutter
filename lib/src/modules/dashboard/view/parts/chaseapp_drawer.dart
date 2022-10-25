@@ -79,7 +79,7 @@ class ChaseAppDrawer extends StatelessWidget {
                                   ),
                                 ),
                               Text(
-                                userData.email,
+                                userData.email ?? '',
                                 style: TextStyle(
                                   color: Theme.of(context)
                                       .colorScheme

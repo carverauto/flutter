@@ -12,40 +12,11 @@ part of 'interest.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Interest _$InterestFromJson(Map<String, dynamic> json) {
   return _Interest.fromJson(json);
 }
-
-/// @nodoc
-class _$InterestTearOff {
-  const _$InterestTearOff();
-
-  _Interest call(
-      {required String id,
-      required String instanceId,
-      required String name,
-      required bool isCompulsory,
-      required bool isDefault,
-      @DatetimeTimestampConverter() required DateTime createdAt}) {
-    return _Interest(
-      id: id,
-      instanceId: instanceId,
-      name: name,
-      isCompulsory: isCompulsory,
-      isDefault: isDefault,
-      createdAt: createdAt,
-    );
-  }
-
-  Interest fromJson(Map<String, Object?> json) {
-    return Interest.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Interest = _$InterestTearOff();
 
 /// @nodoc
 mixin _$Interest {
@@ -68,7 +39,8 @@ mixin _$Interest {
 /// @nodoc
 abstract class $InterestCopyWith<$Res> {
   factory $InterestCopyWith(Interest value, $Res Function(Interest) then) =
-      _$InterestCopyWithImpl<$Res>;
+      _$InterestCopyWithImpl<$Res, Interest>;
+  @useResult
   $Res call(
       {String id,
       String instanceId,
@@ -79,56 +51,61 @@ abstract class $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$InterestCopyWithImpl<$Res> implements $InterestCopyWith<$Res> {
+class _$InterestCopyWithImpl<$Res, $Val extends Interest>
+    implements $InterestCopyWith<$Res> {
   _$InterestCopyWithImpl(this._value, this._then);
 
-  final Interest _value;
   // ignore: unused_field
-  final $Res Function(Interest) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? instanceId = freezed,
-    Object? name = freezed,
-    Object? isCompulsory = freezed,
-    Object? isDefault = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? instanceId = null,
+    Object? name = null,
+    Object? isCompulsory = null,
+    Object? isDefault = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      instanceId: instanceId == freezed
+      instanceId: null == instanceId
           ? _value.instanceId
           : instanceId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompulsory: isCompulsory == freezed
+      isCompulsory: null == isCompulsory
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
-  factory _$InterestCopyWith(_Interest value, $Res Function(_Interest) then) =
-      __$InterestCopyWithImpl<$Res>;
+abstract class _$$_InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
+  factory _$$_InterestCopyWith(
+          _$_Interest value, $Res Function(_$_Interest) then) =
+      __$$_InterestCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String instanceId,
@@ -139,45 +116,45 @@ abstract class _$InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$InterestCopyWithImpl<$Res> extends _$InterestCopyWithImpl<$Res>
-    implements _$InterestCopyWith<$Res> {
-  __$InterestCopyWithImpl(_Interest _value, $Res Function(_Interest) _then)
-      : super(_value, (v) => _then(v as _Interest));
+class __$$_InterestCopyWithImpl<$Res>
+    extends _$InterestCopyWithImpl<$Res, _$_Interest>
+    implements _$$_InterestCopyWith<$Res> {
+  __$$_InterestCopyWithImpl(
+      _$_Interest _value, $Res Function(_$_Interest) _then)
+      : super(_value, _then);
 
-  @override
-  _Interest get _value => super._value as _Interest;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? instanceId = freezed,
-    Object? name = freezed,
-    Object? isCompulsory = freezed,
-    Object? isDefault = freezed,
-    Object? createdAt = freezed,
+    Object? id = null,
+    Object? instanceId = null,
+    Object? name = null,
+    Object? isCompulsory = null,
+    Object? isDefault = null,
+    Object? createdAt = null,
   }) {
-    return _then(_Interest(
-      id: id == freezed
+    return _then(_$_Interest(
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      instanceId: instanceId == freezed
+      instanceId: null == instanceId
           ? _value.instanceId
           : instanceId // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompulsory: isCompulsory == freezed
+      isCompulsory: null == isCompulsory
           ? _value.isCompulsory
           : isCompulsory // ignore: cast_nullable_to_non_nullable
               as bool,
-      isDefault: isDefault == freezed
+      isDefault: null == isDefault
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
-      createdAt: createdAt == freezed
+      createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
@@ -201,8 +178,9 @@ class _$_Interest extends _Interest {
   factory _$_Interest.fromJson(Map<String, dynamic> json) =>
       _$$_InterestFromJson(json);
 
-  @override // TODO: Marking as optional for the moment but shoudln't be
+// TODO: Marking as optional for the moment but shoudln't be
 // All documents must have an id
+  @override
   final String id;
   @override
   final String instanceId;
@@ -225,46 +203,47 @@ class _$_Interest extends _Interest {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Interest &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality()
-                .equals(other.instanceId, instanceId) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.isCompulsory, isCompulsory) &&
-            const DeepCollectionEquality().equals(other.isDefault, isDefault) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            other is _$_Interest &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.instanceId, instanceId) ||
+                other.instanceId == instanceId) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isCompulsory, isCompulsory) ||
+                other.isCompulsory == isCompulsory) &&
+            (identical(other.isDefault, isDefault) ||
+                other.isDefault == isDefault) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(instanceId),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(isCompulsory),
-      const DeepCollectionEquality().hash(isDefault),
-      const DeepCollectionEquality().hash(createdAt));
 
   @JsonKey(ignore: true)
   @override
-  _$InterestCopyWith<_Interest> get copyWith =>
-      __$InterestCopyWithImpl<_Interest>(this, _$identity);
+  int get hashCode => Object.hash(
+      runtimeType, id, instanceId, name, isCompulsory, isDefault, createdAt);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_InterestCopyWith<_$_Interest> get copyWith =>
+      __$$_InterestCopyWithImpl<_$_Interest>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_InterestToJson(this);
+    return _$$_InterestToJson(
+      this,
+    );
   }
 }
 
 abstract class _Interest extends Interest {
   const factory _Interest(
-      {required String id,
-      required String instanceId,
-      required String name,
-      required bool isCompulsory,
-      required bool isDefault,
-      @DatetimeTimestampConverter() required DateTime createdAt}) = _$_Interest;
+          {required final String id,
+          required final String instanceId,
+          required final String name,
+          required final bool isCompulsory,
+          required final bool isDefault,
+          @DatetimeTimestampConverter() required final DateTime createdAt}) =
+      _$_Interest;
   const _Interest._() : super._();
 
   factory _Interest.fromJson(Map<String, dynamic> json) = _$_Interest.fromJson;
@@ -285,6 +264,6 @@ abstract class _Interest extends Interest {
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$InterestCopyWith<_Interest> get copyWith =>
+  _$$_InterestCopyWith<_$_Interest> get copyWith =>
       throw _privateConstructorUsedError;
 }

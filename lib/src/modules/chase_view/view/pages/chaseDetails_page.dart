@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
 import '../../../../models/chase/chase.dart';
+import '../../../../shared/util/helpers/request_permissions.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../chats/view/pages/chats_row_view.dart';
 import '../../../chats/view/parts/chats_view.dart';
@@ -29,13 +30,24 @@ class ChaseDetailsView extends ConsumerStatefulWidget {
 }
 
 class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
-  final Logger logger = Logger('ChaseView');
+  final Logger logger = Logger('ChaseDetailsView');
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() => ref.refresh(chatChannelProvider(widget.chaseId)));
+    Future.microtask(() async {
+      try {
+        ref.refresh(chatChannelProvider(widget.chaseId));
+        await updateisFirstChaseViewedStatus();
+      } catch (e, stk) {
+        logger.warning(
+          'ChaseDetailsView initialization operations error.',
+          e,
+          stk,
+        );
+      }
+    });
   }
 
   @override
@@ -43,6 +55,7 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
     final String chaseId = widget.chaseId;
 
     ref.watch(playVideoProvider);
+
     return ChaseDetailsProviderStateBuilder<Chase>(
       watchThisProvider: streamChaseProvider(chaseId),
       logger: logger,
