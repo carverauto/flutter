@@ -58,6 +58,7 @@ class _SplashViewState extends State<SplashView>
       },
     );
     precacheImage(const AssetImage(chaseAppNameImage), context);
+    precacheImage(const AssetImage(chaseAppLogoAssetImage), context);
 
     Sizescaleconfig.setSizes(
       MediaQuery.of(context).size.height,
