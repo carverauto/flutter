@@ -38,7 +38,7 @@ final AutoDisposeStateProvider<bool> playVideoProvider =
 );
 final AutoDisposeStateProvider<bool> showVideoOverlayProvider =
     StateProvider.autoDispose<bool>(
-  (AutoDisposeStateProviderRef<bool> ref) => true,
+  (AutoDisposeStateProviderRef<bool> ref) => false,
 );
 final AutoDisposeStateProvider<bool> isShowingChatsWindowProvide =
     StateProvider.autoDispose<bool>(
