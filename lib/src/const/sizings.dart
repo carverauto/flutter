@@ -1,6 +1,7 @@
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
+
+import '../shared/util/helpers/sizescaleconfig.dart';
+import 'colors.dart';
 
 final double profileImageSize = Sizescaleconfig.scalehightfactor(100);
 
@@ -22,6 +23,7 @@ const double kIconSizeMediumConstant = 24;
 const double kIconSizeLargeConstant = 34;
 double kIconSizeExtraLarge = Sizescaleconfig.scalehightfactor(65);
 
+const double kPaddingXSmallConstant = 4;
 const double kPaddingSmallConstant = 10;
 const double kPaddingMediumConstant = 20;
 const double kPaddingLargeConstant = 30;
@@ -72,11 +74,11 @@ double kFontSizeMedium =
     Sizescaleconfig.scaletextfactor(kFontSizeMediumConstant);
 double kFontSizeLarge = Sizescaleconfig.scaletextfactor(kFontSizeLargeConstant);
 
-final callToActionButtonStyle = ElevatedButton.styleFrom(
-  primary: primaryButtonsColor,
+final ButtonStyle callToActionButtonStyle = ElevatedButton.styleFrom(
+  backgroundColor: primaryButtonsColor,
   maximumSize: Size(
     Sizescaleconfig.screenwidth! * 0.8,
     50,
   ),
-  fixedSize: Size.fromHeight(50),
+  fixedSize: const Size.fromHeight(50),
 );
