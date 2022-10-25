@@ -306,6 +306,7 @@ class _MapBoxViewState extends State<MapBoxView> {
         children: [
           Expanded(
             child: MapboxMap(
+              minMaxZoomPreference: const MinMaxZoomPreference(2, 100),
               styleString: MapboxStyles.DARK,
               accessToken: EnvVaribales.getMapBoxPublicAccessToken,
               attributionButtonMargins: const math.Point(-200, 0),
@@ -326,8 +327,8 @@ class _MapBoxViewState extends State<MapBoxView> {
               myLocationRenderMode: MyLocationRenderMode.NORMAL,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(
-                  31.284788,
-                  -92.471176,
+                  34.052235,
+                  -118.243683,
                 ),
               ),
             ),

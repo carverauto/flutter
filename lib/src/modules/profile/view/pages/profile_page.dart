@@ -116,16 +116,16 @@ class _ProfileViewState extends State<ProfileView> {
                       Row(
                         children: const [
                           SizedBox(
-                            width: kPaddingMediumConstant,
+                            width: kPaddingSmallConstant,
+                            child: Divider(
+                              color: Colors.red,
+                            ),
                           ),
                           Text(
                             'Danger Zone',
                             style: TextStyle(
                               color: Colors.red,
                             ),
-                          ),
-                          SizedBox(
-                            width: kPaddingSmallConstant,
                           ),
                           Expanded(
                             child: Divider(

@@ -65,30 +65,36 @@ class ChaseAppDrawer extends StatelessWidget {
                           const SizedBox(
                             width: kItemsSpacingSmallConstant,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (userData.userName != null)
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (userData.userName != null)
+                                  Text(
+                                    userData.userName!,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                                  ),
                                 Text(
-                                  userData.userName!,
+                                  userData.email ?? '',
                                   style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onBackground,
                                   ),
                                 ),
-                              Text(
-                                userData.email ?? '',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          const Spacer(),
+                          const SizedBox(
+                            width: kPaddingXSmallConstant,
+                          ),
                           const Icon(
                             Icons.arrow_forward_ios,
                           ),
