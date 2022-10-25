@@ -108,7 +108,7 @@ dependencies:
   pusher_channels_flutter: ^2.0.2
 
   # social_embed_webview: ^0.3.2
-  webview_flutter: ^2.8.0
+  webview_flutter: ^3.0.4
   rive: ^0.8.1
 
   # Stream
