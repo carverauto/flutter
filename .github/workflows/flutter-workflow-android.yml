@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux]
+    runs-on: [rutvik-selfhosted]
     env:
       ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -53,7 +53,7 @@ jobs:
 
   deploy-play-store:
     needs: [build]
-    runs-on: [self-hosted, Linux]
+    runs-on: [rutvik-selfhosted]
     steps:
       - name: Publish to Play Store internal test track
         uses: r0adkll/upload-google-play@v1
