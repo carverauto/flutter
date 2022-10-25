@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
+import '../../../models/api_exception/api_exception.dart';
 import '../errors/error_widget.dart';
 import '../loaders/loading.dart';
 
@@ -22,7 +23,11 @@ class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
   final Widget Function(
-      T data, WidgetRef ref, Widget chatsRow, Widget chatsView) builder;
+    T data,
+    WidgetRef ref,
+    Widget chatsRow,
+    Widget chatsView,
+  ) builder;
   final Widget Function(Object e, StackTrace? stk)? errorBuilder;
 
   final Logger logger;
@@ -101,7 +106,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
   final Widget Function(T data, WidgetRef ref, Widget? child) builder;
-  final Widget Function(Object e, StackTrace? stk)? errorBuilder;
+  final Widget Function(ChaseAppCallException e, StackTrace? stk)? errorBuilder;
 
   final Logger logger;
 
@@ -117,13 +122,22 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
             return builder(data, ref, child);
           },
           error: (Object e, StackTrace? stk) {
+            final ChaseAppCallException chaseAppCallException =
+                e is ChaseAppCallException
+                    ? e
+                    : ChaseAppCallException(
+                        message: errorMessage ?? 'Unknown Error',
+                        error: e,
+                      );
+
             logger.severe(
-              errorMessage ?? 'Error Loading Data',
-              e,
+              chaseAppCallException.message,
+              chaseAppCallException.error ?? e,
               stk,
             );
+
             return errorBuilder != null
-                ? errorBuilder!(e, stk)
+                ? errorBuilder!(chaseAppCallException, stk)
                 : Material(
                     child: Center(
                       child: Column(

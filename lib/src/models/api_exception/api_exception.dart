@@ -1,14 +1,18 @@
+import 'package:logging/logging.dart';
+
 class ChaseAppCallException implements Exception {
-  final String message;
-  final Object error;
-  final StackTrace stackTrace;
   ChaseAppCallException({
     required this.message,
-    required this.error,
-    required this.stackTrace,
+    this.logger,
+    this.error,
   });
+
+  /// Supportive message for more details
+  final String message;
+  final Logger? logger;
+  final Object? error;
 
   @override
   String toString() =>
-      'ApiCallException(message: $message, error: $error, stackTrace: $stackTrace)';
+      'ApiCallException(message: $message, error: ${error.toString()}, logger: ${logger?.name}-${logger?.level})';
 }

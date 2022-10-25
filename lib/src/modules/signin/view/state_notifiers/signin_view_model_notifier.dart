@@ -37,8 +37,9 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
           final ChaseAppCallException exception = ChaseAppCallException(
             message: e.code.replaceAll('-', ' ').toUpperCase(),
             error: e,
-            stackTrace: stk,
+            //    stackTrace: stk,
           );
+          logger.severe(exception.message, e, stk);
           state = LogInState.error(exception, stk);
       }
     } catch (e, stk) {
@@ -46,7 +47,7 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
       final ChaseAppCallException exception = ChaseAppCallException(
         message: 'Something went wrong. Please try again.',
         error: e,
-        stackTrace: stk,
+        //   stackTrace: stk,
       );
       state = LogInState.error(exception, stk);
     }
@@ -71,15 +72,16 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
       final ChaseAppCallException exception = ChaseAppCallException(
         message: e.code.replaceAll('-', ' ').toUpperCase(),
         error: e,
-        stackTrace: stk,
+        // stackTrace: stk,
       );
+      logger.severe(exception.message, e, stk);
       state = LogInState.error(exception, stk);
     } catch (e, stk) {
       logger.severe('Error signing in', e, stk);
       final ChaseAppCallException exception = ChaseAppCallException(
         message: 'Something went wrong. Please try again.',
         error: e,
-        stackTrace: stk,
+        //  stackTrace: stk,
       );
       state = LogInState.error(exception, stk);
     }
@@ -93,7 +95,8 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
     try {
       await read(authRepoProvider)
           .handleMutliProviderSignIn(knownAuthProvider, credential);
-    } catch (e) {
+    } catch (e, stk) {
+      logger.severe('Error occured while handling MutliProviderSignIn', e, stk);
       if (mounted) {
         state = const LogInState.data();
       }
