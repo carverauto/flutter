@@ -9,9 +9,6 @@ include: package:very_good_analysis/analysis_options.yaml
 #     # exhaustive_cases: true;
 #     # no_default_cases: true;
 
-
-
-
 # analyzer:
 #   exclude:
 #     - lib/app/models/personal_info/personal_info.g.dart
@@ -24,12 +21,6 @@ include: package:very_good_analysis/analysis_options.yaml
 #       # exhaustive_cases: error
 #       # no_default_cases: error
 
-
-
-
-
-
-  
 # Specify analysis options.
 #
 # Until there are meta linter rules, each desired lint must be explicitly enabled.
@@ -55,7 +46,7 @@ analyzer:
     strict-raw-types: true
   strong-mode:
     implicit-casts: false
-    
+
   errors:
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
@@ -78,11 +69,15 @@ analyzer:
     omit_local_variable_types: ignore
   exclude:
     - "bin/cache/**"
-      # Ignore protoc generated files
+    # Ignore protoc generated files
     - "dev/conductor/lib/proto/*"
     - lib/app/models/personal_info/personal_info.g.dart
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - build/**
+    - /Users/rutviktak/fvm/**
+    - youtube_player_flutter
+    - test/**
   plugins:
     - dart_code_metrics
 
@@ -291,7 +286,6 @@ linter:
     # - use_to_and_as_if_applicable # has false positives, so we prefer to catch this by code-review
     - valid_regexps
     - void_checks
-    
 
 dart_code_metrics:
   metrics:
@@ -300,6 +294,8 @@ dart_code_metrics:
     maximum-nesting-level: 5
   metrics-exclude:
     - test/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
   rules:
     - newline-before-return
     - no-boolean-literal-compare
