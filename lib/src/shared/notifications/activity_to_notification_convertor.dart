@@ -3,9 +3,11 @@
 // ignore: long-method
 import 'package:stream_feed/stream_feed.dart' as feed;
 
+import '../../const/images.dart';
 import '../../models/notification/notification.dart';
 import '../../models/notification/notification_data/notification_data.dart';
 import '../../models/tweet_data/tweet_data.dart';
+import '../../models/youtube_data/youtube_data.dart';
 import '../enums/firehose_notification_type.dart';
 import '../enums/interest_enum.dart';
 import '../util/convertors/datetimeconvertor.dart';
@@ -34,7 +36,7 @@ ChaseAppNotification convertActivityToChaseAppNotification(
           tweetId: payload['id'] as String,
           userId: '',
           userName: payload['username'] as String,
-          profileImageUrl: image!,
+          profileImageUrl: image ?? defaultPhotoURL,
         ),
       );
       break;
@@ -43,6 +45,15 @@ ChaseAppNotification convertActivityToChaseAppNotification(
       data = NotificationData(
         youtubeId: id,
         image: image,
+        youtubeData: YoutubeData(
+          name: payload['name'] as String,
+          text: payload['text'] as String,
+          videoId: payload['id'] as String,
+          channelId: payload['channelId'] as String,
+          userName: payload['username'] as String,
+          subcribersCount: payload['subcribersCount'] as int,
+          profileImageUrl: image ?? defaultPhotoURL,
+        ),
       );
       break;
 

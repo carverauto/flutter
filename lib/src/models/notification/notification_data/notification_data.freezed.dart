@@ -31,6 +31,7 @@ mixin _$NotificationData {
   @JsonKey(name: 'ConfigState')
   String? get configState => throw _privateConstructorUsedError;
   TweetData? get tweetData => throw _privateConstructorUsedError;
+  YoutubeData? get youtubeData => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,9 +51,11 @@ abstract class $NotificationDataCopyWith<$Res> {
       @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ChannelId') String? channelId,
       @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData});
+      TweetData? tweetData,
+      YoutubeData? youtubeData});
 
   $TweetDataCopyWith<$Res>? get tweetData;
+  $YoutubeDataCopyWith<$Res>? get youtubeData;
 }
 
 /// @nodoc
@@ -74,6 +77,7 @@ class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
     Object? channelId = freezed,
     Object? configState = freezed,
     Object? tweetData = freezed,
+    Object? youtubeData = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -100,6 +104,10 @@ class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
+      youtubeData: freezed == youtubeData
+          ? _value.youtubeData
+          : youtubeData // ignore: cast_nullable_to_non_nullable
+              as YoutubeData?,
     ) as $Val);
   }
 
@@ -112,6 +120,18 @@ class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
 
     return $TweetDataCopyWith<$Res>(_value.tweetData!, (value) {
       return _then(_value.copyWith(tweetData: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $YoutubeDataCopyWith<$Res>? get youtubeData {
+    if (_value.youtubeData == null) {
+      return null;
+    }
+
+    return $YoutubeDataCopyWith<$Res>(_value.youtubeData!, (value) {
+      return _then(_value.copyWith(youtubeData: value) as $Val);
     });
   }
 }
@@ -130,10 +150,13 @@ abstract class _$$_NotificationDataCopyWith<$Res>
       @JsonKey(name: 'YoutubeId') String? youtubeId,
       @JsonKey(name: 'ChannelId') String? channelId,
       @JsonKey(name: 'ConfigState') String? configState,
-      TweetData? tweetData});
+      TweetData? tweetData,
+      YoutubeData? youtubeData});
 
   @override
   $TweetDataCopyWith<$Res>? get tweetData;
+  @override
+  $YoutubeDataCopyWith<$Res>? get youtubeData;
 }
 
 /// @nodoc
@@ -153,6 +176,7 @@ class __$$_NotificationDataCopyWithImpl<$Res>
     Object? channelId = freezed,
     Object? configState = freezed,
     Object? tweetData = freezed,
+    Object? youtubeData = freezed,
   }) {
     return _then(_$_NotificationData(
       id: freezed == id
@@ -179,6 +203,10 @@ class __$$_NotificationDataCopyWithImpl<$Res>
           ? _value.tweetData
           : tweetData // ignore: cast_nullable_to_non_nullable
               as TweetData?,
+      youtubeData: freezed == youtubeData
+          ? _value.youtubeData
+          : youtubeData // ignore: cast_nullable_to_non_nullable
+              as YoutubeData?,
     ));
   }
 }
@@ -193,7 +221,8 @@ class _$_NotificationData extends _NotificationData {
       @JsonKey(name: 'YoutubeId') this.youtubeId,
       @JsonKey(name: 'ChannelId') this.channelId,
       @JsonKey(name: 'ConfigState') this.configState,
-      this.tweetData})
+      this.tweetData,
+      this.youtubeData})
       : super._();
 
   factory _$_NotificationData.fromJson(Map<String, dynamic> json) =>
@@ -216,10 +245,12 @@ class _$_NotificationData extends _NotificationData {
   final String? configState;
   @override
   final TweetData? tweetData;
+  @override
+  final YoutubeData? youtubeData;
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, image: $image, youtubeId: $youtubeId, channelId: $channelId, configState: $configState, tweetData: $tweetData)';
+    return 'NotificationData(id: $id, image: $image, youtubeId: $youtubeId, channelId: $channelId, configState: $configState, tweetData: $tweetData, youtubeData: $youtubeData)';
   }
 
   @override
@@ -236,13 +267,15 @@ class _$_NotificationData extends _NotificationData {
             (identical(other.configState, configState) ||
                 other.configState == configState) &&
             (identical(other.tweetData, tweetData) ||
-                other.tweetData == tweetData));
+                other.tweetData == tweetData) &&
+            (identical(other.youtubeData, youtubeData) ||
+                other.youtubeData == youtubeData));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, image, youtubeId, channelId, configState, tweetData);
+  int get hashCode => Object.hash(runtimeType, id, image, youtubeId, channelId,
+      configState, tweetData, youtubeData);
 
   @JsonKey(ignore: true)
   @override
@@ -265,7 +298,8 @@ abstract class _NotificationData extends NotificationData {
       @JsonKey(name: 'YoutubeId') final String? youtubeId,
       @JsonKey(name: 'ChannelId') final String? channelId,
       @JsonKey(name: 'ConfigState') final String? configState,
-      final TweetData? tweetData}) = _$_NotificationData;
+      final TweetData? tweetData,
+      final YoutubeData? youtubeData}) = _$_NotificationData;
   const _NotificationData._() : super._();
 
   factory _NotificationData.fromJson(Map<String, dynamic> json) =
@@ -288,6 +322,8 @@ abstract class _NotificationData extends NotificationData {
   String? get configState;
   @override
   TweetData? get tweetData;
+  @override
+  YoutubeData? get youtubeData;
   @override
   @JsonKey(ignore: true)
   _$$_NotificationDataCopyWith<_$_NotificationData> get copyWith =>

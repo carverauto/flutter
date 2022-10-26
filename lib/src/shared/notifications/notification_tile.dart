@@ -10,12 +10,9 @@ import '../../const/sizings.dart';
 import '../../models/notification/notification.dart';
 import '../../models/tweet_data/tweet_data.dart';
 import '../../models/youtube_data/youtube_data.dart';
-import '../../modules/firehose/view/providers/providers.dart';
 import '../enums/firehose_notification_type.dart';
 import '../util/helpers/date_added.dart';
 import '../widgets/builders/image_builder.dart';
-import '../widgets/builders/providerStateBuilder.dart';
-import '../widgets/loaders/shimmer_tile.dart';
 import 'notification_handler.dart';
 
 class NotificationTile extends ConsumerWidget {
@@ -66,49 +63,77 @@ class NotificationTile extends ConsumerWidget {
         );
 
       case FirehoseNotificationType.streams:
-        return ProviderStateBuilder<YoutubeChannelData>(
-          loadingBuilder: () => const ShimmerTile(
-            height: 50,
-          ),
-          errorBuilder: (Object e, StackTrace? stk) {
-            return FirehoseErrorTile(
-              notification: notification,
-              onRefesh: () {
-                // ref.refresh(
-                //   fetchTweetAlongUserData(notification.data!.channelId!),
-                // );
-              },
-            );
-          },
-          builder:
-              (YoutubeChannelData channelData, WidgetRef ref, Widget? child) {
-            return _NotificationListTile(
-              notification: notification,
-              title: RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: channelData.name,
-                      style: titleStyle,
-                    ),
-                    const TextSpan(text: ' '),
-                    TextSpan(
-                      text: NumberFormat.compact()
-                          .format(channelData.subcribersCount),
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ],
+        if (notification.data?.youtubeData == null) {
+          return const SizedBox.shrink();
+        }
+
+        final YoutubeData youtubeData = notification.data!.youtubeData!;
+
+        return _NotificationListTile(
+          notification: notification,
+          title: RichText(
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: youtubeData.name,
+                  style: titleStyle,
                 ),
-              ),
-              body: notification.body,
-              imageUrl: notification.data!.image,
-            );
-          },
-          watchThisProvider:
-              fetchYoutubeChannelDataProvider(notification.data!.channelId!),
-          logger: logger,
+                TextSpan(text: youtubeData.text),
+                TextSpan(
+                  text: NumberFormat.compact()
+                      .format(youtubeData.subcribersCount),
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          body: notification.body,
+          imageUrl: notification.data!.image,
         );
+      // return ProviderStateBuilder<YoutubeChannelData>(
+      //   loadingBuilder: () => const ShimmerTile(
+      //     height: 50,
+      //   ),
+      //   errorBuilder: (Object e, StackTrace? stk) {
+      //     return FirehoseErrorTile(
+      //       notification: notification,
+      //       onRefesh: () {
+      //         // ref.refresh(
+      //         //   fetchTweetAlongUserData(notification.data!.channelId!),
+      //         // );
+      //       },
+      //     );
+      //   },
+      //   builder:
+      //       (YoutubeChannelData channelData, WidgetRef ref, Widget? child) {
+      //     return _NotificationListTile(
+      //       notification: notification,
+      //       title: RichText(
+      //         overflow: TextOverflow.ellipsis,
+      //         text: TextSpan(
+      //           children: [
+      //             TextSpan(
+      //               text: channelData.name,
+      //               style: titleStyle,
+      //             ),
+      //             const TextSpan(text: ' '),
+      //             TextSpan(
+      //               text: NumberFormat.compact()
+      //                   .format(channelData.subcribersCount),
+      //               style: const TextStyle(color: Colors.grey),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       body: notification.body,
+      //       imageUrl: notification.data!.image,
+      //     );
+      //   },
+      //   watchThisProvider:
+      //       fetchYoutubeChannelDataProvider(notification.data!.channelId!),
+      //   logger: logger,
+      // );
 
       case FirehoseNotificationType.chase:
         return _NotificationListTile(

@@ -34,7 +34,7 @@ class _FirehoseListViewAllState extends ConsumerState<FirehoseListViewAll>
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     logger = Logger('FirehoseListViewAll');
     itemsProvider = firehosePaginatedStateNotifierProvier(logger);
   }

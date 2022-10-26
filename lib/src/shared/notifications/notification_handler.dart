@@ -56,6 +56,7 @@ Future<void> notificationHandler(
   }
 }
 
+// ignore: long-method
 Future<void> _showFirehosePreview(
   ChaseAppNotification notification,
   BuildContext context,
@@ -87,10 +88,14 @@ Future<void> _showFirehosePreview(
       );
       break;
     case FirehoseNotificationType.streams:
+      if (notification.data?.youtubeData == null) {
+        return;
+      }
       await _showNotificationDialog(
         context,
         YoutubePreview(
-          notification: notification,
+          videoId: notification.data!.youtubeData!.videoId,
+          body: notification.data!.youtubeData!.text,
         ),
       );
 

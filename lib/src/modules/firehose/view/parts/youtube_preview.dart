@@ -7,17 +7,18 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/colors.dart';
 import '../../../../const/sizings.dart';
-import '../../../../models/notification/notification.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../chase_view/view/providers/providers.dart';
 
 class YoutubePreview extends ConsumerStatefulWidget {
   const YoutubePreview({
     Key? key,
-    required this.notification,
+    required this.videoId,
+    required this.body,
   }) : super(key: key);
 
-  final ChaseAppNotification notification;
+  final String videoId;
+  final String body;
 
   @override
   ConsumerState<YoutubePreview> createState() => _YoutubePreviewState();
@@ -29,7 +30,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
 
   YoutubePlayerController initializeVideoController({String? youtubeUrl}) {
     _controller = YoutubePlayerController(
-      initialVideoId: widget.notification.data!.youtubeId!,
+      initialVideoId: widget.videoId,
       flags: const YoutubePlayerFlags(
         mute: true,
       ),
@@ -39,7 +40,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
     return _controller;
   }
 
-  void changeYoutubeVideo(String url) async {
+  Future<void> changeYoutubeVideo(String url) async {
     initializeVideoController(
       youtubeUrl: url,
     );
@@ -130,7 +131,7 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.notification.body,
+                        widget.body,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -157,11 +158,11 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
                           message: 'Watch on Youtube',
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
+                              backgroundColor: Colors.red,
                             ),
                             onPressed: () {
                               final String url =
-                                  'https://www.youtube.com/watch?v=${widget.notification.data!.youtubeId!}';
+                                  'https://www.youtube.com/watch?v=${widget.videoId}';
                               launchURL(context, url);
                             },
                             child: const Icon(Icons.play_arrow_rounded),
