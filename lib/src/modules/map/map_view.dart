@@ -77,6 +77,9 @@ class _MapBoxViewState extends State<MapBoxView> {
       }
       // await mapboxMapController.removeSymbol(infosymbol!);
     }
+    if (symbol.options.iconImage == 'infoWindow') {
+      return;
+    }
     final String title = symbol.data!['title'] as String;
     final bool isShip = symbol.data!['type'] == 'ship';
     final String? subtitle = symbol.data!['subtitle'] as String?;
@@ -313,6 +316,22 @@ class _MapBoxViewState extends State<MapBoxView> {
 
               logoViewMargins: const math.Point(-200, 0),
               onMapCreated: _onMapCreated,
+
+              onMapClick: (math.Point<double> point, LatLng latlong) async {
+                if (infosymbol != null) {
+                  final List<Symbol> allInfoSymbols =
+                      mapboxMapController.symbols
+                          .where(
+                            (Symbol info) =>
+                                info.options.iconImage == 'infoWindow',
+                          )
+                          .toList();
+                  for (final Symbol element in allInfoSymbols) {
+                    await mapboxMapController.removeSymbol(element);
+                  }
+                  // await mapboxMapController.removeSymbol(infosymbol!);
+                }
+              },
               // myLocationEnabled: true,
               // ignore: prefer_collection_literals
               gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>[
