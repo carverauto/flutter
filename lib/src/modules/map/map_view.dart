@@ -306,7 +306,7 @@ class _MapBoxViewState extends State<MapBoxView> {
         children: [
           Expanded(
             child: MapboxMap(
-              minMaxZoomPreference: const MinMaxZoomPreference(2, 100),
+              minMaxZoomPreference: const MinMaxZoomPreference(3, 100),
               styleString: MapboxStyles.DARK,
               accessToken: EnvVaribales.getMapBoxPublicAccessToken,
               attributionButtonMargins: const math.Point(-200, 0),
