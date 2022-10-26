@@ -21,8 +21,8 @@ class CreditsView extends ConsumerStatefulWidget {
 
 class _CreditsViewState extends ConsumerState<CreditsView>
     with SingleTickerProviderStateMixin {
-  final String crawlText =
-      '''Turmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute.
+  final String crawlText = '''
+Turmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute.
 
 Hoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo.
 
@@ -199,7 +199,7 @@ class _VolumeControllerState extends State<VolumeController> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),
-            primary: starWarsCrawlTextColor,
+            backgroundColor: starWarsCrawlTextColor,
           ),
           onPressed: () {
             setState(() {
@@ -416,6 +416,10 @@ class CrawlContributions extends StatelessWidget {
                   link: 'https://github.com/acidjazz',
                 ),
                 CustomAvatar(
+                  name: 'Jithatsonei',
+                  link: 'https://github.com/jithatsonei',
+                ),
+                CustomAvatar(
                   name: 'Rutvik',
                   link: 'https://github.com/rutvik110',
                 ),
@@ -534,7 +538,7 @@ class BackButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
-        primary: starWarsCrawlTextColor,
+        backgroundColor: starWarsCrawlTextColor,
       ),
       child: Padding(
         padding: const EdgeInsets.only(
