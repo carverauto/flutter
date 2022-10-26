@@ -43,7 +43,10 @@ class NotificationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                     clipBehavior: Clip.hardEdge,
                     child: AdaptiveImageBuilder(
-                      url: notification.data?.image ?? defaultAssetChaseImage,
+                      url: (notification.data?.image != null &&
+                              notification.data!.image!.isNotEmpty)
+                          ? notification.data!.image!
+                          : defaultAssetChaseImage,
                       //TODO: update later with parser
                       //  parseImageUrl(
                       //   notification.image ?? defaultPhotoURL,

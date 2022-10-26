@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +13,7 @@ import '../../models/youtube_data/youtube_data.dart';
 import '../../modules/firehose/view/providers/providers.dart';
 import '../enums/firehose_notification_type.dart';
 import '../util/helpers/date_added.dart';
+import '../widgets/builders/image_builder.dart';
 import '../widgets/builders/providerStateBuilder.dart';
 import '../widgets/loaders/shimmer_tile.dart';
 import 'notification_handler.dart';
@@ -64,49 +64,6 @@ class NotificationTile extends ConsumerWidget {
             ),
           ),
         );
-      // return ProviderStateBuilder<TweetData>(
-      //   loadingBuilder: () => const ShimmerTile(
-      //     height: 50,
-      //   ),
-      //   errorBuilder: (Object e, StackTrace? stk) {
-      //     return FirehoseErrorTile(
-      //       notification: notification,
-      //       onRefesh: () {
-      //         ref.refresh(
-      //           fetchTweetAlongUserData(
-      //             notification.data!.tweetData!.tweetId,
-      //           ),
-      //         );
-      //       },
-      //     );
-      //   },
-      //   builder: (TweetData tweetData, WidgetRef ref, Widget? child) {
-      //     return _NotificationListTile(
-      //       notification: notification,
-      //       body: tweetData.text,
-      //       imageUrl: tweetData.profileImageUrl,
-      //       title: RichText(
-      //         overflow: TextOverflow.ellipsis,
-      //         text: TextSpan(
-      //           children: [
-      //             TextSpan(
-      //               text: tweetData.name,
-      //               style: titleStyle,
-      //             ),
-      //             const TextSpan(text: ' '),
-      //             TextSpan(
-      //               text: '@${tweetData.userName}',
-      //               style: const TextStyle(color: Colors.grey),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   watchThisProvider:
-      //       fetchTweetAlongUserData(notification.data!.tweetData!.tweetId),
-      //   logger: logger,
-      // );
 
       case FirehoseNotificationType.streams:
         return ProviderStateBuilder<YoutubeChannelData>(
@@ -319,7 +276,6 @@ class _NotificationListTile extends StatelessWidget {
     required this.title,
     required this.body,
     required this.imageUrl,
-    this.leading,
   }) : super(key: key);
 
   final ChaseAppNotification notification;
@@ -327,7 +283,7 @@ class _NotificationListTile extends StatelessWidget {
 
   final String body;
   final String? imageUrl;
-  final Widget? leading;
+  // final Widget? leadingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -349,12 +305,21 @@ class _NotificationListTile extends StatelessWidget {
         tileColor: const Color.fromARGB(255, 94, 94, 94),
         leading: Hero(
           tag: notification.id,
-          child: leading ??
+          child:
+              //leadingWidget ??
               CircleAvatar(
-                backgroundImage:
-                    CachedNetworkImageProvider(imageUrl ?? defaultPhotoURL),
-                backgroundColor: Colors.white,
-              ),
+            backgroundImage: AdaptiveImageProvider(
+              imageUrl != null && imageUrl!.isNotEmpty
+                  ? imageUrl!
+                  : chaseAppLogoAssetImage,
+              //TODO: update later with parser
+              //  parseImageUrl(
+              //   notification.image ?? defaultPhotoURL,
+              //   ImageDimensions.LARGE,
+              // ),
+            ),
+            backgroundColor: Colors.white,
+          ),
         ),
         title: title,
         subtitle: Text(
