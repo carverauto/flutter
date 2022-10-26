@@ -77,7 +77,7 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
       logger.severe(exception.message, e, stk);
       state = LogInState.error(exception, stk);
     } catch (e, stk) {
-      logger.severe('Error signing in', e, stk);
+      logger.severe('Error while signing user with email', e, stk);
       final ChaseAppCallException exception = ChaseAppCallException(
         message: 'Something went wrong. Please try again.',
         error: e,
