@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../const/images.dart';
 import '../providers/providers.dart';
 
 class AnimationsOverlayToggleSwitch extends StatelessWidget {
@@ -18,6 +19,11 @@ class AnimationsOverlayToggleSwitch extends StatelessWidget {
 
           return Switch(
             value: showOverlay,
+            activeThumbImage: Image.network(chaseAppTheaterIcon).image,
+            inactiveThumbImage: Image.network(chaseAppTheaterIcon).image,
+            inactiveTrackColor: Theme.of(context).primaryColor,
+            activeColor: Colors.white,
+            inactiveThumbColor: Theme.of(context).colorScheme.secondary,
             onChanged: (bool value) {
               ref
                   .read(showVideoOverlayProvider.state)
