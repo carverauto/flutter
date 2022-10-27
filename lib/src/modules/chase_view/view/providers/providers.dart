@@ -13,21 +13,26 @@ final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
   (AutoDisposeStreamProviderRef<Chase> ref, String chaseId) {
     ref.onDispose(() async {
       ref.read(chaseEventsNotifierProvider(chaseId).notifier).unsubscribeFeed();
-      // ref.refresh(chaseEventsNotifierProvider(chaseId));
 
       await ref.read(popupsEvetnsStreamControllerProvider).close();
       await ref.read(theaterEvetnsStreamControllerProvider).close();
-
-      // final bool isChannelInitialized =
-      //     await ref.read(chatChannelProvider(chaseId)).initialized;
-      // if (isChannelInitialized) {
-      //   await ref.read(chatChannelProvider(chaseId)).stopWatching();
-      // }
-
-      // await ref.read(streamChatClientProvider).disconnectUser();
     });
 
     return ref.watch(chaseRepoProvider).streamChase(chaseId);
+  },
+);
+
+final AutoDisposeFutureProviderFamily<Chase, String> fetchChaseProvider =
+    FutureProvider.autoDispose.family<Chase, String>(
+  (AutoDisposeFutureProviderRef<Chase> ref, String chaseId) {
+    ref.onDispose(() async {
+      ref.read(chaseEventsNotifierProvider(chaseId).notifier).unsubscribeFeed();
+
+      await ref.read(popupsEvetnsStreamControllerProvider).close();
+      await ref.read(theaterEvetnsStreamControllerProvider).close();
+    });
+
+    return ref.watch(chaseRepoProvider).fetchChase(chaseId);
   },
 );
 

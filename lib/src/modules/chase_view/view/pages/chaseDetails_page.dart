@@ -20,8 +20,10 @@ class ChaseDetailsView extends ConsumerStatefulWidget {
     required this.chaseId,
     required this.appBarOffsetAnimation,
     required this.bottomListAnimation,
+    required this.chase,
   }) : super(key: key);
   final String chaseId;
+  final Chase? chase;
   final Animation<Offset> appBarOffsetAnimation;
   final Animation<Offset> bottomListAnimation;
 
@@ -54,49 +56,42 @@ class _ChaseDetailsViewState extends ConsumerState<ChaseDetailsView> {
   Widget build(BuildContext context) {
     final String chaseId = widget.chaseId;
 
-    ref.watch(playVideoProvider);
-
-    return ChaseDetailsProviderStateBuilder<Chase>(
-      watchThisProvider: streamChaseProvider(chaseId),
-      logger: logger,
-      showBackButton: true,
-      chatsRow: ChatsViewRow(chaseId: chaseId),
-      chatsView: ChatsView(
-        chaseId: chaseId,
-      ),
-      //  Consumer(
-      //   builder: (BuildContext context, WidgetRef ref, Widget? child) {
-      //     // final bool showChatsWindow = ref.watch(isShowingChatsWindowProvide);
-
-      //     return child!;
-      //     // AnimatedSwitcher(
-      //     //   duration: const Duration(milliseconds: 300),
-      //     //   transitionBuilder: (Widget child, Animation<double> animation) {
-      //     //     return SlideTransition(
-      //     //       position: Tween<Offset>(
-      //     //         begin: const Offset(0, 1),
-      //     //         end: const Offset(0, 0),
-      //     //       ).animate(animation),
-      //     //       child: child,
-      //     //     );
-      //     //   },
-      //     //   child: showChatsWindow ? child : const SizedBox.shrink(),
-      //     // );
-      //   },
-      //   child: ChatsView(
-      //     chaseId: chaseId,
-      //   ),
-      // ),
-      builder: (Chase chase, WidgetRef ref, Widget chatsRow, Widget chatsView) {
-        return ChaseDetailsInternal(
-          chase: chase,
-          appBarOffsetAnimation: widget.appBarOffsetAnimation,
-          bottomListAnimation: widget.bottomListAnimation,
-          logger: logger,
-          chatsRow: chatsRow,
-          chatsView: chatsView,
-        );
-      },
+    // ref.watch(playVideoProvider);
+    final ChatsViewRow chatsRow = ChatsViewRow(chaseId: chaseId);
+    final ChatsView chatsView = ChatsView(
+      chaseId: chaseId,
     );
+
+    return widget.chase != null
+        ? ChaseDetailsInternal(
+            chase: widget.chase!,
+            appBarOffsetAnimation: widget.appBarOffsetAnimation,
+            bottomListAnimation: widget.bottomListAnimation,
+            logger: logger,
+            chatsRow: chatsRow,
+            chatsView: chatsView,
+          )
+        : ChaseDetailsProviderStateBuilder<Chase>(
+            watchThisProvider: fetchChaseProvider(chaseId),
+            logger: logger,
+            showBackButton: true,
+            chatsRow: chatsRow,
+            chatsView: chatsView,
+            builder: (
+              Chase chase,
+              WidgetRef ref,
+              Widget chatsRow,
+              Widget chatsView,
+            ) {
+              return ChaseDetailsInternal(
+                chase: chase,
+                appBarOffsetAnimation: widget.appBarOffsetAnimation,
+                bottomListAnimation: widget.bottomListAnimation,
+                logger: logger,
+                chatsRow: chatsRow,
+                chatsView: chatsView,
+              );
+            },
+          );
   }
 }

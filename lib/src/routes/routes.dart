@@ -58,9 +58,11 @@ class Routes {
         return MaterialPageRoute<void>(builder: (_) => HomeWrapper());
       case RouteName.CHASE_VIEW:
         final String chaseId = arguments['chaseId'] as String;
+        final Chase? chase = arguments['chase'] as Chase?;
 
         return _createRoute(
           chaseId,
+          chase,
           settings,
         );
       case RouteName.RECENT_CHASESS_VIEW_ALL:
@@ -113,7 +115,7 @@ class Routes {
   }
 }
 
-Route<void> _createRoute(String chaseId, RouteSettings settings) {
+Route<void> _createRoute(String chaseId, Chase? chase, RouteSettings settings) {
   return PageRouteBuilder<void>(
     settings: settings,
     pageBuilder: (
@@ -150,6 +152,7 @@ Route<void> _createRoute(String chaseId, RouteSettings settings) {
 
       return ChaseDetailsView(
         chaseId: chaseId,
+        chase: chase,
         appBarOffsetAnimation: appbarOffsetAnimation,
         bottomListAnimation: bottomListAnimation,
       );

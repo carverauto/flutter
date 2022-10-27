@@ -7,5 +7,6 @@ abstract class ChaseDbAB {
   );
   Stream<List<Chase>> streamTopChases();
   Stream<Chase> streamChase(String chaseId);
+  Future<Chase> fetchChase(String chaseId);
   Future<void> upVoteChase(int upCount, String chaseId);
 }

@@ -16,6 +16,18 @@ class ChaseDatabase implements ChaseDbAB {
   }
 
   @override
+  Future<Chase> fetchChase(String chaseId) async {
+    final DocumentSnapshot<Chase> chaseData =
+        await chasesCollectionRef.doc(chaseId).get();
+
+    if (chaseData.data() != null) {
+      return chaseData.data()!;
+    } else {
+      throw Exception('Chase not found');
+    }
+  }
+
+  @override
   Future<List<Chase>> streamChases(
     Chase? chase,
     int offset,

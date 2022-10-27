@@ -76,6 +76,7 @@ class TopChaseBuilder extends StatelessWidget {
                 RouteName.CHASE_VIEW,
                 arguments: {
                   'chaseId': chase.id,
+                  'chase': chase,
                 },
               );
             },

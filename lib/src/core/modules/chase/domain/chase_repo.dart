@@ -1,7 +1,8 @@
-import 'package:chaseapp/src/core/modules/chase/domain/chase_repo_ab.dart';
-import 'package:chaseapp/src/core/top_level_providers/services_providers.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../models/chase/chase.dart';
+import '../../../top_level_providers/services_providers.dart';
+import 'chase_repo_ab.dart';
 
 class ChaseRepository implements ChaseRepoAB {
   ChaseRepository({
@@ -12,6 +13,11 @@ class ChaseRepository implements ChaseRepoAB {
   @override
   Stream<Chase> streamChase(String chaseId) {
     return read(chaseDbProvider).streamChase(chaseId);
+  }
+
+  @override
+  Future<Chase> fetchChase(String chaseId) {
+    return read(chaseDbProvider).fetchChase(chaseId);
   }
 
   @override
