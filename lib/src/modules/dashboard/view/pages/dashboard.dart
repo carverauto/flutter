@@ -122,35 +122,6 @@ class _DashboardMainView extends ConsumerWidget {
                   height: kPaddingSmallConstant,
                 ),
               ),
-              // Chases Map
-
-              // SliverList(
-              //   delegate: SliverChildListDelegate([
-              //     const AspectRatio(
-              //       aspectRatio: 16 / 9,
-              //       // GEstureDetector won't work?
-              //       child: MapBoxView(),
-              //     )
-              //   ]),
-              // ),
-
-              // SliverToBoxAdapter(
-              //   child: AspectRatio(
-              //     aspectRatio: 16 / 9,
-              //     child: ListView(
-              //       shrinkWrap: true,
-              //       primary: true,
-              //       children: [
-              //         for (int i = 0; i < 10; i++) const Text('Hello')
-              //         // AspectRatio(
-              //         //   aspectRatio: 16 / 9,
-              //         //   // GEstureDetector won't work?
-              //         //   child: MapBoxView(),
-              //         // )
-              //       ],
-              //     ),
-              //   ),
-              // ),
 
               //Top Chases
               const SliverToBoxAdapter(
@@ -241,7 +212,7 @@ class _DashboardMainView extends ConsumerWidget {
                   height: kItemsSpacingSmallConstant,
                 ),
               ),
-//
+
               SliverPadding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: kPaddingMediumConstant,
@@ -311,12 +282,12 @@ class _DashboardMainView extends ConsumerWidget {
             width: MediaQuery.of(context).size.width,
             child: const ConnectivityStatus(),
           ),
-          Positioned.fill(
+          const Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: IgnorePointer(
-                child: Container(
-                  decoration: const BoxDecoration(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
@@ -330,6 +301,7 @@ class _DashboardMainView extends ConsumerWidget {
                       ],
                     ),
                   ),
+                  child: SizedBox.expand(),
                 ),
               ),
             ),
