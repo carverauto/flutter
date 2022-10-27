@@ -2,8 +2,6 @@ name: Flutter CI (Android)
 
 on:
   push:
-    branches:
-      - master
     tags:
       - "v*"
 
@@ -53,7 +51,7 @@ jobs:
 
   deploy-play-store:
     needs: [build]
-    runs-on: [rutvik-selfhosted]
+    runs-on: [self-hosted, linux]
     steps:
       - name: Publish to Play Store internal test track
         uses: r0adkll/upload-google-play@v1
