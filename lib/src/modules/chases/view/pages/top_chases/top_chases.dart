@@ -53,7 +53,7 @@ class TopChasesListView extends ConsumerWidget {
                 )
               : CarousalSlider(
                   carouselOptions: CarouselOptions(
-                    height: Sizescaleconfig.screenheight! * 0.4,
+                    height: MediaQuery.of(context).size.width * 9 / 16,
                   ),
                   builder: (
                     BuildContext context,
@@ -72,44 +72,24 @@ class TopChasesListView extends ConsumerWidget {
                       .map<int, Widget>(
                         (int index, Chase chase) => MapEntry(
                           index,
-                          TweenAnimationBuilder<double>(
-                            key: UniqueKey(),
-                            duration: const Duration(milliseconds: 300),
-                            tween: Tween<double>(begin: 0.8, end: 1),
-                            builder: (
-                              BuildContext context,
-                              double value,
-                              Widget? child,
-                            ) {
-                              return ScaleTransition(
-                                scale: AlwaysStoppedAnimation(value),
-                                child: child,
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: kPaddingMediumConstant,
+                          Stack(
+                            children: [
+                              TopChaseBuilder(
+                                chase: chase,
                               ),
-                              child: Stack(
-                                children: [
-                                  TopChaseBuilder(
-                                    chase: chase,
+                              Positioned(
+                                right: kPaddingMediumConstant,
+                                top: kPaddingMediumConstant,
+                                child: Text(
+                                  '${index + 1} / ${chases.length}',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
                                   ),
-                                  Positioned(
-                                    right: kPaddingMediumConstant,
-                                    top: kPaddingMediumConstant,
-                                    child: Text(
-                                      '${index + 1} / ${chases.length}',
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       )

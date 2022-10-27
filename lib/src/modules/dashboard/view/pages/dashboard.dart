@@ -8,6 +8,7 @@ import '../../../../core/notifiers/pagination_notifier.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../routes/routeNames.dart';
+import '../../../../shared/notifications/notification_tile.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../chases/view/pages/recent_chases/recent_chases.dart';
 import '../../../chases/view/pages/top_chases/top_chases.dart';
@@ -135,11 +136,21 @@ class _DashboardMainView extends ConsumerWidget {
                   horizontal: kPaddingMediumConstant,
                 ),
                 sliver: SliverToBoxAdapter(
-                  child: Text(
-                    'Top Chases',
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
+                  child: Row(
+                    children: [
+                      const NotificationTrailingIcon(
+                        notificationType: 'chase',
+                      ),
+                      const SizedBox(
+                        width: kPaddingXSmallConstant,
+                      ),
+                      Text(
+                        'Top Chases',
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -167,7 +178,7 @@ class _DashboardMainView extends ConsumerWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Firehose',
+                        '🔥 Firehose',
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
@@ -220,6 +231,10 @@ class _DashboardMainView extends ConsumerWidget {
                 sliver: SliverToBoxAdapter(
                   child: Row(
                     children: [
+                      const NotificationTrailingIcon(notificationType: 'chase'),
+                      const SizedBox(
+                        width: kPaddingXSmallConstant,
+                      ),
                       Text(
                         'Recent',
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(

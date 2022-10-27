@@ -31,7 +31,9 @@ class _CarousalSliderState extends State<CarousalSlider> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    pageController = PageController();
+    pageController = PageController(
+      viewportFraction: 0.7,
+    );
   }
 
   @override
@@ -76,10 +78,10 @@ class _CarousalSliderState extends State<CarousalSlider> {
                 }
               }
               final double distortionRatio =
-                  (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
+                  (1 - (value.abs() * 0.2)).clamp(0.0, 1.0);
 
               final double distortionValue =
-                  Curves.linear.transform(distortionRatio);
+                  Curves.linear.transform(distortionRatio.abs());
 
               return widget.builder(
                 context,

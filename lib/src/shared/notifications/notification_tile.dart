@@ -190,7 +190,7 @@ class NotificationTrailing extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         NotificationTrailingIcon(
-          notification: notification,
+          notificationType: notification.type,
         ),
         const Spacer(),
         Text(
@@ -207,13 +207,13 @@ class NotificationTrailing extends StatelessWidget {
 class NotificationTrailingIcon extends StatelessWidget {
   const NotificationTrailingIcon({
     Key? key,
-    required this.notification,
+    required this.notificationType,
   }) : super(key: key);
 
-  final ChaseAppNotification notification;
+  final String notificationType;
 
   Widget buildTrailingIcon() {
-    switch (getFirehoseNotificationTypeFromString(notification.type)) {
+    switch (getFirehoseNotificationTypeFromString(notificationType)) {
       case FirehoseNotificationType.twitter:
         return SvgPicture.asset(
           'assets/icon/twitter.svg',

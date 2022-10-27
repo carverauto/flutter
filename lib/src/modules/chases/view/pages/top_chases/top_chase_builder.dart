@@ -71,7 +71,6 @@ class TopChaseBuilder extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              //  Future<void>.delayed(const Duration(milliseconds: 300));
               Navigator.pushNamed(
                 context,
                 RouteName.CHASE_VIEW,
