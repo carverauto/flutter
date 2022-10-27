@@ -208,7 +208,7 @@ jobs:
         run: |
           rm ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision
           # security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          security delete-keychain /Users/user/Library/Keychains/signing_temp.keychain
+          security delete-keychain signing_temp.keychain
 
   testflight-upload:
     needs: [build]
