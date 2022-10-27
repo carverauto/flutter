@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: [rutvik-selfhosted]
+    runs-on: [self-hosted, macOS]
     env:
       ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
