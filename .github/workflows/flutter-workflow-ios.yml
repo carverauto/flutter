@@ -195,7 +195,7 @@ jobs:
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
         run: | 
           security unlock-keychain -p NWADNQWJ signing_temp.keychain
-          flutter build ipa -v --flavor prod --target lib/main_prod.dart --export-options-plist=./ExportOptions.plist --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
+          flutter build ipa --flavor prod --target lib/main_prod.dart --export-options-plist=./ExportOptions.plist --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key"
 
       # Collect the file and upload as artifact
       - name: collect ipa artifacts
