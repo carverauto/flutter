@@ -26,6 +26,7 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
     } on FirebaseAuthException catch (e, stk) {
       switch (e.code) {
         case 'account-exists-with-different-credential':
+          //TODO: cover this call for any errors
           final List<String> existingAuthProviers =
               await read(firebaseAuthProvider)
                   .fetchSignInMethodsForEmail(e.email!);
