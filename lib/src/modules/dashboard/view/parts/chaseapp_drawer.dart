@@ -47,9 +47,14 @@ class ChaseAppDrawer extends StatelessWidget {
                             .disconnectUser();
 
                         ref.refresh(chatsServiceStateNotifierProvider.notifier);
-                        ref
+                        if (!ref
                             .read(chatsServiceStateNotifierProvider.notifier)
-                            .dispose();
+                            .mounted) {
+                          ref
+                              .read(chatsServiceStateNotifierProvider.notifier)
+                              .dispose();
+                        }
+
                         await ref.read(authRepoProvider).signOut();
                       }
                     },

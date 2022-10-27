@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-import '../../../../const/colors.dart';
-import '../../../../const/other.dart';
 import '../../../../const/sizings.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/errors/error_widget.dart';
@@ -23,28 +19,21 @@ class ChatsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
-    final bool showButton = bottomPadding > 0;
-    log(bottomPadding.toString());
+    final bool showButton = MediaQuery.of(context).viewInsets.bottom > 0;
     final Channel channel = ref.watch(chatChannelProvider(chaseId));
 
     return Padding(
       // duration: const Duration(milliseconds: 300),
-      padding: EdgeInsets.only(bottom: bottomPadding),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(kBorderRadiusStandard),
-          color: Theme.of(context).colorScheme.background,
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: blurValue,
-              color: primaryShadowColor,
-            )
-          ],
-        ),
-        child: Column(
-          children: [
-            Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: Column(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+            ),
+            child: Padding(
               //  duration: const Duration(milliseconds: 300),
               padding: const EdgeInsets.all(kPaddingMediumConstant).copyWith(
                 bottom: 0,
@@ -63,15 +52,13 @@ class ChatsView extends ConsumerWidget {
                   const SizedBox(
                     width: kItemsSpacingSmallConstant,
                   ),
-                  RepaintBoundary(
-                    child: UsersPresentCount(
-                      chaseId: chaseId,
-                      logger: logger,
-                    ),
+                  UsersPresentCount(
+                    chaseId: chaseId,
+                    logger: logger,
                   ),
                   const Spacer(),
                   AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 200),
                     transitionBuilder:
                         (Widget child, Animation<double> animation) {
                       return ScaleTransition(
@@ -105,111 +92,50 @@ class ChatsView extends ConsumerWidget {
                 ],
               ),
             ),
-            const Divider(
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorLight,
+            ),
+            child: const SizedBox(
               height: 2,
+              width: double.maxFinite,
             ),
-            Expanded(
-              child: TweenAnimationBuilder<Offset>(
-                tween: Tween<Offset>(
-                  begin: Offset(0, MediaQuery.of(context).size.height),
-                  end: Offset.zero,
-                ),
-                curve: kPrimaryCurve,
-                duration: const Duration(milliseconds: 300),
-                builder: (BuildContext context, Offset value, Widget? child) {
-                  return Transform.translate(
-                    offset: value,
-                    child: child,
-                  );
-                },
-                child: StreamChannel(
-                  channel: channel,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: StreamMessageListView(
-                          // initialAlignment: 0,
-                          loadingBuilder: (BuildContext context) =>
-                              const CircularAdaptiveProgressIndicatorWithBg(),
-                          errorBuilder: (BuildContext context, Object e) {
-                            return ChaseAppErrorWidget(
-                              onRefresh: () {
-                                ref.refresh(chatWsConnectionStreamProvider);
-                              },
-                            );
+          ),
+          Expanded(
+            child: StreamChannel(
+              channel: channel,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: StreamMessageListView(
+                      // initialAlignment: 0,
+                      loadingBuilder: (BuildContext context) =>
+                          const CircularAdaptiveProgressIndicatorWithBg(),
+                      errorBuilder: (BuildContext context, Object e) {
+                        return ChaseAppErrorWidget(
+                          onRefresh: () {
+                            ref.refresh(chatWsConnectionStreamProvider);
                           },
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.manual,
-                        ),
-                      ),
-                      const RepaintBoundary(
-                        child: StreamMessageInput(
-                          disableAttachments: true,
-                          maxHeight: 100,
-                        ),
-                      ),
-                    ],
+                        );
+                      },
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.manual,
+                    ),
                   ),
-                ),
+                  const RepaintBoundary(
+                    child: StreamMessageInput(
+                      disableAttachments: true,
+                      maxHeight: 100,
+                    ),
+                  ),
+                ],
               ),
-
-              //  ProviderStateBuilder<Channel>(
-              //   watchThisProvider: chatChannelProvider(chaseId),
-              //   logger: logger,
-              //   builder: (Channel channel, WidgetRef ref, Widget? child) {
-              //     return TweenAnimationBuilder<Offset>(
-              //       tween: Tween<Offset>(
-              //         begin: Offset(0, MediaQuery.of(context).size.height),
-              //         end: Offset.zero,
-              //       ),
-              //       curve: kPrimaryCurve,
-              //       duration: const Duration(milliseconds: 300),
-              //       builder:
-              //           (BuildContext context, Offset value, Widget? child) {
-              //         return Transform.translate(
-              //           offset: value,
-              //           child: child,
-              //         );
-              //       },
-              //       child: StreamChannel(
-              //         channel: channel,
-              //         child: Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           mainAxisAlignment: MainAxisAlignment.end,
-              //           children: [
-              //             Expanded(
-              //               child: MessageListView(
-              //                 // initialAlignment: 0,
-              //                 loadingBuilder: (BuildContext context) =>
-              //                     const CircularAdaptiveProgressIndicatorWithBg(),
-              //                 errorBuilder: (BuildContext context, Object e) {
-              //                   return ChaseAppErrorWidget(
-              //                     onRefresh: () {
-              //                       ref.refresh(chatChannelProvider(chaseId));
-              //                     },
-              //                   );
-              //                 },
-              //                 keyboardDismissBehavior:
-              //                     ScrollViewKeyboardDismissBehavior.manual,
-              //               ),
-              //             ),
-              //             const RepaintBoundary(
-              //               child: MessageInput(
-              //                 disableAttachments: true,
-              //                 maxHeight: 100,
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -261,40 +187,64 @@ class _UsersPresentCountState extends ConsumerState<UsersPresentCount> {
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      avatar: const Icon(
-        Icons.remove_red_eye_rounded,
-        size: 18,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(100),
       ),
-      label: ref.watch(chatWsConnectionStreamProvider).maybeWhen(
-            orElse: SizedBox.shrink,
-            data: (ConnectionStatus state) {
-              // ignore: prefer-conditional-expressions
-              if (state == ConnectionStatus.connected) {
-                return ProviderStateBuilder<ChannelState>(
-                  watchThisProvider: watcherStateProvider(widget.chaseId),
-                  logger: widget.logger,
-                  loadingBuilder: SizedBox.shrink,
-                  errorBuilder: (Object e, StackTrace? stk) => const Text('NA'),
-                  builder: (
-                    ChannelState channelState,
-                    WidgetRef ref,
-                    Widget? child,
-                  ) {
-                    return Text(
-                      watchersCount.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: kItemsSpacingSmallConstant,
+          vertical: kPaddingXSmallConstant,
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.remove_red_eye_rounded,
+              size: 18,
+            ),
+            const SizedBox(
+              width: kPaddingXSmallConstant,
+            ),
+            ref.watch(chatWsConnectionStreamProvider).maybeWhen(
+                  orElse: SizedBox.shrink,
+                  data: (ConnectionStatus state) {
+                    // ignore: prefer-conditional-expressions
+                    if (state == ConnectionStatus.connected) {
+                      return ProviderStateBuilder<ChannelState>(
+                        watchThisProvider: watcherStateProvider(widget.chaseId),
+                        logger: widget.logger,
+                        loadingBuilder: SizedBox.shrink,
+                        errorBuilder: (Object e, StackTrace? stk) =>
+                            const Text('NA'),
+                        builder: (
+                          ChannelState channelState,
+                          WidgetRef ref,
+                          Widget? child,
+                        ) {
+                          //TODO: format the count
+                          return Text(
+                            watchersCount.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
                   },
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
+                ),
+          ],
+        ),
+      ),
     );
+
+    //  Chip(
+    //   avatar:
+    //   label:
+    // );
   }
 }

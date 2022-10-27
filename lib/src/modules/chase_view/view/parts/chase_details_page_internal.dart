@@ -39,8 +39,11 @@ class ChaseDetailsInternal extends ConsumerStatefulWidget {
 
 class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   final bool expandChats = false;
-
   late YoutubePlayerController _controller;
+
+  late final Animation<Offset> appBarOffsetAnimation;
+  late final Animation<Offset> bottomListAnimation;
+  late final Chase chase;
   void initializeVideoController(String? videoId) {
     late final String? url;
     late final String? playerVideoId;
@@ -93,6 +96,15 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   void initState() {
     super.initState();
     initializeVideoController(null);
+    appBarOffsetAnimation = widget.appBarOffsetAnimation;
+    bottomListAnimation = widget.bottomListAnimation;
+    chase = widget.chase;
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
   }
 
   @override
@@ -103,10 +115,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
   @override
   Widget build(BuildContext context) {
-    final Animation<Offset> appBarOffsetAnimation =
-        widget.appBarOffsetAnimation;
-    final Animation<Offset> bottomListAnimation = widget.bottomListAnimation;
-    final Chase chase = widget.chase;
     final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return SafeArea(

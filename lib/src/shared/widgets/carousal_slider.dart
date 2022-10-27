@@ -32,7 +32,7 @@ class _CarousalSliderState extends State<CarousalSlider> {
     // TODO: implement initState
     super.initState();
     pageController = PageController(
-      viewportFraction: 0.7,
+      viewportFraction: 0.75,
     );
   }
 
