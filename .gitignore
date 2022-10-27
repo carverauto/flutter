@@ -12,6 +12,7 @@
 google-services.json
 GoogleService-Info.plist
 pubspec.lock
+Podfile.lock
 
 # IntelliJ related
 *.iml
