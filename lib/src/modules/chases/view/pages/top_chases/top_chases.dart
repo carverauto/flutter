@@ -4,7 +4,6 @@ import 'package:logging/logging.dart';
 
 import '../../../../../const/sizings.dart';
 import '../../../../../models/chase/chase.dart';
-import '../../../../../shared/util/helpers/sizescaleconfig.dart';
 import '../../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../../shared/widgets/carousal_slider.dart';
 import '../../../../../shared/widgets/loaders/shimmer_tile.dart';
@@ -27,8 +26,10 @@ class TopChasesListView extends ConsumerWidget {
       loadingBuilder: () {
         return Padding(
           padding:
-              const EdgeInsets.symmetric(horizontal: kPaddingMediumConstant),
-          child: ShimmerTile(height: Sizescaleconfig.screenheight! * 0.4),
+              const EdgeInsets.symmetric(horizontal: kPaddingLargeConstant),
+          child: ShimmerTile(
+            height: MediaQuery.of(context).size.width * 9 / 16,
+          ),
         );
       },
       builder: (List<Chase> chases) {

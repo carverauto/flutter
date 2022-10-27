@@ -95,8 +95,8 @@ class ChasesPaginatedListView extends ConsumerWidget {
                                 double value,
                                 Widget? child,
                               ) {
-                                return ScaleTransition(
-                                  scale: AlwaysStoppedAnimation(value),
+                                return Transform.scale(
+                                  scale: value,
                                   child: child,
                                 );
                               },
@@ -139,8 +139,8 @@ class ChasesPaginatedListView extends ConsumerWidget {
                                 double value,
                                 Widget? child,
                               ) {
-                                return ScaleTransition(
-                                  scale: AlwaysStoppedAnimation(value),
+                                return Transform.scale(
+                                  scale: value,
                                   child: child,
                                 );
                               },
