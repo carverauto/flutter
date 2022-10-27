@@ -23,36 +23,6 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   final stream.StreamChatClient client;
 
-  // // );
-
-  // static String get _getChatApiKey {
-  //   if (F.appFlavor == Flavor.DEV) {
-  //     const String apiKey =
-  //         String.fromEnvironment('Dev_GetStream_Chat_Api_Key');
-
-  //     return apiKey;
-  //   } else {
-  //     const String apiKey =
-  //         String.fromEnvironment('Prod_GetStream_Chat_Api_Key');
-
-  //     return apiKey;
-  //   }
-  // }
-
-  // stream.StreamChatClient get client => _client;
-
-  // Future<stream.ChannelState> watchChannel() async {
-  //   final stream.Channel channel = client.channel(
-  //     'livestream',
-  //     id: chaseId,
-  //   );
-
-  //   final stream.ChannelState channelState = await channel.watch();
-  //   //  channelState.channel.type;
-
-  //   return channelState;
-  // }
-
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
       if (!isTokenInitialized) {
@@ -74,12 +44,4 @@ class ChatStateNotifier extends StateNotifier<void> {
       logger.severe('Error while connecting user to getStream', e, stk);
     }
   }
-
-  // Future<void> disconnectUser() async {
-  //   try {
-  //     await client.disconnectUser();
-  //   } catch (e, stk) {
-  //     logger.severe('Error while disconnecting user from getStream', e, stk);
-  //   }
-  // }
 }

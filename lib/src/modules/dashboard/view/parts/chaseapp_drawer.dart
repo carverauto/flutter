@@ -47,9 +47,10 @@ class ChaseAppDrawer extends StatelessWidget {
                             .disconnectUser();
 
                         ref.refresh(chatsServiceStateNotifierProvider.notifier);
-                        if (!ref
+                        final bool isChatServicesDisposed = !ref
                             .read(chatsServiceStateNotifierProvider.notifier)
-                            .mounted) {
+                            .mounted;
+                        if (isChatServicesDisposed) {
                           ref
                               .read(chatsServiceStateNotifierProvider.notifier)
                               .dispose();
