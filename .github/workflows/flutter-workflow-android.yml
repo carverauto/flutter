@@ -34,7 +34,7 @@ jobs:
       - run: echo -n "$ANDROID_KEYSTORE" | base64 --decode > android/key.jks
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter build appbundle --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key" --dart-define=MapBoxACCESS_TOKEN=pk.eyJ1IjoicnV0dmlrMTEwIiwiYSI6ImNsOTVmOXB4bjBpZHUzbmpuZjNwdHl1aGsifQ.c_1xEjpPOtFyWdeOmUJipA --dart-define=GCP_SERVER_API_KEY="$GCP_SERVER_API_KEY"
+      - run: flutter build appbundle --flavor prod --target lib/main_prod.dart --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key" --dart-define=MapBoxACCESS_TOKEN="$MapBoxACCESS_TOKEN"--dart-define=GCP_SERVER_API_KEY="$GCP_SERVER_API_KEY"
 
       # - uses: actions/upload-artifact@v1
       #   with:
