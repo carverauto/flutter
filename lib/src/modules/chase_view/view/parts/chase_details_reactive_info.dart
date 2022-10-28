@@ -166,18 +166,16 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
         isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
     final num extraSizing = isTyping ? kToolbarHeight : 0;
 
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 100),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.width * (9 / 16) -
-            bottomPadding +
-            extraSizing,
-        width: double.maxFinite,
-        child: ChaseHeroSection(
-          chase: chase,
-          imageURL: imageUrl,
-          youtubeVideo: youtubeVideo,
-        ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: MediaQuery.of(context).size.width * (9 / 16) -
+          bottomPadding +
+          extraSizing,
+      width: double.maxFinite,
+      child: ChaseHeroSection(
+        chase: chase,
+        imageURL: imageUrl,
+        youtubeVideo: youtubeVideo,
       ),
     );
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../../const/other.dart';
 import '../../../../const/sizings.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/errors/error_widget.dart';
@@ -103,35 +104,49 @@ class ChatsView extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: StreamChannel(
-              channel: channel,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: StreamMessageListView(
-                      // initialAlignment: 0,
-                      loadingBuilder: (BuildContext context) =>
-                          const CircularAdaptiveProgressIndicatorWithBg(),
-                      errorBuilder: (BuildContext context, Object e) {
-                        return ChaseAppErrorWidget(
-                          onRefresh: () {
-                            ref.refresh(chatWsConnectionStreamProvider);
-                          },
-                        );
-                      },
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.manual,
+            child: TweenAnimationBuilder<Offset>(
+              tween: Tween<Offset>(
+                begin: Offset(0, MediaQuery.of(context).size.height),
+                end: Offset.zero,
+              ),
+              curve: kPrimaryCurve,
+              duration: const Duration(milliseconds: 300),
+              builder: (BuildContext context, Offset value, Widget? child) {
+                return Transform.translate(
+                  offset: value,
+                  child: child,
+                );
+              },
+              child: StreamChannel(
+                channel: channel,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: StreamMessageListView(
+                        // initialAlignment: 0,
+                        loadingBuilder: (BuildContext context) =>
+                            const CircularAdaptiveProgressIndicatorWithBg(),
+                        errorBuilder: (BuildContext context, Object e) {
+                          return ChaseAppErrorWidget(
+                            onRefresh: () {
+                              ref.refresh(chatWsConnectionStreamProvider);
+                            },
+                          );
+                        },
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.manual,
+                      ),
                     ),
-                  ),
-                  const RepaintBoundary(
-                    child: StreamMessageInput(
-                      disableAttachments: true,
-                      maxHeight: 100,
+                    const RepaintBoundary(
+                      child: StreamMessageInput(
+                        disableAttachments: true,
+                        maxHeight: 100,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
