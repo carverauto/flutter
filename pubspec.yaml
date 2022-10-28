@@ -127,6 +127,7 @@ dependency_overrides:
       url: https://github.com/jonataslaw/VideoCompress.git
       ref: master
   # cloud_functions_platform_interface: 5.0.21
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_test:
