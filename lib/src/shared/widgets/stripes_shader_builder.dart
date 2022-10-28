@@ -12,6 +12,7 @@ class StripesShaderBuilder extends StatefulWidget {
     this.child,
     required this.direction,
     this.builder,
+    required this.isActive,
   })  : assert(
           child == null || builder == null,
           "You can't provide both child and builder. Use builder as it offers more control over shader usage.",
@@ -22,6 +23,7 @@ class StripesShaderBuilder extends StatefulWidget {
   final double direction;
   final Widget Function(BuildContext context, Stripes shader, double uTime)?
       builder;
+  final bool isActive;
 
   @override
   State<StripesShaderBuilder> createState() => _MyShaderState();
@@ -72,7 +74,7 @@ class _MyShaderState extends State<StripesShaderBuilder> {
                         resolution: rect.size,
                         uTime: delta,
                         tiles: 4,
-                        speed: delta / 10,
+                        speed: !widget.isActive ? 0 : delta,
                         direction: widget.direction, // -1 to 1
                         warpScale: 0.25,
                         warpTiling: 0.5,

@@ -94,9 +94,8 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                       children: [
                         ColoredBox(
                           color: Colors.grey[600]!,
-                          child: const StripesShaderBuilder(
-                            direction: 0.25,
-                            child: Center(
+                          child: Consumer(
+                            child: const Center(
                               child: SizedBox(
                                 height: kIconSizeLargeConstant + 20,
                                 width: kPaddingXSmallConstant,
@@ -105,6 +104,19 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                                 ),
                               ),
                             ),
+                            builder: (
+                              BuildContext context,
+                              WidgetRef ref,
+                              Widget? child,
+                            ) {
+                              final bool isActive =
+                                  ref.watch(playVideoProvider);
+                              return StripesShaderBuilder(
+                                isActive: isActive,
+                                direction: 0.25,
+                                child: child!,
+                              );
+                            },
                           ),
                         ),
                         ChaseAppWheel(
