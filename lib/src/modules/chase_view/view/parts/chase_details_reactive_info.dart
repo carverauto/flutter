@@ -101,16 +101,6 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: SizedBox(
-                                    height: kIconSizeLargeConstant + 20,
-                                    width: kPaddingXSmallConstant,
-                                    child: ColoredBox(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
                                 SizedBox(
                                   height: kIconSizeLargeConstant + 20,
                                   width: kPaddingXSmallConstant,
@@ -145,6 +135,13 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                                         },
                                       ),
                                     ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: kIconSizeLargeConstant + 20,
+                                  width: kPaddingXSmallConstant,
+                                  child: ColoredBox(
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
