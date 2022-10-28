@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../const/sizings.dart';
 import 'animations_overlay_toggle_switch.dart';
-import 'chase_hero.dart';
 
 class VideoTopActions extends StatelessWidget {
   const VideoTopActions({
@@ -40,8 +39,8 @@ class VideoTopActions extends StatelessWidget {
             const SizedBox(
               width: kItemsSpacingSmallConstant,
             ),
-            if (MediaQuery.of(context).orientation == Orientation.portrait)
-              const ClosePlayingVideo(),
+            // if (MediaQuery.of(context).orientation == Orientation.portrait)
+            //   const ClosePlayingVideo(),
           ],
         ),
       ),
