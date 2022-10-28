@@ -49,7 +49,7 @@ class RPSCustomPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    log(wheels!['W4'].toString());
+    log('Wheels painting');
     final Path path_0 = Path();
     final Color chasisColor = Colors.grey[800]!;
     final Color w1Color = getWheelColor(wheels!['W1'].toString());
@@ -578,7 +578,7 @@ class RPSCustomPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(RPSCustomPainter oldDelegate) {
+    return false;
   }
 }

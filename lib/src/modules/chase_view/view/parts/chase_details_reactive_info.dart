@@ -92,31 +92,33 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        ColoredBox(
-                          color: Colors.grey[600]!,
-                          child: Consumer(
-                            child: const Center(
-                              child: SizedBox(
-                                height: kIconSizeLargeConstant + 20,
-                                width: kPaddingXSmallConstant,
-                                child: ColoredBox(
-                                  color: Colors.white,
+                        RepaintBoundary(
+                          child: ColoredBox(
+                            color: Colors.grey[600]!,
+                            child: Consumer(
+                              child: const Center(
+                                child: SizedBox(
+                                  height: kIconSizeLargeConstant + 20,
+                                  width: kPaddingXSmallConstant,
+                                  child: ColoredBox(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
+                              builder: (
+                                BuildContext context,
+                                WidgetRef ref,
+                                Widget? child,
+                              ) {
+                                final bool isActive =
+                                    ref.watch(playVideoProvider);
+                                return StripesShaderBuilder(
+                                  isActive: isActive,
+                                  direction: 0.25,
+                                  child: child!,
+                                );
+                              },
                             ),
-                            builder: (
-                              BuildContext context,
-                              WidgetRef ref,
-                              Widget? child,
-                            ) {
-                              final bool isActive =
-                                  ref.watch(playVideoProvider);
-                              return StripesShaderBuilder(
-                                isActive: isActive,
-                                direction: 0.25,
-                                child: child!,
-                              );
-                            },
                           ),
                         ),
                         ChaseAppWheel(
