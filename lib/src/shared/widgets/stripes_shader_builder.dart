@@ -76,8 +76,8 @@ class _MyShaderState extends State<StripesShaderBuilder> {
                         tiles: 4,
                         speed: !widget.isActive ? 0 : delta,
                         direction: widget.direction, // -1 to 1
-                        warpScale: 0.25,
-                        warpTiling: 0.5,
+                        warpScale: 0,
+                        warpTiling: 0,
                         color1: (Colors.amber[700] as Color).toColorVector(),
                         color2: (Colors.grey[600] as Color).toColorVector(),
                       );

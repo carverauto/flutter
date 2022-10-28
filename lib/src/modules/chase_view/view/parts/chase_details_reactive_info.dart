@@ -91,45 +91,70 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.circular(kBorderRadiusSmallConstant),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        RepaintBoundary(
-                          child: ColoredBox(
-                            color: Colors.grey[600]!,
-                            child: AnimatedBuilder(
-                              animation: ChaseAppYoutubeController.of(context)
-                                  .youtubePlayerController,
-                              child: const Center(
-                                child: SizedBox(
-                                  height: kIconSizeLargeConstant + 20,
-                                  width: kPaddingXSmallConstant,
-                                  child: ColoredBox(
-                                    color: Colors.white,
+                    child: ColoredBox(
+                      color: Colors.grey[600]!,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Positioned.fill(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: SizedBox(
+                                    height: kIconSizeLargeConstant + 20,
+                                    width: kPaddingXSmallConstant,
+                                    child: ColoredBox(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              builder: (
-                                BuildContext context,
-                                Widget? child,
-                              ) {
-                                final YoutubePlayerController controller =
-                                    ChaseAppYoutubeController.of(context)
-                                        .youtubePlayerController;
+                                SizedBox(
+                                  height: kIconSizeLargeConstant + 20,
+                                  width: kPaddingXSmallConstant,
+                                  child: RepaintBoundary(
+                                    child: ColoredBox(
+                                      color: Colors.grey[600]!,
+                                      child: AnimatedBuilder(
+                                        animation: ChaseAppYoutubeController.of(
+                                          context,
+                                        ).youtubePlayerController,
+                                        child: const SizedBox.expand(
+                                          child: ColoredBox(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        builder: (
+                                          BuildContext context,
+                                          Widget? child,
+                                        ) {
+                                          final YoutubePlayerController
+                                              controller =
+                                              ChaseAppYoutubeController.of(
+                                            context,
+                                          ).youtubePlayerController;
 
-                                return StripesShaderBuilder(
-                                  isActive: controller.value.isPlaying,
-                                  direction: 0.25,
-                                  child: child!,
-                                );
-                              },
+                                          return StripesShaderBuilder(
+                                            isActive:
+                                                controller.value.isPlaying,
+                                            direction: 0.25,
+                                            child: child!,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        ChaseAppWheel(
-                          wheels: chase.wheels,
-                        ),
-                      ],
+                          ChaseAppWheel(
+                            wheels: chase.wheels,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
