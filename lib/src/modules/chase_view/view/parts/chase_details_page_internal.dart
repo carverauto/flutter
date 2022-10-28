@@ -45,7 +45,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   late final Animation<Offset> appBarOffsetAnimation;
   late final Animation<Offset> bottomListAnimation;
   late final Chase chase;
-  void initializeVideoController(String? videoId) {
+  void initializeVideoController(String? videoId, [bool autoPlay = false]) {
     late final String? url;
     late final String? playerVideoId;
     if (videoId == null) {
@@ -74,9 +74,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       initialVideoId: playerVideoId ?? '',
       flags: YoutubePlayerFlags(
         isLive: widget.chase.live ?? false,
-        autoPlay: false,
+        autoPlay: autoPlay,
       ),
     );
+    // _controller.reload();
 
     setState(() {});
   }
@@ -89,9 +90,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
     initializeVideoController(
       videoId,
+      true,
     );
     ref.read(playVideoProvider.state).update((bool state) => false);
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     ref.read(playVideoProvider.state).update((bool state) => true);
   }
 
@@ -144,14 +146,17 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                     child: child,
                   );
                 },
-                child: ChaseDetails(
-                  chase: chase,
-                  imageURL: chase.imageURL,
-                  logger: widget.logger,
-                  youtubeVideo: video,
-                  onYoutubeNetworkTap: changeYoutubeVideo,
-                  chatsRow: widget.chatsRow,
-                  chatsView: widget.chatsView,
+                child: ChaseAppYoutubeController(
+                  youtubePlayerController: _controller,
+                  child: ChaseDetails(
+                    chase: chase,
+                    imageURL: chase.imageURL,
+                    logger: widget.logger,
+                    youtubeVideo: video,
+                    onYoutubeNetworkTap: changeYoutubeVideo,
+                    chatsRow: widget.chatsRow,
+                    chatsView: widget.chatsView,
+                  ),
                 ),
               ),
             );
@@ -160,4 +165,23 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       ),
     );
   }
+}
+
+class ChaseAppYoutubeController extends InheritedWidget {
+  const ChaseAppYoutubeController({
+    super.key,
+    required this.youtubePlayerController,
+    required super.child,
+  });
+  final YoutubePlayerController youtubePlayerController;
+  static ChaseAppYoutubeController of(BuildContext context) {
+    final ChaseAppYoutubeController? result =
+        context.dependOnInheritedWidgetOfExactType<ChaseAppYoutubeController>();
+    assert(result != null, 'No ChaseAppYoutubeController found in context');
+    return result!;
+  }
+
+  @override
+  bool updateShouldNotify(ChaseAppYoutubeController old) =>
+      youtubePlayerController != old.youtubePlayerController;
 }

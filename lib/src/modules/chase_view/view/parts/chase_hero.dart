@@ -27,7 +27,7 @@ class ChaseHeroSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool playVideo = ref.watch(playVideoProvider);
+    // final bool playVideo = ref.watch(playVideoProvider);
     final bool isYoutubeUrlPresent =
         chase.networks?.any((ChaseNetwork network) {
               final String? url = network.url;
@@ -40,9 +40,18 @@ class ChaseHeroSection extends ConsumerWidget {
             }) ??
             false;
 
-    return playVideo
-        ? youtubeVideo
-        : GestureDetector(
+    return Stack(
+      children: [
+        if (isYoutubeUrlPresent)
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final bool isPlayVideo = ref.watch(playVideoProvider);
+
+              return isPlayVideo ? youtubeVideo : const SizedBox.shrink();
+            },
+          ),
+        if (!isYoutubeUrlPresent)
+          GestureDetector(
             onTap: () {
               if (isYoutubeUrlPresent) {
                 ref.read(playVideoProvider.state).update((bool state) => true);
@@ -104,7 +113,9 @@ class ChaseHeroSection extends ConsumerWidget {
                 ),
               ],
             ),
-          );
+          ),
+      ],
+    );
   }
 }
 

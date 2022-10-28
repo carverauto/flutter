@@ -37,9 +37,8 @@ final AutoDisposeFutureProviderFamily<Chase, String> fetchChaseProvider =
 );
 
 // final chaseDetailsHeightProvider = StateProvider<double?>((ref) => null);
-final AutoDisposeStateProvider<bool> playVideoProvider =
-    StateProvider.autoDispose<bool>(
-  (AutoDisposeStateProviderRef<bool> ref) => false,
+final StateProvider<bool> playVideoProvider = StateProvider<bool>(
+  (StateProviderRef<bool> ref) => true,
 );
 final AutoDisposeStateProvider<bool> showVideoOverlayProvider =
     StateProvider.autoDispose<bool>(

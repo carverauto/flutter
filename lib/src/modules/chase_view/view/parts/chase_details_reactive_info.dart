@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
@@ -12,6 +13,7 @@ import '../../../../shared/util/helpers/dynamiclink_generator.dart';
 import '../../../../shared/widgets/sentiment_analysis_slider.dart';
 import '../../../../shared/widgets/stripes_shader_builder.dart';
 import '../providers/providers.dart';
+import 'chase_details_page_internal.dart';
 import 'chase_hero.dart';
 import 'chase_wheel.dart';
 import 'donut_clap_button.dart';
@@ -95,7 +97,9 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                         RepaintBoundary(
                           child: ColoredBox(
                             color: Colors.grey[600]!,
-                            child: Consumer(
+                            child: AnimatedBuilder(
+                              animation: ChaseAppYoutubeController.of(context)
+                                  .youtubePlayerController,
                               child: const Center(
                                 child: SizedBox(
                                   height: kIconSizeLargeConstant + 20,
@@ -107,13 +111,14 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
                               ),
                               builder: (
                                 BuildContext context,
-                                WidgetRef ref,
                                 Widget? child,
                               ) {
-                                final bool isActive =
-                                    ref.watch(playVideoProvider);
+                                final YoutubePlayerController controller =
+                                    ChaseAppYoutubeController.of(context)
+                                        .youtubePlayerController;
+
                                 return StripesShaderBuilder(
-                                  isActive: isActive,
+                                  isActive: controller.value.isPlaying,
                                   direction: 0.25,
                                   child: child!,
                                 );
