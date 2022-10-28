@@ -13,7 +13,7 @@ description: Never miss a live police chase again
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 publish_to: "none"
 
-version: 1.4.9+30
+version: 1.4.9+40
 
 #  2.12.0 nonnullable
 environment:
@@ -81,10 +81,10 @@ dependencies:
   # youtube_player_flutter: ^8.0.0
 
   youtube_player_flutter:
-    # path: youtube_player_flutter/packages/youtube_player_flutter/
-    git:
-      url: https://github.com/rutvik110/youtube_player_flutter.git
-      path: packages/youtube_player_flutter/
+    path: youtube_player_flutter/packages/youtube_player_flutter/
+    # git:
+    #   url: https://github.com/rutvik110/youtube_player_flutter.git
+    #   path: packages/youtube_player_flutter/
 
   # UI/Animations/Assets
   # flutter_spinkit: ^5.1.0
