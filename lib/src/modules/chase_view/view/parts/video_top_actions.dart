@@ -22,6 +22,20 @@ class VideoTopActions extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
+            ElevatedButton(
+              // shape: const CircleBorder(),
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
+            const Spacer(),
             const AnimationsOverlayToggleSwitch(),
             const SizedBox(
               width: kItemsSpacingSmallConstant,

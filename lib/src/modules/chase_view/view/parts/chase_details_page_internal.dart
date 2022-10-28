@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -73,8 +74,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       initialVideoId: playerVideoId ?? '',
       flags: YoutubePlayerFlags(
         isLive: widget.chase.live ?? false,
+        autoPlay: false,
       ),
     );
+
     setState(() {});
   }
 
@@ -102,12 +105,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -115,13 +112,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
-
     return SafeArea(
-      top: isTyping,
-      bottom: false,
-      left: false,
-      right: false,
       child: WillPopScope(
         onWillPop: () async {
           if (ref.read(isShowingChatsWindowProvide)) {
@@ -145,61 +136,23 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
             return Scaffold(
               backgroundColor: Colors.transparent,
               resizeToAvoidBottomInset: false,
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      // hide the appbar when typing
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0, -1),
-                          end: const Offset(0, 0),
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-                    child: isTyping
-                        ? const SizedBox.shrink()
-                        : AnimatedBuilder(
-                            animation: appBarOffsetAnimation,
-                            builder: (BuildContext context, Widget? child) {
-                              return Transform.translate(
-                                offset: appBarOffsetAnimation.value,
-                                child: child,
-                              );
-                            },
-                            child: AppBar(
-                              centerTitle: true,
-                              elevation: 1,
-                              title: Text(chase.name ?? 'NA'),
-                              actions: const [],
-                            ),
-                          ),
-                  ),
-                  Expanded(
-                    child: AnimatedBuilder(
-                      animation: bottomListAnimation,
-                      builder: (BuildContext context, Widget? child) {
-                        return Transform.translate(
-                          offset: bottomListAnimation.value,
-                          child: child,
-                        );
-                      },
-                      child: ChaseDetails(
-                        chase: chase,
-                        imageURL: chase.imageURL,
-                        logger: widget.logger,
-                        youtubeVideo: video,
-                        onYoutubeNetworkTap: changeYoutubeVideo,
-                        chatsRow: widget.chatsRow,
-                        chatsView: widget.chatsView,
-                      ),
-                    ),
-                  ),
-                ],
+              body: AnimatedBuilder(
+                animation: bottomListAnimation,
+                builder: (BuildContext context, Widget? child) {
+                  return Transform.translate(
+                    offset: bottomListAnimation.value,
+                    child: child,
+                  );
+                },
+                child: ChaseDetails(
+                  chase: chase,
+                  imageURL: chase.imageURL,
+                  logger: widget.logger,
+                  youtubeVideo: video,
+                  onYoutubeNetworkTap: changeYoutubeVideo,
+                  chatsRow: widget.chatsRow,
+                  chatsView: widget.chatsView,
+                ),
               ),
             );
           },

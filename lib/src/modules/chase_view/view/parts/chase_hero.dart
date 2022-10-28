@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/images.dart';
+import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
@@ -84,6 +85,23 @@ class ChaseHeroSection extends ConsumerWidget {
                       child: WatchYoutubeVideo(isLive: chase.live ?? false),
                     ),
                   ),
+                Positioned(
+                  left: kPaddingSmallConstant,
+                  top: kPaddingSmallConstant,
+                  child: ElevatedButton(
+                    // shape: const CircleBorder(),
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -71,7 +73,6 @@ class ChatsView extends ConsumerWidget {
                         ? IconButton(
                             onPressed: () {
                               Navigator.of(context).focusScopeNode.unfocus();
-                              // Navigator.pop(context);
                             },
                             icon: const Icon(
                               Icons.arrow_downward_outlined,
@@ -81,10 +82,16 @@ class ChatsView extends ConsumerWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      ref
-                          .read(isShowingChatsWindowProvide.state)
-                          .update((bool state) => false);
-                      // Navigator.pop(context);
+                      Navigator.of(context).focusScopeNode.unfocus();
+
+                      Timer(
+                        const Duration(milliseconds: 100),
+                        () {
+                          ref
+                              .read(isShowingChatsWindowProvide.state)
+                              .update((bool state) => false);
+                        },
+                      );
                     },
                     icon: const Icon(
                       Icons.close_rounded,
