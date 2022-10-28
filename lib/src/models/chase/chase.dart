@@ -1,16 +1,16 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:chaseapp/src/models/chase/network/chase_network.dart';
-import 'package:chaseapp/src/shared/util/convertors/datetimeconvertor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../shared/util/convertors/datetimeconvertor.dart';
+import 'network/chase_network.dart';
 
 part 'chase.freezed.dart';
 part 'chase.g.dart';
 
 @freezed
 abstract class Chase implements _$Chase {
-  const Chase._();
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory Chase({
@@ -27,8 +27,9 @@ abstract class Chase implements _$Chase {
     @JsonKey(name: 'Votes') required int? votes,
     @JsonKey(name: 'Networks') List<ChaseNetwork>? networks,
     @JsonKey(name: 'sentiment') Map? sentiment,
-    @JsonKey(name: 'Wheels') Map? wheels,
+    @JsonKey(name: 'Wheels') Map<String, dynamic>? wheels,
   }) = _Chase;
+  const Chase._();
 
   factory Chase.fromJson(Map<String, dynamic> json) => _$ChaseFromJson(json);
 }

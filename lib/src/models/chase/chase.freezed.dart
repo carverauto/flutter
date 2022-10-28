@@ -41,7 +41,7 @@ mixin _$Chase {
   @JsonKey(name: 'sentiment')
   Map<dynamic, dynamic>? get sentiment => throw _privateConstructorUsedError;
   @JsonKey(name: 'Wheels')
-  Map<dynamic, dynamic>? get wheels => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get wheels => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -73,7 +73,7 @@ abstract class $ChaseCopyWith<$Res> {
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          Map<dynamic, dynamic>? wheels});
+          Map<String, dynamic>? wheels});
 }
 
 /// @nodoc
@@ -140,7 +140,7 @@ class _$ChaseCopyWithImpl<$Res, $Val extends Chase>
       wheels: freezed == wheels
           ? _value.wheels
           : wheels // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>?,
+              as Map<String, dynamic>?,
     ) as $Val);
   }
 }
@@ -171,7 +171,7 @@ abstract class _$$_ChaseCopyWith<$Res> implements $ChaseCopyWith<$Res> {
       @JsonKey(name: 'sentiment')
           Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          Map<dynamic, dynamic>? wheels});
+          Map<String, dynamic>? wheels});
 }
 
 /// @nodoc
@@ -234,7 +234,7 @@ class __$$_ChaseCopyWithImpl<$Res> extends _$ChaseCopyWithImpl<$Res, _$_Chase>
       wheels: freezed == wheels
           ? _value._wheels
           : wheels // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>?,
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -263,7 +263,7 @@ class _$_Chase extends _Chase {
       @JsonKey(name: 'sentiment')
           final Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          final Map<dynamic, dynamic>? wheels})
+          final Map<String, dynamic>? wheels})
       : _networks = networks,
         _sentiment = sentiment,
         _wheels = wheels,
@@ -315,10 +315,10 @@ class _$_Chase extends _Chase {
     return EqualUnmodifiableMapView(value);
   }
 
-  final Map<dynamic, dynamic>? _wheels;
+  final Map<String, dynamic>? _wheels;
   @override
   @JsonKey(name: 'Wheels')
-  Map<dynamic, dynamic>? get wheels {
+  Map<String, dynamic>? get wheels {
     final value = _wheels;
     if (value == null) return null;
     // ignore: implicit_dynamic_type
@@ -400,7 +400,7 @@ abstract class _Chase extends Chase {
       @JsonKey(name: 'sentiment')
           final Map<dynamic, dynamic>? sentiment,
       @JsonKey(name: 'Wheels')
-          final Map<dynamic, dynamic>? wheels}) = _$_Chase;
+          final Map<String, dynamic>? wheels}) = _$_Chase;
   const _Chase._() : super._();
 
   factory _Chase.fromJson(Map<String, dynamic> json) = _$_Chase.fromJson;
@@ -435,7 +435,7 @@ abstract class _Chase extends Chase {
   Map<dynamic, dynamic>? get sentiment;
   @override
   @JsonKey(name: 'Wheels')
-  Map<dynamic, dynamic>? get wheels;
+  Map<String, dynamic>? get wheels;
   @override
   @JsonKey(ignore: true)
   _$$_ChaseCopyWith<_$_Chase> get copyWith =>
