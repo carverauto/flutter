@@ -243,9 +243,9 @@ jobs:
       api_private_key_base64: ${{ secrets.APPSTORE_PRIVATE_KEY_BASE64 }}
       GH_TOKEN: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
     steps:
-      - uses: actions/download-artifact@master
-        with:
-          name: chaseapp.ipa
+      # - uses: actions/download-artifact@master
+      #   with:
+      #     name: chaseapp.ipa
 
       - run: |
           mkdir -p ~/private_keys/
