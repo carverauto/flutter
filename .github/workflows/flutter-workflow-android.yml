@@ -60,11 +60,11 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: app-prod-release.aab
-          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          # path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
       - uses: actions/download-artifact@master
         with:
           name: mapping.txt
-          path: build/app/outputs/mapping/prodRelease/mapping.txt
+          # path: build/app/outputs/mapping/prodRelease/mapping.txt
       # - uses: dawidd6/action-download-artifact@v2.23.0
       #   with:
       #     github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
@@ -82,10 +82,10 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.ANDROID_SERVICE_ACCOUNT }}
           packageName: com.carverauto.chaseapp
-          releaseFile: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          releaseFile: app-prod-release.aab
           track: internal
           # userFraction: 0.99
           status: completed
-          mappingFile: build/app/outputs/mapping/prodRelease/mapping.txt
+          mappingFile: mapping.txt
           # TODO: identify an issue when whatsnew files are included - traced back to the actual action src code
           # whatsNewDirectory: distribution_android/whatsnew
