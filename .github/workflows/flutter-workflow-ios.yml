@@ -193,10 +193,10 @@ jobs:
           Twitter_Secret_key: ${{ secrets.TWITTER_SECRET_KEY }}
           Youtube_Token: ${{ secrets.YOUTUBE_TOKEN }}
           Youtbe_Api_Key: ${{ secrets.YOUTUBE_API_KEY }}
-          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+          MapBoxACCESS_TOKEN: ${{ secrets.MapBoxACCESS_TOKEN }}
           GCP_SERVER_API_KEY: ${{ secrets.GCP_SERVER_API_KEY }}
           SDK_REGISTRY_TOKEN: ${{ secrets.SDK_REGISTRY_TOKEN }}
-        run: flutter build ipa --flavor prod --target lib/main_prod.dart --export-options-plist=./ExportOptions.plist --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key" --dart-define=MAPBOX_TOKEN="$MAPBOX_TOKEN" --dart-define=GCP_SERVER_API_KEY="$GCP_SERVER_API_KEY"
+        run: flutter build ipa --flavor prod --target lib/main_prod.dart --export-options-plist=./ExportOptions.plist --dart-define=Pusher_Instance_Id="$Pusher_Instance_Id" --dart-define=GetStream_Chat_Api_Key="$GetStream_Chat_Api_Key" --dart-define=Twitter_Token="$Twitter_Token" --dart-define=Twitter_Api_key="$Twitter_Api_key" --dart-define=Twitter_Secret_key="$Twitter_Secret_key" --dart-define=Youtube_Token="$Youtube_Token" --dart-define=Youtbe_Api_Key="$Youtbe_Api_Key" --dart-define=MapBoxACCESS_TOKEN="$MapBoxACCESS_TOKEN" --dart-define=GCP_SERVER_API_KEY="$GCP_SERVER_API_KEY"
 
       - name: Uploading DYSM files to firebase for crashlytics
         env:
