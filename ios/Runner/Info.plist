@@ -32,6 +32,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.1020122644146-b8ma1mtle6ic9rlunfb0vm2kdhhp427t</string>
+				<string>com.googleusercontent.apps.1020122644146-78cr7doelhtsaclngju19o5gtjorjmhu</string>
 				<string>com.googleusercontent.apps.949466065060-ioapse7efjsngs5m1p84eehdrtl1sjaq</string>
 				<string>social-firebase-auth</string>
 				<string>fb392332671355922</string>
