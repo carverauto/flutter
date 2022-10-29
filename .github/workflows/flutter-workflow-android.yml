@@ -54,6 +54,8 @@ jobs:
   deploy-play-store:
     # needs: [build]
     runs-on: [self-hosted, macOS]
+    env:
+      CHASEAPP_GITHUB_TOKEN: ${{ secrets.CHASEAPP_GITHUB_TOKEN }}
     steps:
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
