@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../const/app_bundle_info.dart';
@@ -40,6 +41,7 @@ class _MapBoxViewState extends State<MapBoxView> {
   Symbol? infosymbol;
   final MapDB mapDB = MapDB();
   // bool? isLocationOn;
+  final Logger logger = Logger('MapBox View');
 
   Future<void> _onMapCreated(MapboxMapController controller) async {
     mapboxMapController = controller;
@@ -60,9 +62,17 @@ class _MapBoxViewState extends State<MapBoxView> {
       boat.buffer.asUint8List(),
     );
     await mapboxMapController.setSymbolIconAllowOverlap(true);
-    mapboxMapController.onSymbolTapped.add(onSymbolTapped);
+    mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
     loadADSBSymbols();
     loadShipssymbols();
+  }
+
+  Future<void> onSymbolTappedErrorWrapper(Symbol symbol) async {
+    try {
+      await onSymbolTapped(symbol);
+    } catch (e, stk) {
+      logger.warning('Tapped Symbol Data->${symbol.data}', e, stk);
+    }
   }
 
   // ignore: long-method
@@ -290,7 +300,7 @@ class _MapBoxViewState extends State<MapBoxView> {
     // TODO: implement dispose
     shipsStreamSubscription?.cancel();
     adsbStreamSubscription?.cancel();
-    mapboxMapController.onSymbolTapped.remove(onSymbolTapped);
+    mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
     mapboxMapController.dispose();
 
     super.dispose();

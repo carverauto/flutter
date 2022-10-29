@@ -82,7 +82,7 @@ class AuthDatabase implements AuthDB {
 
   @override
   Stream<UserData> streamUserData(String? uid) {
-    log(firebaseAuth.currentUser?.email ?? '');
+    log(uid ?? '');
     final Stream<DocumentSnapshot<UserData>> snapshot =
         usersCollectionRef.doc(uid).snapshots();
 
