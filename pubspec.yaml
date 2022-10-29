@@ -28,16 +28,17 @@ dependencies:
   cupertino_icons: ^1.0.4
 
   # Firebase
-  firebase_messaging: ^11.2.8
-  firebase_analytics: ^9.0.4
-  firebase_auth: ^3.2.0
-  cloud_firestore: ^3.1.5
-  firebase_database: ^9.0.4
-  firebase_core: ^1.10.0
-  firebase_storage: ^10.1.0
-  firebase_remote_config: ^2.0.0
-  firebase_crashlytics: ^2.5.0
-  firebase_dynamic_links: ^4.0.4
+  firebase_messaging: 14.0.3
+  firebase_analytics: 10.0.3
+  firebase_auth: 4.1.0
+  cloud_firestore: 4.0.3
+  cloud_functions: 4.0.3
+  firebase_database: 10.0.3
+  firebase_core: 2.1.1
+  firebase_storage: 11.0.3
+  firebase_remote_config: 3.0.3
+  firebase_crashlytics: 3.0.3
+  firebase_dynamic_links: 5.0.3
 
   # Social Auth
   google_sign_in: ^5.2.1
@@ -94,7 +95,6 @@ dependencies:
   cached_network_image: ^3.1.0+1
   google_fonts: ^2.1.0
   # carousel_slider: ^4.0.0
-  cloud_functions: ^3.2.7
 
   # Pusher
   pusher_beams:
@@ -112,26 +112,27 @@ dependencies:
   stream_feed_flutter_core: ^0.7.0+1
 
   # Testing
-  firebase_auth_mocks: ^0.8.2
-  google_sign_in_mocks: ^0.2.1
-  fake_cloud_firestore: ^1.2.2
   mapbox_gl: 0.15.0
   # platform_maps_flutter: ^1.0.2
   collection: ^1.16.0
   umbra_flutter: ^0.1.0-dev.4
 
 dependency_overrides:
+  # firebase_core_platform_interface: 4.5.1
+  # firebase_core_platform_interface: 4.4.3
   # video_compress: 3.1.0
   video_compress:
     git:
       url: https://github.com/jonataslaw/VideoCompress.git
       ref: master
   # cloud_functions_platform_interface: 5.0.21
-  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  firebase_auth_mocks: 0.9.0
+  google_sign_in_mocks: ^0.2.1
+  fake_cloud_firestore: 2.0.1
   integration_test:
     sdk: flutter
   # Configuring launcher icons
