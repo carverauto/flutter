@@ -87,11 +87,7 @@ class AuthDatabase implements AuthDB {
         usersCollectionRef.doc(uid).snapshots();
 
     return snapshot.map((DocumentSnapshot<UserData> e) {
-      if (e.data() != null) {
-        return e.data()!;
-      } else {
-        throw UnimplementedError();
-      }
+      return e.data()!;
     });
   }
 

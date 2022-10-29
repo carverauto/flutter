@@ -12,8 +12,11 @@ import '../../domain/auth_repo_ab.dart';
 final AutoDisposeStateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>
     postLoginStateNotifierProvider =
     StateNotifierProvider.autoDispose<PostLoginStateNotifier, AsyncValue<void>>(
-  (AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier, AsyncValue<void>>
-      ref) {
+  (
+    AutoDisposeStateNotifierProviderRef<PostLoginStateNotifier,
+            AsyncValue<void>>
+        ref,
+  ) {
     return PostLoginStateNotifier(ref.read);
   },
 );
@@ -51,12 +54,13 @@ final StreamProvider<User?> userAuthStateChanges =
   return ref.read(authRepoProvider).streamLogInStatus();
 });
 
-final StreamProvider<UserData> userStreamProvider = StreamProvider<UserData>(
+final AutoDisposeStreamProvider<UserData> userStreamProvider =
+    StreamProvider.autoDispose<UserData>(
   (
-    StreamProviderRef<UserData> ref,
-  ) async* {
-    final User? user = await ref.watch(userAuthStateChanges.future);
+    AutoDisposeStreamProviderRef<UserData> ref,
+  ) {
+    final String? uid = ref.watch(userAuthStateChanges).value?.uid;
 
-    yield* ref.read(authRepoProvider).streamUserData(user?.uid);
+    return ref.read(authRepoProvider).streamUserData(uid);
   },
 );

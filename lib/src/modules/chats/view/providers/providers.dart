@@ -61,16 +61,6 @@ final ProviderFamily<Channel, String> chatChannelProvider =
   ProviderRef<Channel> ref,
   String chaseId,
 ) {
-  //   final UserData userData =  ref.watch(userStreamProvider).asData!.value;
-
-  //  ref
-  //                 .read(chatsServiceStateNotifierProvider.notifier)
-  //                 .connectUserToGetStream(userData);
-  // await ref
-  //     .watch(chatsServiceStateNotifierProvider.notifier)
-  // //     .connectUserToGetStream(userData);
-  // final StreamChatClient client =
-  //     ref.watch(chatsServiceStateNotifierProvider(chaseId).notifier).client;
   final StreamChatClient client = ref.watch(streamChatClientProvider);
   final Channel channel = client.channel(
     'livestream',
