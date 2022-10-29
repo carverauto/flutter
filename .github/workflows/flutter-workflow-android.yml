@@ -62,11 +62,13 @@ jobs:
           github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
           run_id: 3350880720
           name: app-prod-release.aab
+          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
       - uses: dawidd6/action-download-artifact@v2.23.0
         with:
           github_token: ${{secrets.CHASEAPP_GITHUB_TOKEN}}
           run_id: 3350880720
           name: mapping.txt
+          path: build/app/outputs/mapping/prodRelease/mapping.txt
       - name: Publish to Play Store internal test track
         uses: r0adkll/upload-google-play@v1
         with:
