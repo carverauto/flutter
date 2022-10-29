@@ -579,6 +579,6 @@ class RPSCustomPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(RPSCustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
