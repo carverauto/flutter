@@ -29,8 +29,6 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   feed.FlatFeed get firehoseFeed =>
       streamFeedClient.flatFeed('events', 'firehose');
 
-  feed.StreamFeedClient get streamFeed => streamFeedClient;
-
   @override
   void dispose() {
     if (isSubscribedToFeed) {
