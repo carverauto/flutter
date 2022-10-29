@@ -10,6 +10,7 @@ import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../shared/util/helpers/dynamiclink_generator.dart';
+import '../../../../shared/widgets/errors/error_widget.dart';
 import '../../../../shared/widgets/sentiment_analysis_slider.dart';
 import '../../../../shared/widgets/stripes_shader_builder.dart';
 import '../providers/providers.dart';
@@ -167,7 +168,11 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
         );
       },
       error: (Object error, StackTrace? stackTrace) {
-        return const SizedBox.shrink();
+        return ChaseAppErrorWidget(
+          onRefresh: () {
+            ref.refresh(streamChaseProvider(chaseId));
+          },
+        );
       },
       loading: () {
         return const SizedBox.shrink();
