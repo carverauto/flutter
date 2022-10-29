@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS]
+    runs-on: [self-hosted, linux]
     env:
       ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
       KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
@@ -28,8 +28,8 @@ jobs:
       # SERVICES_JSON_BASE64: ${{ secrets.PROD_GOOGLESERVICES_ANDROID_BASE64 }}
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
+      # with:
+      #   fetch-depth: 2
       - run: git checkout HEAD^
       - uses: actions/setup-java@v2
         with:
@@ -61,7 +61,7 @@ jobs:
 
   deploy-play-store:
     needs: [build]
-    runs-on: [self-hosted, macOS]
+    runs-on: [self-hosted, linux]
     env:
       CHASEAPP_GITHUB_TOKEN: ${{ secrets.CHASEAPP_GITHUB_TOKEN }}
     steps:
