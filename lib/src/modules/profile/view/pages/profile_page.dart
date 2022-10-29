@@ -17,6 +17,7 @@ import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
+import '../../../dashboard/view/parts/chaseapp_drawer.dart';
 import '../../../firehose/view/providers/providers.dart';
 import '../../../onboarding/view/pages/onboarding.dart';
 
@@ -199,6 +200,7 @@ class _ProfileViewState extends State<ProfileView> {
 
                             if (mounted) {
                               if (shouldDelete != null && shouldDelete) {
+                                await preLogoutCleanUp(ref);
                                 final String userId = ref
                                     .read(firebaseAuthProvider)
                                     .currentUser!
@@ -213,7 +215,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     .clear();
                                 try {
                                   await Future<void>.delayed(
-                                    const Duration(seconds: 3),
+                                    const Duration(seconds: 2),
                                   );
                                   // return;
                                   await ref
@@ -223,12 +225,20 @@ class _ProfileViewState extends State<ProfileView> {
                                       )
                                       .streamFeedClient
                                       .deleteUser(userId);
-                                  ref
+                                  final bool isDisposed = ref
                                       .read(
                                         firehoseServiceStateNotifierProvider
                                             .notifier,
                                       )
-                                      .dispose();
+                                      .mounted;
+                                  if (!isDisposed) {
+                                    ref
+                                        .read(
+                                          firehoseServiceStateNotifierProvider
+                                              .notifier,
+                                        )
+                                        .dispose();
+                                  }
                                   await ref
                                       .read(authRepoProvider)
                                       .deleteUserAccount(userId);

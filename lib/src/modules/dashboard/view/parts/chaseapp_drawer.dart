@@ -39,23 +39,7 @@ class ChaseAppDrawer extends StatelessWidget {
                       );
 
                       if (shouldSignOut != null && shouldSignOut) {
-                        ref.refresh(
-                          firehoseServiceStateNotifierProvider.notifier,
-                        );
-                        await ref
-                            .read(streamChatClientProvider)
-                            .disconnectUser();
-
-                        ref.refresh(chatsServiceStateNotifierProvider.notifier);
-                        final bool isChatServicesDisposed = !ref
-                            .read(chatsServiceStateNotifierProvider.notifier)
-                            .mounted;
-                        if (isChatServicesDisposed) {
-                          ref
-                              .read(chatsServiceStateNotifierProvider.notifier)
-                              .dispose();
-                        }
-
+                        await preLogoutCleanUp(ref);
                         await ref.read(authRepoProvider).signOut();
                       }
                     },
@@ -200,5 +184,19 @@ class ChaseAppDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+Future<void> preLogoutCleanUp(WidgetRef ref) async {
+  ref.refresh(
+    firehoseServiceStateNotifierProvider.notifier,
+  );
+  await ref.read(streamChatClientProvider).disconnectUser();
+
+  ref.refresh(chatsServiceStateNotifierProvider.notifier);
+  final bool isChatServicesDisposed =
+      !ref.read(chatsServiceStateNotifierProvider.notifier).mounted;
+  if (isChatServicesDisposed) {
+    ref.read(chatsServiceStateNotifierProvider.notifier).dispose();
   }
 }
