@@ -52,7 +52,7 @@ jobs:
           path: build/app/outputs/mapping/prodRelease/mapping.txt
 
   deploy-play-store:
-    # needs: [build]
+    needs: [build]
     runs-on: [self-hosted, macOS]
     env:
       CHASEAPP_GITHUB_TOKEN: ${{ secrets.CHASEAPP_GITHUB_TOKEN }}
