@@ -142,7 +142,7 @@ dev_dependencies:
   # Code Generation
   json_annotation:
   dart_code_metrics: ^4.21.2
-  very_good_analysis: ^2.4.0
+  very_good_analysis: ^3.1.0
   # Freeze/Code generation
   freezed: ^2.1.1
   freezed_annotation: ^2.1.0
