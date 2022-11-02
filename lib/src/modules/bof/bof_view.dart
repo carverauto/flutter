@@ -63,16 +63,16 @@ class BofView extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          group,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Colors.white,
-                                  ),
-                        ),
-                        const SizedBox(
-                          height: kPaddingXSmallConstant,
-                        ),
+                        // Text(
+                        //   group,
+                        //   style:
+                        //       Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        //             color: Colors.white,
+                        //           ),
+                        // ),
+                        // const SizedBox(
+                        //   height: kPaddingXSmallConstant,
+                        // ),
                         Row(
                           children: bofgroup.map<Widget>((BirdsOfFire e) {
                             final String imageUrl = e
