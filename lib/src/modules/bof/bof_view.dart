@@ -53,10 +53,8 @@ class BofView extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
                   final int clusterValue = bofGroups.keys.elementAt(index);
-                  final List<BirdsOfFire> bofgroup =
-                      bofGroups.values.elementAt(index);
-                  final String group =
-                      bofGroups[clusterValue]!.first.properties.group;
+                  final List<BirdsOfFire> bofgroup = bofGroups[clusterValue]!;
+                  final String group = bofgroup.first.properties.group;
 
                   return Padding(
                     padding: const EdgeInsets.only(
