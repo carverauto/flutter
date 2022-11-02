@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../const/sizings.dart';
 import 'animations_overlay_toggle_switch.dart';
+import 'chase_details_page_internal.dart';
 
 class VideoTopActions extends StatelessWidget {
   const VideoTopActions({
@@ -27,7 +28,14 @@ class VideoTopActions extends StatelessWidget {
                 shape: const CircleBorder(),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                if (MediaQuery.of(context).orientation ==
+                    Orientation.landscape) {
+                  ChaseAppYoutubeController.of(context)
+                      .youtubePlayerController
+                      .toggleFullScreenMode();
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Icon(
                 Icons.arrow_back,

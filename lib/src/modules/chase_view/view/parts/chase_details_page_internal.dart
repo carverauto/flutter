@@ -125,29 +125,29 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
           }
           return true;
         },
-        child: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            controller: _controller,
-            topActions: const VideoTopActions(),
-            overlayInBetween: VideoAnimationsOverlay(
+        child: ChaseAppYoutubeController(
+          youtubePlayerController: _controller,
+          child: YoutubePlayerBuilder(
+            player: YoutubePlayer(
               controller: _controller,
-              chase: chase,
+              topActions: const VideoTopActions(),
+              overlayInBetween: VideoAnimationsOverlay(
+                controller: _controller,
+                chase: chase,
+              ),
             ),
-          ),
-          builder: (BuildContext context, Widget video) {
-            return Scaffold(
-              backgroundColor: Colors.transparent,
-              resizeToAvoidBottomInset: false,
-              body: AnimatedBuilder(
-                animation: bottomListAnimation,
-                builder: (BuildContext context, Widget? child) {
-                  return Transform.translate(
-                    offset: bottomListAnimation.value,
-                    child: child,
-                  );
-                },
-                child: ChaseAppYoutubeController(
-                  youtubePlayerController: _controller,
+            builder: (BuildContext context, Widget video) {
+              return Scaffold(
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: false,
+                body: AnimatedBuilder(
+                  animation: bottomListAnimation,
+                  builder: (BuildContext context, Widget? child) {
+                    return Transform.translate(
+                      offset: bottomListAnimation.value,
+                      child: child,
+                    );
+                  },
                   child: ChaseDetails(
                     chase: chase,
                     imageURL: chase.imageURL,
@@ -158,9 +158,9 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                     chatsView: widget.chatsView,
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
