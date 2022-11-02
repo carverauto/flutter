@@ -17,6 +17,7 @@ abstract class BofProperties implements _$BofProperties {
     @JsonKey(name: 'type') required String type,
     @JsonKey(name: 'group') required String group,
     @JsonKey(name: 'dbscan') required String dbscan,
+    @JsonKey(name: 'cluster') int? cluster,
   }) = _BofProperties;
   const BofProperties._();
 

@@ -32,6 +32,8 @@ mixin _$BofProperties {
   String get group => throw _privateConstructorUsedError;
   @JsonKey(name: 'dbscan')
   String get dbscan => throw _privateConstructorUsedError;
+  @JsonKey(name: 'cluster')
+  int? get cluster => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +52,8 @@ abstract class $BofPropertiesCopyWith<$Res> {
       @JsonKey(name: 'imageUrl') String imageUrl,
       @JsonKey(name: 'type') String type,
       @JsonKey(name: 'group') String group,
-      @JsonKey(name: 'dbscan') String dbscan});
+      @JsonKey(name: 'dbscan') String dbscan,
+      @JsonKey(name: 'cluster') int? cluster});
 }
 
 /// @nodoc
@@ -71,6 +74,7 @@ class _$BofPropertiesCopyWithImpl<$Res, $Val extends BofProperties>
     Object? type = null,
     Object? group = null,
     Object? dbscan = null,
+    Object? cluster = freezed,
   }) {
     return _then(_value.copyWith(
       title: null == title
@@ -93,6 +97,10 @@ class _$BofPropertiesCopyWithImpl<$Res, $Val extends BofProperties>
           ? _value.dbscan
           : dbscan // ignore: cast_nullable_to_non_nullable
               as String,
+      cluster: freezed == cluster
+          ? _value.cluster
+          : cluster // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -110,7 +118,8 @@ abstract class _$$_BofPropertiesCopyWith<$Res>
       @JsonKey(name: 'imageUrl') String imageUrl,
       @JsonKey(name: 'type') String type,
       @JsonKey(name: 'group') String group,
-      @JsonKey(name: 'dbscan') String dbscan});
+      @JsonKey(name: 'dbscan') String dbscan,
+      @JsonKey(name: 'cluster') int? cluster});
 }
 
 /// @nodoc
@@ -129,6 +138,7 @@ class __$$_BofPropertiesCopyWithImpl<$Res>
     Object? type = null,
     Object? group = null,
     Object? dbscan = null,
+    Object? cluster = freezed,
   }) {
     return _then(_$_BofProperties(
       title: null == title
@@ -151,6 +161,10 @@ class __$$_BofPropertiesCopyWithImpl<$Res>
           ? _value.dbscan
           : dbscan // ignore: cast_nullable_to_non_nullable
               as String,
+      cluster: freezed == cluster
+          ? _value.cluster
+          : cluster // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -164,7 +178,8 @@ class _$_BofProperties extends _BofProperties {
       @JsonKey(name: 'imageUrl') required this.imageUrl,
       @JsonKey(name: 'type') required this.type,
       @JsonKey(name: 'group') required this.group,
-      @JsonKey(name: 'dbscan') required this.dbscan})
+      @JsonKey(name: 'dbscan') required this.dbscan,
+      @JsonKey(name: 'cluster') this.cluster})
       : super._();
 
   factory _$_BofProperties.fromJson(Map<String, dynamic> json) =>
@@ -187,10 +202,13 @@ class _$_BofProperties extends _BofProperties {
   @override
   @JsonKey(name: 'dbscan')
   final String dbscan;
+  @override
+  @JsonKey(name: 'cluster')
+  final int? cluster;
 
   @override
   String toString() {
-    return 'BofProperties(title: $title, imageUrl: $imageUrl, type: $type, group: $group, dbscan: $dbscan)';
+    return 'BofProperties(title: $title, imageUrl: $imageUrl, type: $type, group: $group, dbscan: $dbscan, cluster: $cluster)';
   }
 
   @override
@@ -203,13 +221,14 @@ class _$_BofProperties extends _BofProperties {
                 other.imageUrl == imageUrl) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.group, group) || other.group == group) &&
-            (identical(other.dbscan, dbscan) || other.dbscan == dbscan));
+            (identical(other.dbscan, dbscan) || other.dbscan == dbscan) &&
+            (identical(other.cluster, cluster) || other.cluster == cluster));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, title, imageUrl, type, group, dbscan);
+      Object.hash(runtimeType, title, imageUrl, type, group, dbscan, cluster);
 
   @JsonKey(ignore: true)
   @override
@@ -227,12 +246,12 @@ class _$_BofProperties extends _BofProperties {
 
 abstract class _BofProperties extends BofProperties {
   const factory _BofProperties(
-          {@JsonKey(name: 'title') required final String title,
-          @JsonKey(name: 'imageUrl') required final String imageUrl,
-          @JsonKey(name: 'type') required final String type,
-          @JsonKey(name: 'group') required final String group,
-          @JsonKey(name: 'dbscan') required final String dbscan}) =
-      _$_BofProperties;
+      {@JsonKey(name: 'title') required final String title,
+      @JsonKey(name: 'imageUrl') required final String imageUrl,
+      @JsonKey(name: 'type') required final String type,
+      @JsonKey(name: 'group') required final String group,
+      @JsonKey(name: 'dbscan') required final String dbscan,
+      @JsonKey(name: 'cluster') final int? cluster}) = _$_BofProperties;
   const _BofProperties._() : super._();
 
   factory _BofProperties.fromJson(Map<String, dynamic> json) =
@@ -254,6 +273,9 @@ abstract class _BofProperties extends BofProperties {
   @override
   @JsonKey(name: 'dbscan')
   String get dbscan;
+  @override
+  @JsonKey(name: 'cluster')
+  int? get cluster;
   @override
   @JsonKey(ignore: true)
   _$$_BofPropertiesCopyWith<_$_BofProperties> get copyWith =>

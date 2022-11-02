@@ -13,6 +13,7 @@ _$_BofProperties _$$_BofPropertiesFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       group: json['group'] as String,
       dbscan: json['dbscan'] as String,
+      cluster: json['cluster'] as int?,
     );
 
 Map<String, dynamic> _$$_BofPropertiesToJson(_$_BofProperties instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$_BofPropertiesToJson(_$_BofProperties instance) =>
       'type': instance.type,
       'group': instance.group,
       'dbscan': instance.dbscan,
+      'cluster': instance.cluster,
     };
