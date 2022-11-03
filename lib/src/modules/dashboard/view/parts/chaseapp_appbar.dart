@@ -68,9 +68,10 @@ class _ChaseAppBarState extends State<ChaseAppBar>
               aspectRatio: 16 / 9,
               // GEstureDetector won't work?
               child: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  tooltip: 'Go Full View',
-                  onPressed: () {
+                // floatingActionButton: ,
+                body: MapBoxView(
+                  onSymbolTap: extendTheMap,
+                  onExpansionButtonTap: () {
                     if (animationController.isAnimating) {
                       return;
                     }
@@ -80,12 +81,6 @@ class _ChaseAppBarState extends State<ChaseAppBar>
                       animationController.forward();
                     }
                   },
-                  child: const Icon(
-                    Icons.open_with,
-                  ),
-                ),
-                body: MapBoxView(
-                  onSymbolTap: extendTheMap,
                 ),
               ),
             ),

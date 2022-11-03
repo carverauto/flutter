@@ -13,6 +13,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../const/app_bundle_info.dart';
 import '../../const/images.dart';
+import '../../const/sizings.dart';
 import '../../models/adsb/adsb.dart';
 import '../../models/ship/ship.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
@@ -26,10 +27,12 @@ class MapBoxView extends StatefulWidget {
     super.key,
     this.showAppBar = false,
     required this.onSymbolTap,
+    required this.onExpansionButtonTap,
   });
 
   final bool showAppBar;
   final VoidCallback onSymbolTap;
+  final VoidCallback onExpansionButtonTap;
 
   @override
   State<MapBoxView> createState() => _MapBoxViewState();
@@ -360,52 +363,165 @@ class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
               centerTitle: false,
             )
           : null,
-      body: Column(
+      body: Stack(
+        fit: StackFit.expand,
         children: [
-          Expanded(
-            child: MapboxMap(
-              trackCameraPosition: true,
-              minMaxZoomPreference: const MinMaxZoomPreference(4, 100),
-              styleString: MapboxStyles.DARK,
-              accessToken: EnvVaribales.getMapBoxPublicAccessToken,
-              attributionButtonMargins: const math.Point(-200, 0),
+          Column(
+            children: [
+              Expanded(
+                child: MapboxMap(
+                  trackCameraPosition: true,
+                  minMaxZoomPreference: const MinMaxZoomPreference(4, 100),
+                  styleString: MapboxStyles.DARK,
+                  accessToken: EnvVaribales.getMapBoxPublicAccessToken,
+                  attributionButtonMargins: const math.Point(-200, 0),
 
-              logoViewMargins: const math.Point(-200, 0),
-              onMapCreated: _onMapCreated,
+                  logoViewMargins: const math.Point(-200, 0),
+                  onMapCreated: _onMapCreated,
 
-              onMapClick: (math.Point<double> point, LatLng latlong) async {
-                if (infosymbol != null) {
-                  final List<Symbol> allInfoSymbols =
-                      mapboxMapController.symbols
-                          .where(
-                            (Symbol info) =>
-                                info.options.iconImage == 'infoWindow',
-                          )
-                          .toList();
-                  for (final Symbol element in allInfoSymbols) {
-                    await mapboxMapController.removeSymbol(element);
-                  }
-                  // await mapboxMapController.removeSymbol(infosymbol!);
-                }
-              },
-              // myLocationEnabled: true,
-              // ignore: prefer_collection_literals
-              gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{
-                Factory<OneSequenceGestureRecognizer>(
-                  VerticalDragGestureRecognizer.new,
-                ),
-                Factory<DragGestureRecognizer>(
-                  HorizontalDragGestureRecognizer.new,
-                ),
-              },
+                  onMapClick: (math.Point<double> point, LatLng latlong) async {
+                    if (infosymbol != null) {
+                      final List<Symbol> allInfoSymbols =
+                          mapboxMapController.symbols
+                              .where(
+                                (Symbol info) =>
+                                    info.options.iconImage == 'infoWindow',
+                              )
+                              .toList();
+                      for (final Symbol element in allInfoSymbols) {
+                        await mapboxMapController.removeSymbol(element);
+                      }
+                      // await mapboxMapController.removeSymbol(infosymbol!);
+                    }
+                  },
+                  // myLocationEnabled: true,
+                  // ignore: prefer_collection_literals
+                  gestureRecognizers: const <
+                      Factory<OneSequenceGestureRecognizer>>{
+                    Factory<OneSequenceGestureRecognizer>(
+                      VerticalDragGestureRecognizer.new,
+                    ),
+                    Factory<DragGestureRecognizer>(
+                      HorizontalDragGestureRecognizer.new,
+                    ),
+                  },
 
-              myLocationRenderMode: MyLocationRenderMode.NORMAL,
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(
-                  34.052235,
-                  -118.243683,
+                  myLocationRenderMode: MyLocationRenderMode.NORMAL,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(
+                      34.052235,
+                      -118.243683,
+                    ),
+                  ),
                 ),
               ),
+            ],
+          ),
+          Positioned(
+            bottom: kPaddingSmallConstant,
+            right: 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary.withOpacity(
+                          0.9,
+                        ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(kBorderRadiusMediumConstant),
+                      bottomLeft: Radius.circular(kBorderRadiusMediumConstant),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          mapboxMapController.animateCamera(
+                            CameraUpdate.newCameraPosition(
+                              CameraPosition(
+                                target:
+                                    mapboxMapController.cameraPosition!.target,
+                                zoom: mapboxMapController.cameraPosition!.zoom +
+                                    1,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            kPaddingSmallConstant,
+                          ),
+                          child: Icon(
+                            Icons.zoom_in,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      ColoredBox(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSecondary
+                            .withOpacity(0.7),
+                        child: const SizedBox(
+                          height: 2,
+                          width: 34,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          mapboxMapController.animateCamera(
+                            CameraUpdate.newCameraPosition(
+                              CameraPosition(
+                                target:
+                                    mapboxMapController.cameraPosition!.target,
+                                zoom: mapboxMapController.cameraPosition!.zoom -
+                                    1,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            kPaddingSmallConstant,
+                          ),
+                          child: Icon(
+                            Icons.zoom_out,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      ColoredBox(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSecondary
+                            .withOpacity(0.7),
+                        child: const SizedBox(
+                          height: 2,
+                          width: 34,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: widget.onExpansionButtonTap,
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            kPaddingSmallConstant,
+                          ),
+                          child: Icon(
+                            Icons.open_with,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: kPaddingSmallConstant,
+                ),
+              ],
             ),
           ),
         ],
