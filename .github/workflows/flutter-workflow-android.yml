@@ -33,7 +33,7 @@ jobs:
           java-version: "11.x"
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.3.3"
+          flutter-version: "3.3.1"
       # - run: echo -n $SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
       - run: echo -n "$ANDROID_KEYSTORE" | base64 --decode > android/key.jks
       - run: flutter clean
