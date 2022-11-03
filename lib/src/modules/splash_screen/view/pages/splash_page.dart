@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,8 +11,21 @@ import 'package:lottie/lottie.dart';
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/util/helpers/sizescaleconfig.dart';
+
+final FutureProvider<String> splashScreenAnimationFutureProvider =
+    FutureProvider<String>((FutureProviderRef<String> ref) async {
+  final FirebaseRemoteConfig remoteConfig =
+      ref.read(firebaseRemoteConfigProvider);
+  final bool isUpdated = await remoteConfig.fetchAndActivate();
+  final String animationUrl =
+      remoteConfig.getString('splash_screen_animation_url');
+  log('ANimation Url--->$isUpdated');
+
+  return animationUrl;
+});
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -90,27 +104,43 @@ class _SplashViewState extends State<SplashView>
                   ),
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  //TODO: Too big size
-                  // TODO: Control this via Firebase remoteconfig - mfreeman
-                  Lottie.asset(
-                    'assets/36606-halloween.json',
-                    onLoaded: (LottieComposition composition) {
-                      // TODO: Control the timer from Firebase as well
-                      Timer(const Duration(seconds: 4), () async {
-                        final User? user =
-                            await ref.read(streamLogInStatus.future);
-                        await Navigator.of(context).pushReplacementNamed(
-                          user != null
-                              ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-                              : RouteName.ONBOARDING_VIEW,
-                        );
-                      });
+              Consumer(
+                builder: (BuildContext context, WidgetRef ref, _) {
+                  final AsyncValue<String> splashAnimationLoader =
+                      ref.watch(splashScreenAnimationFutureProvider);
+
+                  return splashAnimationLoader.when(
+                    data: (String animationUrl) {
+                      return Center(
+                        child: Lottie.network(
+                          animationUrl,
+                          onLoaded: (LottieComposition composition) {
+                            // TODO: Control the timer from Firebase as well
+                            Timer(const Duration(seconds: 4), () async {
+                              final User? user =
+                                  await ref.read(streamLogInStatus.future);
+                              await Navigator.of(context).pushReplacementNamed(
+                                user != null
+                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+                                    : RouteName.ONBOARDING_VIEW,
+                              );
+                            });
+                          },
+                        ),
+                      );
                     },
-                  ),
-                ],
+                    loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    error: (Object error, StackTrace? stackTrace) {
+                      return const Center(
+                        child: Text('Error'),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),
