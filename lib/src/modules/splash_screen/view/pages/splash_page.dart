@@ -6,6 +6,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logging/logging.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../const/images.dart';
@@ -14,15 +15,27 @@ import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/util/helpers/sizescaleconfig.dart';
+import '../../../../shared/widgets/loaders/loading.dart';
 
 final FutureProvider<String> splashScreenAnimationFutureProvider =
     FutureProvider<String>((FutureProviderRef<String> ref) async {
   final FirebaseRemoteConfig remoteConfig =
       ref.read(firebaseRemoteConfigProvider);
-  final bool isUpdated = await remoteConfig.fetchAndActivate();
-  final String animationUrl =
-      remoteConfig.getString('splash_screen_animation_url');
+  bool isUpdated = await remoteConfig.activate();
+  String animationUrl = remoteConfig.getString('splash_screen_animation_url');
+  if (animationUrl.isEmpty) {
+    await remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 3),
+        minimumFetchInterval: const Duration(),
+      ),
+    );
+    await remoteConfig.fetch();
+    isUpdated = await remoteConfig.activate();
+  }
   log('ANimation Url--->$isUpdated');
+
+  animationUrl = remoteConfig.getString('splash_screen_animation_url');
 
   return animationUrl;
 });
@@ -36,6 +49,8 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
+  final Logger logger = Logger('SplashView');
+
   @override
   void initState() {
     super.initState();
@@ -114,6 +129,29 @@ class _SplashViewState extends State<SplashView>
                       return Center(
                         child: Lottie.network(
                           animationUrl,
+                          errorBuilder: (
+                            BuildContext context,
+                            Object error,
+                            StackTrace? stackTrace,
+                          ) {
+                            logger.severe(
+                              'Error in loading splash screen animation',
+                              error,
+                              stackTrace,
+                            );
+                            Timer(const Duration(milliseconds: 300), () async {
+                              final User? user =
+                                  await ref.read(streamLogInStatus.future);
+                              await Navigator.of(context).pushReplacementNamed(
+                                user != null
+                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+                                    : RouteName.ONBOARDING_VIEW,
+                              );
+                            });
+                            return const Center(
+                              child: CircularAdaptiveProgressIndicatorWithBg(),
+                            );
+                          },
                           onLoaded: (LottieComposition composition) {
                             // TODO: Control the timer from Firebase as well
                             Timer(const Duration(seconds: 4), () async {
@@ -131,12 +169,32 @@ class _SplashViewState extends State<SplashView>
                     },
                     loading: () {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularAdaptiveProgressIndicatorWithBg(),
                       );
                     },
                     error: (Object error, StackTrace? stackTrace) {
-                      return const Center(
-                        child: Text('Error'),
+                      logger.severe(
+                        'Error in loading splash screen animation',
+                        error,
+                        stackTrace,
+                      );
+
+                      return Center(
+                        child: Lottie.asset(
+                          'assets/splash_screen_lottie_animation.json',
+                          onLoaded: (LottieComposition composition) {
+                            // TODO: Control the timer from Firebase as well
+                            Timer(const Duration(seconds: 4), () async {
+                              final User? user =
+                                  await ref.read(streamLogInStatus.future);
+                              await Navigator.of(context).pushReplacementNamed(
+                                user != null
+                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+                                    : RouteName.ONBOARDING_VIEW,
+                              );
+                            });
+                          },
+                        ),
                       );
                     },
                   );
