@@ -96,7 +96,7 @@ class _SplashViewState extends State<SplashView>
                   //TODO: Too big size
                   // TODO: Control this via Firebase remoteconfig - mfreeman
                   Lottie.asset(
-                    'assets/36606-halloween.json',
+                    'assets/38237-thanksgiving-cornucopia.json',
                     onLoaded: (LottieComposition composition) {
                       // TODO: Control the timer from Firebase as well
                       Timer(const Duration(seconds: 4), () async {
