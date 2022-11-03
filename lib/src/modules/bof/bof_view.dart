@@ -13,6 +13,11 @@ final StateProvider<bool> isBOFActiveProvider =
   return false;
 });
 
+final StateProvider<BirdsOfFire?> activeClusterCoordinateProvider =
+    StateProvider<BirdsOfFire?>((StateProviderRef<BirdsOfFire?> ref) {
+  return null;
+});
+
 class BofView extends ConsumerWidget {
   const BofView({super.key});
 
@@ -65,55 +70,48 @@ class BofView extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final int clusterValue = bofGroups.keys.elementAt(index);
                   final List<BirdsOfFire> bofgroup = bofGroups[clusterValue]!;
-                  final String group = bofgroup.first.properties.group;
 
                   return Padding(
                     padding: const EdgeInsets.only(
                       left: kPaddingMediumConstant,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Text(
-                        //   group,
-                        //   style:
-                        //       Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        //             color: Colors.white,
-                        //           ),
-                        // ),
-                        // const SizedBox(
-                        //   height: kPaddingXSmallConstant,
-                        // ),
-                        Row(
-                          children: bofgroup.map<Widget>((BirdsOfFire e) {
-                            final String imageUrl = e
-                                    .properties.imageUrl.isEmpty
-                                ? defaultAssetChaseImage
-                                : 'https://chaseapp.tv/${e.properties.imageUrl}';
+                    child: Row(
+                      children: bofgroup.map<Widget>((BirdsOfFire e) {
+                        final String imageUrl = e.properties.imageUrl.isEmpty
+                            ? defaultAssetChaseImage
+                            : 'https://chaseapp.tv/${e.properties.imageUrl}';
 
-                            return Align(
-                              widthFactor: 0.5,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 15,
-                                      spreadRadius: 1,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ],
-                                ),
-                                child: CircleAvatar(
-                                  backgroundImage: AdaptiveImageProvider(
-                                    imageUrl,
+                        return GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(activeClusterCoordinateProvider.state)
+                                .update(
+                                  (BirdsOfFire? state) => e,
+                                );
+                          },
+                          child: Align(
+                            widthFactor: 0.6,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 15,
+                                    spreadRadius: 1,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                   ),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: AdaptiveImageProvider(
+                                  imageUrl,
                                 ),
                               ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   );
                 },

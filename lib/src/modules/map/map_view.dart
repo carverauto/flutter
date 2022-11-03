@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
@@ -15,14 +16,16 @@ import '../../const/app_bundle_info.dart';
 import '../../const/images.dart';
 import '../../const/sizings.dart';
 import '../../models/adsb/adsb.dart';
+import '../../models/birds_of_fire/birds_of_fire.dart';
 import '../../models/ship/ship.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
+import '../bof/bof_view.dart';
 import 'data/mapdb.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 //TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
 
-class MapBoxView extends StatefulWidget {
+class MapBoxView extends ConsumerStatefulWidget {
   const MapBoxView({
     super.key,
     this.showAppBar = false,
@@ -35,10 +38,11 @@ class MapBoxView extends StatefulWidget {
   final VoidCallback onExpansionButtonTap;
 
   @override
-  State<MapBoxView> createState() => _MapBoxViewState();
+  ConsumerState<MapBoxView> createState() => _MapBoxViewState();
 }
 
-class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
+class _MapBoxViewState extends ConsumerState<MapBoxView>
+    with WidgetsBindingObserver {
   late final MapboxMapController mapboxMapController;
   StreamSubscription<List<Ship>>? shipsStreamSubscription;
   StreamSubscription<List<ADSB>>? adsbStreamSubscription;
@@ -113,7 +117,7 @@ class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
   }
 
   // ignore: long-method
-  Future<void> onSymbolTapped(Symbol symbol) async {
+  Future<void> onSymbolTapped(Symbol symbol, [bool zoomIn = true]) async {
     log('Symbol tapped');
     if (infosymbol != null) {
       final List<Symbol> allInfoSymbols = mapboxMapController.symbols
@@ -221,6 +225,16 @@ class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
         iconAnchor: 'bottom',
       ),
     );
+    if (zoomIn) {
+      if (infosymbol != null) {
+        await mapboxMapController.animateCamera(
+          CameraUpdate.newLatLngZoom(
+            infosymbol!.options.geometry!,
+            6,
+          ),
+        );
+      }
+    }
     widget.onSymbolTap();
   }
 
@@ -356,6 +370,27 @@ class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<BirdsOfFire?>(
+      activeClusterCoordinateProvider,
+      (BirdsOfFire? prev, BirdsOfFire? next) {
+        if (next != null) {
+          // find the symbol from choppers who'se id is next
+          final Symbol? symbol = mapboxMapController.symbols.firstWhereOrNull(
+            (Symbol element) => element.data?['id'] == next.properties.title,
+          );
+          if (symbol != null) {
+            mapboxMapController.animateCamera(
+              CameraUpdate.newLatLngZoom(
+                symbol.options.geometry!,
+                10,
+              ),
+            );
+            onSymbolTapped(symbol, false);
+          }
+        }
+      },
+    );
+
     return Scaffold(
       appBar: widget.showAppBar
           ? AppBar(
