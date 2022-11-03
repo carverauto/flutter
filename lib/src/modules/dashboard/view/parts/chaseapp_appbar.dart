@@ -4,51 +4,97 @@ import '../../../../const/images.dart';
 import '../../../map/map_view.dart';
 import '../../../notifications/view/parts/notifications_appbar_button.dart';
 
-class ChaseAppBar extends StatelessWidget {
+class ChaseAppBar extends StatefulWidget {
   const ChaseAppBar({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = width / (16 / 9);
+  State<ChaseAppBar> createState() => _ChaseAppBarState();
+}
 
-    return SliverAppBar(
-      centerTitle: true,
-      // backgroundColor: Colors.transparent,
-      title: const ChaseAppLogoImage(),
-      floating: true,
-      expandedHeight: height,
-      flexibleSpace: FlexibleSpaceBar(
-        background: AspectRatio(
-          aspectRatio: 16 / 9,
-          // GEstureDetector won't work?
-          child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              tooltip: 'Go Full View',
-              onPressed: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const MapBoxView(
-                        showAppBar: true,
-                      );
-                    },
+class _ChaseAppBarState extends State<ChaseAppBar>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
+  late final Animation<double> appBarMaxHeightAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final double width = MediaQuery.of(context).size.width;
+
+    appBarMaxHeightAnimation = Tween<double>(
+      begin: width / (16 / 9),
+      end: MediaQuery.of(context).size.height,
+    )
+        .chain(
+          CurveTween(
+            curve: Curves.decelerate,
+          ),
+        )
+        .animate(animationController);
+  }
+
+  void extendTheMap() {
+    if (!animationController.isAnimating && !animationController.isCompleted) {
+      animationController.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (BuildContext context, Widget? child_) {
+        return SliverAppBar(
+          centerTitle: true,
+          // backgroundColor: Colors.transparent,
+          title: const ChaseAppLogoImage(),
+          floating: true,
+          expandedHeight: appBarMaxHeightAnimation.value,
+          flexibleSpace: FlexibleSpaceBar(
+            background: AspectRatio(
+              aspectRatio: 16 / 9,
+              // GEstureDetector won't work?
+              child: Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  tooltip: 'Go Full View',
+                  onPressed: () {
+                    if (animationController.isAnimating) {
+                      return;
+                    }
+                    if (animationController.isCompleted) {
+                      animationController.reverse();
+                    } else {
+                      animationController.forward();
+                    }
+                  },
+                  child: const Icon(
+                    Icons.open_with,
                   ),
-                );
-              },
-              child: const Icon(
-                Icons.open_with,
+                ),
+                body: MapBoxView(
+                  onSymbolTap: extendTheMap,
+                ),
               ),
             ),
-            body: const MapBoxView(),
           ),
-        ),
-      ),
-      actions: const [
-        NotificationsAppbarButton(),
-      ],
+          actions: const [
+            NotificationsAppbarButton(),
+          ],
+        );
+      },
     );
   }
 }

@@ -25,9 +25,11 @@ class MapBoxView extends StatefulWidget {
   const MapBoxView({
     super.key,
     this.showAppBar = false,
+    required this.onSymbolTap,
   });
 
   final bool showAppBar;
+  final VoidCallback onSymbolTap;
 
   @override
   State<MapBoxView> createState() => _MapBoxViewState();
@@ -216,6 +218,7 @@ class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
         iconAnchor: 'bottom',
       ),
     );
+    widget.onSymbolTap();
   }
 
   // late BitmapDescriptor? markerImage;

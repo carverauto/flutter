@@ -10,7 +10,6 @@ import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_tile.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
-import '../../../bof/bof_view.dart';
 import '../../../chases/view/pages/recent_chases/recent_chases.dart';
 import '../../../chases/view/pages/top_chases/top_chases.dart';
 import '../../../chases/view/providers/providers.dart';
@@ -124,9 +123,9 @@ class _DashboardMainView extends ConsumerWidget {
                   height: kPaddingSmallConstant,
                 ),
               ),
-              const SliverToBoxAdapter(
-                child: BofView(),
-              ),
+              // const SliverToBoxAdapter(
+              //   child: BofView(),
+              // ),
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: kPaddingSmallConstant,
