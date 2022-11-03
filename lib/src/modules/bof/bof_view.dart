@@ -8,6 +8,11 @@ import '../../models/birds_of_fire/birds_of_fire.dart';
 import '../../shared/widgets/builders/image_builder.dart';
 import 'providers.dart';
 
+final StateProvider<bool> isBOFActiveProvider =
+    StateProvider<bool>((StateProviderRef<bool> ref) {
+  return false;
+});
+
 class BofView extends ConsumerWidget {
   const BofView({super.key});
 
@@ -23,12 +28,18 @@ class BofView extends ConsumerWidget {
             .where((BirdsOfFire bof) => bof.properties.cluster != null)
             .toList();
         if (clusteredBofObjects.isEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((Duration t) {
+            ref.read(isBOFActiveProvider.state).update((bool state) => false);
+          });
           return const SizedBox.shrink();
         }
         final Map<int, List<BirdsOfFire>> bofGroups = groupBy(
           clusteredBofObjects,
           (BirdsOfFire bof) => bof.properties.cluster!,
         );
+        WidgetsBinding.instance.addPostFrameCallback((Duration t) {
+          ref.read(isBOFActiveProvider.state).update((bool state) => true);
+        });
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

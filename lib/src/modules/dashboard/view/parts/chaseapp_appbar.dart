@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/images.dart';
+import '../../../bof/bof_view.dart';
 import '../../../map/map_view.dart';
 import '../../../notifications/view/parts/notifications_appbar_button.dart';
 
-class ChaseAppBar extends StatefulWidget {
+class ChaseAppBar extends ConsumerStatefulWidget {
   const ChaseAppBar({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ChaseAppBar> createState() => _ChaseAppBarState();
+  ConsumerState<ChaseAppBar> createState() => _ChaseAppBarState();
 }
 
-class _ChaseAppBarState extends State<ChaseAppBar>
+class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
-  late final Animation<double> appBarMaxHeightAnimation;
+  late Animation<double> appBarMaxHeightAnimation;
 
   @override
   void initState() {
@@ -54,9 +56,44 @@ class _ChaseAppBarState extends State<ChaseAppBar>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(isBOFActiveProvider, (bool? prev, bool next) {
+      if (next != null) {
+        final double width = MediaQuery.of(context).size.width;
+
+        appBarMaxHeightAnimation = Tween<double>(
+          begin: width / (16 / 9),
+          end: MediaQuery.of(context).size.height + (next ? -150 : 0),
+        )
+            .chain(
+              CurveTween(
+                curve: Curves.decelerate,
+              ),
+            )
+            .animate(animationController);
+        if (animationController.isCompleted) {
+          animationController
+            ..reset()
+            ..forward();
+        }
+      }
+    });
+
     return AnimatedBuilder(
       animation: animationController,
-      builder: (BuildContext context, Widget? child_) {
+      child: MapBoxView(
+        onSymbolTap: extendTheMap,
+        onExpansionButtonTap: () {
+          if (animationController.isAnimating) {
+            return;
+          }
+          if (animationController.isCompleted) {
+            animationController.reverse();
+          } else {
+            animationController.forward();
+          }
+        },
+      ),
+      builder: (BuildContext context, Widget? map) {
         return SliverAppBar(
           centerTitle: true,
           // backgroundColor: Colors.transparent,
@@ -67,22 +104,7 @@ class _ChaseAppBarState extends State<ChaseAppBar>
             background: AspectRatio(
               aspectRatio: 16 / 9,
               // GEstureDetector won't work?
-              child: Scaffold(
-                // floatingActionButton: ,
-                body: MapBoxView(
-                  onSymbolTap: extendTheMap,
-                  onExpansionButtonTap: () {
-                    if (animationController.isAnimating) {
-                      return;
-                    }
-                    if (animationController.isCompleted) {
-                      animationController.reverse();
-                    } else {
-                      animationController.forward();
-                    }
-                  },
-                ),
-              ),
+              child: map!,
             ),
           ),
           actions: const [
