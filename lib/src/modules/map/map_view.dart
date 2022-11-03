@@ -33,18 +33,45 @@ class MapBoxView extends StatefulWidget {
   State<MapBoxView> createState() => _MapBoxViewState();
 }
 
-class _MapBoxViewState extends State<MapBoxView> {
+class _MapBoxViewState extends State<MapBoxView> with WidgetsBindingObserver {
   late final MapboxMapController mapboxMapController;
   StreamSubscription<List<Ship>>? shipsStreamSubscription;
   StreamSubscription<List<ADSB>>? adsbStreamSubscription;
 
   Symbol? infosymbol;
   final MapDB mapDB = MapDB();
+  late List<double>? lastMapCenteredCoordinates;
+
+  Future<void> get saveCameralastPosition async {
+    if (mapboxMapController.cameraPosition != null) {
+      await mapDB.setLastMapCenteredCoordinates([
+        mapboxMapController.cameraPosition!.target.latitude,
+        mapboxMapController.cameraPosition!.target.longitude,
+      ]);
+    }
+  }
+
+  Future<void> getLastMapCoordinates() async {
+    lastMapCenteredCoordinates = await mapDB.getLastMapCenteredCoordinates;
+    if (lastMapCenteredCoordinates != null) {
+      final CameraPosition cameraPosition = CameraPosition(
+        target: LatLng(
+          lastMapCenteredCoordinates![0],
+          lastMapCenteredCoordinates![1],
+        ),
+        zoom: 4,
+      );
+      await mapboxMapController
+          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    }
+  }
+
   // bool? isLocationOn;
   final Logger logger = Logger('MapBox View');
 
   Future<void> _onMapCreated(MapboxMapController controller) async {
     mapboxMapController = controller;
+
     final ByteData heli = await rootBundle.load('assets/helicopter.png');
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
@@ -65,6 +92,11 @@ class _MapBoxViewState extends State<MapBoxView> {
     mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
     loadADSBSymbols();
     loadShipssymbols();
+    Timer(const Duration(milliseconds: 200), () async {
+      if (mounted) {
+        await getLastMapCoordinates();
+      }
+    });
   }
 
   Future<void> onSymbolTappedErrorWrapper(Symbol symbol) async {
@@ -293,13 +325,23 @@ class _MapBoxViewState extends State<MapBoxView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
-  void dispose() {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    // TODO: implement didChangeAppLifecycleState
+    if (state != AppLifecycleState.resumed) {
+      await saveCameralastPosition;
+    }
+  }
+
+  @override
+  Future<void> dispose() async {
     // TODO: implement dispose
-    shipsStreamSubscription?.cancel();
-    adsbStreamSubscription?.cancel();
+    await saveCameralastPosition;
+    await shipsStreamSubscription?.cancel();
+    await adsbStreamSubscription?.cancel();
     mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
     mapboxMapController.dispose();
 
@@ -319,7 +361,8 @@ class _MapBoxViewState extends State<MapBoxView> {
         children: [
           Expanded(
             child: MapboxMap(
-              minMaxZoomPreference: const MinMaxZoomPreference(3, 100),
+              trackCameraPosition: true,
+              minMaxZoomPreference: const MinMaxZoomPreference(4, 100),
               styleString: MapboxStyles.DARK,
               accessToken: EnvVaribales.getMapBoxPublicAccessToken,
               attributionButtonMargins: const math.Point(-200, 0),
@@ -344,14 +387,14 @@ class _MapBoxViewState extends State<MapBoxView> {
               },
               // myLocationEnabled: true,
               // ignore: prefer_collection_literals
-              gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>[
+              gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{
                 Factory<OneSequenceGestureRecognizer>(
                   VerticalDragGestureRecognizer.new,
                 ),
                 Factory<DragGestureRecognizer>(
                   HorizontalDragGestureRecognizer.new,
                 ),
-              ].toSet(),
+              },
 
               myLocationRenderMode: MyLocationRenderMode.NORMAL,
               initialCameraPosition: const CameraPosition(

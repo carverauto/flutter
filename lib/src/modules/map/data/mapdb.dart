@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/adsb/adsb.dart';
 import '../../../models/ship/ship.dart';
@@ -10,39 +11,24 @@ class MapDB {
       FirebaseDatabase.instance.ref();
   final DatabaseReference _adsbRef = _firebaseDatabase.child('adsb');
   final DatabaseReference _shipsRef = _firebaseDatabase.child('ships/1');
-  // Future<MapMarkersData> _getRTDBData() async {
-  //   final DataSnapshot adsbData = await _firebaseDatabase.child('adsb').get();
-  //   final DataSnapshot shipsData =
-  //       await _firebaseDatabase.child('ships/1').get();
 
-  //   if (adsbData.exists) {
-  //     final String encodedData = jsonEncode(adsbData.value);
-  //     final String encodedShipsData = jsonEncode(shipsData.value);
+  Future<List<double>?> get getLastMapCenteredCoordinates async {
+    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    final List<String>? lastMapCenteredCoordinates =
+        sharedPref.getStringList('lastMapCenteredCoordinates');
 
-  //     final Map<String, dynamic> adsbMap =
-  //         jsonDecode(encodedData) as Map<String, dynamic>;
+    return lastMapCenteredCoordinates?.map(double.parse).toList();
+  }
 
-  //     final List<ADSB> adsbList = adsbMap.values.map((dynamic e) {
-  //       return ADSB.fromJson(e as Map<String, dynamic>);
-  //     }).toList();
-  //     final List<dynamic> shipsList =
-  //         jsonDecode(encodedShipsData) as List<dynamic>;
-
-  //     final List<Ship> ships = shipsList.map((dynamic e) {
-  //       return Ship.fromJson(e as Map<String, dynamic>);
-  //     }).toList();
-
-  //     return MapMarkersData(
-  //       adsbs: adsbList,
-  //       ships: ships,
-  //     );
-  //   } else {
-  //     return MapMarkersData(
-  //       adsbs: <ADSB>[],
-  //       ships: <Ship>[],
-  //     );
-  //   }
-  // }
+  Future<void> setLastMapCenteredCoordinates(
+    List<double> coordinates,
+  ) async {
+    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    await sharedPref.setStringList(
+      'lastMapCenteredCoordinates',
+      coordinates.map((double e) => e.toString()).toList(),
+    );
+  }
 
   Stream<List<ADSB>> adsbStream() {
     return _adsbRef.onValue.map((DatabaseEvent event) {
