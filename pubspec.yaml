@@ -31,7 +31,7 @@ dependencies:
   firebase_messaging: 14.0.3
   firebase_analytics: 10.0.3
   firebase_auth: 4.1.0
-  cloud_firestore: 4.0.3
+  cloud_firestore: 4.0.4
   cloud_functions: 4.0.3
   firebase_database: 10.0.3
   firebase_core: 2.1.1
