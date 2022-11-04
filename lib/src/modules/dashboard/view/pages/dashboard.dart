@@ -330,26 +330,38 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
             width: MediaQuery.of(context).size.width,
             child: const ConnectivityStatus(),
           ),
-          const Positioned.fill(
+          Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        Color.fromARGB(255, 26, 25, 25),
-                        Colors.transparent,
-                      ],
-                      stops: [
-                        0.0,
-                        0.2,
-                      ],
-                    ),
-                  ),
-                  child: SizedBox.expand(),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: isMapExpanded
+                      ? const SizedBox.shrink()
+                      : const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                Color.fromARGB(255, 26, 25, 25),
+                                Colors.transparent,
+                              ],
+                              stops: [
+                                0.0,
+                                0.2,
+                              ],
+                            ),
+                          ),
+                          child: SizedBox.expand(),
+                        ),
                 ),
               ),
             ),
