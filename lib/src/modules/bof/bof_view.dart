@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../const/images.dart';
 import '../../const/sizings.dart';
@@ -120,8 +121,12 @@ class BofView extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (Object error, StackTrace? stack) => Text(error.toString()),
+      loading: SizedBox.shrink,
+      error: (Object error, StackTrace? stack) {
+        Logger('BOF VIEW').warning(error, stack);
+
+        return const SizedBox.shrink();
+      },
     );
   }
 }
