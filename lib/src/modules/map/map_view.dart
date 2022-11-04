@@ -232,7 +232,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         await mapboxMapController.animateCamera(
           CameraUpdate.newLatLngZoom(
             infosymbol!.options.geometry!,
-            7,
+            mapboxMapController.cameraPosition!.zoom > 7
+                ? mapboxMapController.cameraPosition!.zoom
+                : 7,
           ),
         );
       }
