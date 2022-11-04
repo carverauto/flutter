@@ -16,29 +16,36 @@ import 'watch_youtube_video_button.dart';
 class ChaseHeroSection extends ConsumerWidget {
   const ChaseHeroSection({
     Key? key,
-    required this.chase,
+    required this.chaseId,
     required this.imageURL,
     required this.youtubeVideo,
   }) : super(key: key);
 
-  final Chase chase;
+  final String chaseId;
   final String? imageURL;
   final Widget youtubeVideo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final bool playVideo = ref.watch(playVideoProvider);
-    final bool isYoutubeUrlPresent =
-        chase.networks?.any((ChaseNetwork network) {
-              final String? url = network.url;
+    final List<ChaseNetwork>? networks =
+        ref.watch(chaseNetworksStateProvider(chaseId));
+    final bool? isLive = ref.watch(
+      chaseLiveStatusChaseProvider(chaseId),
+    );
+    final String? chaseImageUrl = ref.watch(
+      streamChaseProvider(chaseId)
+          .select((AsyncValue<Chase> value) => value.value?.imageURL),
+    );
+    final bool isYoutubeUrlPresent = networks?.any((ChaseNetwork network) {
+          final String? url = network.url;
 
-              if (url != null) {
-                return isValidYoutubeUrl(url);
-              }
+          if (url != null) {
+            return isValidYoutubeUrl(url);
+          }
 
-              return false;
-            }) ??
-            false;
+          return false;
+        }) ??
+        false;
 
     return Stack(
       children: [
@@ -62,7 +69,7 @@ class ChaseHeroSection extends ConsumerWidget {
               children: [
                 ColoredBox(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  child: chase.imageURL != null && chase.imageURL!.isNotEmpty
+                  child: chaseImageUrl != null && chaseImageUrl.isNotEmpty
                       ? CachedNetworkImage(
                           fit: BoxFit.cover,
                           maxWidthDiskCache: 750,
@@ -91,7 +98,7 @@ class ChaseHeroSection extends ConsumerWidget {
                 if (isYoutubeUrlPresent)
                   Align(
                     child: RepaintBoundary(
-                      child: WatchYoutubeVideo(isLive: chase.live ?? false),
+                      child: WatchYoutubeVideo(isLive: isLive ?? false),
                     ),
                   ),
                 Positioned(

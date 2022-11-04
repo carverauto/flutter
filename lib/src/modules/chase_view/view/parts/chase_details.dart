@@ -13,7 +13,7 @@ import 'chase_description_dialog.dart';
 import 'chase_details_reactive_info.dart';
 import 'watch_here_video.dart';
 
-class ChaseDetails extends ConsumerStatefulWidget {
+class ChaseDetails extends StatelessWidget {
   const ChaseDetails({
     Key? key,
     required this.imageURL,
@@ -34,19 +34,14 @@ class ChaseDetails extends ConsumerStatefulWidget {
   final void Function(String url) onYoutubeNetworkTap;
 
   @override
-  ConsumerState<ChaseDetails> createState() => _ChaseDetailsState();
-}
-
-class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ChaseHeroSectionBuilder(
-          chase: widget.chase,
-          imageUrl: widget.imageURL,
-          youtubeVideo: widget.youtubeVideo,
+          chase: chase,
+          imageUrl: imageURL,
+          youtubeVideo: youtubeVideo,
         ),
         Expanded(
           child: Consumer(
@@ -65,7 +60,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                     child: child,
                   );
                 },
-                child: showChatsWindow ? widget.chatsView : child,
+                child: showChatsWindow ? chatsView : child,
               );
             },
             child: ColoredBox(
@@ -83,7 +78,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                       Material(
                         child: InkWell(
                           onTap: () {
-                            showDescriptionDialog(context, widget.chase);
+                            showDescriptionDialog(context, chase);
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -95,7 +90,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    widget.chase.name ?? 'NA',
+                                    chase.name ?? 'NA',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     style: Theme.of(context)
@@ -137,49 +132,54 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                 const SizedBox(
                                   width: kItemsSpacingSmallConstant / 2,
                                 ),
-                                if (widget.chase.live ?? false)
-                                  Consumer(
+                                RepaintBoundary(
+                                  child: Consumer(
                                     builder: (
                                       BuildContext context,
                                       WidgetRef ref,
                                       _,
                                     ) {
-                                      return const RepaintBoundary(
-                                        child: GradientAnimationChildBuilder(
-                                          shouldAnimate: true,
-                                          padding: EdgeInsets.zero,
-                                          child: GlassButton(
-                                            child: Text(
-                                              'Live!',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
+                                      final bool isLive = ref.watch(
+                                        chaseLiveStatusChaseProvider(
+                                          chase.id,
                                         ),
                                       );
+
+                                      return isLive
+                                          ? const GradientAnimationChildBuilder(
+                                              shouldAnimate: true,
+                                              padding: EdgeInsets.zero,
+                                              child: GlassButton(
+                                                child: Text(
+                                                  'Live!',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : GlassButton(
+                                              child: Text(
+                                                dateAdded(chase),
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
+                                                ),
+                                              ),
+                                            );
                                     },
-                                  )
-                                else
-                                  GlassButton(
-                                    child: Text(
-                                      dateAdded(widget.chase),
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
-                                      ),
-                                    ),
                                   ),
+                                ),
                               ],
                             ),
                             const SizedBox(
                               height: kItemsSpacingSmallConstant,
                             ),
                             ChaseDetailsReactiveInformation(
-                              chaseId: widget.chase.id,
-                              logger: widget.logger,
+                              chaseId: chase.id,
+                              logger: logger,
                             ),
                           ],
                         ),
@@ -190,13 +190,13 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                     height: kItemsSpacingSmall,
                   ),
                   WatchHereLinksWrapper(
-                    chase: widget.chase,
-                    onYoutubeNetworkTap: widget.onYoutubeNetworkTap,
+                    chaseId: chase.id,
+                    onYoutubeNetworkTap: onYoutubeNetworkTap,
                   ),
                   Divider(
                     height: kItemsSpacingSmall,
                   ),
-                  widget.chatsRow,
+                  chatsRow,
                 ],
               ),
             ),
@@ -205,7 +205,7 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
           //  Stack(
           //   children: [
           //     ,
-          //     widget.chatsView,
+          //     chatsView,
           //   ],
           // ),
         ),

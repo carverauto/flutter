@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
+import '../../../../models/chase/network/chase_network.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
 import '../../../chats/view/providers/providers.dart';
 import '../notifiers/chase_events_notifier.dart';
@@ -19,6 +20,30 @@ final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
     });
 
     return ref.watch(chaseRepoProvider).streamChase(chaseId);
+  },
+);
+
+final AutoDisposeStateProviderFamily<bool, String>
+    chaseLiveStatusChaseProvider =
+    StateProvider.autoDispose.family<bool, String>(
+  (AutoDisposeStateProviderRef<bool> ref, String chaseId) {
+    return ref.watch(
+      streamChaseProvider(chaseId).select((AsyncValue<Chase> value) {
+        return value.value?.live ?? false;
+      }),
+    );
+  },
+);
+
+final AutoDisposeStateProviderFamily<List<ChaseNetwork>?, String>
+    chaseNetworksStateProvider =
+    StateProvider.autoDispose.family<List<ChaseNetwork>?, String>(
+  (AutoDisposeStateProviderRef<List<ChaseNetwork>?> ref, String chaseId) {
+    return ref.watch(
+      streamChaseProvider(chaseId).select((AsyncValue<Chase> value) {
+        return value.value?.networks;
+      }),
+    );
   },
 );
 

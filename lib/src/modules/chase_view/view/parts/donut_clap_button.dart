@@ -8,29 +8,36 @@ import '../../../../const/images.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../shared/widgets/buttons/medium_clap_flutter.dart';
+import '../providers/providers.dart';
 
 class DonutClapButton extends ConsumerWidget {
   const DonutClapButton({
     Key? key,
-    required this.chase,
+    required this.chaseId,
     required this.logger,
   }) : super(key: key);
 
-  final Chase chase;
+  final String chaseId;
   final Logger logger;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final int? votes = ref.watch(
+      streamChaseProvider(chaseId).select((AsyncValue<Chase> value) {
+        return value.value?.votes;
+      }),
+    );
+
     return ClapFAB.image(
       trailing: (int counter) => Text(
-        NumberFormat('#,###').format(chase.votes ?? 0),
+        NumberFormat('#,###').format(votes ?? 0),
         style: Theme.of(context).textTheme.subtitle1!.copyWith(
               color: primaryColor.shade300,
             ),
       ),
       clapFabCallback: (int upCount) async {
         try {
-          await ref.read(chaseRepoProvider).upVoteChase(upCount, chase.id);
+          await ref.read(chaseRepoProvider).upVoteChase(upCount, chaseId);
         } catch (e, stk) {
           logger.warning(
             'Error while upvoting a Chase',

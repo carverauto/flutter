@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -19,7 +17,7 @@ import 'chase_hero.dart';
 import 'chase_wheel.dart';
 import 'donut_clap_button.dart';
 
-class ChaseDetailsReactiveInformation extends ConsumerWidget {
+class ChaseDetailsReactiveInformation extends StatelessWidget {
   const ChaseDetailsReactiveInformation({
     Key? key,
     required this.chaseId,
@@ -29,153 +27,161 @@ class ChaseDetailsReactiveInformation extends ConsumerWidget {
   final String chaseId;
   final Logger logger;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<Chase> chaseDetails =
-        ref.watch(streamChaseProvider(chaseId));
+  Widget build(BuildContext context) {
+    return Consumer(
+      child: DonutClapButton(
+        chaseId: chaseId,
+        logger: logger,
+      ),
+      builder: (BuildContext context, WidgetRef ref, Widget? donut) {
+        //TODO: find a good way to only watch chasedetails relevant here and not rebuild on votes change
+        final AsyncValue<Chase> chaseDetails =
+            ref.watch(streamChaseProvider(chaseId));
 
-    return chaseDetails.when(
-      data: (Chase chase) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Sentiment Analysis :',
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
-                  ),
-            ),
-            const SizedBox(
-              height: kItemsSpacingExtraSmallConstant,
-            ),
-            SentimentSlider(chase: chase),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return chaseDetails.when(
+          data: (Chase chase) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Material(
-                  child: ButtonBar(
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          try {
-                            final String shareLink =
-                                await createChaseDynamicLink(
-                              chase,
-                              ref.read(
-                                firebaseDynamicLinksProvider,
-                              ),
-                            );
-                            await Share.share(shareLink);
-                          } catch (e, stk) {
-                            logger.warning(
-                              'Chase Sharing Failed!',
-                              e,
-                              stk,
-                            );
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.share,
-                        ),
+                Text(
+                  'Sentiment Analysis :',
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
-                      // IconButton(
-                      //   onPressed: () {},
-                      //   icon: Icon(
-                      //     Icons.bookmark_border,
-                      //   ),
-                      // ),
-                    ],
-                  ),
                 ),
-                SizedBox(
-                  height: kIconSizeLargeConstant + 20,
-                  width: kIconSizeLargeConstant + 20,
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(kBorderRadiusSmallConstant),
-                    child: ColoredBox(
-                      color: Colors.grey[600]!,
-                      child: Stack(
-                        alignment: Alignment.center,
+                const SizedBox(
+                  height: kItemsSpacingExtraSmallConstant,
+                ),
+                SentimentSlider(chase: chase),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Material(
+                      child: ButtonBar(
                         children: [
-                          Positioned.fill(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  height: kIconSizeLargeConstant + 20,
-                                  width: kPaddingXSmallConstant,
-                                  child: RepaintBoundary(
-                                    child: ColoredBox(
-                                      color: Colors.grey[600]!,
-                                      child: AnimatedBuilder(
-                                        animation: ChaseAppYoutubeController.of(
-                                          context,
-                                        ).youtubePlayerController,
-                                        child: const SizedBox.expand(
-                                          child: ColoredBox(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        builder: (
-                                          BuildContext context,
-                                          Widget? child,
-                                        ) {
-                                          final YoutubePlayerController
-                                              controller =
-                                              ChaseAppYoutubeController.of(
-                                            context,
-                                          ).youtubePlayerController;
-
-                                          return StripesShaderBuilder(
-                                            isActive:
-                                                controller.value.isPlaying,
-                                            direction: 0.25,
-                                            child: child!,
-                                          );
-                                        },
-                                      ),
-                                    ),
+                          IconButton(
+                            onPressed: () async {
+                              try {
+                                final String shareLink =
+                                    await createChaseDynamicLink(
+                                  chase,
+                                  ref.read(
+                                    firebaseDynamicLinksProvider,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: kIconSizeLargeConstant + 20,
-                                  width: kPaddingXSmallConstant,
-                                  child: ColoredBox(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
+                                );
+                                await Share.share(shareLink);
+                              } catch (e, stk) {
+                                logger.warning(
+                                  'Chase Sharing Failed!',
+                                  e,
+                                  stk,
+                                );
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.share,
                             ),
                           ),
-                          ChaseAppWheel(
-                            wheels: chase.wheels,
-                          ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: Icon(
+                          //     Icons.bookmark_border,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: DonutClapButton(
-                    chase: chase,
-                    logger: logger,
-                  ),
+                    SizedBox(
+                      height: kIconSizeLargeConstant + 20,
+                      width: kIconSizeLargeConstant + 20,
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(kBorderRadiusSmallConstant),
+                        child: ColoredBox(
+                          color: Colors.grey[600]!,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned.fill(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      height: kIconSizeLargeConstant + 20,
+                                      width: kPaddingXSmallConstant,
+                                      child: RepaintBoundary(
+                                        child: ColoredBox(
+                                          color: Colors.grey[600]!,
+                                          child: AnimatedBuilder(
+                                            animation:
+                                                ChaseAppYoutubeController.of(
+                                              context,
+                                            ).youtubePlayerController,
+                                            child: const SizedBox.expand(
+                                              child: ColoredBox(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            builder: (
+                                              BuildContext context,
+                                              Widget? child,
+                                            ) {
+                                              final YoutubePlayerController
+                                                  controller =
+                                                  ChaseAppYoutubeController.of(
+                                                context,
+                                              ).youtubePlayerController;
+
+                                              return StripesShaderBuilder(
+                                                isActive:
+                                                    controller.value.isPlaying,
+                                                direction: 0.25,
+                                                child: child!,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: kIconSizeLargeConstant + 20,
+                                      width: kPaddingXSmallConstant,
+                                      child: ColoredBox(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ChaseAppWheel(
+                                wheels: chase.wheels,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: donut!,
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        );
-      },
-      error: (Object error, StackTrace? stackTrace) {
-        return ChaseAppErrorWidget(
-          onRefresh: () {
-            ref.refresh(streamChaseProvider(chaseId));
+            );
+          },
+          error: (Object error, StackTrace? stackTrace) {
+            return ChaseAppErrorWidget(
+              onRefresh: () {
+                ref.refresh(streamChaseProvider(chaseId));
+              },
+            );
+          },
+          loading: () {
+            return const SizedBox.shrink();
           },
         );
-      },
-      loading: () {
-        return const SizedBox.shrink();
       },
     );
   }
@@ -207,34 +213,34 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
           extraSizing,
       width: double.maxFinite,
       child: ChaseHeroSection(
-        chase: chase,
+        chaseId: chase.id,
         imageURL: imageUrl,
         youtubeVideo: youtubeVideo,
       ),
     );
 
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(
-        begin: MediaQuery.of(context).size.width * (9 / 16),
-        end: MediaQuery.of(context).size.width * (9 / 16) -
-            bottomPadding +
-            extraSizing,
-      ),
-      duration: const Duration(milliseconds: 200),
-      child: ChaseHeroSection(
-        chase: chase,
-        imageURL: imageUrl,
-        youtubeVideo: youtubeVideo,
-      ),
-      builder: (BuildContext context, double animation, Widget? child) {
-        log(animation.toString());
+    // return TweenAnimationBuilder<double>(
+    //   tween: Tween<double>(
+    //     begin: MediaQuery.of(context).size.width * (9 / 16),
+    //     end: MediaQuery.of(context).size.width * (9 / 16) -
+    //         bottomPadding +
+    //         extraSizing,
+    //   ),
+    //   duration: const Duration(milliseconds: 200),
+    //   child: ChaseHeroSection(
+    //     chase: chase,
+    //     imageURL: imageUrl,
+    //     youtubeVideo: youtubeVideo,
+    //   ),
+    //   builder: (BuildContext context, double animation, Widget? child) {
+    //     log(animation.toString());
 
-        return SizedBox(
-          height: animation,
-          width: double.maxFinite,
-          child: child,
-        );
-      },
-    );
+    //     return SizedBox(
+    //       height: animation,
+    //       width: double.maxFinite,
+    //       child: child,
+    //     );
+    //   },
+    // );
   }
 }

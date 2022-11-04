@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/sizings.dart';
-import '../../../../models/chase/chase.dart';
 import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/views/showurls.dart';
+import '../providers/providers.dart';
 
-class WatchHereLinksWrapper extends StatelessWidget {
+class WatchHereLinksWrapper extends ConsumerWidget {
   const WatchHereLinksWrapper({
     Key? key,
-    required this.chase,
+    required this.chaseId,
     required this.onYoutubeNetworkTap,
   }) : super(key: key);
 
-  final Chase chase;
+  final String chaseId;
   final void Function(String url) onYoutubeNetworkTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final List<ChaseNetwork>? networks = ref.watch(
+      chaseNetworksStateProvider(chaseId),
+    );
     final List<ChaseNetwork>? youtubeNetworks =
-        chase.networks?.where((ChaseNetwork network) {
+        networks?.where((ChaseNetwork network) {
       final String? url = network.url;
       if (url != null) {
         final bool isYoutube = isValidYoutubeUrl(url);
@@ -29,7 +33,7 @@ class WatchHereLinksWrapper extends StatelessWidget {
     }).toList();
 
     final List<ChaseNetwork>? otherNetworks =
-        chase.networks?.where((ChaseNetwork network) {
+        networks?.where((ChaseNetwork network) {
       final String? url = network.url;
 
       if (url != null) {
