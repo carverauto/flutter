@@ -78,7 +78,7 @@ class ChaseDetails extends StatelessWidget {
                       Material(
                         child: InkWell(
                           onTap: () {
-                            showDescriptionDialog(context, chase);
+                            showDescriptionDialog(context, chase.id);
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -89,19 +89,34 @@ class ChaseDetails extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    chase.name ?? 'NA',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground,
+                                  child: Consumer(
+                                    builder: (
+                                      BuildContext context,
+                                      WidgetRef ref,
+                                      _,
+                                    ) {
+                                      final String? title = ref.watch(
+                                        streamChaseProvider(chase.id).select(
+                                          (AsyncValue<Chase> value) =>
+                                              value.value?.name,
                                         ),
+                                      );
+
+                                      return Text(
+                                        title ?? 'NA',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
+                                            ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 const Icon(

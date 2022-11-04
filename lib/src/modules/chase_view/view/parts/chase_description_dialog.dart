@@ -1,8 +1,14 @@
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: public_member_api_docs
 
-void showDescriptionDialog(BuildContext context, Chase chase) {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../const/sizings.dart';
+import '../../../../models/chase/chase.dart';
+import '../providers/providers.dart';
+
+// ignore: long-method
+void showDescriptionDialog(BuildContext context, String chaseId) {
   showModalBottomSheet<void>(
     context: context,
     clipBehavior: Clip.hardEdge,
@@ -13,63 +19,73 @@ void showDescriptionDialog(BuildContext context, Chase chase) {
         kBorderRadiusStandard,
       ),
     ),
-    builder: (context) {
+    builder: (BuildContext context) {
       return BottomSheet(
-          onClosing: () {},
-          enableDrag: false,
-          builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.all(kPaddingMediumConstant)
-                  .copyWith(bottom: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Description",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
+        onClosing: () {},
+        enableDrag: false,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.all(kPaddingMediumConstant)
+                .copyWith(bottom: 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Description',
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.close_rounded,
                       ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.all(0),
+                    children: [
+                      Consumer(
+                        builder: (BuildContext context, WidgetRef ref, _) {
+                          final String? description = ref.watch(
+                            streamChaseProvider(chaseId).select(
+                              (AsyncValue<Chase> value) => value.value?.desc,
+                            ),
+                          );
+
+                          return Text(
+                            description ?? 'NA',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                          );
                         },
-                        icon: Icon(
-                          Icons.close_rounded,
-                        ),
-                      )
+                      ),
                     ],
                   ),
-                  Divider(),
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.all(0),
-                      children: [
-                        Text(
-                          chase.desc ?? "NA",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: kItemsSpacingSmall,
-                  ),
-                ],
-              ),
-            );
-          });
+                ),
+                SizedBox(
+                  height: kItemsSpacingSmall,
+                ),
+              ],
+            ),
+          );
+        },
+      );
     },
   );
 }
