@@ -138,20 +138,28 @@ class _ChaseDetailsState extends ConsumerState<ChaseDetails> {
                                   width: kItemsSpacingSmallConstant / 2,
                                 ),
                                 if (widget.chase.live ?? false)
-                                  const RepaintBoundary(
-                                    child: GradientAnimationChildBuilder(
-                                      shouldAnimate: true,
-                                      padding: EdgeInsets.zero,
-                                      child: GlassButton(
-                                        child: Text(
-                                          'Live!',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                  Consumer(
+                                    builder: (
+                                      BuildContext context,
+                                      WidgetRef ref,
+                                      _,
+                                    ) {
+                                      return const RepaintBoundary(
+                                        child: GradientAnimationChildBuilder(
+                                          shouldAnimate: true,
+                                          padding: EdgeInsets.zero,
+                                          child: GlassButton(
+                                            child: Text(
+                                              'Live!',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
+                                      );
+                                    },
                                   )
                                 else
                                   GlassButton(

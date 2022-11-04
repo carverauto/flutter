@@ -9,7 +9,10 @@ import '../../../notifications/view/parts/notifications_appbar_button.dart';
 class ChaseAppBar extends ConsumerStatefulWidget {
   const ChaseAppBar({
     Key? key,
+    required this.onMapExpansion,
   }) : super(key: key);
+
+  final Function(bool value) onMapExpansion;
 
   @override
   ConsumerState<ChaseAppBar> createState() => _ChaseAppBarState();
@@ -20,6 +23,15 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
   late final AnimationController animationController;
   late Animation<double> appBarMaxHeightAnimation;
 
+  void updateOnMapExpansionStatus() {
+    if (animationController.isCompleted) {
+      widget.onMapExpansion(true);
+    }
+    if (animationController.isDismissed) {
+      widget.onMapExpansion(false);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +40,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    animationController.addListener(updateOnMapExpansionStatus);
   }
 
   @override
@@ -52,6 +65,14 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     if (!animationController.isAnimating && !animationController.isCompleted) {
       animationController.forward();
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController.removeListener(updateOnMapExpansionStatus);
+
+    super.dispose();
   }
 
   @override

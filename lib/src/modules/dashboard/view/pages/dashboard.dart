@@ -41,8 +41,8 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class _DashboardMainView extends ConsumerWidget {
-  _DashboardMainView({
+class _DashboardMainView extends ConsumerStatefulWidget {
+  const _DashboardMainView({
     Key? key,
     required this.chasesPaginationProvider,
     required this.logger,
@@ -51,15 +51,35 @@ class _DashboardMainView extends ConsumerWidget {
   final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;
   final Logger logger;
-  final ScrollController controller = ScrollController();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DashboardMainView> createState() => _DashboardMainViewState();
+}
+
+class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
+  final ScrollController controller = ScrollController();
+
+  bool isMapExpanded = false;
+
+  void onMapExpansion(bool value) {
+    if (value != isMapExpanded) {
+      setState(() {
+        isMapExpanded = value;
+      });
+    }
+  }
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
     return RefreshIndicator(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
       edgeOffset: kItemsSpacingLargeConstant,
       onRefresh: () async {
-        await ref.read(chasesPaginationProvider.notifier).fetchFirstPage(true);
+        await ref
+            .read(widget.chasesPaginationProvider.notifier)
+            .fetchFirstPage(true);
         ref.refresh(topChasesStreamProvider);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -111,12 +131,16 @@ class _DashboardMainView extends ConsumerWidget {
             ),
           ),
           CustomScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
+            physics: isMapExpanded
+                ? const NeverScrollableScrollPhysics()
+                : const AlwaysScrollableScrollPhysics(),
             restorationId: 'Chases List',
             controller: controller,
             slivers: [
               // AppBar
-              const ChaseAppBar(),
+              ChaseAppBar(
+                onMapExpansion: onMapExpansion,
+              ),
 
               // Error if removed (Need to report)
               const SliverToBoxAdapter(
@@ -171,7 +195,7 @@ class _DashboardMainView extends ConsumerWidget {
               ),
 
               TopChasesListView(
-                logger: logger,
+                logger: widget.logger,
               ),
 
               const SliverToBoxAdapter(
@@ -258,7 +282,7 @@ class _DashboardMainView extends ConsumerWidget {
                             RouteName.RECENT_CHASESS_VIEW_ALL,
                             arguments: {
                               'chasesPaginationProvider':
-                                  chasesPaginationProvider,
+                                  widget.chasesPaginationProvider,
                             },
                           );
                         },
@@ -289,8 +313,8 @@ class _DashboardMainView extends ConsumerWidget {
               ),
 
               RecentChasesList(
-                chasesPaginationProvider: chasesPaginationProvider,
-                logger: logger,
+                chasesPaginationProvider: widget.chasesPaginationProvider,
+                logger: widget.logger,
               ),
               const SliverToBoxAdapter(
                 child: SizedBox(
