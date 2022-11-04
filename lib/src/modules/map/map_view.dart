@@ -31,11 +31,13 @@ class MapBoxView extends ConsumerStatefulWidget {
     this.showAppBar = false,
     required this.onSymbolTap,
     required this.onExpansionButtonTap,
+    required this.animation,
   });
 
   final bool showAppBar;
   final VoidCallback onSymbolTap;
   final VoidCallback onExpansionButtonTap;
+  final Animation<double> animation;
 
   @override
   ConsumerState<MapBoxView> createState() => _MapBoxViewState();
@@ -452,9 +454,17 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               ),
             ],
           ),
-          Positioned(
-            bottom: kPaddingSmallConstant,
-            right: 0,
+          AnimatedBuilder(
+            animation: widget.animation,
+            builder: (BuildContext context, Widget? child) {
+              return Positioned(
+                bottom: kPaddingSmallConstant +
+                    (MediaQuery.of(context).size.height / 2 - 50) *
+                        widget.animation.value,
+                right: 0,
+                child: child!,
+              );
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,

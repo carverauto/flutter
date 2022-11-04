@@ -82,6 +82,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
       animation: animationController,
       child: MapBoxView(
         onSymbolTap: extendTheMap,
+        animation: animationController.view,
         onExpansionButtonTap: () {
           if (animationController.isAnimating) {
             return;
