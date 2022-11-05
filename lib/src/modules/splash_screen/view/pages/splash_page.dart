@@ -79,6 +79,10 @@ class _SplashViewState extends State<SplashView>
       SvgPicture.asset('assets/icon/nodle.svg').pictureProvider,
       context,
     );
+    precachePicture(
+      SvgPicture.asset(donutSVG).pictureProvider,
+      context,
+    );
     precacheImage(
       const AssetImage(defaultAssetChaseImage),
       context,
