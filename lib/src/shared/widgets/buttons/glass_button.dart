@@ -11,39 +11,86 @@ class GlassButton extends StatelessWidget {
     required this.child,
     this.padding,
     this.onTap,
-    this.shape,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
-  final ShapeBorder? shape;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      clipBehavior: Clip.hardEdge,
-      color: primaryColor.shade500.withOpacity(0.3),
-      shape: shape,
-      type: MaterialType.button,
+    return CustomPaint(
+      painter: GlassBGPainter(),
       child: InkWell(
         onTap: onTap,
-        borderRadius:
-            shape != null ? null : BorderRadius.circular(kBorderRadiusStandard),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: blurValue,
-            sigmaY: blurValue,
-          ),
-          child: Padding(
-            padding: padding ??
-                const EdgeInsets.all(
-                  kPaddingSmallConstant / 2,
-                ),
-            child: child,
-          ),
+        child: Padding(
+          padding: padding ??
+              const EdgeInsets.all(
+                kPaddingSmallConstant / 2,
+              ),
+          child: child,
         ),
       ),
     );
+  }
+}
+
+class GlassBg extends StatelessWidget {
+  const GlassBg({
+    Key? key,
+    required this.child,
+    this.padding,
+  }) : super(key: key);
+
+  final Widget child;
+  final EdgeInsets? padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: GlassBGPainter(blureBg: true),
+      child: Padding(
+        padding: padding ??
+            const EdgeInsets.all(
+              kPaddingSmallConstant / 2,
+            ),
+        child: child,
+      ),
+    );
+  }
+}
+
+class GlassBGPainter extends CustomPainter {
+  GlassBGPainter({
+    this.blureBg = false,
+  });
+  final bool blureBg;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = primaryColor.shade600.withOpacity(0.3)
+      ..imageFilter = blureBg
+          ? ImageFilter.blur(
+              sigmaX: blurValue,
+              sigmaY: blurValue,
+            )
+          : null
+      ..style = PaintingStyle.fill;
+
+    final RRect rrect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      const Radius.circular(kBorderRadiusStandard),
+    );
+
+    canvas
+      ..clipRRect(rrect)
+      ..drawPaint(paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return false;
   }
 }

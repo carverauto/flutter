@@ -93,7 +93,7 @@ class TopChaseBuilder extends StatelessWidget {
                       child: GradientAnimationChildBuilder(
                         shouldAnimate: true,
                         padding: EdgeInsets.zero,
-                        child: GlassButton(
+                        child: GlassBg(
                           child: Text(
                             'Live!',
                             style: TextStyle(
@@ -105,7 +105,7 @@ class TopChaseBuilder extends StatelessWidget {
                       ),
                     )
                   else
-                    GlassButton(
+                    GlassBg(
                       child: Text(
                         dateAdded(chase),
                         style: TextStyle(

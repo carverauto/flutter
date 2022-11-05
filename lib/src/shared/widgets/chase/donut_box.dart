@@ -17,7 +17,7 @@ class DonutBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassButton(
+    return GlassBg(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

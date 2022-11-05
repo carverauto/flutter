@@ -112,21 +112,9 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
         children: [
           Positioned.fill(
             child: RepaintBoundary(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      primaryColor.shade700,
-                      primaryColor.shade900.withOpacity(0.4),
-                    ],
-                    stops: const [
-                      0.0,
-                      0.8,
-                    ],
-                  ),
-                ),
+              child: CustomPaint(
+                painter: DashboardBGPainter(),
+                size: MediaQuery.of(context).size,
               ),
             ),
           ),
@@ -345,22 +333,9 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                   },
                   child: isMapExpanded
                       ? const SizedBox.shrink()
-                      : const DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                                Color.fromARGB(255, 26, 25, 25),
-                                Colors.transparent,
-                              ],
-                              stops: [
-                                0.0,
-                                0.2,
-                              ],
-                            ),
-                          ),
-                          child: SizedBox.expand(),
+                      : CustomPaint(
+                          painter: OverlayCustomPainter(),
+                          size: MediaQuery.of(context).size,
                         ),
                 ),
               ),
@@ -369,5 +344,63 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
         ],
       ),
     );
+  }
+}
+
+class OverlayCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Colors.white
+      ..shader = const LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: [
+          Color.fromARGB(255, 26, 25, 25),
+          Colors.transparent,
+        ],
+        stops: [
+          0.0,
+          0.2,
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPaint(paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return false;
+  }
+}
+
+class DashboardBGPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Colors.white
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          primaryColor.shade700,
+          primaryColor.shade900.withOpacity(0.4),
+        ],
+        stops: const [
+          0.0,
+          0.8,
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..style = PaintingStyle.fill;
+
+    canvas.drawPaint(paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return false;
   }
 }

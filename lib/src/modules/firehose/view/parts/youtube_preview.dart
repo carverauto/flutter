@@ -194,7 +194,7 @@ class VolumeOnOffButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassButton(
-      shape: const CircleBorder(),
+      // shape: const CircleBorder(),
       onTap: onTap,
       child: Icon(
         isMuted ? Icons.volume_off : Icons.volume_up,
