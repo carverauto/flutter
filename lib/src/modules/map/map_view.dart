@@ -1,5 +1,8 @@
+// ignore_for_file: cascade_invocations
+
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -20,7 +23,7 @@ import '../../models/birds_of_fire/birds_of_fire.dart';
 import '../../models/ship/ship.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
 import '../bof/bof_view.dart';
-import 'data/mapdb.dart';
+import 'providers.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 //TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
@@ -32,12 +35,19 @@ class MapBoxView extends ConsumerStatefulWidget {
     required this.onSymbolTap,
     required this.onExpansionButtonTap,
     required this.animation,
+    this.symbolId,
+    this.latLng,
   });
 
   final bool showAppBar;
-  final VoidCallback onSymbolTap;
+  final void Function(
+    String? id,
+    LatLng? latLng,
+  ) onSymbolTap;
   final VoidCallback onExpansionButtonTap;
   final Animation<double> animation;
+  final String? symbolId;
+  final LatLng? latLng;
 
   @override
   ConsumerState<MapBoxView> createState() => _MapBoxViewState();
@@ -46,29 +56,27 @@ class MapBoxView extends ConsumerStatefulWidget {
 class _MapBoxViewState extends ConsumerState<MapBoxView>
     with WidgetsBindingObserver {
   late final MapboxMapController mapboxMapController;
-  StreamSubscription<List<Ship>>? shipsStreamSubscription;
-  StreamSubscription<List<ADSB>>? adsbStreamSubscription;
+  bool hasStylesLoaded = false;
 
   Symbol? infosymbol;
-  final MapDB mapDB = MapDB();
-  late List<double>? lastMapCenteredCoordinates;
 
-  Future<void> get saveCameralastPosition async {
-    if (mapboxMapController.cameraPosition != null) {
-      await mapDB.setLastMapCenteredCoordinates([
-        mapboxMapController.cameraPosition!.target.latitude,
-        mapboxMapController.cameraPosition!.target.longitude,
+  Future<void> saveCameralastPosition(LatLng? latlng) async {
+    if (latlng != null) {
+      await ref.read(mapDBProvider).setLastMapCenteredCoordinates([
+        latlng.latitude,
+        latlng.longitude,
       ]);
     }
   }
 
   Future<void> getLastMapCoordinates() async {
-    lastMapCenteredCoordinates = await mapDB.getLastMapCenteredCoordinates;
+    final List<double>? lastMapCenteredCoordinates =
+        await ref.read(mapDBProvider).getLastMapCenteredCoordinates;
     if (lastMapCenteredCoordinates != null) {
       final CameraPosition cameraPosition = CameraPosition(
         target: LatLng(
-          lastMapCenteredCoordinates![0],
-          lastMapCenteredCoordinates![1],
+          lastMapCenteredCoordinates[0],
+          lastMapCenteredCoordinates[1],
         ),
         zoom: 4,
       );
@@ -80,9 +88,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   // bool? isLocationOn;
   final Logger logger = Logger('MapBox View');
 
-  Future<void> _onMapCreated(MapboxMapController controller) async {
-    mapboxMapController = controller;
-
+  // ignore: long-method
+  Future<void> _onStyleLoaded() async {
+    log('Map Styles Loaded');
     final ByteData heli = await rootBundle.load('assets/helicopter.png');
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
@@ -101,13 +109,32 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
     await mapboxMapController.setSymbolIconAllowOverlap(true);
     mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
-    loadADSBSymbols();
-    loadShipssymbols();
-    Timer(const Duration(milliseconds: 200), () async {
-      if (mounted) {
-        await getLastMapCoordinates();
-      }
+
+    final List<ADSB> adsbList = ref.read(adsbStreamProvider).value ?? [];
+    await loadADSBSymbols(adsbList);
+    final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
+    await loadShipssymbols(shipsList);
+
+    setState(() {
+      hasStylesLoaded = true;
     });
+
+    if (widget.symbolId == null) {
+      Timer(const Duration(milliseconds: 200), () async {
+        if (mounted) {
+          await getLastMapCoordinates();
+        }
+      });
+    } else {
+      if (Platform.isAndroid) {
+        await moveToSymbol(widget.symbolId);
+      }
+    }
+  }
+
+  Future<void> _onMapCreated(MapboxMapController controller) async {
+    log('Map Controller Loaded');
+    mapboxMapController = controller;
   }
 
   Future<void> onSymbolTappedErrorWrapper(Symbol symbol) async {
@@ -120,6 +147,18 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
 
   // ignore: long-method
   Future<void> onSymbolTapped(Symbol symbol, [bool zoomIn = true]) async {
+    //temp fix for android expansion workflow
+    if (Platform.isAndroid) {
+      if (!widget.showAppBar) {
+        widget.onSymbolTap(
+          symbol.data?['id'] as String?,
+          symbol.options.geometry,
+        );
+        return;
+      }
+    }
+    //
+
     log('Symbol tapped');
     if (infosymbol != null) {
       final List<Symbol> allInfoSymbols = mapboxMapController.symbols
@@ -227,6 +266,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         iconAnchor: 'bottom',
       ),
     );
+
     if (zoomIn) {
       if (infosymbol != null) {
         await mapboxMapController.animateCamera(
@@ -239,7 +279,11 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         );
       }
     }
-    widget.onSymbolTap();
+
+    widget.onSymbolTap(
+      symbol.id,
+      symbol.options.geometry,
+    );
   }
 
   // late BitmapDescriptor? markerImage;
@@ -253,96 +297,111 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   //   setState(() {});
   // }
 
-  void loadADSBSymbols() {
-    adsbStreamSubscription =
-        mapDB.adsbStream().listen((List<ADSB> adsbList) async {
-      log('ADSB Data Update');
-      for (final ADSB adsb in adsbList) {
-        final String image = adsb.type == 'plane' ? 'plane' : 'heli';
-        final Set<Symbol> presentSymbols = mapboxMapController.symbols;
+  // ignore: long-method
+  Future<void> loadADSBSymbols(List<ADSB> adsbList) async {
+    log('ADSB Data Update');
+    for (final ADSB adsb in adsbList) {
+      final String image = adsb.type == 'plane' ? 'plane' : 'heli';
+      final Set<Symbol> presentSymbols = mapboxMapController.symbols;
 
-        final Symbol? symbol = presentSymbols.firstWhereOrNull(
-          (Symbol element) => element.data?['id'] == adsb.id,
+      final Symbol? symbol = presentSymbols.firstWhereOrNull(
+        (Symbol element) => element.data?['id'] == adsb.id,
+      );
+      if (symbol != null) {
+        await mapboxMapController.updateSymbol(
+          symbol,
+          SymbolOptions(
+            geometry: LatLng(adsb.lat, adsb.lon),
+            iconImage: image,
+            iconSize: 1.3,
+            iconRotate: adsb.track,
+            zIndex: 10,
+          ),
         );
-        if (symbol != null) {
-          await mapboxMapController.updateSymbol(
-            symbol,
-            SymbolOptions(
-              geometry: LatLng(adsb.lat, adsb.lon),
-              iconImage: image,
-              iconSize: 1.3,
-              iconRotate: adsb.track,
-              zIndex: 10,
-            ),
-          );
-        } else {
-          final String? imageUrl = adsb.imageUrl != null
-              ? 'https://chaseapp.tv${adsb.imageUrl}'
-              : null;
+      } else {
+        final String? imageUrl = adsb.imageUrl != null
+            ? 'https://chaseapp.tv${adsb.imageUrl}'
+            : null;
 
-          await mapboxMapController.addSymbol(
-            SymbolOptions(
-              geometry: LatLng(adsb.lat, adsb.lon),
-              iconImage: image,
-              iconSize: 1.3,
-              iconRotate: adsb.track,
-              zIndex: 10,
-            ),
-            <String, dynamic>{
-              'title': adsb.id,
-              'id': adsb.id,
-              'group': adsb.group,
-              'subtitle': adsb.group,
-              'imageUrl': imageUrl,
-              'type': 'adsb',
-            },
-          );
+        final Symbol symbol = await mapboxMapController.addSymbol(
+          SymbolOptions(
+            geometry: LatLng(adsb.lat, adsb.lon),
+            iconImage: image,
+            iconSize: 1.3,
+            iconRotate: adsb.track,
+            zIndex: 10,
+          ),
+          <String, dynamic>{
+            'title': adsb.id,
+            'id': adsb.id,
+            'group': adsb.group,
+            'subtitle': adsb.group,
+            'imageUrl': imageUrl,
+            'type': 'adsb',
+          },
+        );
+        if (Platform.isAndroid) {
+          if (symbol.id == widget.symbolId) {
+            await onSymbolTapped(symbol);
+          }
         }
       }
-    });
+    }
   }
 
-  void loadShipssymbols() {
-    shipsStreamSubscription =
-        mapDB.shipsStream().listen((List<Ship> adsbList) async {
-      log('Ships Data Update');
-      for (final Ship ship in adsbList) {
-        final Set<Symbol> presentSymbols = mapboxMapController.symbols;
+  Future<void> loadShipssymbols(List<Ship> shipsList) async {
+    log('Ships Data Update');
+    for (final Ship ship in shipsList) {
+      final Set<Symbol> presentSymbols = mapboxMapController.symbols;
 
-        final Symbol? symbol = presentSymbols.firstWhereOrNull(
-          (Symbol element) => element.data!['id'] == ship.id,
+      final Symbol? symbol = presentSymbols.firstWhereOrNull(
+        (Symbol element) => element.data?['id'] == ship.id,
+      );
+      if (symbol != null) {
+        await mapboxMapController.updateSymbol(
+          symbol,
+          SymbolOptions(
+            geometry: LatLng(ship.lat, ship.lon),
+
+            iconImage: 'boat',
+            // iconSize: 0.1,
+            iconRotate: ship.heading,
+          ),
         );
-        if (symbol != null) {
-          await mapboxMapController.updateSymbol(
-            symbol,
-            SymbolOptions(
-              geometry: LatLng(ship.lat, ship.lon),
+      } else {
+        await mapboxMapController.addSymbol(
+          SymbolOptions(
+            geometry: LatLng(ship.lat, ship.lon),
 
-              iconImage: 'boat',
-              // iconSize: 0.1,
-              iconRotate: ship.heading,
-            ),
-          );
-        } else {
-          await mapboxMapController.addSymbol(
-            SymbolOptions(
-              geometry: LatLng(ship.lat, ship.lon),
-
-              iconImage: 'boat',
-              // iconSize: 0.1,
-              iconRotate: ship.heading,
-            ),
-            <String, dynamic>{
-              'title': ship.name,
-              'id': ship.id,
-              'mmsi': ship.mmsi,
-              'subtitle': ship.mmsi != null ? '${ship.mmsi}' : null,
-              'type': 'ship',
-            },
-          );
-        }
+            iconImage: 'boat',
+            // iconSize: 0.1,
+            iconRotate: ship.heading,
+          ),
+          <String, dynamic>{
+            'title': ship.name,
+            'id': ship.id,
+            'mmsi': ship.mmsi,
+            'subtitle': ship.mmsi != null ? '${ship.mmsi}' : null,
+            'type': 'ship',
+          },
+        );
       }
-    });
+    }
+  }
+
+  Future<void> moveToSymbol(String? id) async {
+    final Symbol? symbol = mapboxMapController.symbols.firstWhereOrNull(
+      (Symbol element) => element.data?['id'] == id,
+    );
+    if (symbol != null) {
+      await mapboxMapController.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          symbol.options.geometry!,
+          10,
+        ),
+      );
+      await onSymbolTapped(symbol, false);
+    }
   }
 
   @override
@@ -356,18 +415,18 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     // TODO: implement didChangeAppLifecycleState
     if (state != AppLifecycleState.resumed) {
-      await saveCameralastPosition;
+      await saveCameralastPosition(mapboxMapController.cameraPosition?.target);
     }
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     // TODO: implement dispose
-    await saveCameralastPosition;
-    await shipsStreamSubscription?.cancel();
-    await adsbStreamSubscription?.cancel();
+
     mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
-    mapboxMapController.dispose();
+    saveCameralastPosition(mapboxMapController.cameraPosition?.target);
+    // called by mapboxview on dispose
+    // mapboxMapController.dispose();
 
     super.dispose();
   }
@@ -379,18 +438,28 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       (BirdsOfFire? prev, BirdsOfFire? next) {
         if (next != null) {
           // find the symbol from choppers who'se id is next
-          final Symbol? symbol = mapboxMapController.symbols.firstWhereOrNull(
-            (Symbol element) => element.data?['id'] == next.properties.title,
-          );
-          if (symbol != null) {
-            mapboxMapController.animateCamera(
-              CameraUpdate.newLatLngZoom(
-                symbol.options.geometry!,
-                10,
-              ),
-            );
-            onSymbolTapped(symbol, false);
-          }
+
+          moveToSymbol(next.properties.title);
+        }
+      },
+    );
+
+    ref.listen<AsyncValue<List<Ship>>>(
+      shipsStreamProvider,
+      (AsyncValue<List<Ship>>? previous, AsyncValue<List<Ship>> next) async {
+        final List<Ship> shipsList = next.value ?? [];
+        if (hasStylesLoaded && previous != null) {
+          await loadShipssymbols(shipsList);
+        }
+      },
+    );
+
+    ref.listen<AsyncValue<List<ADSB>>>(
+      adsbStreamProvider,
+      (AsyncValue<List<ADSB>>? previous, AsyncValue<List<ADSB>> next) async {
+        final List<ADSB> adsbsList = next.value ?? [];
+        if (hasStylesLoaded && previous != null) {
+          await loadADSBSymbols(adsbsList);
         }
       },
     );
@@ -405,64 +474,60 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: MapboxMap(
-                  trackCameraPosition: true,
-                  minMaxZoomPreference: const MinMaxZoomPreference(4, 100),
-                  styleString: MapboxStyles.DARK,
-                  accessToken: EnvVaribales.getMapBoxPublicAccessToken,
-                  attributionButtonMargins: const math.Point(-200, 0),
+          MapboxMap(
+            trackCameraPosition: true,
+            styleString: MapboxStyles.DARK,
+            accessToken: EnvVaribales.getMapBoxPublicAccessToken,
+            attributionButtonMargins: const math.Point(-200, 0),
 
-                  logoViewMargins: const math.Point(-200, 0),
-                  onMapCreated: _onMapCreated,
+            logoViewMargins: const math.Point(-200, 0),
+            onMapCreated: _onMapCreated,
+            onStyleLoadedCallback: _onStyleLoaded,
 
-                  onMapClick: (math.Point<double> point, LatLng latlong) async {
-                    if (infosymbol != null) {
-                      final List<Symbol> allInfoSymbols =
-                          mapboxMapController.symbols
-                              .where(
-                                (Symbol info) =>
-                                    info.options.iconImage == 'infoWindow',
-                              )
-                              .toList();
-                      for (final Symbol element in allInfoSymbols) {
-                        await mapboxMapController.removeSymbol(element);
-                      }
-                      // await mapboxMapController.removeSymbol(infosymbol!);
-                    }
-                  },
-                  // myLocationEnabled: true,
-                  // ignore: prefer_collection_literals
-                  gestureRecognizers: const <
-                      Factory<OneSequenceGestureRecognizer>>{
-                    Factory<OneSequenceGestureRecognizer>(
-                      VerticalDragGestureRecognizer.new,
-                    ),
-                    Factory<DragGestureRecognizer>(
-                      HorizontalDragGestureRecognizer.new,
-                    ),
-                  },
-
-                  myLocationRenderMode: MyLocationRenderMode.NORMAL,
-                  initialCameraPosition: const CameraPosition(
-                    target: LatLng(
-                      34.052235,
-                      -118.243683,
-                    ),
-                  ),
-                ),
+            onMapClick: (math.Point<double> point, LatLng latlong) async {
+              if (infosymbol != null) {
+                final List<Symbol> allInfoSymbols = mapboxMapController.symbols
+                    .where(
+                      (Symbol info) => info.options.iconImage == 'infoWindow',
+                    )
+                    .toList();
+                for (final Symbol element in allInfoSymbols) {
+                  await mapboxMapController.removeSymbol(element);
+                }
+              }
+            },
+            // ignore: prefer_collection_literals
+            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{
+              Factory<OneSequenceGestureRecognizer>(
+                VerticalDragGestureRecognizer.new,
               ),
-            ],
+              Factory<DragGestureRecognizer>(
+                HorizontalDragGestureRecognizer.new,
+              ),
+            },
+
+            myLocationRenderMode: MyLocationRenderMode.NORMAL,
+            initialCameraPosition: CameraPosition(
+              target: widget.latLng ??
+                  const LatLng(
+                    34.052235,
+                    -118.243683,
+                  ),
+              zoom: widget.latLng != null ? 10 : 4,
+            ),
           ),
           AnimatedBuilder(
             animation: widget.animation,
             builder: (BuildContext context, Widget? child) {
               return Positioned(
-                bottom: kPaddingSmallConstant +
-                    (MediaQuery.of(context).size.height / 2 - 50) *
-                        widget.animation.value,
+                bottom: Theme.of(context).platform == TargetPlatform.android
+                    ? kPaddingSmallConstant +
+                        (widget.showAppBar
+                            ? (MediaQuery.of(context).size.height / 2 - 50)
+                            : 0)
+                    : kPaddingSmallConstant +
+                        (MediaQuery.of(context).size.height / 2 - 50) *
+                            widget.animation.value,
                 right: 0,
                 child: child!,
               );
@@ -550,18 +615,19 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                           width: 34,
                         ),
                       ),
-                      InkWell(
-                        onTap: widget.onExpansionButtonTap,
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            kPaddingSmallConstant,
-                          ),
-                          child: Icon(
-                            Icons.open_with,
-                            color: Theme.of(context).primaryColor,
+                      if (!widget.showAppBar)
+                        InkWell(
+                          onTap: widget.onExpansionButtonTap,
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              kPaddingSmallConstant,
+                            ),
+                            child: Icon(
+                              Icons.open_with,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -571,6 +637,14 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               ],
             ),
           ),
+          if (Theme.of(context).platform == TargetPlatform.android)
+            if (widget.showAppBar)
+              const Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: BofView(),
+              ),
         ],
       ),
     );

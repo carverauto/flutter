@@ -1,5 +1,8 @@
+import 'dart:io' as io;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../../const/images.dart';
 import '../../../bof/bof_view.dart';
@@ -38,7 +41,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
     );
     animationController.addListener(updateOnMapExpansionStatus);
   }
@@ -61,9 +64,39 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
         .animate(animationController);
   }
 
-  void extendTheMap() {
+  void extendTheMap(String? symbolId, LatLng? latLng) {
+    if (io.Platform.isAndroid) {
+      navigateToMapFullView(context, symbolId, latLng);
+      return;
+    }
     if (!animationController.isAnimating && !animationController.isCompleted) {
       animationController.forward();
+    }
+  }
+
+  void navigateToMapFullView(
+    BuildContext context, [
+    String? symbolId,
+    LatLng? latlng,
+  ]) {
+    if (!Navigator.canPop(context)) {
+      Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return MapBoxView(
+              symbolId: symbolId,
+              latLng: latlng,
+              onSymbolTap: (
+                String? id,
+                LatLng? latLng,
+              ) {},
+              showAppBar: true,
+              animation: const AlwaysStoppedAnimation(0),
+              onExpansionButtonTap: () {},
+            );
+          },
+        ),
+      );
     }
   }
 
@@ -98,39 +131,43 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
         }
       }
     });
+    const ChaseAppLogoImage title = ChaseAppLogoImage();
+    const NotificationsAppbarButton notificationButton =
+        NotificationsAppbarButton();
 
     return AnimatedBuilder(
       animation: animationController,
-      child: MapBoxView(
-        onSymbolTap: extendTheMap,
-        animation: animationController.view,
-        onExpansionButtonTap: () {
-          if (animationController.isAnimating) {
-            return;
-          }
-          if (animationController.isCompleted) {
-            animationController.reverse();
-          } else {
-            animationController.forward();
-          }
-        },
+      child: FlexibleSpaceBar(
+        background: MapBoxView(
+          onSymbolTap: extendTheMap,
+          animation: animationController.view,
+          onExpansionButtonTap: () {
+            if (io.Platform.isAndroid) {
+              navigateToMapFullView(context);
+              return;
+            }
+
+            if (animationController.isAnimating) {
+              return;
+            }
+            if (animationController.isCompleted) {
+              animationController.reverse();
+            } else {
+              animationController.forward();
+            }
+          },
+        ),
       ),
       builder: (BuildContext context, Widget? map) {
         return SliverAppBar(
           centerTitle: true,
           // backgroundColor: Colors.transparent,
-          title: const ChaseAppLogoImage(),
+          title: title,
           floating: true,
           expandedHeight: appBarMaxHeightAnimation.value,
-          flexibleSpace: FlexibleSpaceBar(
-            background: AspectRatio(
-              aspectRatio: 16 / 9,
-              // GEstureDetector won't work?
-              child: map!,
-            ),
-          ),
+          flexibleSpace: map,
           actions: const [
-            NotificationsAppbarButton(),
+            notificationButton,
           ],
         );
       },
