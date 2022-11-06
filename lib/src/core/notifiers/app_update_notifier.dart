@@ -7,6 +7,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../models/app_update_info/app_update_info.dart';
 import '../../shared/widgets/dialogs/app_update_dialog.dart';
@@ -28,12 +29,11 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
   late AppUpdateInfo _appUpdateInfo;
 
   bool isInfoInitialized = false;
+  final Logger logger = Logger('AppUpdateStateNotifier');
 
   Future<void> showOrNotShowUpdateDialog(BuildContext context) async {
     if (_appUpdateInfo.shouldUpdate) {
-      //if (_appUpdateInfo.forceUpdate) {
       await showUpdateDialog(context, _appUpdateInfo);
-      // }
     }
   }
 
@@ -113,7 +113,12 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         await read(sharedPreferancesProvider).setBool('should_fetch', false);
 
         state = AsyncValue.data(_appUpdateInfo);
-      } catch (e) {
+      } catch (e, stk) {
+        logger.warning(
+          'Something went wrong while checking if app requires an update.',
+          e,
+          stk,
+        );
         state = AsyncValue.error(e);
       }
     } else {
