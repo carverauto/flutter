@@ -7,15 +7,18 @@ import '../../../models/adsb/adsb.dart';
 import '../../../models/ship/ship.dart';
 
 class MapDB {
+  MapDB({required this.sharedPreferences});
+
+  final SharedPreferences sharedPreferences;
+
   static final DatabaseReference _firebaseDatabase =
       FirebaseDatabase.instance.ref();
   final DatabaseReference _adsbRef = _firebaseDatabase.child('adsb');
   final DatabaseReference _shipsRef = _firebaseDatabase.child('ships/1');
 
   Future<List<double>?> get getLastMapCenteredCoordinates async {
-    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
     final List<String>? lastMapCenteredCoordinates =
-        sharedPref.getStringList('lastMapCenteredCoordinates');
+        sharedPreferences.getStringList('lastMapCenteredCoordinates');
 
     return lastMapCenteredCoordinates?.map(double.parse).toList();
   }
@@ -23,8 +26,7 @@ class MapDB {
   Future<void> setLastMapCenteredCoordinates(
     List<double> coordinates,
   ) async {
-    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    await sharedPref.setStringList(
+    await sharedPreferences.setStringList(
       'lastMapCenteredCoordinates',
       coordinates.map((double e) => e.toString()).toList(),
     );
