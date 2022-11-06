@@ -33,92 +33,115 @@ class BofView extends ConsumerWidget {
         final List<BirdsOfFire> clusteredBofObjects = bofObjects
             .where((BirdsOfFire bof) => bof.properties.cluster != null)
             .toList();
-        if (clusteredBofObjects.isEmpty) {
-          WidgetsBinding.instance.addPostFrameCallback((Duration t) {
-            ref.read(isBOFActiveProvider.state).update((bool state) => false);
-          });
-          return const SizedBox.shrink();
-        }
+
         final Map<int, List<BirdsOfFire>> bofGroups = groupBy(
           clusteredBofObjects,
           (BirdsOfFire bof) => bof.properties.cluster!,
         );
         WidgetsBinding.instance.addPostFrameCallback((Duration t) {
-          ref.read(isBOFActiveProvider.state).update((bool state) => true);
+          ref
+              .read(isBOFActiveProvider.state)
+              .update((bool state) => clusteredBofObjects.isNotEmpty);
         });
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: kPaddingMediumConstant),
-              child: Text(
-                '🚨 Cluster Alert',
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontWeight: FontWeight.bold,
-                    ),
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position:
+                    Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+                        .animate(animation),
+                child: child,
               ),
-            ),
-            const SizedBox(
-              height: kPaddingSmallConstant,
-            ),
-            SizedBox(
-              height: kToolbarHeight + 10,
-              child: ListView.builder(
-                itemCount: bofGroups.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  final int clusterValue = bofGroups.keys.elementAt(index);
-                  final List<BirdsOfFire> bofgroup = bofGroups[clusterValue]!;
-
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: kPaddingMediumConstant,
-                    ),
-                    child: Row(
-                      children: bofgroup.map<Widget>((BirdsOfFire e) {
-                        final String imageUrl = e.properties.imageUrl.isEmpty
-                            ? defaultAssetChaseImage
-                            : 'https://chaseapp.tv/${e.properties.imageUrl}';
-
-                        return GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(activeClusterCoordinateProvider.state)
-                                .update(
-                                  (BirdsOfFire? state) => e,
-                                );
-                          },
-                          child: Align(
-                            widthFactor: 0.6,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 15,
-                                    spreadRadius: 1,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundImage: AdaptiveImageProvider(
-                                  imageUrl,
-                                ),
-                              ),
+            );
+          },
+          child: clusteredBofObjects.isEmpty
+              ? const SizedBox.shrink()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: kPaddingMediumConstant),
+                      child: Text(
+                        '🚨 Cluster Alert',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        );
-                      }).toList(),
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
+                    const SizedBox(
+                      height: kPaddingSmallConstant,
+                    ),
+                    SizedBox(
+                      height: kToolbarHeight + 10,
+                      child: ListView.builder(
+                        itemCount: bofGroups.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          final int clusterValue =
+                              bofGroups.keys.elementAt(index);
+                          final List<BirdsOfFire> bofgroup =
+                              bofGroups[clusterValue]!;
+
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              left: kPaddingMediumConstant,
+                            ),
+                            child: Row(
+                              children: bofgroup.map<Widget>((BirdsOfFire e) {
+                                final String imageUrl = e
+                                        .properties.imageUrl.isEmpty
+                                    ? defaultAssetChaseImage
+                                    : 'https://chaseapp.tv/${e.properties.imageUrl}';
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(
+                                          activeClusterCoordinateProvider.state,
+                                        )
+                                        .update(
+                                          (BirdsOfFire? state) => e,
+                                        );
+                                  },
+                                  child: Align(
+                                    widthFactor: 0.6,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 15,
+                                            spreadRadius: 1,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 25,
+                                        backgroundImage: AdaptiveImageProvider(
+                                          imageUrl,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
         );
       },
       loading: SizedBox.shrink,
