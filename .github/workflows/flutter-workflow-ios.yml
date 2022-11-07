@@ -1,8 +1,8 @@
 name: "ChaseApp - iOS"
 on:
   push:
-    branches:
-      - radarWWA
+    #branches:
+      #- radarWWA
     tags:
       - "v*"
 jobs:
