@@ -95,6 +95,23 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
 
+    //fetch weather radar raster tiles from mesonet then add as a mapbox source
+    final TileSet weatherRadarTileSet = TileSet(
+      'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
+      tileSize: 256,
+    );
+    final RasterSource weatherRadarSource = RasterSource(
+      'radar-source',
+      weatherRadarTileSet,
+      tileSize: 256,
+    );
+    final RasterLayer weatherRadarLayer = RasterLayer(
+      'radar',
+      'radar-source',
+    );
+    await mapboxMapController.addSource(weatherRadarSource);
+    await mapboxMapController.addLayer(weatherRadarLayer);
+
     await mapboxMapController.addImage(
       'heli',
       heli.buffer.asUint8List(),
