@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/activeTFR/activeTFR.dart';
 import '../../../models/adsb/adsb.dart';
 import '../../../models/ship/ship.dart';
 
@@ -15,6 +16,8 @@ class MapDB {
       FirebaseDatabase.instance.ref();
   final DatabaseReference _adsbRef = _firebaseDatabase.child('adsb');
   final DatabaseReference _shipsRef = _firebaseDatabase.child('ships/1');
+  final DatabaseReference _tfrRef =
+      _firebaseDatabase.child('tfr/activeTFRs/features');
 
   Future<List<double>?> get getLastMapCenteredCoordinates async {
     final List<String>? lastMapCenteredCoordinates =
@@ -86,6 +89,36 @@ class MapDB {
             .toList();
 
         return ships;
+      } else {
+        return [];
+      }
+    });
+  }
+
+  Stream<List<ActiveTFR>> activeTFRsStream() {
+    return _tfrRef.onValue.map((DatabaseEvent event) {
+      if (event.snapshot.exists) {
+        final DataSnapshot data = event.snapshot;
+
+        final String encodedData = jsonEncode(data.value);
+
+        final List<dynamic> activeTFRsList =
+            jsonDecode(encodedData) as List<dynamic>;
+
+        final List<ActiveTFR> activeTFRs = activeTFRsList
+            .asMap()
+            .map<int, ActiveTFR>((int index, dynamic value) {
+              final Map<String, dynamic> data = value as Map<String, dynamic>;
+
+              return MapEntry<int, ActiveTFR>(
+                index,
+                ActiveTFR.fromJson(data),
+              );
+            })
+            .values
+            .toList();
+
+        return activeTFRs;
       } else {
         return [];
       }

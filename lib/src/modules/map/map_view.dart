@@ -18,6 +18,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import '../../const/app_bundle_info.dart';
 import '../../const/images.dart';
 import '../../const/sizings.dart';
+import '../../models/activeTFR/activeTFR.dart';
 import '../../models/adsb/adsb.dart';
 import '../../models/birds_of_fire/birds_of_fire.dart';
 import '../../models/ship/ship.dart';
@@ -151,6 +152,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     await loadADSBSymbols(adsbList);
     final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
     await loadShipssymbols(shipsList);
+    final List<ActiveTFR> activeTFRs =
+        ref.read(activeTFRsStreamProvider).value ?? [];
+    await loadActiveTFRsymbols(activeTFRs);
 
     setState(() {
       hasStylesLoaded = true;
@@ -386,6 +390,96 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     }
   }
 
+  Future<void> addTFRSymbolAtThisLatLng(LatLng latLng) async {
+    final Widget infoWindow = MediaQuery(
+      data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+      child: const Text(
+        'TFR',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+    final Uint8List imageBytes = await createImageFromWidget(infoWindow);
+    await mapboxMapController.addImage(
+      'TFR',
+      imageBytes,
+    );
+
+    infosymbol = await mapboxMapController.addSymbol(
+      SymbolOptions(
+        geometry: latLng,
+        iconImage: 'TFR',
+        iconSize: 0.7,
+      ),
+    );
+  }
+
+  List<List<LatLng>> createGeoJSONCircle(
+    LatLng center,
+    int radiusInKm, [
+    int points = 64,
+  ]) {
+    final int km = radiusInKm;
+
+    final List<LatLng> ret = [];
+    final double distanceX =
+        km / (111.320 * math.cos(center.latitude * math.pi / 180));
+    final double distanceY = km / 110.574;
+
+    double theta, x, y;
+    for (int i = 0; i < points; i++) {
+      theta = (i / points) * (2 * math.pi);
+      x = distanceX * math.cos(theta);
+      y = distanceY * math.sin(theta);
+
+      ret.add(LatLng(center.latitude + y, center.longitude + x));
+    }
+    ret.add(ret[0]);
+
+    return [ret];
+  }
+
+  Future<void> loadActiveTFRsymbols(List<ActiveTFR> activeTFRs) async {
+    log('ActiveTFRs Data Update');
+
+    final Set<Fill> presentFills = mapboxMapController.fills;
+    for (final ActiveTFR activeTFR in activeTFRs) {
+      final Fill? fill = presentFills.firstWhereOrNull(
+        (Fill element) => element.data?['id'] == activeTFR.properties.id,
+      );
+
+      if (fill != null) {
+        //TODO: debug why updateFill doesn't work, this is workaround for that.
+        await mapboxMapController.removeFill(fill);
+      }
+      await mapboxMapController.addFill(
+        FillOptions(
+          geometry: createGeoJSONCircle(
+            LatLng(
+              activeTFR.geometry.coordinates[1],
+              activeTFR.geometry.coordinates[0],
+            ),
+            activeTFR.properties.radiusArc,
+          ),
+          fillColor: '#FF9800',
+          fillOpacity: 0.6,
+        ),
+        <String, dynamic>{
+          'id': activeTFR.properties.id,
+        },
+      );
+
+      await addTFRSymbolAtThisLatLng(
+        LatLng(
+          activeTFR.geometry.coordinates[1],
+          activeTFR.geometry.coordinates[0],
+        ),
+      );
+    }
+  }
+
   Future<void> loadShipssymbols(List<Ship> shipsList) async {
     log('Ships Data Update');
     for (final Ship ship in shipsList) {
@@ -497,6 +591,18 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         final List<ADSB> adsbsList = next.value ?? [];
         if (hasStylesLoaded && previous != null) {
           await loadADSBSymbols(adsbsList);
+        }
+      },
+    );
+    ref.listen<AsyncValue<List<ActiveTFR>>>(
+      activeTFRsStreamProvider,
+      (
+        AsyncValue<List<ActiveTFR>>? previous,
+        AsyncValue<List<ActiveTFR>> next,
+      ) async {
+        final List<ActiveTFR> activeTFRsList = next.value ?? [];
+        if (hasStylesLoaded && previous != null) {
+          await loadActiveTFRsymbols(activeTFRsList);
         }
       },
     );
