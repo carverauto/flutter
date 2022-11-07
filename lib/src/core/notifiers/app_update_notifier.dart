@@ -84,9 +84,15 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         final Map<String, dynamic> latest_app_version_map =
             jsonDecode(remoteConfig.getString('latest_app_version'))
                 as Map<String, dynamic>;
+        final String androidVersionString =
+            latest_app_version_map['android'] as String;
+        final int androidVersion =
+            int.parse(androidVersionString.split('.').join());
+        final String iosVersionString = latest_app_version_map['ios'] as String;
+        final int iosVersion = int.parse(iosVersionString.split('.').join());
         final LatestAppVersion latest_app_version = LatestAppVersion(
-          android: latest_app_version_map['android'] as String,
-          ios: latest_app_version_map['ios'] as String,
+          android: androidVersion,
+          ios: iosVersion,
         );
         final bool force_update = remoteConfig.getBool('force_update');
 
@@ -100,8 +106,10 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         } else {
           log('Remote Config prev updated');
         }
+        final int currentVersion =
+            int.parse(current_app_version.split('.').join());
         _appUpdateInfo = AppUpdateInfo(
-          current_app_version: current_app_version,
+          current_app_version: currentVersion,
           app_store: store_url['app_store'] as String,
           force_update: force_update,
           latest_app_version: latest_app_version,

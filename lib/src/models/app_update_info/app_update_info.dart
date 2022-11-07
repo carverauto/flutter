@@ -11,14 +11,14 @@ class AppUpdateInfo {
 
   bool get shouldUpdate {
     if (Platform.isAndroid) {
-      return current_app_version != latest_app_version.android;
+      return current_app_version < latest_app_version.android;
     } else {
-      return current_app_version != latest_app_version.ios;
+      return current_app_version < latest_app_version.ios;
     }
   }
 
   bool get forceUpdate => force_update;
-  final String current_app_version;
+  final int current_app_version;
   final LatestAppVersion latest_app_version;
   final bool force_update;
   final String play_store;
@@ -30,6 +30,6 @@ class LatestAppVersion {
     required this.android,
     required this.ios,
   });
-  final String ios;
-  final String android;
+  final int ios;
+  final int android;
 }
