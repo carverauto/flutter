@@ -96,8 +96,32 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
 
-    //fetch weather radar raster tiles from mesonet then add as a mapbox source
+    await mapboxMapController.addImage(
+      'heli',
+      heli.buffer.asUint8List(),
+    );
+    await mapboxMapController.addImage(
+      'plane',
+      plane.buffer.asUint8List(),
+    );
+    await mapboxMapController.addImage(
+      'boat',
+      boat.buffer.asUint8List(),
+    );
+    await mapboxMapController.setSymbolIconAllowOverlap(true);
+    mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
 
+    final List<ADSB> adsbList = ref.read(adsbStreamProvider).value ?? [];
+    await loadADSBSymbols(adsbList);
+    final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
+    await loadShipssymbols(shipsList);
+    final List<ActiveTFR> activeTFRs =
+        ref.read(activeTFRsStreamProvider).value ?? [];
+    await loadActiveTFRsymbols(activeTFRs);
+
+
+
+    //fetch weather radar raster tiles from mesonet then add as a mapbox source
     const RasterSourceProperties weatherRadarSource = RasterSourceProperties(
       tiles: [
         'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png',
@@ -132,30 +156,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       'Warnings_Raster_Layer',
       warningsLayer,
     );
-
-    await mapboxMapController.addImage(
-      'heli',
-      heli.buffer.asUint8List(),
-    );
-    await mapboxMapController.addImage(
-      'plane',
-      plane.buffer.asUint8List(),
-    );
-    await mapboxMapController.addImage(
-      'boat',
-      boat.buffer.asUint8List(),
-    );
-    await mapboxMapController.setSymbolIconAllowOverlap(true);
-    mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
-
-    final List<ADSB> adsbList = ref.read(adsbStreamProvider).value ?? [];
-    await loadADSBSymbols(adsbList);
-    final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
-    await loadShipssymbols(shipsList);
-    final List<ActiveTFR> activeTFRs =
-        ref.read(activeTFRsStreamProvider).value ?? [];
-    await loadActiveTFRsymbols(activeTFRs);
-
     setState(() {
       hasStylesLoaded = true;
     });
