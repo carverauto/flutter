@@ -112,7 +112,7 @@ dependencies:
   stream_feed_flutter_core: ^0.7.0+1
 
   # Testing
-  mapbox_gl: 0.15.0
+  mapbox_gl: 0.16.0
   # platform_maps_flutter: ^1.0.2
   collection: ^1.16.0
   umbra_flutter: ^0.1.0-dev.4
