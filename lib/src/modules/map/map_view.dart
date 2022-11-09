@@ -95,24 +95,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
 
-    //fetch weather radar raster tiles from mesonet then add as a mapbox source
-
-    const RasterSourceProperties weatherRadarSource = RasterSourceProperties(
-      tiles: [
-        'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png'
-      ],
-    );
-    const RasterLayerProperties weatherRadarLayer = RasterLayerProperties();
-    await mapboxMapController.addSource(
-      'Radar_Raster_Source',
-      weatherRadarSource,
-    );
-    await mapboxMapController.addLayer(
-      'Radar_Raster_Source',
-      'Radar_Raster_Layer',
-      weatherRadarLayer,
-    );
-
     await mapboxMapController.addImage(
       'heli',
       heli.buffer.asUint8List(),
@@ -132,6 +114,24 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     await loadADSBSymbols(adsbList);
     final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
     await loadShipssymbols(shipsList);
+    
+    //fetch weather radar raster tiles from mesonet then add as a mapbox source
+
+    const RasterSourceProperties weatherRadarSource = RasterSourceProperties(
+      tiles: [
+        'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png'
+      ],
+    );
+    const RasterLayerProperties weatherRadarLayer = RasterLayerProperties();
+    await mapboxMapController.addSource(
+      'Radar_Raster_Source',
+      weatherRadarSource,
+    );
+    await mapboxMapController.addLayer(
+      'Radar_Raster_Source',
+      'Radar_Raster_Layer',
+      weatherRadarLayer,
+    );
 
     setState(() {
       hasStylesLoaded = true;
