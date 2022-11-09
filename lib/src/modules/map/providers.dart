@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/top_level_providers/services_providers.dart';
+import '../../models/activeTFR/activeTFR.dart';
 import '../../models/adsb/adsb.dart';
 import '../../models/ship/ship.dart';
 import 'data/mapdb.dart';
@@ -18,4 +19,8 @@ final StreamProvider<List<ADSB>> adsbStreamProvider =
 final StreamProvider<List<Ship>> shipsStreamProvider =
     StreamProvider<List<Ship>>((StreamProviderRef<List<Ship>> ref) {
   return ref.read(mapDBProvider).shipsStream();
+});
+final StreamProvider<List<ActiveTFR>> activeTFRsStreamProvider =
+    StreamProvider<List<ActiveTFR>>((StreamProviderRef<List<ActiveTFR>> ref) {
+  return ref.read(mapDBProvider).activeTFRsStream();
 });
