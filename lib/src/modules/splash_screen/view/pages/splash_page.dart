@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:lottie/lottie.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
@@ -19,14 +23,15 @@ import '../../../../shared/widgets/loaders/loading.dart';
 
 final FutureProvider<String> splashScreenAnimationFutureProvider =
     FutureProvider<String>((FutureProviderRef<String> ref) async {
+  final Stopwatch firebaseTimer = Stopwatch()..start();
   final FirebaseRemoteConfig remoteConfig =
       ref.read(firebaseRemoteConfigProvider);
-  bool isUpdated = await remoteConfig.activate();
+  bool isUpdated = true;
   String animationUrl = remoteConfig.getString('splash_screen_animation_url');
   if (animationUrl.isEmpty) {
     await remoteConfig.setConfigSettings(
       RemoteConfigSettings(
-        fetchTimeout: const Duration(seconds: 3),
+        fetchTimeout: const Duration(seconds: 2),
         minimumFetchInterval: const Duration(),
       ),
     );
@@ -36,24 +41,60 @@ final FutureProvider<String> splashScreenAnimationFutureProvider =
   log('ANimation Url--->$isUpdated');
 
   animationUrl = remoteConfig.getString('splash_screen_animation_url');
+  final String animationUrlFilename = path.basename(animationUrl);
 
-  return animationUrl;
+  final Directory tempDirPath = await getTemporaryDirectory();
+  final String assetAnimationJsonPath =
+      path.join(tempDirPath.path, animationUrlFilename);
+  final File locallyStoredAnimationFile = File(assetAnimationJsonPath);
+  final bool fileExists = locallyStoredAnimationFile.existsSync();
+  if (!fileExists) {
+    // download the animationUrl file
+    // and save it to assetAnimationJsonPath
+    final http.Response downloadedBytes =
+        await http.get(Uri.parse(animationUrl));
+
+    final File animationAssetFile = locallyStoredAnimationFile;
+    await animationAssetFile.writeAsBytes(downloadedBytes.bodyBytes);
+    await animationAssetFile.create();
+  }
+  firebaseTimer.stop();
+  log('Firebase Timer--->${firebaseTimer.elapsedMilliseconds}');
+
+  return assetAnimationJsonPath;
 });
 
-class SplashView extends StatefulWidget {
+class SplashView extends ConsumerStatefulWidget {
   const SplashView({Key? key}) : super(key: key);
 
   @override
-  State<SplashView> createState() => _SplashViewState();
+  ConsumerState<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView>
+class _SplashViewState extends ConsumerState<SplashView>
     with SingleTickerProviderStateMixin {
   final Logger logger = Logger('SplashView');
+
+  late Timer timer;
+
+  void updateTimer(Duration duration) {
+    timer.cancel();
+    timer = Timer(duration, () async {
+      final User? user = await ref.read(streamLogInStatus.future);
+      if (mounted) {
+        await Navigator.of(context).pushReplacementNamed(
+          user != null
+              ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+              : RouteName.ONBOARDING_VIEW,
+        );
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    timer = Timer(Duration.zero, () {});
   }
 
   @override
@@ -130,8 +171,10 @@ class _SplashViewState extends State<SplashView>
 
                   return splashAnimationLoader.when(
                     data: (String animationUrl) {
+                      timer.cancel();
+
                       return Center(
-                        child: Lottie.network(
+                        child: Lottie.asset(
                           animationUrl,
                           errorBuilder: (
                             BuildContext context,
@@ -143,35 +186,27 @@ class _SplashViewState extends State<SplashView>
                               error,
                               stackTrace,
                             );
-                            Timer(const Duration(milliseconds: 300), () async {
-                              final User? user =
-                                  await ref.read(streamLogInStatus.future);
-                              await Navigator.of(context).pushReplacementNamed(
-                                user != null
-                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-                                    : RouteName.ONBOARDING_VIEW,
-                              );
-                            });
+                            updateTimer(const Duration(milliseconds: 300));
+
                             return const Center(
                               child: CircularAdaptiveProgressIndicatorWithBg(),
                             );
                           },
                           onLoaded: (LottieComposition composition) {
                             // TODO: Control the timer from Firebase as well
-                            Timer(const Duration(seconds: 4), () async {
-                              final User? user =
-                                  await ref.read(streamLogInStatus.future);
-                              await Navigator.of(context).pushReplacementNamed(
-                                user != null
-                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-                                    : RouteName.ONBOARDING_VIEW,
-                              );
-                            });
+
+                            updateTimer(
+                              const Duration(seconds: 3),
+                            );
                           },
                         ),
                       );
                     },
                     loading: () {
+                      updateTimer(
+                        const Duration(seconds: 2),
+                      );
+
                       return const Center(
                         child: CircularAdaptiveProgressIndicatorWithBg(),
                       );
@@ -182,23 +217,10 @@ class _SplashViewState extends State<SplashView>
                         error,
                         stackTrace,
                       );
+                      updateTimer(const Duration(milliseconds: 300));
 
-                      return Center(
-                        child: Lottie.asset(
-                          'assets/splash_screen_lottie_animation.json',
-                          onLoaded: (LottieComposition composition) {
-                            // TODO: Control the timer from Firebase as well
-                            Timer(const Duration(seconds: 4), () async {
-                              final User? user =
-                                  await ref.read(streamLogInStatus.future);
-                              await Navigator.of(context).pushReplacementNamed(
-                                user != null
-                                    ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-                                    : RouteName.ONBOARDING_VIEW,
-                              );
-                            });
-                          },
-                        ),
+                      return const Center(
+                        child: CircularAdaptiveProgressIndicatorWithBg(),
                       );
                     },
                   );
