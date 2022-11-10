@@ -181,12 +181,12 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     await mapboxMapController.setSymbolIconAllowOverlap(true);
     mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
 
-    final List<ADSB> adsbList = ref.read(adsbStreamProvider).value ?? [];
+    final List<ADSB> adsbList = await ref.read(adsbStreamProvider.future);
     await loadADSBSymbols(adsbList);
-    final List<Ship> shipsList = ref.read(shipsStreamProvider).value ?? [];
+    final List<Ship> shipsList = await ref.read(shipsStreamProvider.future);
     await loadShipssymbols(shipsList);
     final List<ActiveTFR> activeTFRs =
-        ref.read(activeTFRsStreamProvider).value ?? [];
+        await ref.read(activeTFRsStreamProvider.future);
     await loadActiveTFRsymbols(activeTFRs);
 
     hasStylesLoaded = true;
