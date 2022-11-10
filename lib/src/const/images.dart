@@ -12,3 +12,7 @@ const String chaseAppTheaterIcon = 'https://chaseapp.tv/mct9k.png';
 
 const String defaultChaseGif = 'assets/police.gif';
 const String defaultAssetChaseImage = 'assets/default_chase_image.png';
+
+const String mapHeliSymbol = 'assets/helicopter.png';
+const String mapPlaneSymbol = 'assets/plane.png';
+const String mapBoatSymbol = 'assets/boat.png';

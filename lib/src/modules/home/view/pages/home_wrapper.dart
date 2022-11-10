@@ -16,8 +16,9 @@ import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
 import '../../../../shared/notifications/notification_pop_up_banner.dart';
 import '../../../../shared/notifications/notifications_helpers.dart';
+import '../../../../shared/util/helpers/sizescaleconfig.dart';
+import '../../../dashboard/view/pages/dashboard.dart';
 import '../parts/helpers.dart';
-import 'home_page.dart';
 
 class HomeWrapper extends ConsumerStatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     );
   }
 
-  void handleDynamicLinkFromTerminatedState() async {
+  Future<void> handleDynamicLinkFromTerminatedState() async {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri? deepLink = data?.link;
@@ -55,7 +56,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     }
   }
 
-  void handlenotifications(RemoteMessage message) async {
+  Future<void> handlenotifications(RemoteMessage message) async {
     log('ChaseAppNotification Message Arrived--->${message.data}');
 
     final Map<String, dynamic> data = message.data;
@@ -79,7 +80,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         await FirebaseMessaging.instance.getInitialMessage();
 
     if (message != null) {
-      handlenotifications(message);
+      await handlenotifications(message);
     }
   }
 
@@ -89,11 +90,6 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         handlenotifications(event);
       }
     });
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //   if (event.data.isNotEmpty) {
-    //     handlenotifications(event);
-    //   }
-    // });
   }
 
   void handleDynamicLinkOpenedFromBackgroundState() {
@@ -144,7 +140,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     //Dynamic Links Handling
     //Background
     handleDynamicLinkOpenedFromBackgroundState();
@@ -162,30 +158,19 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handlemessagesthatopenedtheappFromBackgroundState();
   }
 
-  // Future<void> connectUserAgain() async {
-  //   log(ref.read(streamChatClientProvider).state.currentUser.toString());
-
-  //   if (ref.read(streamChatClientProvider).state.currentUser != null &&
-  //       ref.read(streamChatClientProvider).wsConnectionStatus ==
-  //           ConnectionStatus.disconnected) {
-  //     await ref
-  //         .read(streamChatClientProvider)
-  //         .openConnection(includeUserDetailsInConnectCall: true);
-  //   }
-  // }
-
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // TODO: implement didChangeAppLifecycleState
-    if (state == AppLifecycleState.resumed) {
-      // connectUserAgain();
-    } else if (state == AppLifecycleState.paused) {
-      // connectUserAgain();
-    }
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Sizescaleconfig.setSizes(
+      MediaQuery.of(context).size.height,
+      MediaQuery.of(context).size.width,
+      MediaQuery.of(context).textScaleFactor,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Home();
+    return Dashboard();
   }
 }
