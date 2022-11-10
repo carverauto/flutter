@@ -156,9 +156,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         ref.read(activeTFRsStreamProvider).value ?? [];
     await loadActiveTFRsymbols(activeTFRs);
 
-    setState(() {
-      hasStylesLoaded = true;
-    });
+    hasStylesLoaded = true;
 
     if (widget.symbolId == null) {
       Timer(const Duration(milliseconds: 200), () async {
@@ -546,16 +544,21 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     // TODO: implement didChangeAppLifecycleState
     if (state != AppLifecycleState.resumed) {
-      await saveCameralastPosition(mapboxMapController.cameraPosition?.target);
+      if (hasStylesLoaded) {
+        await saveCameralastPosition(
+          mapboxMapController.cameraPosition?.target,
+        );
+      }
     }
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-
-    mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
-    saveCameralastPosition(mapboxMapController.cameraPosition?.target);
+    if (hasStylesLoaded) {
+      mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
+      saveCameralastPosition(mapboxMapController.cameraPosition?.target);
+    }
     // called by mapboxview on dispose
     // mapboxMapController.dispose();
 
