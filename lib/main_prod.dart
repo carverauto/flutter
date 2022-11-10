@@ -16,9 +16,7 @@ void main() async {
     () async {
       F.appFlavor = Flavor.PROD;
       await setUpServices();
-      // Setting up const/singletons like this will be redundant after refactoring
-      // Prefs.init();
-      // Initialize other services like SharedPreferances, etc and provide through providers
+
       final PackageInfo info = await PackageInfo.fromPlatform();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       runApp(
@@ -32,6 +30,8 @@ void main() async {
         ),
       );
     },
-    FirebaseCrashlytics.instance.recordError,
+    (Object error, StackTrace stack) async {
+      return FirebaseCrashlytics.instance.recordError(error, stack);
+    },
   );
 }

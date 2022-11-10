@@ -83,11 +83,11 @@ class RoutesObserver extends NavigatorObserver {
 
 Future<void> setUpServices() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
-  final FirebaseApp firebaseApp = await Firebase.initializeApp();
 
   // FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
   // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
@@ -114,8 +114,6 @@ Future<void> setUpServices() async {
       fatal: record.level == Level.SEVERE,
     );
   });
-
-  log(firebaseApp.options.projectId);
 
   // if (F.appFlavor == Flavor.DEV) {
   // const String instanceId = String.fromEnvironment('Pusher_Instance_Id');

@@ -11,8 +11,7 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   FirehoseStateNotifier({
     required this.read,
     required this.streamFeedClient,
-  })  : _firehoseFeed = streamFeedClient.flatFeed('events', 'firehose'),
-        super(null);
+  }) : super(null);
 
   final Reader read;
   final feed.StreamFeedClient streamFeedClient;
@@ -27,7 +26,8 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   late feed.Subscription firehoseSubscription;
 
-  final feed.FlatFeed _firehoseFeed;
+  feed.FlatFeed get firehoseFeed =>
+      streamFeedClient.flatFeed('events', 'firehose');
 
   @override
   void dispose() {
@@ -62,7 +62,7 @@ class FirehoseStateNotifier extends StateNotifier<void> {
     await setUserAndSubscribe();
 
     final List<feed.Activity> activities =
-        await _firehoseFeed.getActivities(limit: 20, offset: offset);
+        await firehoseFeed.getActivities(limit: 20, offset: offset);
 
     return activities.map(convertActivityToChaseAppNotification).toList();
   }
@@ -70,7 +70,7 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   Future<void> subscribeToFeed() async {
     if (!isSubscribedToFeed) {
       try {
-        firehoseSubscription = await _firehoseFeed.subscribe(
+        firehoseSubscription = await firehoseFeed.subscribe(
           (
             feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message,
           ) {},
