@@ -26,9 +26,11 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Logger logger = Logger('PostLoginStateNotifier');
 
-  Future<void> initPostLoginActions(User user, UserData userData) async {
+  Future<void> initPostLoginActions() async {
     if (!isInitialized) {
       try {
+        final User user = _read(firebaseAuthProvider).currentUser!;
+        final UserData userData = await _read(userStreamProvider.future);
         await PusherBeams.instance.start(EnvVaribales.instanceId);
         await _initFirebaseActions(user, userData);
 

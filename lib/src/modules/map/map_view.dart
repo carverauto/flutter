@@ -545,9 +545,11 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     // TODO: implement didChangeAppLifecycleState
     if (state != AppLifecycleState.resumed) {
       if (hasStylesLoaded) {
-        await saveCameralastPosition(
-          mapboxMapController.cameraPosition?.target,
-        );
+        if (mounted) {
+          await saveCameralastPosition(
+            mapboxMapController.cameraPosition?.target,
+          );
+        }
       }
     }
   }

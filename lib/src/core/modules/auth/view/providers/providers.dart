@@ -54,10 +54,9 @@ final StreamProvider<User?> userAuthStateChanges =
   return ref.read(authRepoProvider).streamLogInStatus();
 });
 
-final AutoDisposeStreamProvider<UserData> userStreamProvider =
-    StreamProvider.autoDispose<UserData>(
+final StreamProvider<UserData> userStreamProvider = StreamProvider<UserData>(
   (
-    AutoDisposeStreamProviderRef<UserData> ref,
+    StreamProviderRef<UserData> ref,
   ) {
     final String? uid = ref.watch(userAuthStateChanges).value?.uid;
 

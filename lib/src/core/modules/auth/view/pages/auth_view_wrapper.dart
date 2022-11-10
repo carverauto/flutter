@@ -17,6 +17,7 @@ import '../providers/providers.dart';
 
 class AuthViewWrapper extends ConsumerWidget {
   final Logger logger = Logger('AuthViewWrapper');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue<AppUpdateInfo>>(
@@ -50,22 +51,14 @@ class AuthViewWrapper extends ConsumerWidget {
         if (user == null) {
           return const LogInView();
         }
+        final AutoDisposeFutureProvider<UserData> userFutureProvider =
+            fetchUserProvider(user);
 
         return ProviderStateBuilder<UserData>(
-          watchThisProvider: fetchUserProvider(user),
+          watchThisProvider: userFutureProvider,
           logger: logger,
           errorMessage: 'Error while loading users data.',
           builder: (UserData userData, WidgetRef ref, Widget? child) {
-            WidgetsBinding.instance.addPostFrameCallback((Duration t) {
-              // ref.read(nodleProvider.notifier).initializeNodle();
-              // ref
-              //     .read(chatsServiceStateNotifierProvider.notifier)
-              //     .connectUserToGetStream(userData);
-              ref
-                  .read(postLoginStateNotifierProvider.notifier)
-                  .initPostLoginActions(user, userData);
-            });
-
             return HomeWrapper();
           },
           errorBuilder: (Object e, StackTrace? stk) {

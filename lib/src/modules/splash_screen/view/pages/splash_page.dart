@@ -23,7 +23,7 @@ import '../../../../shared/widgets/loaders/loading.dart';
 
 final FutureProvider<String> splashScreenAnimationFutureProvider =
     FutureProvider<String>((FutureProviderRef<String> ref) async {
-  final Stopwatch firebaseTimer = Stopwatch()..start();
+  final Stopwatch timer = Stopwatch()..start();
   final FirebaseRemoteConfig remoteConfig =
       ref.read(firebaseRemoteConfigProvider);
   bool isUpdated = true;
@@ -58,8 +58,8 @@ final FutureProvider<String> splashScreenAnimationFutureProvider =
     await animationAssetFile.writeAsBytes(downloadedBytes.bodyBytes);
     await animationAssetFile.create();
   }
-  firebaseTimer.stop();
-  log('Firebase Timer--->${firebaseTimer.elapsedMilliseconds}');
+  timer.stop();
+  log('Firebase Timer--->${timer.elapsedMilliseconds}');
 
   return assetAnimationJsonPath;
 });
@@ -81,13 +81,12 @@ class _SplashViewState extends ConsumerState<SplashView>
     timer.cancel();
     timer = Timer(duration, () async {
       final User? user = await ref.read(streamLogInStatus.future);
-      if (mounted) {
-        await Navigator.of(context).pushReplacementNamed(
-          user != null
-              ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-              : RouteName.ONBOARDING_VIEW,
-        );
-      }
+
+      await Navigator.of(context).pushReplacementNamed(
+        user != null
+            ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+            : RouteName.ONBOARDING_VIEW,
+      );
     });
   }
 

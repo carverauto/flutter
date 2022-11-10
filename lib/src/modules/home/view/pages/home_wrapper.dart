@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../routes/routeNames.dart';
@@ -156,6 +157,11 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     handleMessagesFromTerminatedState();
     //Background
     handlemessagesthatopenedtheappFromBackgroundState();
+    initPostLoginActions();
+  }
+
+  void initPostLoginActions() {
+    ref.read(postLoginStateNotifierProvider.notifier).initPostLoginActions();
   }
 
   @override
