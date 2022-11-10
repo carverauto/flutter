@@ -13,7 +13,7 @@ description: Never miss a live police chase again
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 publish_to: "none"
 
-version: 1.5.4+92
+version: 1.5.4+93
 
 #  2.12.0 nonnullable
 environment:
@@ -117,6 +117,7 @@ dependencies:
   collection: ^1.16.0
   umbra_flutter: ^0.1.0-dev.4
   path: ^1.8.2
+  compute: ^1.0.2
 
 dependency_overrides:
   # firebase_core_platform_interface: 4.5.1

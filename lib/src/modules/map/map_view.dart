@@ -6,7 +6,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
-import 'package:collection/collection.dart';
+import 'package:collection/collection.dart' as collection;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,39 @@ import '../../shared/util/helpers/widget_to_image.dart';
 import '../bof/bof_view.dart';
 import 'providers.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
+
+List<List<LatLng>> createGeoJSONCircle(
+  Map<String, dynamic> values,
+) {
+  final int km = values['radiusArc'] as int;
+  final List<double> center = values['coordinates'] as List<double>;
+  const int points = 64;
+
+  final List<LatLng> ret = [];
+  final double distanceX = km / (111.320 * math.cos(center[1] * math.pi / 180));
+  final double distanceY = km / 110.574;
+
+  double theta, x, y;
+  for (int i = 0; i < points; i++) {
+    theta = (i / points) * (2 * math.pi);
+    x = distanceX * math.cos(theta);
+    y = distanceY * math.sin(theta);
+
+    ret.add(LatLng(center[1] + y, center[0] + x));
+  }
+  ret.add(ret[0]);
+
+  return [ret];
+}
+
+Symbol? findSymbol(Map<String, dynamic> value) {
+  final List<Symbol> adsbSymbols = value['symbols'] as List<Symbol>;
+  final String id = value['id'] as String;
+  final Symbol? symbol = adsbSymbols.firstWhereOrNull(
+    (Symbol element) => element.data?['id'] == id,
+  );
+  return symbol;
+}
 
 //TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
 
@@ -337,15 +370,49 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   // }
 
   // ignore: long-method
+
   Future<void> loadADSBSymbols(List<ADSB> adsbList) async {
-    log('ADSB Data Update');
     for (final ADSB adsb in adsbList) {
       final String image = adsb.type == 'plane' ? 'plane' : 'heli';
-      final Set<Symbol> presentSymbols = mapboxMapController.symbols;
 
-      final Symbol? symbol = presentSymbols.firstWhereOrNull(
-        (Symbol element) => element.data?['id'] == adsb.id,
+      final String? imageUrl =
+          adsb.imageUrl != null ? 'https://chaseapp.tv${adsb.imageUrl}' : null;
+
+      final Symbol symbol = await mapboxMapController.addSymbol(
+        SymbolOptions(
+          geometry: LatLng(adsb.lat, adsb.lon),
+          iconImage: image,
+          iconSize: 1.3,
+          iconRotate: adsb.track,
+          zIndex: 10,
+        ),
+        <String, dynamic>{
+          'title': adsb.id,
+          'id': adsb.id,
+          'group': adsb.group,
+          'subtitle': adsb.group,
+          'imageUrl': imageUrl,
+          'type': 'adsb',
+        },
       );
+      if (Platform.isAndroid) {
+        if (symbol.id == widget.symbolId) {
+          await onSymbolTapped(symbol);
+        }
+      }
+    }
+  }
+
+  Future<void> updateADSBSymbols(List<ADSB> adsbList) async {
+    log('ADSB Data Update');
+    final List<Symbol> presentSymbols = mapboxMapController.symbols.toList();
+    for (final ADSB adsb in adsbList) {
+      final String image = adsb.type == 'plane' ? 'plane' : 'heli';
+
+      final Symbol? symbol = findSymbol(<String, dynamic>{
+        'symbols': presentSymbols,
+        'id': adsb.id,
+      });
       if (symbol != null) {
         await mapboxMapController.updateSymbol(
           symbol,
@@ -379,11 +446,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
             'type': 'adsb',
           },
         );
-        if (Platform.isAndroid) {
-          if (symbol.id == widget.symbolId) {
-            await onSymbolTapped(symbol);
-          }
-        }
       }
     }
   }
@@ -414,31 +476,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
   }
 
-  List<List<LatLng>> createGeoJSONCircle(
-    LatLng center,
-    int radiusInKm, [
-    int points = 64,
-  ]) {
-    final int km = radiusInKm;
-
-    final List<LatLng> ret = [];
-    final double distanceX =
-        km / (111.320 * math.cos(center.latitude * math.pi / 180));
-    final double distanceY = km / 110.574;
-
-    double theta, x, y;
-    for (int i = 0; i < points; i++) {
-      theta = (i / points) * (2 * math.pi);
-      x = distanceX * math.cos(theta);
-      y = distanceY * math.sin(theta);
-
-      ret.add(LatLng(center.latitude + y, center.longitude + x));
-    }
-    ret.add(ret[0]);
-
-    return [ret];
-  }
-
   Future<void> loadActiveTFRsymbols(List<ActiveTFR> activeTFRs) async {
     log('ActiveTFRs Data Update');
 
@@ -452,15 +489,13 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         //TODO: debug why updateFill doesn't work, this is workaround for that.
         await mapboxMapController.removeFill(fill);
       }
+      final List<List<LatLng>> geomtery = await compute(createGeoJSONCircle, {
+        'coordinates': activeTFR.geometry.coordinates,
+        'radiusArc': activeTFR.properties.radiusArc,
+      });
       await mapboxMapController.addFill(
         FillOptions(
-          geometry: createGeoJSONCircle(
-            LatLng(
-              activeTFR.geometry.coordinates[1],
-              activeTFR.geometry.coordinates[0],
-            ),
-            activeTFR.properties.radiusArc,
-          ),
+          geometry: geomtery,
           fillColor: '#FF9800',
           fillOpacity: 0.6,
         ),
@@ -479,13 +514,69 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   }
 
   Future<void> loadShipssymbols(List<Ship> shipsList) async {
-    log('Ships Data Update');
     for (final Ship ship in shipsList) {
-      final Set<Symbol> presentSymbols = mapboxMapController.symbols;
+      final Symbol symbol = await mapboxMapController.addSymbol(
+        SymbolOptions(
+          geometry: LatLng(ship.lat, ship.lon),
 
-      final Symbol? symbol = presentSymbols.firstWhereOrNull(
-        (Symbol element) => element.data?['id'] == ship.id,
+          iconImage: 'boat',
+          // iconSize: 0.1,
+          iconRotate: ship.heading,
+        ),
+        <String, dynamic>{
+          'title': ship.name,
+          'id': ship.id,
+          'mmsi': ship.mmsi,
+          'subtitle': ship.mmsi != null ? '${ship.mmsi}' : null,
+          'type': 'ship',
+        },
       );
+      if (Platform.isAndroid) {
+        if (symbol.id == widget.symbolId) {
+          await onSymbolTapped(symbol);
+        }
+      }
+    }
+  }
+
+  void deleteShipSymbols(List<Ship> deletedShips) {
+    final List<Symbol> presentSymbols = mapboxMapController.symbols.toList();
+
+    for (final Ship ship in deletedShips) {
+      final Symbol? symbol = findSymbol(<String, dynamic>{
+        'symbols': presentSymbols,
+        'id': ship.id,
+      });
+      if (symbol != null) {
+        mapboxMapController.removeSymbol(symbol);
+      }
+    }
+  }
+
+  void deleteADSBSymbols(List<ADSB> deletedADSBs) {
+    final List<Symbol> presentSymbols = mapboxMapController.symbols.toList();
+
+    for (final ADSB adsb in deletedADSBs) {
+      final Symbol? symbol = findSymbol(<String, dynamic>{
+        'symbols': presentSymbols,
+        'id': adsb.id,
+      });
+      if (symbol != null) {
+        mapboxMapController.removeSymbol(symbol);
+      }
+    }
+  }
+
+  Future<void> updateShipssymbols(List<Ship> shipsList) async {
+    log('Ships Data Update');
+    final Stopwatch timer = Stopwatch()..start();
+    final List<Symbol> presentSymbols = mapboxMapController.symbols.toList();
+
+    for (final Ship ship in shipsList) {
+      final Symbol? symbol = findSymbol(<String, dynamic>{
+        'symbols': presentSymbols,
+        'id': ship.id,
+      });
       if (symbol != null) {
         await mapboxMapController.updateSymbol(
           symbol,
@@ -516,6 +607,8 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         );
       }
     }
+    timer.stop();
+    log('Took ${timer.elapsed.inSeconds}');
   }
 
   Future<void> moveToSymbol(String? id) async {
@@ -584,8 +677,20 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       shipsStreamProvider,
       (AsyncValue<List<Ship>>? previous, AsyncValue<List<Ship>> next) async {
         final List<Ship> shipsList = next.value ?? [];
+        final List<Ship> prevItems = previous?.value ?? [];
         if (hasStylesLoaded && previous != null) {
-          await loadShipssymbols(shipsList);
+          // find ship objects that've changed in next list
+          final List<Ship> deletedItems = prevItems.where((Ship prevItem) {
+            return shipsList.firstWhereOrNull(
+                      (Ship element) => element.id == prevItem.id,
+                    ) ==
+                    null
+                ? true
+                : false;
+          }).toList();
+
+          deleteShipSymbols(deletedItems);
+          await updateShipssymbols(shipsList);
         }
       },
     );
@@ -595,7 +700,17 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       (AsyncValue<List<ADSB>>? previous, AsyncValue<List<ADSB>> next) async {
         final List<ADSB> adsbsList = next.value ?? [];
         if (hasStylesLoaded && previous != null) {
-          await loadADSBSymbols(adsbsList);
+          final List<ADSB> deletedItems =
+              previous.value!.where((ADSB prevItem) {
+            return adsbsList.firstWhereOrNull(
+                      (ADSB element) => element.id == prevItem.id,
+                    ) ==
+                    null
+                ? true
+                : false;
+          }).toList();
+          deleteADSBSymbols(deletedItems);
+          await updateADSBSymbols(adsbsList);
         }
       },
     );

@@ -81,12 +81,13 @@ class _SplashViewState extends ConsumerState<SplashView>
     timer.cancel();
     timer = Timer(duration, () async {
       final User? user = await ref.read(streamLogInStatus.future);
-
-      await Navigator.of(context).pushReplacementNamed(
-        user != null
-            ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-            : RouteName.ONBOARDING_VIEW,
-      );
+      if (mounted) {
+        await Navigator.of(context).pushReplacementNamed(
+          user != null
+              ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+              : RouteName.ONBOARDING_VIEW,
+        );
+      }
     });
   }
 
@@ -193,10 +194,19 @@ class _SplashViewState extends ConsumerState<SplashView>
                           },
                           onLoaded: (LottieComposition composition) {
                             // TODO: Control the timer from Firebase as well
-
-                            updateTimer(
-                              const Duration(seconds: 3),
-                            );
+                            timer.cancel();
+                            Timer(const Duration(seconds: 3), () async {
+                              final User? user =
+                                  await ref.read(streamLogInStatus.future);
+                              if (mounted) {
+                                await Navigator.of(context)
+                                    .pushReplacementNamed(
+                                  user != null
+                                      ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+                                      : RouteName.ONBOARDING_VIEW,
+                                );
+                              }
+                            });
                           },
                         ),
                       );
