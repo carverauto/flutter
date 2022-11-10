@@ -793,3 +793,54 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
   }
 }
+
+    // await mapboxMapController.addSource(
+    //   'ADSBSOURCE',
+    //   GeojsonSourceProperties(
+    //     cluster: true,
+    //     data: <String, dynamic>{
+    //       'type': 'FeatureCollection',
+    //       'features': adsbList.map((ADSB adsb) {
+    //         final String image = adsb.type == 'plane' ? 'plane' : 'heli';
+
+    //         final String? imageUrl = adsb.imageUrl != null
+    //             ? 'https://chaseapp.tv${adsb.imageUrl}'
+    //             : null;
+
+    //         return {
+    //           'type': 'Feature',
+    //           'id': adsb.id,
+    //           'properties': {
+    //             // 'title': adsb.id,
+    //             'id': adsb.id,
+    //             'group': adsb.group,
+    //             'subtitle': adsb.group,
+    //             'imageUrl': imageUrl,
+    //             'type': 'adsb',
+    //             'iconRotation': adsb.track,
+    //             'iconImage': image,
+    //             // 'icon': {
+    //             //   'iconImage': image,
+    //             //   'iconRotate': adsb.track,
+    //             // },
+    //           },
+    //           'geometry': {
+    //             'type': 'Point',
+    //             'coordinates': [
+    //               adsb.lon,
+    //               adsb.lat,
+    //             ],
+    //           },
+    //         };
+    //       }).toList(),
+    //     },
+    //   ),
+    // );
+    // await mapboxMapController.addSymbolLayer(
+    //   'ADSBSOURCE',
+    //   'ADSBLAYER',
+    //   const SymbolLayerProperties(
+    //     iconImage: ['get', 'iconImage'],
+    //     iconRotate: ['get', 'iconRotation'],
+    //   ),
+    // );
