@@ -40,6 +40,7 @@ final Provider<AuthDB> authDbProvider = Provider<AuthDB>(
 final StreamProvider<User?> streamLogInStatus =
     StreamProvider<User?>((StreamProviderRef<User?> ref) {
   final AuthRepositoryAB authrepo = ref.watch(authRepoProvider);
+
   return authrepo.streamLogInStatus();
 });
 
@@ -49,16 +50,11 @@ final AutoDisposeFutureProviderFamily<UserData, User> fetchUserProvider =
       ref.read(authRepoProvider).fetchOrCreateUser(user),
 );
 
-final StreamProvider<User?> userAuthStateChanges =
-    StreamProvider<User?>((StreamProviderRef<User?> ref) {
-  return ref.read(authRepoProvider).streamLogInStatus();
-});
-
 final StreamProvider<UserData> userStreamProvider = StreamProvider<UserData>(
   (
     StreamProviderRef<UserData> ref,
   ) {
-    final String? uid = ref.watch(userAuthStateChanges).value?.uid;
+    final String? uid = ref.watch(streamLogInStatus).value?.uid;
 
     return ref.read(authRepoProvider).streamUserData(uid);
   },
