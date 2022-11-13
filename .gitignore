@@ -87,3 +87,6 @@ youtube_player_flutter
 mapbox
 
 actions-runner
+
+distribution.sh
+distribute_android.sh
