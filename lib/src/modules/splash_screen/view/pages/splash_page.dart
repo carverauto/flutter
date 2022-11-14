@@ -91,6 +91,40 @@ class _SplashViewState extends ConsumerState<SplashView>
     });
   }
 
+  void onSpalshScreenLoad(LottieComposition composition) {
+    // TODO: Control the timer from Firebase as well
+    timer.cancel();
+    Timer(const Duration(seconds: 3), () async {
+      final User? user = await ref.read(streamLogInStatus.future);
+      if (mounted) {
+        await Navigator.of(context).pushReplacementNamed(
+          user != null
+              ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
+              : RouteName.ONBOARDING_VIEW,
+        );
+      }
+    });
+  }
+
+  Widget onSpalshScreenLoadError(
+    BuildContext context,
+    Object error,
+    StackTrace? stackTrace,
+  ) {
+    logger.severe(
+      'Error in loading splash screen animation',
+      error,
+      stackTrace,
+    );
+    updateTimer(
+      const Duration(milliseconds: 300),
+    );
+
+    return const Center(
+      child: CircularAdaptiveProgressIndicatorWithBg(),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -174,46 +208,22 @@ class _SplashViewState extends ConsumerState<SplashView>
                       timer.cancel();
 
                       return Center(
-                        child: Lottie.asset(
-                          animationUrl,
-                          errorBuilder: (
-                            BuildContext context,
-                            Object error,
-                            StackTrace? stackTrace,
-                          ) {
-                            logger.severe(
-                              'Error in loading splash screen animation',
-                              error,
-                              stackTrace,
-                            );
-                            updateTimer(const Duration(milliseconds: 300));
-
-                            return const Center(
-                              child: CircularAdaptiveProgressIndicatorWithBg(),
-                            );
-                          },
-                          onLoaded: (LottieComposition composition) {
-                            // TODO: Control the timer from Firebase as well
-                            timer.cancel();
-                            Timer(const Duration(seconds: 3), () async {
-                              final User? user =
-                                  await ref.read(streamLogInStatus.future);
-                              if (mounted) {
-                                await Navigator.of(context)
-                                    .pushReplacementNamed(
-                                  user != null
-                                      ? RouteName.CHECK_PERMISSIONS_VIEW_WRAPPER
-                                      : RouteName.ONBOARDING_VIEW,
-                                );
-                              }
-                            });
-                          },
-                        ),
+                        child: Theme.of(context).platform == TargetPlatform.iOS
+                            ? Lottie.asset(
+                                animationUrl,
+                                errorBuilder: onSpalshScreenLoadError,
+                                onLoaded: onSpalshScreenLoad,
+                              )
+                            : Lottie.file(
+                                File(animationUrl),
+                                errorBuilder: onSpalshScreenLoadError,
+                                onLoaded: onSpalshScreenLoad,
+                              ),
                       );
                     },
                     loading: () {
                       updateTimer(
-                        const Duration(seconds: 2),
+                        const Duration(seconds: 3),
                       );
 
                       return const Center(
