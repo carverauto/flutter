@@ -4,6 +4,7 @@ import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
 import '../../../../const/app_bundle_info.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/notifiers/get_stream_token_notifier.dart';
 import '../../../../models/user/user_data.dart';
 import '../../data/chats_db.dart';
 import '../../domain/chats_repo.dart';
@@ -51,9 +52,21 @@ final StateNotifierProvider<ChatStateNotifier, void>
   ) =>
       ChatStateNotifier(
     read: ref.read,
-    // chaseId: chaseId,
     client: ref.watch(streamChatClientProvider),
   ),
+);
+final StateNotifierProvider<GetStreamTokenNotifier, void>
+    getStreamUserTokenStateNotifierProvider =
+    StateNotifierProvider<GetStreamTokenNotifier, void>(
+  (
+    StateNotifierProviderRef<GetStreamTokenNotifier, void> ref,
+  ) {
+    ref.watch(streamLogInStatus);
+
+    return GetStreamTokenNotifier(
+      read: ref.read,
+    );
+  },
 );
 
 final ProviderFamily<Channel, String> chatChannelProvider =

@@ -3,9 +3,9 @@ import 'package:logging/logging.dart';
 import 'package:stream_feed_flutter_core/stream_feed_flutter_core.dart' as feed;
 
 import '../../../../core/top_level_providers/firebase_providers.dart';
-import '../../../../core/top_level_providers/getstream_providers.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../shared/notifications/activity_to_notification_convertor.dart';
+import '../../../chats/view/providers/providers.dart';
 
 class FirehoseStateNotifier extends StateNotifier<void> {
   FirehoseStateNotifier({
@@ -18,10 +18,6 @@ class FirehoseStateNotifier extends StateNotifier<void> {
 
   final Logger logger = Logger('FirehoseServiceStateNotifier');
 
-  late String userToken;
-
-  bool isUserTokenInitialized = false;
-
   bool isSubscribedToFeed = false;
 
   late feed.Subscription firehoseSubscription;
@@ -33,7 +29,6 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   void dispose() {
     if (isSubscribedToFeed) {
       firehoseSubscription.cancel();
-      isUserTokenInitialized = false;
       isSubscribedToFeed = false;
     }
     super.dispose();
@@ -43,10 +38,9 @@ class FirehoseStateNotifier extends StateNotifier<void> {
     final String uid = read(firebaseAuthProvider).currentUser!.uid;
 
     if (streamFeedClient.currentUser?.id != uid) {
-      if (!isUserTokenInitialized) {
-        userToken = await read(fetchUserTokenForGetStream(uid).future);
-        isUserTokenInitialized = true;
-      }
+      final String userToken =
+          await read(getStreamUserTokenStateNotifierProvider.notifier)
+              .getUserToken(uid);
       await streamFeedClient.setUser(
         feed.User(
           id: uid,
