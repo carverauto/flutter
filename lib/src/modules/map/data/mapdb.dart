@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/activeTFR/activeTFR.dart';
 import '../../../models/adsb/adsb.dart';
 import '../../../models/ship/ship.dart';
+import '../../../models/weather/weather.dart';
+import '../../../models/weather/weather_station/weather_station.dart';
+import '../../../shared/util/firebase_collections.dart';
 
 class MapDB {
   MapDB({required this.sharedPreferences});
@@ -14,6 +18,8 @@ class MapDB {
 
   static final DatabaseReference _firebaseDatabase =
       FirebaseDatabase.instance.ref();
+  static final FirebaseFirestore _firestoreReferance =
+      FirebaseFirestore.instance;
   final DatabaseReference _adsbRef = _firebaseDatabase.child('adsb');
   final DatabaseReference _shipsRef = _firebaseDatabase.child('ships/1');
   final DatabaseReference _tfrRef =
@@ -119,6 +125,33 @@ class MapDB {
             .toList();
 
         return activeTFRs;
+      } else {
+        return [];
+      }
+    });
+  }
+
+  Stream<List<Weather>> get weatherStormSurgesStream {
+    return stormSurgeAlertsRef.snapshots().map((QuerySnapshot<Weather> event) {
+      if (event.docs.isNotEmpty) {
+        final List<QueryDocumentSnapshot<Weather>> data = event.docs;
+        final List<Weather> weather =
+            data.map((QueryDocumentSnapshot<Weather> e) {
+          final Weather weather = e.data();
+          final List<WeatherStation> activeStations = weather.stations
+              .where((WeatherStation station) => station.stormesurge)
+              .toList();
+          final Weather finalWeather =
+              weather.copyWith(stations: activeStations);
+
+          return finalWeather;
+        }).toList();
+
+        final List<Weather> finalWeather = weather
+            .where((Weather weather) => weather.stations.isNotEmpty)
+            .toList();
+
+        return finalWeather;
       } else {
         return [];
       }

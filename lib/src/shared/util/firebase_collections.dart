@@ -4,6 +4,7 @@ import '../../models/chase/chase.dart';
 import '../../models/interest/interest.dart';
 import '../../models/notification/notification.dart';
 import '../../models/user/user_data.dart';
+import '../../models/weather/weather.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -16,6 +17,9 @@ final CollectionReference interestsCollection =
 
 final CollectionReference animationsCollection =
     _firestore.collection('animations');
+
+final CollectionReference _stormSurgeAlertsCollection =
+    _firestore.collection('weather');
 
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(
@@ -36,6 +40,18 @@ final CollectionReference<UserData> usersCollectionRef =
   },
 );
 
+final CollectionReference<Weather> stormSurgeAlertsRef =
+    _stormSurgeAlertsCollection.withConverter<Weather>(
+  fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {
+    final Map<String, dynamic> rawData = data.data()!;
+    rawData['id'] = data.id;
+
+    return Weather.fromJson(rawData);
+  },
+  toFirestore: (Weather data, _) {
+    return data.toJson();
+  },
+);
 final CollectionReference<Chase> chasesCollectionRef =
     chasesCollection.withConverter<Chase>(
   fromFirestore: (DocumentSnapshot<Map<String, dynamic>> data, _) {

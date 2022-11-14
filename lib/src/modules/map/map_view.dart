@@ -22,6 +22,8 @@ import '../../models/activeTFR/activeTFR.dart';
 import '../../models/adsb/adsb.dart';
 import '../../models/birds_of_fire/birds_of_fire.dart';
 import '../../models/ship/ship.dart';
+import '../../models/weather/weather.dart';
+import '../../models/weather/weather_station/weather_station.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
 import '../bof/bof_view.dart';
 import 'providers.dart';
@@ -93,6 +95,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   bool hasStylesLoaded = false;
 
   Symbol? infosymbol;
+  String? tappedSymbolId;
 
   Future<void> saveCameralastPosition(LatLng? latlng) async {
     if (latlng != null) {
@@ -128,6 +131,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData heli = await rootBundle.load('assets/helicopter.png');
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
+    final ByteData stormSurge = await rootBundle.load('assets/storm_surge.png');
 
     //fetch weather radar raster tiles from mesonet then add as a mapbox source
 
@@ -178,6 +182,10 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       'boat',
       boat.buffer.asUint8List(),
     );
+    await mapboxMapController.addImage(
+      'stormsurge',
+      stormSurge.buffer.asUint8List(),
+    );
     await mapboxMapController.setSymbolIconAllowOverlap(true);
     mapboxMapController.onSymbolTapped.add(onSymbolTappedErrorWrapper);
 
@@ -188,10 +196,13 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final List<ActiveTFR> activeTFRs =
         await ref.read(activeTFRsStreamProvider.future);
     await loadActiveTFRsymbols(activeTFRs);
+    final List<Weather> weatherStormSurges =
+        await ref.read(weatherStormSurgesStreamProvider.future);
+    await loadWeatherStormSurgesSymbols(weatherStormSurges);
 
     hasStylesLoaded = true;
 
-    if (widget.symbolId == null) {
+    if (tappedSymbolId == null) {
       Timer(const Duration(milliseconds: 200), () async {
         if (mounted) {
           await getLastMapCoordinates();
@@ -199,7 +210,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       });
     } else {
       if (Platform.isAndroid) {
-        await moveToSymbol(widget.symbolId);
+        await moveToSymbol(tappedSymbolId);
       }
     }
   }
@@ -219,6 +230,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
 
   // ignore: long-method
   Future<void> onSymbolTapped(Symbol symbol, [bool zoomIn = true]) async {
+    if (tappedSymbolId != null) {
+      tappedSymbolId = null;
+    }
     //temp fix for android expansion workflow
     if (Platform.isAndroid) {
       if (!widget.showAppBar) {
@@ -396,7 +410,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         },
       );
       if (Platform.isAndroid) {
-        if (symbol.id == widget.symbolId) {
+        if (symbol.id == tappedSymbolId) {
           await onSymbolTapped(symbol);
         }
       }
@@ -513,6 +527,32 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     }
   }
 
+  Future<void> loadWeatherStormSurgesSymbols(
+    List<Weather> weatherStormSurges,
+  ) async {
+    log('WeatherStormSurges Data Update');
+
+    for (final Weather weatherStormSurge in weatherStormSurges) {
+      for (final WeatherStation station in weatherStormSurge.stations) {
+        final Symbol symbol = await mapboxMapController.addSymbol(
+          SymbolOptions(
+            geometry: LatLng(station.lat, station.lng),
+            iconImage: 'stormsurge',
+            iconSize: 1.3,
+          ),
+          <String, dynamic>{
+            'id': station.id,
+          },
+        );
+        if (Platform.isAndroid) {
+          if (symbol.id == tappedSymbolId) {
+            await onSymbolTapped(symbol);
+          }
+        }
+      }
+    }
+  }
+
   Future<void> loadShipssymbols(List<Ship> shipsList) async {
     for (final Ship ship in shipsList) {
       final Symbol symbol = await mapboxMapController.addSymbol(
@@ -532,7 +572,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         },
       );
       if (Platform.isAndroid) {
-        if (symbol.id == widget.symbolId) {
+        if (symbol.id == tappedSymbolId) {
           await onSymbolTapped(symbol);
         }
       }
@@ -611,6 +651,23 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     log('Took ${timer.elapsed.inSeconds}');
   }
 
+  Future<void> updateWeatherStormSurgesSymbols(
+    List<Weather> weatherStormSurges,
+  ) async {
+    log('WeatherStormSurges Data Update');
+    final Stopwatch timer = Stopwatch()..start();
+    final List<Symbol> stormSurgeSymbols = mapboxMapController.symbols
+        .where(
+          (Symbol symbol) => symbol.options.iconImage == 'stormsurge',
+        )
+        .toList();
+    await mapboxMapController.removeSymbols(stormSurgeSymbols);
+    await loadWeatherStormSurgesSymbols(weatherStormSurges);
+
+    timer.stop();
+    log('Took ${timer.elapsed.inSeconds}');
+  }
+
   Future<void> moveToSymbol(String? id) async {
     final Symbol? symbol = mapboxMapController.symbols.firstWhereOrNull(
       (Symbol element) => element.data?['id'] == id,
@@ -631,6 +688,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    tappedSymbolId = widget.symbolId;
   }
 
   @override
@@ -723,6 +781,18 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         final List<ActiveTFR> activeTFRsList = next.value ?? [];
         if (hasStylesLoaded && previous != null) {
           await loadActiveTFRsymbols(activeTFRsList);
+        }
+      },
+    );
+    ref.listen<AsyncValue<List<Weather>>>(
+      weatherStormSurgesStreamProvider,
+      (
+        AsyncValue<List<Weather>>? previous,
+        AsyncValue<List<Weather>> next,
+      ) async {
+        final List<Weather> weatherStormSurgesList = next.value ?? [];
+        if (hasStylesLoaded && previous != null) {
+          await updateWeatherStormSurgesSymbols(weatherStormSurgesList);
         }
       },
     );
