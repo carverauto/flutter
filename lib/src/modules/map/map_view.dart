@@ -538,7 +538,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
           SymbolOptions(
             geometry: LatLng(station.lat, station.lng),
             iconImage: 'stormsurge',
-            iconSize: 1.3,
+            iconSize: 0.8,
           ),
           <String, dynamic>{
             'id': station.id,
