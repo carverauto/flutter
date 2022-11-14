@@ -13,6 +13,7 @@ class ChatsDatabase implements ChatsDatabaseAB {
   final Reader read;
   @override
   Future<String> getUserToken(String userId) async {
+    log('Getting User Token');
     final String projectId = read(firebaseAuthProvider).app.options.projectId;
     final Uri url = Uri.parse(
       'https://us-central1-$projectId.cloudfunctions.net/GetStreamToken',

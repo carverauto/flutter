@@ -28,7 +28,7 @@ final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
   (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(read: ref.read),
 );
 
-final StreamProvider<bool> isConnected =
+final StreamProvider<bool> isConnectedStreamProvider =
     StreamProvider<bool>((StreamProviderRef<bool> ref) async* {
   final ConnectivityResult result = await Connectivity().checkConnectivity();
   final bool active = result != ConnectivityResult.none;
@@ -50,8 +50,10 @@ final Provider<PackageInfo> appInfoProvider = Provider<PackageInfo>(
 final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
     checkForUpdateStateNotifier =
     StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>(
-  (StateNotifierProviderRef<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
-      ref) {
+  (
+    StateNotifierProviderRef<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
+        ref,
+  ) {
     return AppUpdateStateNotifier(
       read: ref.read,
     );
