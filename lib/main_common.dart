@@ -67,9 +67,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
       navigatorObservers: [
-        RoutesObserver(
-          ref.read,
-        ),
+        RoutesObserver(),
       ],
       theme: getThemeData(context),
     );
@@ -149,9 +147,7 @@ class CaptureButton extends ConsumerWidget {
 }
 
 class RoutesObserver extends NavigatorObserver {
-  RoutesObserver(this.read);
   final Logger routesObserverLogger = Logger('RoutesObserverLogger');
-  final Reader read;
 
   @override
   Future<void> didPop(Route route, Route? previousRoute) async {
@@ -169,21 +165,7 @@ class RoutesObserver extends NavigatorObserver {
         }
       });
     }
-    if (route.settings.name == RouteName.BUG_REPORT) {
-      read(currentRouteProvider.state).state = null;
-    }
     super.didPop(route, previousRoute);
-  }
-
-  @override
-  void didPush(Route route, Route? previousRoute) {
-    // TODO: implement didPush
-
-    if (route.settings.name == RouteName.BUG_REPORT) {
-      read(currentRouteProvider.state).state = RouteName.BUG_REPORT;
-    }
-
-    super.didPush(route, previousRoute);
   }
 }
 
