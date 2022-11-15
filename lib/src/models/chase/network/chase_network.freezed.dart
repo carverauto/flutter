@@ -30,6 +30,8 @@ mixin _$ChaseNetwork {
   int? get tier => throw _privateConstructorUsedError;
   @JsonKey(name: 'URL')
   String? get url => throw _privateConstructorUsedError;
+  @JsonKey(name: 'MP4URL')
+  String? get mp4Url => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $ChaseNetworkCopyWith<$Res> {
       @JsonKey(name: 'Name') String? name,
       @JsonKey(name: 'Other') String? other,
       @JsonKey(name: 'Tier') int? tier,
-      @JsonKey(name: 'URL') String? url});
+      @JsonKey(name: 'URL') String? url,
+      @JsonKey(name: 'MP4URL') String? mp4Url});
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
     Object? other = freezed,
     Object? tier = freezed,
     Object? url = freezed,
+    Object? mp4Url = freezed,
   }) {
     return _then(_value.copyWith(
       logo: freezed == logo
@@ -91,6 +95,10 @@ class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      mp4Url: freezed == mp4Url
+          ? _value.mp4Url
+          : mp4Url // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,7 +116,8 @@ abstract class _$$_ChaseNetworkCopyWith<$Res>
       @JsonKey(name: 'Name') String? name,
       @JsonKey(name: 'Other') String? other,
       @JsonKey(name: 'Tier') int? tier,
-      @JsonKey(name: 'URL') String? url});
+      @JsonKey(name: 'URL') String? url,
+      @JsonKey(name: 'MP4URL') String? mp4Url});
 }
 
 /// @nodoc
@@ -127,6 +136,7 @@ class __$$_ChaseNetworkCopyWithImpl<$Res>
     Object? other = freezed,
     Object? tier = freezed,
     Object? url = freezed,
+    Object? mp4Url = freezed,
   }) {
     return _then(_$_ChaseNetwork(
       logo: freezed == logo
@@ -149,6 +159,10 @@ class __$$_ChaseNetworkCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      mp4Url: freezed == mp4Url
+          ? _value.mp4Url
+          : mp4Url // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -162,7 +176,8 @@ class _$_ChaseNetwork extends _ChaseNetwork {
       @JsonKey(name: 'Name') required this.name,
       @JsonKey(name: 'Other') required this.other,
       @JsonKey(name: 'Tier') required this.tier,
-      @JsonKey(name: 'URL') this.url})
+      @JsonKey(name: 'URL') this.url,
+      @JsonKey(name: 'MP4URL') this.mp4Url})
       : super._();
 
   factory _$_ChaseNetwork.fromJson(Map<String, dynamic> json) =>
@@ -183,10 +198,13 @@ class _$_ChaseNetwork extends _ChaseNetwork {
   @override
   @JsonKey(name: 'URL')
   final String? url;
+  @override
+  @JsonKey(name: 'MP4URL')
+  final String? mp4Url;
 
   @override
   String toString() {
-    return 'ChaseNetwork(logo: $logo, name: $name, other: $other, tier: $tier, url: $url)';
+    return 'ChaseNetwork(logo: $logo, name: $name, other: $other, tier: $tier, url: $url, mp4Url: $mp4Url)';
   }
 
   @override
@@ -198,12 +216,14 @@ class _$_ChaseNetwork extends _ChaseNetwork {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.other, this.other) || other.other == this.other) &&
             (identical(other.tier, tier) || other.tier == tier) &&
-            (identical(other.url, url) || other.url == url));
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.mp4Url, mp4Url) || other.mp4Url == mp4Url));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, logo, name, other, tier, url);
+  int get hashCode =>
+      Object.hash(runtimeType, logo, name, other, tier, url, mp4Url);
 
   @JsonKey(ignore: true)
   @override
@@ -225,7 +245,8 @@ abstract class _ChaseNetwork extends ChaseNetwork {
       @JsonKey(name: 'Name') required final String? name,
       @JsonKey(name: 'Other') required final String? other,
       @JsonKey(name: 'Tier') required final int? tier,
-      @JsonKey(name: 'URL') final String? url}) = _$_ChaseNetwork;
+      @JsonKey(name: 'URL') final String? url,
+      @JsonKey(name: 'MP4URL') final String? mp4Url}) = _$_ChaseNetwork;
   const _ChaseNetwork._() : super._();
 
   factory _ChaseNetwork.fromJson(Map<String, dynamic> json) =
@@ -246,6 +267,9 @@ abstract class _ChaseNetwork extends ChaseNetwork {
   @override
   @JsonKey(name: 'URL')
   String? get url;
+  @override
+  @JsonKey(name: 'MP4URL')
+  String? get mp4Url;
   @override
   @JsonKey(ignore: true)
   _$$_ChaseNetworkCopyWith<_$_ChaseNetwork> get copyWith =>

@@ -7,7 +7,6 @@ part 'chase_network.g.dart';
 
 @freezed
 abstract class ChaseNetwork implements _$ChaseNetwork {
-  const ChaseNetwork._();
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory ChaseNetwork({
@@ -16,7 +15,9 @@ abstract class ChaseNetwork implements _$ChaseNetwork {
     @JsonKey(name: 'Other') required String? other,
     @JsonKey(name: 'Tier') required int? tier,
     @JsonKey(name: 'URL') String? url,
+    @JsonKey(name: 'MP4URL') String? mp4Url,
   }) = _ChaseNetwork;
+  const ChaseNetwork._();
 
   factory ChaseNetwork.fromJson(Map<String, dynamic> json) =>
       _$ChaseNetworkFromJson(json);

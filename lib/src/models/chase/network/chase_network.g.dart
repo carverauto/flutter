@@ -13,6 +13,7 @@ _$_ChaseNetwork _$$_ChaseNetworkFromJson(Map<String, dynamic> json) =>
       other: json['Other'] as String?,
       tier: json['Tier'] as int?,
       url: json['URL'] as String?,
+      mp4Url: json['MP4URL'] as String?,
     );
 
 Map<String, dynamic> _$$_ChaseNetworkToJson(_$_ChaseNetwork instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$_ChaseNetworkToJson(_$_ChaseNetwork instance) =>
       'Other': instance.other,
       'Tier': instance.tier,
       'URL': instance.url,
+      'MP4URL': instance.mp4Url,
     };
