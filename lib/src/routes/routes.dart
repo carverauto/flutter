@@ -13,6 +13,8 @@ import '../modules/chase_view/view/pages/chaseDetails_page.dart';
 import '../modules/chases/view/pages/recent_chases/recent_chases_view_all.dart';
 import '../modules/check_permissions/view/pages/check_permissions_status.dart';
 import '../modules/credits/view/credits.dart';
+import '../modules/feedback_form/view/feedback_form.dart';
+import '../modules/feedback_form/view/support_view.dart';
 import '../modules/firehose/view/pages/firehose_view_all.dart';
 import '../modules/home/view/pages/home_wrapper.dart';
 import '../modules/notifications/view/pages/notifications_view.dart';
@@ -93,6 +95,13 @@ class Routes {
         return MaterialPageRoute<bool>(builder: (_) => SettingsView());
       case RouteName.NOTIFICATIONS:
         return MaterialPageRoute<bool>(builder: (_) => NotificationsView());
+      case RouteName.SUPPORT:
+        return MaterialPageRoute<bool>(builder: (_) => const SupportView());
+      case RouteName.BUG_REPORT:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => const FeedbackForm(),
+        );
       default:
         return MaterialPageRoute<void>(
           builder: (BuildContext context) => Scaffold(

@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pusher_beams/pusher_beams.dart';
@@ -63,3 +64,8 @@ final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
 final Provider<PusherBeams> pusherBeamsProvider = Provider<PusherBeams>(
   (ProviderRef<PusherBeams> ref) => PusherBeams.instance,
 );
+
+final Provider<GlobalKey> appGlobalKeyProvider =
+    Provider<GlobalKey>((ProviderRef<GlobalKey> ref) {
+  return GlobalKey();
+});

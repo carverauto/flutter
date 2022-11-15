@@ -15,4 +15,6 @@ class RouteName {
   static const String CREDITS = 'CREDITS';
   static const String SETTINGS = 'SETTINGS';
   static const String NOTIFICATIONS = 'NOTIFICATIONS';
+  static const String SUPPORT = 'SUPPORT';
+  static const String BUG_REPORT = 'BUG_REPORT';
 }

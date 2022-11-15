@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ui' as ui;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -13,7 +14,10 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 // import 'package:device_preview/device_preview.dart';
 import 'src/const/colors.dart';
+import 'src/const/sizings.dart';
+import 'src/core/top_level_providers/services_providers.dart';
 import 'src/modules/chats/view/providers/providers.dart';
+import 'src/modules/feedback_form/view/feedback_form.dart';
 import 'src/routes/routeNames.dart';
 import 'src/routes/routes.dart';
 import 'src/shared/util/helpers/request_permissions.dart';
@@ -21,6 +25,8 @@ import 'src/theme/theme.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
     GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<NavigatorState> navigatorGlobalKey =
+    GlobalKey<NavigatorState>();
 
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,6 +37,7 @@ class MyApp extends ConsumerWidget {
       title: 'ChaseApp',
       scaffoldMessengerKey: scaffoldMessangerKey,
       initialRoute: '/',
+      navigatorKey: navigatorGlobalKey,
       builder: (BuildContext context, Widget? child) {
         return StreamChat(
           streamChatThemeData: StreamChatThemeData.dark().copyWith(
@@ -42,7 +49,16 @@ class MyApp extends ConsumerWidget {
             ),
           ),
           client: ref.watch(streamChatClientProvider),
-          child: child,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              RepaintBoundary(
+                key: ref.read(appGlobalKeyProvider),
+                child: child!,
+              ),
+              const CaptureButton(),
+            ],
+          ),
         );
       },
       // locale: Locale('en'), // Add the locale here
@@ -51,15 +67,91 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
       navigatorObservers: [
-        RoutesObserver(),
+        RoutesObserver(
+          ref.read,
+        ),
       ],
       theme: getThemeData(context),
     );
   }
 }
 
+class CaptureButton extends ConsumerWidget {
+  const CaptureButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isCapturing = ref.watch(isCapturingScreenshotFromAppProvider);
+
+    return !isCapturing
+        ? const SizedBox.shrink()
+        : Positioned(
+            bottom: kPaddingMediumConstant,
+            right: kPaddingSmallConstant,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black.withOpacity(0.6),
+                    shape: const CircleBorder(),
+                  ),
+                  onPressed: () async {
+                    ref.read(isCapturingScreenshotFromAppProvider.state).state =
+                        false;
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white.withOpacity(0.6),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.blue,
+                    elevation: 10,
+                    fixedSize: const Size.fromHeight(
+                      64,
+                    ),
+                  ),
+                  onPressed: () async {
+                    final ui.Image image = await takeAppScreenshot(ref.read);
+                    ref
+                        .read(
+                          capturedSupportAppImageProvider.state,
+                        )
+                        .update(
+                          (ui.Image? state) => image,
+                        );
+                    ref.read(isCapturingScreenshotFromAppProvider.state).state =
+                        false;
+                    // get current route name
+                    final String? currentPath = ref.read(currentRouteProvider);
+                    if (currentPath == null) {
+                      await navigatorGlobalKey.currentState!
+                          .pushNamed(RouteName.BUG_REPORT);
+                    }
+                  },
+                  child: const Icon(
+                    Icons.camera,
+                    color: Colors.blue,
+                    size: kIconSizeLargeConstant,
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+}
+
 class RoutesObserver extends NavigatorObserver {
+  RoutesObserver(this.read);
   final Logger routesObserverLogger = Logger('RoutesObserverLogger');
+  final Reader read;
 
   @override
   Future<void> didPop(Route route, Route? previousRoute) async {
@@ -77,7 +169,21 @@ class RoutesObserver extends NavigatorObserver {
         }
       });
     }
+    if (route.settings.name == RouteName.BUG_REPORT) {
+      read(currentRouteProvider.state).state = null;
+    }
     super.didPop(route, previousRoute);
+  }
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    // TODO: implement didPush
+
+    if (route.settings.name == RouteName.BUG_REPORT) {
+      read(currentRouteProvider.state).state = RouteName.BUG_REPORT;
+    }
+
+    super.didPush(route, previousRoute);
   }
 }
 
