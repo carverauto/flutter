@@ -118,6 +118,7 @@ dependencies:
   umbra_flutter: ^0.1.0-dev.4
   path: ^1.8.2
   compute: ^1.0.2
+  video_player: ^2.4.7
 
 dependency_overrides:
   # firebase_core_platform_interface: 4.5.1

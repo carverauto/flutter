@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +12,7 @@ import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
+import 'mp4_player.dart';
 import 'watch_youtube_video_button.dart';
 
 class ChaseHeroSection extends ConsumerWidget {
@@ -29,6 +31,15 @@ class ChaseHeroSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final List<ChaseNetwork>? networks =
         ref.watch(chaseNetworksStateProvider(chaseId));
+    final List<ChaseNetwork> networksModifiable =
+        networks == null ? [] : [...networks];
+
+    // sort networks based on Tier value
+    if (networksModifiable != null && networksModifiable.length >= 2) {
+      networksModifiable
+          .sort((ChaseNetwork a, ChaseNetwork b) => a.tier!.compareTo(b.tier!));
+    }
+
     final bool? isLive = ref.watch(
       chaseLiveStatusChaseProvider(chaseId),
     );
@@ -36,16 +47,25 @@ class ChaseHeroSection extends ConsumerWidget {
       streamChaseProvider(chaseId)
           .select((AsyncValue<Chase> value) => value.value?.imageURL),
     );
-    final bool isYoutubeUrlPresent = networks?.any((ChaseNetwork network) {
-          final String? url = network.url;
+    final bool isYoutubeUrlPresent =
+        networksModifiable.any((ChaseNetwork network) {
+      final String? url = network.url;
 
-          if (url != null) {
-            return isValidYoutubeUrl(url);
-          }
+      if (url != null) {
+        return isValidYoutubeUrl(url);
+      }
 
-          return false;
-        }) ??
-        false;
+      return false;
+    });
+    String? mp4Url;
+    if (!isYoutubeUrlPresent) {
+      mp4Url = networksModifiable
+          .firstWhereOrNull(
+            (ChaseNetwork network) =>
+                network.mp4Url != null && network.mp4Url!.isNotEmpty,
+          )
+          ?.mp4Url;
+    }
 
     return Stack(
       children: [
@@ -57,7 +77,7 @@ class ChaseHeroSection extends ConsumerWidget {
               return isPlayVideo ? youtubeVideo : const SizedBox.shrink();
             },
           ),
-        if (!isYoutubeUrlPresent)
+        if (!isYoutubeUrlPresent && mp4Url == null)
           GestureDetector(
             onTap: () {
               if (isYoutubeUrlPresent) {
@@ -120,6 +140,11 @@ class ChaseHeroSection extends ConsumerWidget {
                 ),
               ],
             ),
+          ),
+        // show the mp4 video
+        if (!isYoutubeUrlPresent && mp4Url != null)
+          Mp4VideoPlayerView(
+            mp4Url: mp4Url,
           ),
       ],
     );
