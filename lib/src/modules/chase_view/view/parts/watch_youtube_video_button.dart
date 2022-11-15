@@ -59,7 +59,7 @@ class _WatchYoutubeVideoState extends State<WatchYoutubeVideo>
             BoxShadow(
               color: primaryShadowColor,
               blurRadius: blurValue,
-            )
+            ),
           ],
         ),
         child: !widget.isLive
