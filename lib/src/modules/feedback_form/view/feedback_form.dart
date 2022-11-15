@@ -78,8 +78,11 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
     emailController = TextEditingController(
       text: ref.read(userStreamProvider).value?.contactEmail,
     );
+    final String? description = ref.read(bugReportDescProvider)?.isEmpty ?? true
+        ? null
+        : ref.read(bugReportDescProvider);
     bugReportController = TextEditingController(
-      text: ref.read(bugReportDescProvider),
+      text: description,
     );
   }
 
@@ -648,7 +651,9 @@ class _GetUserContactEmailState extends State<GetUserContactEmail> {
           cursorColor: Colors.white,
           decoration: InputDecoration(
             labelText: 'Contact Email',
-            hintText: 'Enter your contact email (optional)',
+            labelStyle:
+                TextStyle(color: Theme.of(context).colorScheme.secondary),
+            hintText: 'Enter your contact email',
             hintStyle: const TextStyle(
               color: Colors.grey,
             ),
