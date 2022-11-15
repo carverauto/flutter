@@ -17,6 +17,7 @@ _$_UserData _$$_UserDataFromJson(Map<String, dynamic> json) => _$_UserData(
       tokens: (json['tokens'] as List<dynamic>?)
           ?.map((e) => PushToken.fromJson(e as Map<String, dynamic>))
           .toList(),
+      contactEmail: json['contactEmail'] as String?,
     );
 
 Map<String, dynamic> _$$_UserDataToJson(_$_UserData instance) =>
@@ -29,4 +30,5 @@ Map<String, dynamic> _$$_UserDataToJson(_$_UserData instance) =>
       'lastTokenUpdate': const DatetimeTimestampNullableConverter()
           .toJson(instance.lastTokenUpdate),
       'tokens': instance.tokens?.map((e) => e.toJson()).toList(),
+      'contactEmail': instance.contactEmail,
     };

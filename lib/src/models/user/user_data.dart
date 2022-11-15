@@ -18,6 +18,7 @@ abstract class UserData implements _$UserData {
     required int lastUpdated,
     @DatetimeTimestampNullableConverter() DateTime? lastTokenUpdate,
     List<PushToken>? tokens,
+    String? contactEmail,
   }) = _UserData;
   const UserData._();
   factory UserData.fromJson(Map<String, dynamic> json) =>
