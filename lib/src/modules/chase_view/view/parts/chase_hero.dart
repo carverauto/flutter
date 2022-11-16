@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/images.dart';
-import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
+import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
@@ -47,15 +47,15 @@ class ChaseHeroSection extends ConsumerWidget {
           .select((AsyncValue<Chase> value) => value.value?.imageURL),
     );
     const bool isYoutubeUrlPresent = false;
-    //     networksModifiable.any((ChaseNetwork network) {
-    //   final String? url = network.url;
+    networksModifiable.any((ChaseNetwork network) {
+      final String? url = network.url;
 
-    //   if (url != null) {
-    //     return isValidYoutubeUrl(url);
-    //   }
+      if (url != null) {
+        return isValidYoutubeUrl(url);
+      }
 
-    //   return false;
-    // });
+      return false;
+    });
     String? mp4Url;
     if (!isYoutubeUrlPresent) {
       mp4Url =
@@ -129,23 +129,6 @@ class ChaseHeroSection extends ConsumerWidget {
         if (!isYoutubeUrlPresent && mp4Url != null)
           Mp4VideoPlayerView(
             mp4Url: mp4Url,
-          ),
-        if (MediaQuery.of(context).orientation != Orientation.landscape)
-          Positioned(
-            left: kPaddingSmallConstant,
-            top: kPaddingSmallConstant,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-            ),
           ),
       ],
     );
