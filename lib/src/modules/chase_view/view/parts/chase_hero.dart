@@ -122,23 +122,6 @@ class ChaseHeroSection extends ConsumerWidget {
                       child: WatchYoutubeVideo(isLive: isLive ?? false),
                     ),
                   ),
-                Positioned(
-                  left: kPaddingSmallConstant,
-                  top: kPaddingSmallConstant,
-                  child: ElevatedButton(
-                    // shape: const CircleBorder(),
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -146,6 +129,23 @@ class ChaseHeroSection extends ConsumerWidget {
         if (!isYoutubeUrlPresent && mp4Url != null)
           Mp4VideoPlayerView(
             mp4Url: mp4Url,
+          ),
+        if (MediaQuery.of(context).orientation != Orientation.landscape)
+          Positioned(
+            left: kPaddingSmallConstant,
+            top: kPaddingSmallConstant,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
           ),
       ],
     );

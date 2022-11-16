@@ -57,22 +57,22 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
         VideoOverlayControlls(
           controller: _controller,
         ),
-        Positioned(
-          left: kPaddingSmallConstant,
-          top: kPaddingSmallConstant,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        // Positioned(
+        //   left: kPaddingSmallConstant,
+        //   top: kPaddingSmallConstant,
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //       shape: const CircleBorder(),
+        //     ),
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //     child: const Icon(
+        //       Icons.arrow_back,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
         if (!_controller.value.isInitialized || _controller.value.isBuffering)
           const IgnorePointer(
             child: Center(
@@ -230,6 +230,26 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
             ),
           ),
         ),
+        if (MediaQuery.of(context).orientation == Orientation.landscape)
+          Positioned(
+            left: kPaddingSmallConstant,
+            top: kPaddingSmallConstant,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              onPressed: () {
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.portraitUp,
+                  DeviceOrientation.portraitDown,
+                ]);
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
+          ),
         Align(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
