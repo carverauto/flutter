@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../const/sizings.dart';
@@ -162,7 +164,7 @@ class _VideoOverlayControllsState extends State<VideoOverlayControlls> {
   }
 }
 
-class Mp4VideoPlayerControlls extends StatefulWidget {
+class Mp4VideoPlayerControlls extends ConsumerStatefulWidget {
   const Mp4VideoPlayerControlls({
     required this.controller,
     this.bufferIndicator,
@@ -179,7 +181,7 @@ class Mp4VideoPlayerControlls extends StatefulWidget {
   _PlayPauseButtonState createState() => _PlayPauseButtonState();
 }
 
-class _PlayPauseButtonState extends State<Mp4VideoPlayerControlls>
+class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
     with TickerProviderStateMixin {
   late VideoPlayerController _controller;
 
@@ -306,9 +308,38 @@ class _PlayPauseButtonState extends State<Mp4VideoPlayerControlls>
           bottom: 0,
           left: 0,
           right: 0,
-          child: VideoDurationProgrssBar(
-            controller: _controller,
-            onVideoTapped: widget.onVideoTapped,
+          child: Row(
+            children: [
+              Expanded(
+                child: VideoDurationProgrssBar(
+                  controller: _controller,
+                  onVideoTapped: widget.onVideoTapped,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  // get current orientation
+                  final Orientation currentOrientation =
+                      MediaQuery.of(context).orientation;
+
+                  // set new orientation
+                  if (currentOrientation == Orientation.portrait) {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.landscapeLeft,
+                      DeviceOrientation.landscapeRight,
+                    ]);
+                  } else {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.portraitUp,
+                      DeviceOrientation.portraitDown,
+                    ]);
+                  }
+                },
+                icon: const Icon(
+                  Icons.fullscreen,
+                ),
+              ),
+            ],
           ),
         ),
       ],

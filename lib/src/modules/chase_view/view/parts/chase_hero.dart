@@ -8,7 +8,6 @@ import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
-import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
@@ -47,19 +46,21 @@ class ChaseHeroSection extends ConsumerWidget {
       streamChaseProvider(chaseId)
           .select((AsyncValue<Chase> value) => value.value?.imageURL),
     );
-    final bool isYoutubeUrlPresent =
-        networksModifiable.any((ChaseNetwork network) {
-      final String? url = network.url;
+    const bool isYoutubeUrlPresent = false;
+    //     networksModifiable.any((ChaseNetwork network) {
+    //   final String? url = network.url;
 
-      if (url != null) {
-        return isValidYoutubeUrl(url);
-      }
+    //   if (url != null) {
+    //     return isValidYoutubeUrl(url);
+    //   }
 
-      return false;
-    });
+    //   return false;
+    // });
     String? mp4Url;
     if (!isYoutubeUrlPresent) {
-      mp4Url = networksModifiable
+      mp4Url =
+          'http://nbclim-download.edgesuite.net/Prod/NBCU_LM_VMS_-_KNBC/948/803/19486677468-1080pnbcstations.mp4';
+      networksModifiable
           .firstWhereOrNull(
             (ChaseNetwork network) =>
                 network.mp4Url != null && network.mp4Url!.isNotEmpty,

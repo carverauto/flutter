@@ -13,6 +13,7 @@ import '../../../../models/chase/network/chase_network.dart';
 import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../providers/providers.dart';
 import 'chase_details.dart';
+import 'chase_details_reactive_info.dart';
 import 'video_animations_overlay.dart';
 import 'video_top_actions.dart';
 
@@ -45,6 +46,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
   late final Animation<Offset> appBarOffsetAnimation;
   late final Animation<Offset> bottomListAnimation;
   late final Chase chase;
+  GlobalKey playerKey = GlobalKey(debugLabel: 'Player');
   void initializeVideoController(String? videoId, [bool autoPlay = false]) {
     late final String? url;
     late final String? playerVideoId;
@@ -114,6 +116,20 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
   @override
   Widget build(BuildContext context) {
+    final ChaseHeroSectionBuilder player = ChaseHeroSectionBuilder(
+      key: playerKey,
+      chase: chase,
+      imageUrl: chase.imageURL,
+      youtubeVideo: YoutubePlayer(
+        controller: _controller,
+        topActions: const VideoTopActions(),
+        overlayInBetween: VideoAnimationsOverlay(
+          controller: _controller,
+          chase: chase,
+        ),
+      ),
+    );
+
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
@@ -127,38 +143,38 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
         },
         child: ChaseAppYoutubeController(
           youtubePlayerController: _controller,
-          child: YoutubePlayerBuilder(
-            player: YoutubePlayer(
-              controller: _controller,
-              topActions: const VideoTopActions(),
-              overlayInBetween: VideoAnimationsOverlay(
-                controller: _controller,
-                chase: chase,
-              ),
-            ),
-            builder: (BuildContext context, Widget video) {
-              return Scaffold(
-                backgroundColor: Colors.transparent,
-                resizeToAvoidBottomInset: false,
-                body: AnimatedBuilder(
-                  animation: bottomListAnimation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Transform.translate(
-                      offset: bottomListAnimation.value,
-                      child: child,
+          child: OrientationBuilder(
+            builder: (BuildContext context, Orientation orientation) {
+              return orientation == Orientation.landscape
+                  ? Scaffold(body: player)
+                  : Scaffold(
+                      backgroundColor: Colors.transparent,
+                      resizeToAvoidBottomInset: false,
+                      body: AnimatedBuilder(
+                        animation: bottomListAnimation,
+                        builder: (BuildContext context, Widget? child) {
+                          return Transform.translate(
+                            offset: bottomListAnimation.value,
+                            child: child,
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            player,
+                            Expanded(
+                              child: ChaseDetails(
+                                chase: chase,
+                                imageURL: chase.imageURL,
+                                logger: widget.logger,
+                                onYoutubeNetworkTap: changeYoutubeVideo,
+                                chatsRow: widget.chatsRow,
+                                chatsView: widget.chatsView,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     );
-                  },
-                  child: ChaseDetails(
-                    chase: chase,
-                    imageURL: chase.imageURL,
-                    logger: widget.logger,
-                    youtubeVideo: video,
-                    onYoutubeNetworkTap: changeYoutubeVideo,
-                    chatsRow: widget.chatsRow,
-                    chatsView: widget.chatsView,
-                  ),
-                ),
-              );
             },
           ),
         ),
