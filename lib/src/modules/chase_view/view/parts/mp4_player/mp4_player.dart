@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,14 +24,27 @@ class Mp4VideoPlayerView extends StatefulWidget {
 
 class _VideoAppState extends State<Mp4VideoPlayerView> {
   late VideoPlayerController _controller;
+  late bool isBuffering;
+
+  void listenForBufferUpdate() {
+    _controller.addListener(() {
+      if (_controller.value.isBuffering != isBuffering) {
+        log('BUffer Status Changed');
+        setState(() {
+          isBuffering = _controller.value.isBuffering;
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
+    isBuffering = true;
     _controller = VideoPlayerController.network(
       widget.mp4Url,
     );
+    _controller.addListener(listenForBufferUpdate);
     _controller.initialize().then((value) {
       setState(() {
         _controller.play();
@@ -40,7 +54,9 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller
+      ..removeListener(listenForBufferUpdate)
+      ..dispose();
     super.dispose();
   }
 
@@ -54,26 +70,36 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
             child: VideoPlayer(_controller),
           ),
         ),
-        VideoOverlayControlls(
-          controller: _controller,
-        ),
-        // Positioned(
-        //   left: kPaddingSmallConstant,
-        //   top: kPaddingSmallConstant,
-        //   child: ElevatedButton(
-        //     style: ElevatedButton.styleFrom(
-        //       shape: const CircleBorder(),
-        //     ),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //     child: const Icon(
-        //       Icons.arrow_back,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
-        if (!_controller.value.isInitialized || _controller.value.isBuffering)
+        if (!isBuffering)
+          VideoOverlayControlls(
+            controller: _controller,
+          ),
+        if (!_controller.value.isInitialized || isBuffering)
+          Positioned(
+            left: kPaddingSmallConstant,
+            top: kPaddingSmallConstant,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+              ),
+              onPressed: () {
+                if (MediaQuery.of(context).orientation ==
+                    Orientation.landscape) {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        if (!_controller.value.isInitialized || isBuffering)
           const IgnorePointer(
             child: Center(
               child: CircularAdaptiveProgressIndicatorWithBg(),
@@ -230,26 +256,29 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
             ),
           ),
         ),
-        if (MediaQuery.of(context).orientation == Orientation.landscape)
-          Positioned(
-            left: kPaddingSmallConstant,
-            top: kPaddingSmallConstant,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-              ),
-              onPressed: () {
+        Positioned(
+          left: kPaddingSmallConstant,
+          top: kPaddingSmallConstant,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+            ),
+            onPressed: () {
+              if (MediaQuery.of(context).orientation == Orientation.landscape) {
                 SystemChrome.setPreferredOrientations([
                   DeviceOrientation.portraitUp,
                   DeviceOrientation.portraitDown,
                 ]);
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
             ),
           ),
+        ),
         Align(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
