@@ -14,6 +14,7 @@ class CustomVideoProgressIndicator extends StatefulWidget {
     this.colors = const VideoProgressColors(),
     required this.allowScrubbing,
     this.padding = const EdgeInsets.only(top: 5),
+    required this.onScrubbed,
   }) : super(key: key);
 
   /// The [VideoPlayerController] that actually associates a video with this
@@ -36,6 +37,8 @@ class CustomVideoProgressIndicator extends StatefulWidget {
   ///
   /// Defaults to `top: 5.0`.
   final EdgeInsets padding;
+
+  final VoidCallback onScrubbed;
 
   @override
   State<CustomVideoProgressIndicator> createState() =>
@@ -116,6 +119,7 @@ class _VideoProgressIndicatorState extends State<CustomVideoProgressIndicator> {
     if (widget.allowScrubbing) {
       return CustomVideoScrubber(
         controller: controller,
+        onScrubbed: widget.onScrubbed,
         child: paddedProgressIndicator,
       );
     } else {
@@ -128,10 +132,12 @@ class CustomVideoScrubber extends StatefulWidget {
   const CustomVideoScrubber({
     required this.child,
     required this.controller,
+    required this.onScrubbed,
   });
 
   final Widget child;
   final VideoPlayerController controller;
+  final VoidCallback onScrubbed;
 
   @override
   _VideoScrubberState createState() => _VideoScrubberState();
@@ -156,6 +162,7 @@ class _VideoScrubberState extends State<CustomVideoScrubber> {
       behavior: HitTestBehavior.opaque,
       child: widget.child,
       onHorizontalDragStart: (DragStartDetails details) {
+        widget.onScrubbed();
         if (!controller.value.isInitialized) {
           return;
         }
@@ -165,18 +172,21 @@ class _VideoScrubberState extends State<CustomVideoScrubber> {
         }
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
+        widget.onScrubbed();
         if (!controller.value.isInitialized) {
           return;
         }
         seekToRelativePosition(details.globalPosition);
       },
       onHorizontalDragEnd: (DragEndDetails details) {
+        widget.onScrubbed();
         if (_controllerWasPlaying &&
             controller.value.position != controller.value.duration) {
           controller.play();
         }
       },
       onTapDown: (TapDownDetails details) {
+        widget.onScrubbed();
         if (!controller.value.isInitialized) {
           return;
         }

@@ -21,14 +21,10 @@ class Mp4VideoPlayerView extends StatefulWidget {
 
 class _VideoAppState extends State<Mp4VideoPlayerView> {
   late VideoPlayerController _controller;
-  late bool isOverlayActive;
-  late Timer overlayerActiveTimer;
 
   @override
   void initState() {
     super.initState();
-    isOverlayActive = false;
-    overlayerActiveTimer = Timer(Duration.zero, () {});
 
     _controller = VideoPlayerController.network(
       widget.mp4Url,
@@ -41,6 +37,12 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -50,27 +52,8 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
             child: VideoPlayer(_controller),
           ),
         ),
-        InkWell(
-          onTap: () {
-            overlayerActiveTimer.cancel();
-            setState(() {
-              isOverlayActive = true;
-            });
-            overlayerActiveTimer = Timer(const Duration(seconds: 3), () {
-              setState(() {
-                isOverlayActive = false;
-              });
-            });
-          },
-          child: const SizedBox.expand(),
-        ),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: true
-              ? Mp4VideoPlayerControlls(
-                  controller: _controller,
-                )
-              : const SizedBox.shrink(),
+        VideoOverlayControlls(
+          controller: _controller,
         ),
         Positioned(
           left: kPaddingSmallConstant,
@@ -97,11 +80,85 @@ class _VideoAppState extends State<Mp4VideoPlayerView> {
       ],
     );
   }
+}
+
+class VideoOverlayControlls extends StatefulWidget {
+  const VideoOverlayControlls({
+    Key? key,
+    required VideoPlayerController controller,
+  })  : _controller = controller,
+        super(key: key);
+
+  final VideoPlayerController _controller;
+
+  @override
+  State<VideoOverlayControlls> createState() => _VideoOverlayControllsState();
+}
+
+class _VideoOverlayControllsState extends State<VideoOverlayControlls> {
+  late bool isOverlayActive;
+  late Timer overlayerActiveTimer;
+
+  void onVideoTapped() {
+    overlayerActiveTimer.cancel();
+
+    if (!isOverlayActive) {
+      setState(() {
+        isOverlayActive = true;
+      });
+    }
+
+    overlayerActiveTimer = Timer(const Duration(seconds: 3), () {
+      setState(() {
+        isOverlayActive = false;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isOverlayActive = false;
+
+    overlayerActiveTimer = Timer(Duration.zero, () {});
+  }
 
   @override
   void dispose() {
-    _controller.dispose();
+    overlayerActiveTimer.cancel();
+
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          InkWell(
+            onTap: () {
+              overlayerActiveTimer.cancel();
+
+              setState(() {
+                isOverlayActive = !isOverlayActive;
+              });
+            },
+            child: const SizedBox.expand(),
+          ),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: isOverlayActive
+                ? Mp4VideoPlayerControlls(
+                    controller: widget._controller,
+                    onVideoTapped: onVideoTapped,
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -109,11 +166,14 @@ class Mp4VideoPlayerControlls extends StatefulWidget {
   const Mp4VideoPlayerControlls({
     required this.controller,
     this.bufferIndicator,
+    required this.onVideoTapped,
   });
 
   final VideoPlayerController controller;
 
   final Widget? bufferIndicator;
+
+  final VoidCallback onVideoTapped;
 
   @override
   _PlayPauseButtonState createState() => _PlayPauseButtonState();
@@ -155,143 +215,167 @@ class _PlayPauseButtonState extends State<Mp4VideoPlayerControlls>
       alignment: Alignment.center,
       fit: StackFit.expand,
       children: [
-        const DecoratedBox(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              radius: 1.3,
-              colors: [
-                Colors.transparent,
-                Colors.black,
-              ],
-            ),
-          ),
-        ),
-        Column(
-          children: [
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Material(
-                  shape: const CircleBorder(),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () async {
-                      final Duration currentPosition =
-                          await widget.controller.position ?? Duration.zero;
-                      final Duration backToDuration =
-                          Duration(seconds: currentPosition.inSeconds - 10);
-                      await widget.controller.seekTo(backToDuration);
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        Icons.replay_10_outlined,
-                        size: 36,
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  shape: const CircleBorder(),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () {
-                      isPlaying ? _controller.pause() : _controller.play();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: isPlaying
-                          ? const Icon(
-                              Icons.pause,
-                              size: 36,
-                            )
-                          : const Icon(
-                              Icons.play_arrow,
-                              size: 36,
-                            ),
-                    ),
-                  ),
-                ),
-                Material(
-                  shape: const CircleBorder(),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () async {
-                      final Duration currentPosition =
-                          await widget.controller.position ?? Duration.zero;
-                      final Duration forwardToDuration =
-                          Duration(seconds: currentPosition.inSeconds + 10);
-                      await widget.controller.seekTo(forwardToDuration);
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        Icons.forward_10,
-                        size: 36,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kPaddingMediumConstant,
-              ),
-              child: Row(
-                children: [
-                  Builder(
-                    builder: (BuildContext context) {
-                      final Duration elapsedTime =
-                          widget.controller.value.position;
-
-                      return Text(
-                        durationFormatter(elapsedTime.inMilliseconds),
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kPaddingSmallConstant,
-                        vertical: kPaddingSmallConstant,
-                      ),
-                      child: SizedBox(
-                        height: 15,
-                        child: CustomVideoProgressIndicator(
-                          _controller,
-                          allowScrubbing: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Builder(
-                    builder: (BuildContext context) {
-                      final Duration totalDuration =
-                          widget.controller.value.duration;
-
-                      return Text(
-                        durationFormatter(totalDuration.inMilliseconds),
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                  ),
+        const IgnorePointer(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                radius: 1.3,
+                colors: [
+                  Colors.transparent,
+                  Colors.black,
                 ],
               ),
             ),
-          ],
+          ),
+        ),
+        Align(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Material(
+                shape: const CircleBorder(),
+                color: Colors.transparent,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () async {
+                    widget.onVideoTapped();
+                    final Duration currentPosition =
+                        await widget.controller.position ?? Duration.zero;
+                    final Duration backToDuration =
+                        Duration(seconds: currentPosition.inSeconds - 10);
+                    await widget.controller.seekTo(backToDuration);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.replay_10_outlined,
+                      size: 36,
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                shape: const CircleBorder(),
+                color: Colors.transparent,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () {
+                    widget.onVideoTapped();
+                    isPlaying ? _controller.pause() : _controller.play();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: isPlaying
+                        ? const Icon(
+                            Icons.pause,
+                            size: 36,
+                          )
+                        : const Icon(
+                            Icons.play_arrow,
+                            size: 36,
+                          ),
+                  ),
+                ),
+              ),
+              Material(
+                shape: const CircleBorder(),
+                color: Colors.transparent,
+                child: InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: () async {
+                    widget.onVideoTapped();
+                    final Duration currentPosition =
+                        await widget.controller.position ?? Duration.zero;
+                    final Duration forwardToDuration =
+                        Duration(seconds: currentPosition.inSeconds + 10);
+                    await widget.controller.seekTo(forwardToDuration);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.forward_10,
+                      size: 36,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: VideoDurationProgrssBar(
+            controller: _controller,
+            onVideoTapped: widget.onVideoTapped,
+          ),
         ),
       ],
+    );
+  }
+}
+
+class VideoDurationProgrssBar extends StatelessWidget {
+  const VideoDurationProgrssBar({
+    Key? key,
+    required VideoPlayerController controller,
+    required this.onVideoTapped,
+  })  : _controller = controller,
+        super(key: key);
+
+  final VideoPlayerController _controller;
+  final VoidCallback onVideoTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    final Duration totalDuration = _controller.value.duration;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kPaddingMediumConstant,
+      ),
+      child: Row(
+        children: [
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (BuildContext context, _) {
+              final Duration elapsedTime = _controller.value.position;
+
+              return Text(
+                durationFormatter(elapsedTime.inMilliseconds),
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            },
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: kPaddingSmallConstant,
+              ),
+              child: SizedBox(
+                height: 30,
+                child: CustomVideoProgressIndicator(
+                  _controller,
+                  allowScrubbing: true,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: kPaddingSmallConstant,
+                  ),
+                  onScrubbed: onVideoTapped,
+                ),
+              ),
+            ),
+          ),
+          Text(
+            durationFormatter(totalDuration.inMilliseconds),
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
