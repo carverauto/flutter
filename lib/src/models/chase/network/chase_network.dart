@@ -2,6 +2,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'chase_stream/chase_stream.dart';
+
 part 'chase_network.freezed.dart';
 part 'chase_network.g.dart';
 
@@ -16,6 +18,7 @@ abstract class ChaseNetwork implements _$ChaseNetwork {
     @JsonKey(name: 'Tier') required int? tier,
     @JsonKey(name: 'URL') String? url,
     @JsonKey(name: 'MP4URL') String? mp4Url,
+    @JsonKey(name: 'Streams') List<ChaseStream>? streams,
   }) = _ChaseNetwork;
   const ChaseNetwork._();
 

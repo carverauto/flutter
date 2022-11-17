@@ -14,6 +14,9 @@ _$_ChaseNetwork _$$_ChaseNetworkFromJson(Map<String, dynamic> json) =>
       tier: json['Tier'] as int?,
       url: json['URL'] as String?,
       mp4Url: json['MP4URL'] as String?,
+      streams: (json['Streams'] as List<dynamic>?)
+          ?.map((e) => ChaseStream.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ChaseNetworkToJson(_$_ChaseNetwork instance) =>
@@ -24,4 +27,5 @@ Map<String, dynamic> _$$_ChaseNetworkToJson(_$_ChaseNetwork instance) =>
       'Tier': instance.tier,
       'URL': instance.url,
       'MP4URL': instance.mp4Url,
+      'Streams': instance.streams?.map((e) => e.toJson()).toList(),
     };

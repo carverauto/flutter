@@ -32,6 +32,8 @@ mixin _$ChaseNetwork {
   String? get url => throw _privateConstructorUsedError;
   @JsonKey(name: 'MP4URL')
   String? get mp4Url => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Streams')
+  List<ChaseStream>? get streams => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +53,8 @@ abstract class $ChaseNetworkCopyWith<$Res> {
       @JsonKey(name: 'Other') String? other,
       @JsonKey(name: 'Tier') int? tier,
       @JsonKey(name: 'URL') String? url,
-      @JsonKey(name: 'MP4URL') String? mp4Url});
+      @JsonKey(name: 'MP4URL') String? mp4Url,
+      @JsonKey(name: 'Streams') List<ChaseStream>? streams});
 }
 
 /// @nodoc
@@ -73,6 +76,7 @@ class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
     Object? tier = freezed,
     Object? url = freezed,
     Object? mp4Url = freezed,
+    Object? streams = freezed,
   }) {
     return _then(_value.copyWith(
       logo: freezed == logo
@@ -99,6 +103,10 @@ class _$ChaseNetworkCopyWithImpl<$Res, $Val extends ChaseNetwork>
           ? _value.mp4Url
           : mp4Url // ignore: cast_nullable_to_non_nullable
               as String?,
+      streams: freezed == streams
+          ? _value.streams
+          : streams // ignore: cast_nullable_to_non_nullable
+              as List<ChaseStream>?,
     ) as $Val);
   }
 }
@@ -117,7 +125,8 @@ abstract class _$$_ChaseNetworkCopyWith<$Res>
       @JsonKey(name: 'Other') String? other,
       @JsonKey(name: 'Tier') int? tier,
       @JsonKey(name: 'URL') String? url,
-      @JsonKey(name: 'MP4URL') String? mp4Url});
+      @JsonKey(name: 'MP4URL') String? mp4Url,
+      @JsonKey(name: 'Streams') List<ChaseStream>? streams});
 }
 
 /// @nodoc
@@ -137,6 +146,7 @@ class __$$_ChaseNetworkCopyWithImpl<$Res>
     Object? tier = freezed,
     Object? url = freezed,
     Object? mp4Url = freezed,
+    Object? streams = freezed,
   }) {
     return _then(_$_ChaseNetwork(
       logo: freezed == logo
@@ -163,6 +173,10 @@ class __$$_ChaseNetworkCopyWithImpl<$Res>
           ? _value.mp4Url
           : mp4Url // ignore: cast_nullable_to_non_nullable
               as String?,
+      streams: freezed == streams
+          ? _value._streams
+          : streams // ignore: cast_nullable_to_non_nullable
+              as List<ChaseStream>?,
     ));
   }
 }
@@ -177,8 +191,10 @@ class _$_ChaseNetwork extends _ChaseNetwork {
       @JsonKey(name: 'Other') required this.other,
       @JsonKey(name: 'Tier') required this.tier,
       @JsonKey(name: 'URL') this.url,
-      @JsonKey(name: 'MP4URL') this.mp4Url})
-      : super._();
+      @JsonKey(name: 'MP4URL') this.mp4Url,
+      @JsonKey(name: 'Streams') final List<ChaseStream>? streams})
+      : _streams = streams,
+        super._();
 
   factory _$_ChaseNetwork.fromJson(Map<String, dynamic> json) =>
       _$$_ChaseNetworkFromJson(json);
@@ -201,10 +217,19 @@ class _$_ChaseNetwork extends _ChaseNetwork {
   @override
   @JsonKey(name: 'MP4URL')
   final String? mp4Url;
+  final List<ChaseStream>? _streams;
+  @override
+  @JsonKey(name: 'Streams')
+  List<ChaseStream>? get streams {
+    final value = _streams;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ChaseNetwork(logo: $logo, name: $name, other: $other, tier: $tier, url: $url, mp4Url: $mp4Url)';
+    return 'ChaseNetwork(logo: $logo, name: $name, other: $other, tier: $tier, url: $url, mp4Url: $mp4Url, streams: $streams)';
   }
 
   @override
@@ -217,13 +242,14 @@ class _$_ChaseNetwork extends _ChaseNetwork {
             (identical(other.other, this.other) || other.other == this.other) &&
             (identical(other.tier, tier) || other.tier == tier) &&
             (identical(other.url, url) || other.url == url) &&
-            (identical(other.mp4Url, mp4Url) || other.mp4Url == mp4Url));
+            (identical(other.mp4Url, mp4Url) || other.mp4Url == mp4Url) &&
+            const DeepCollectionEquality().equals(other._streams, _streams));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, logo, name, other, tier, url, mp4Url);
+  int get hashCode => Object.hash(runtimeType, logo, name, other, tier, url,
+      mp4Url, const DeepCollectionEquality().hash(_streams));
 
   @JsonKey(ignore: true)
   @override
@@ -241,12 +267,14 @@ class _$_ChaseNetwork extends _ChaseNetwork {
 
 abstract class _ChaseNetwork extends ChaseNetwork {
   const factory _ChaseNetwork(
-      {@JsonKey(name: 'Logo') required final String? logo,
-      @JsonKey(name: 'Name') required final String? name,
-      @JsonKey(name: 'Other') required final String? other,
-      @JsonKey(name: 'Tier') required final int? tier,
-      @JsonKey(name: 'URL') final String? url,
-      @JsonKey(name: 'MP4URL') final String? mp4Url}) = _$_ChaseNetwork;
+          {@JsonKey(name: 'Logo') required final String? logo,
+          @JsonKey(name: 'Name') required final String? name,
+          @JsonKey(name: 'Other') required final String? other,
+          @JsonKey(name: 'Tier') required final int? tier,
+          @JsonKey(name: 'URL') final String? url,
+          @JsonKey(name: 'MP4URL') final String? mp4Url,
+          @JsonKey(name: 'Streams') final List<ChaseStream>? streams}) =
+      _$_ChaseNetwork;
   const _ChaseNetwork._() : super._();
 
   factory _ChaseNetwork.fromJson(Map<String, dynamic> json) =
@@ -270,6 +298,9 @@ abstract class _ChaseNetwork extends ChaseNetwork {
   @override
   @JsonKey(name: 'MP4URL')
   String? get mp4Url;
+  @override
+  @JsonKey(name: 'Streams')
+  List<ChaseStream>? get streams;
   @override
   @JsonKey(ignore: true)
   _$$_ChaseNetworkCopyWith<_$_ChaseNetwork> get copyWith =>
