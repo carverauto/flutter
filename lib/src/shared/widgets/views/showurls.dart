@@ -7,7 +7,8 @@ import '../../../const/colors.dart';
 import '../../../const/images.dart';
 import '../../../const/sizings.dart';
 import '../../../models/chase/network/chase_network.dart';
-import '../../util/helpers/launchLink.dart';
+import '../../../models/chase/network/chase_stream/chase_stream.dart';
+import '../../util/helpers/is_valid_youtube_url.dart';
 import '../buttons/glass_button.dart';
 
 class URLView extends ConsumerWidget {
@@ -22,52 +23,135 @@ class URLView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      height: kButtonHeightSmall,
+      height: kToolbarHeight,
       child: ListView(
-        // spacing: kItemsSpacingSmallConstant,
-        // runSpacing: kItemsSpacingSmallConstant,
         scrollDirection: Axis.horizontal,
-
-        children: networks.map<Widget>((ChaseNetwork data) {
-          final String? url = data.url;
-          final String? name = data.name;
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: kItemsSpacingExtraSmallConstant,
-            ),
-            child: GlassButton(
-              padding: const EdgeInsets.all(kPaddingSmallConstant),
-              onTap: () async {
-                if (url != null) {
-                  if (onYoutubeNetworkTap != null) {
-                    onYoutubeNetworkTap!(url);
-                  } else {
-                    await launchUrl(url);
-                  }
-                }
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: primaryColor.shade300,
-                    backgroundImage: NetworkImage(getNetworkLogUrl(url)),
-                  ),
-                  const SizedBox(
-                    width: kItemsSpacingExtraSmallConstant,
-                  ),
-                  Text(
-                    toBeginningOfSentenceCase(name) ?? 'NA',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+        children: networks.map<Widget>((ChaseNetwork network) {
+          return NetworkLinks(
+            network: network,
+            onYoutubeNetworkTap: onYoutubeNetworkTap,
           );
         }).toList(),
+      ),
+    );
+  }
+}
+
+class NetworkLinks extends StatelessWidget {
+  const NetworkLinks({
+    super.key,
+    required this.network,
+    required this.onYoutubeNetworkTap,
+  });
+
+  final ChaseNetwork network;
+  final void Function(String url)? onYoutubeNetworkTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isStreams = onYoutubeNetworkTap != null;
+    final List<ChaseStream> streams =
+        List.from(network.streams ?? <ChaseStream>[]);
+    if (network.url != null) {
+      streams.add(ChaseStream(tier: 0, url: network.url!));
+    }
+    if (network.mp4Url != null) {
+      streams.add(ChaseStream(tier: 0, url: network.mp4Url!));
+    }
+
+    final List<ChaseStream> youtubeStreams = isStreams
+        ? streams.where((ChaseStream network) {
+            final String url = network.url;
+            if (url != null) {
+              final bool isYoutube = isValidYoutubeUrl(url);
+
+              return isYoutube;
+            }
+            return false;
+          }).toList()
+        : [];
+
+    final List<ChaseStream> mp4Networks = isStreams
+        ? streams.where((ChaseStream network) {
+            final String url = network.url;
+            if (url != null) {
+              final bool isMp4 = url.endsWith('.mp4');
+              return isMp4;
+            }
+            return false;
+          }).toList()
+        : [];
+
+    final List<ChaseStream> otherNetworks = !isStreams
+        ? streams.where((ChaseStream network) {
+            final String url = network.url;
+
+            if (url != null) {
+              final bool isYoutube = isValidYoutubeUrl(url);
+              return !isYoutube;
+            }
+            return false;
+          }).toList()
+        : [];
+    if (youtubeStreams.isEmpty &&
+        mp4Networks.isEmpty &&
+        otherNetworks.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: kItemsSpacingExtraSmallConstant,
+      ),
+      child: GlassButton(
+        padding: const EdgeInsets.all(kPaddingSmallConstant),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              toBeginningOfSentenceCase(network.name) ?? 'NA',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+              ),
+            ),
+            for (final ChaseStream stream in youtubeStreams)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: kPaddingSmallConstant,
+                ),
+                child: CircleAvatar(
+                  backgroundColor: primaryColor.shade300,
+                  backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                ),
+              ),
+            for (final ChaseStream stream in mp4Networks)
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: kPaddingSmallConstant,
+                ),
+                child: CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  child: FittedBox(
+                    child: Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            for (final ChaseStream stream in otherNetworks)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: kPaddingSmallConstant,
+                ),
+                child: CircleAvatar(
+                  backgroundColor: primaryColor.shade300,
+                  backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

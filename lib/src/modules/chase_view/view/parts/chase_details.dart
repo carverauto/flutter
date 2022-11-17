@@ -11,7 +11,7 @@ import '../../../signin/view/parts/gradient_animation_container.dart';
 import '../providers/providers.dart';
 import 'chase_description_dialog.dart';
 import 'chase_details_reactive_info.dart';
-import 'watch_here_video.dart';
+import 'watch_here_links.dart';
 
 class ChaseDetails extends StatelessWidget {
   const ChaseDetails({

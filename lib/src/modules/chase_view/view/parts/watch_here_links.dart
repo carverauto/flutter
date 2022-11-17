@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../models/chase/network/chase_network.dart';
-import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/views/showurls.dart';
 import '../providers/providers.dart';
 
@@ -22,26 +21,9 @@ class WatchHereLinksWrapper extends ConsumerWidget {
     final List<ChaseNetwork>? networks = ref.watch(
       chaseNetworksStateProvider(chaseId),
     );
-    final List<ChaseNetwork>? youtubeNetworks =
-        networks?.where((ChaseNetwork network) {
-      final String? url = network.url;
-      if (url != null) {
-        final bool isYoutube = isValidYoutubeUrl(url);
-        return isYoutube;
-      }
-      return false;
-    }).toList();
-
-    final List<ChaseNetwork>? otherNetworks =
-        networks?.where((ChaseNetwork network) {
-      final String? url = network.url;
-
-      if (url != null) {
-        final bool isYoutube = isValidYoutubeUrl(url);
-        return !isYoutube;
-      }
-      return false;
-    }).toList();
+    final List<ChaseNetwork> sortedNetworks = [...?networks]..sort(
+        (ChaseNetwork a, ChaseNetwork b) => b.tier!.compareTo(a.tier!),
+      );
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -52,14 +34,14 @@ class WatchHereLinksWrapper extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           NetworksList(
-            networks: youtubeNetworks,
+            networks: sortedNetworks,
             onYoutubeNetworkTap: onYoutubeNetworkTap,
           ),
           const SizedBox(
             height: kItemsSpacingSmallConstant,
           ),
           NetworksList(
-            networks: otherNetworks,
+            networks: sortedNetworks,
           ),
         ],
       ),
@@ -79,18 +61,31 @@ class NetworksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isStream = onYoutubeNetworkTap != null;
+
     return networks == null || networks!.isEmpty
         ? const SizedBox.shrink()
         : Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${onYoutubeNetworkTap != null ? "Streams" : "Other"} :",
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      //  decoration: TextDecoration.underline,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+              Row(
+                children: [
+                  Icon(
+                    isStream ? Icons.play_arrow_rounded : Icons.link_rounded,
+                    color: isStream ? Colors.white : Colors.blue,
+                  ),
+                  const SizedBox(
+                    width: kPaddingXSmallConstant,
+                  ),
+                  Text(
+                    "${isStream ? "Streams" : "Other"} :",
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          //  decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: kItemsSpacingSmallConstant,
