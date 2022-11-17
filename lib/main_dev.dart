@@ -33,6 +33,8 @@ void main() async {
         ),
       );
     },
-    FirebaseCrashlytics.instance.recordError,
+    (Object error, StackTrace stack) async {
+      return FirebaseCrashlytics.instance.recordError(error, stack);
+    },
   );
 }
