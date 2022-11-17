@@ -192,12 +192,10 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
     Key? key,
     required this.chase,
     required this.imageUrl,
-    required this.youtubeVideo,
   }) : super(key: key);
 
   final Chase chase;
   final String? imageUrl;
-  final Widget youtubeVideo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -215,7 +213,6 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
       child: ChaseHeroSection(
         chaseId: chase.id,
         imageURL: imageUrl,
-        youtubeVideo: youtubeVideo,
       ),
     );
 

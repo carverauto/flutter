@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,18 +15,17 @@ import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
 import 'mp4_player/mp4_player.dart';
 import 'watch_youtube_video_button.dart';
+import 'youtube_player/youtube_player_view.dart';
 
 class ChaseHeroSection extends ConsumerStatefulWidget {
   const ChaseHeroSection({
     Key? key,
     required this.chaseId,
     required this.imageURL,
-    required this.youtubeVideo,
   }) : super(key: key);
 
   final String chaseId;
   final String? imageURL;
-  final Widget youtubeVideo;
 
   @override
   ConsumerState<ChaseHeroSection> createState() => _ChaseHeroSectionState();
@@ -35,7 +35,11 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
   String? youtubeUrl;
   String? mp4Url;
 
+  // ignore: long-method
   void sortOutNetworksBasedOnTier() {
+    if (youtubeUrl != null || mp4Url != null) {
+      return;
+    }
     final List<ChaseNetwork>? chaseNetworks =
         ref.read(chaseNetworksStateProvider(widget.chaseId));
     final List<ChaseNetwork> networksModifiable =
@@ -47,47 +51,61 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
     }
     if (networksModifiable.length >= 2) {
       networksModifiable
-          .sort((ChaseNetwork a, ChaseNetwork b) => a.tier!.compareTo(b.tier!));
+          .sort((ChaseNetwork a, ChaseNetwork b) => b.tier!.compareTo(a.tier!));
     }
-    final List<ChaseStream> streams = List.empty(growable: true);
 
     for (final ChaseNetwork network in networksModifiable) {
-      streams
-        ..add(ChaseStream(tier: 0, url: network.url ?? ''))
-        ..add(ChaseStream(tier: 0, url: network.mp4Url ?? ''));
+      final List<ChaseStream> streams = List.empty(growable: true);
+
+      final List<ChaseStream> networkStreams = <ChaseStream>[
+        ChaseStream(tier: 0, url: network.url ?? ''),
+        ChaseStream(tier: 0, url: network.mp4Url ?? ''),
+      ];
       if (network.streams != null) {
-        final List<ChaseStream> sortedStreams = network.streams!;
+        final List<ChaseStream> sortedStreams =
+            List<ChaseStream>.from(network.streams!);
         if (sortedStreams.length >= 2) {
           sortedStreams
-              .sort((ChaseStream a, ChaseStream b) => a.tier.compareTo(b.tier));
+              .sort((ChaseStream a, ChaseStream b) => b.tier.compareTo(a.tier));
         }
 
+        sortedStreams.insertAll(
+          0,
+          networkStreams,
+        );
         streams.addAll(sortedStreams);
+      } else {
+        streams.addAll(networkStreams);
+      }
+      youtubeUrl ??= streams.firstWhereOrNull((ChaseStream network) {
+        final String url = network.url;
+
+        if (url != null) {
+          return isValidYoutubeUrl(url);
+        }
+
+        return false;
+      })?.url;
+      if (youtubeUrl != null) {
+        break;
+      }
+
+      mp4Url ??= streams.firstWhereOrNull((ChaseStream network) {
+        final String url = network.url;
+
+        if (url != null) {
+          return url.endsWith('.mp4');
+        }
+
+        return false;
+      })?.url;
+      if (mp4Url != null) {
+        break;
       }
     }
-    if (streams.isEmpty) {
-      return;
-    }
-
-    youtubeUrl ??= streams.firstWhere((ChaseStream network) {
-      final String url = network.url;
-
-      if (url != null) {
-        return isValidYoutubeUrl(url);
-      }
-
-      return false;
-    }).url;
-
-    mp4Url ??= streams.firstWhere((ChaseStream network) {
-      final String url = network.url;
-
-      if (url != null) {
-        return url.endsWith('.mp4');
-      }
-
-      return false;
-    }).url;
+    // if (streams.isEmpty) {
+    //   return;
+    // }
 
     setState(() {});
   }
@@ -129,9 +147,18 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final bool isPlayVideo = ref.watch(playVideoProvider);
+              final Chase? chase = ref
+                  .read(
+                    streamChaseProvider(widget.chaseId),
+                  )
+                  .value;
 
               return isPlayVideo
-                  ? widget.youtubeVideo
+                  ? YoutubePlayerView(
+                      url: youtubeUrl!,
+                      isLive: isLive ?? false,
+                      chase: chase!,
+                    )
                   : const SizedBox.shrink();
             },
           ),

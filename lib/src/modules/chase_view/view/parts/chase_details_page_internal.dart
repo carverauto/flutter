@@ -14,8 +14,6 @@ import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../providers/providers.dart';
 import 'chase_details.dart';
 import 'chase_details_reactive_info.dart';
-import 'video_animations_overlay.dart';
-import 'video_top_actions.dart';
 
 class ChaseDetailsInternal extends ConsumerStatefulWidget {
   const ChaseDetailsInternal({
@@ -120,14 +118,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       key: playerKey,
       chase: chase,
       imageUrl: chase.imageURL,
-      youtubeVideo: YoutubePlayer(
-        controller: _controller,
-        topActions: const VideoTopActions(),
-        overlayInBetween: VideoAnimationsOverlay(
-          controller: _controller,
-          chase: chase,
-        ),
-      ),
     );
 
     return SafeArea(
