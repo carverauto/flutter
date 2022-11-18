@@ -28,7 +28,7 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
   late YoutubePlayerController _controller;
 
   GlobalKey playerKey = GlobalKey(debugLabel: 'Player');
-  void initializeVideoController(String? videoId, [bool autoPlay = false]) {
+  void initializeVideoController([bool autoPlay = false]) {
     // late final String? url;
     // late final String? playerVideoId;
     // if (videoId == null) {
@@ -73,7 +73,6 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
     });
 
     initializeVideoController(
-      videoId,
       true,
     );
     ref.read(playVideoProvider.state).update((bool state) => false);
@@ -84,7 +83,16 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
   @override
   void initState() {
     super.initState();
-    initializeVideoController(null);
+    initializeVideoController(true);
+  }
+
+  @override
+  void didUpdateWidget(covariant YoutubePlayerView oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (widget.url != oldWidget.url) {
+      changeYoutubeVideo(widget.url);
+    }
   }
 
   @override

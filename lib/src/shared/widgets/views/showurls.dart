@@ -122,9 +122,17 @@ class NetworkLinks extends ConsumerWidget {
                 padding: const EdgeInsets.only(
                   left: kPaddingSmallConstant,
                 ),
-                child: CircleAvatar(
-                  backgroundColor: primaryColor.shade300,
-                  backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                child: GestureDetector(
+                  onTap: () {
+                    ref.refresh(youtubePlauerPlayEventsStreamProovider);
+                    ref
+                        .read(youtubePlauerPlayEventsStreamProovider.state)
+                        .update((String? state) => stream.url);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: primaryColor.shade300,
+                    backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                  ),
                 ),
               ),
             for (final ChaseStream stream in mp4Networks)

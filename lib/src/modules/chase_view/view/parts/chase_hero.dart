@@ -145,6 +145,19 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         }
       },
     );
+    ref.listen<String?>(
+      youtubePlauerPlayEventsStreamProovider,
+      (String? prev, String? next) {
+        if (next != null) {
+          setState(
+            () {
+              youtubeUrl = next;
+              mp4Url = null;
+            },
+          );
+        }
+      },
+    );
 
     final bool? isLive = ref.watch(
       chaseLiveStatusChaseProvider(widget.chaseId),
@@ -161,14 +174,14 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         if (isYoutubeUrlPresent)
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final bool isPlayVideo = ref.watch(playVideoProvider);
+              // final bool isPlayVideo = ref.watch(playVideoProvider);
               final Chase? chase = ref
                   .read(
                     streamChaseProvider(widget.chaseId),
                   )
                   .value;
 
-              return isPlayVideo
+              return true
                   ? YoutubePlayerView(
                       url: youtubeUrl!,
                       isLive: isLive ?? false,
