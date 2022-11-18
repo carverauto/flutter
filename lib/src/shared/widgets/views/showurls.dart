@@ -2,12 +2,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../const/colors.dart';
 import '../../../const/images.dart';
 import '../../../const/sizings.dart';
 import '../../../models/chase/network/chase_network.dart';
 import '../../../models/chase/network/chase_stream/chase_stream.dart';
+import '../../../modules/chase_view/view/parts/mp4_player/providers.dart';
 import '../../util/helpers/is_valid_youtube_url.dart';
 import '../buttons/glass_button.dart';
 
@@ -37,7 +39,7 @@ class URLView extends ConsumerWidget {
   }
 }
 
-class NetworkLinks extends StatelessWidget {
+class NetworkLinks extends ConsumerWidget {
   const NetworkLinks({
     super.key,
     required this.network,
@@ -48,7 +50,7 @@ class NetworkLinks extends StatelessWidget {
   final void Function(String url)? onYoutubeNetworkTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bool isStreams = onYoutubeNetworkTap != null;
     final List<ChaseStream> streams =
         List.from(network.streams ?? <ChaseStream>[]);
@@ -126,16 +128,24 @@ class NetworkLinks extends StatelessWidget {
                 ),
               ),
             for (final ChaseStream stream in mp4Networks)
-              const Padding(
-                padding: EdgeInsets.only(
+              Padding(
+                padding: const EdgeInsets.only(
                   left: kPaddingSmallConstant,
                 ),
-                child: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: FittedBox(
-                    child: Icon(
-                      Icons.play_arrow_rounded,
-                      color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    ref.refresh(mp4PlauerPlayEventsStreamProovider);
+                    ref
+                        .read(mp4PlauerPlayEventsStreamProovider.state)
+                        .update((String? state) => stream.url);
+                  },
+                  child: const CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: FittedBox(
+                      child: Icon(
+                        Icons.play_arrow_rounded,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -145,9 +155,14 @@ class NetworkLinks extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: kPaddingSmallConstant,
                 ),
-                child: CircleAvatar(
-                  backgroundColor: primaryColor.shade300,
-                  backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                child: GestureDetector(
+                  onTap: () async {
+                    await launchURL(context, stream.url);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: primaryColor.shade300,
+                    backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                  ),
                 ),
               ),
           ],

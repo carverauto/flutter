@@ -14,6 +14,7 @@ import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
 import 'mp4_player/mp4_player.dart';
+import 'mp4_player/providers.dart';
 import 'watch_youtube_video_button.dart';
 import 'youtube_player/youtube_player_view.dart';
 
@@ -128,6 +129,20 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         List<ChaseNetwork>? next,
       ) {
         sortOutNetworksBasedOnTier();
+      },
+    );
+
+    ref.listen<String?>(
+      mp4PlauerPlayEventsStreamProovider,
+      (String? prev, String? next) {
+        if (next != null) {
+          setState(
+            () {
+              youtubeUrl = null;
+              mp4Url = next;
+            },
+          );
+        }
       },
     );
 
