@@ -1,10 +1,13 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../../models/chase/chase.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
-import '../../providers/providers.dart';
+import '../../../../../shared/widgets/loaders/loading.dart';
 import '../video_animations_overlay.dart';
 import '../video_top_actions.dart';
 
@@ -28,30 +31,8 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
   late YoutubePlayerController _controller;
 
   GlobalKey playerKey = GlobalKey(debugLabel: 'Player');
-  void initializeVideoController([bool autoPlay = false]) {
-    // late final String? url;
-    // late final String? playerVideoId;
-    // if (videoId == null) {
-    //   final ChaseNetwork? network =
-    //       widget.chase.networks?.firstWhereOrNull((ChaseNetwork network) {
-    //     final String? url = network.url;
-
-    //     if (url != null) {
-    //       return isValidYoutubeUrl(url);
-    //     }
-
-    //     return false;
-    //   });
-    //   url = network?.url;
-    //   playerVideoId = url != null ? parseYoutubeUrlForVideoId(url) : null;
-    //   Future<void>.microtask(() {
-    //     ref
-    //         .read(playingVideoIdProvider.state)
-    //         .update((String? state) => playerVideoId);
-    //   });
-    // } else {
-    //   playerVideoId = videoId;
-    // }
+  bool reloadVideoPlayer = false;
+  void initializeVideoController([bool autoPlay = true]) {
     final String? videoId = parseYoutubeUrlForVideoId(widget.url);
 
     _controller = YoutubePlayerController(
@@ -61,29 +42,24 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
         autoPlay: autoPlay,
       ),
     );
-    // _controller.reload();
-
-    setState(() {});
   }
 
   Future<void> changeYoutubeVideo(String url) async {
-    final String? videoId = parseYoutubeUrlForVideoId(url);
-    await Future<void>.microtask(() {
-      ref.read(playingVideoIdProvider.state).update((String? state) => videoId);
+    initializeVideoController();
+    setState(() {
+      reloadVideoPlayer = true;
     });
-
-    initializeVideoController(
-      true,
-    );
-    ref.read(playVideoProvider.state).update((bool state) => false);
-    await Future<void>.delayed(const Duration(milliseconds: 100));
-    ref.read(playVideoProvider.state).update((bool state) => true);
+    Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        reloadVideoPlayer = false;
+      });
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    initializeVideoController(true);
+    initializeVideoController();
   }
 
   @override
@@ -103,13 +79,15 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      topActions: const VideoTopActions(),
-      overlayInBetween: VideoAnimationsOverlay(
-        controller: _controller,
-        chase: widget.chase,
-      ),
-    );
+    return reloadVideoPlayer
+        ? const CircularAdaptiveProgressIndicatorWithBg()
+        : YoutubePlayer(
+            controller: _controller,
+            topActions: const VideoTopActions(),
+            overlayInBetween: VideoAnimationsOverlay(
+              controller: _controller,
+              chase: widget.chase,
+            ),
+          );
   }
 }

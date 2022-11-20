@@ -88,6 +88,9 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         return false;
       })?.url;
       if (youtubeUrl != null) {
+        ref
+            .read(currentlyPlayingVideoUrlProvider.state)
+            .update((String? state) => youtubeUrl);
         break;
       }
 
@@ -101,12 +104,12 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         return false;
       })?.url;
       if (mp4Url != null) {
+        ref
+            .read(currentlyPlayingVideoUrlProvider.state)
+            .update((String? state) => mp4Url);
         break;
       }
     }
-    // if (streams.isEmpty) {
-    //   return;
-    // }
 
     setState(() {});
   }
@@ -174,20 +177,17 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         if (isYoutubeUrlPresent)
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              // final bool isPlayVideo = ref.watch(playVideoProvider);
               final Chase? chase = ref
                   .read(
                     streamChaseProvider(widget.chaseId),
                   )
                   .value;
 
-              return true
-                  ? YoutubePlayerView(
-                      url: youtubeUrl!,
-                      isLive: isLive ?? false,
-                      chase: chase!,
-                    )
-                  : const SizedBox.shrink();
+              return YoutubePlayerView(
+                url: youtubeUrl!,
+                isLive: isLive ?? false,
+                chase: chase!,
+              );
             },
           ),
         if (!isYoutubeUrlPresent && mp4Url == null)

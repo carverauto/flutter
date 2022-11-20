@@ -9,6 +9,11 @@ import '../../../../models/chase_animation_event.dart/chase_animation_event.dart
 import '../../../chats/view/providers/providers.dart';
 import '../notifiers/chase_events_notifier.dart';
 
+final StateProvider<String?> currentlyPlayingVideoUrlProvider =
+    StateProvider<String?>((StateProviderRef<String?> ref) {
+  return null;
+});
+
 final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
     StreamProvider.autoDispose.family<Chase, String>(
   (AutoDisposeStreamProviderRef<Chase> ref, String chaseId) {

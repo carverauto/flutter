@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../util/helpers/colot_to_vector.dart';
-import 'stripes.dart';
+import '../../util/helpers/colot_to_vector.dart';
+import '../stripes.dart';
 
-class StripesShaderBuilder extends StatefulWidget {
-  const StripesShaderBuilder({
+class ActivePlayerStripesShaderView extends StatefulWidget {
+  const ActivePlayerStripesShaderView({
     Key? key,
     this.child,
     required this.direction,
@@ -26,10 +26,10 @@ class StripesShaderBuilder extends StatefulWidget {
   final bool isActive;
 
   @override
-  State<StripesShaderBuilder> createState() => _MyShaderState();
+  State<ActivePlayerStripesShaderView> createState() => _MyShaderState();
 }
 
-class _MyShaderState extends State<StripesShaderBuilder> {
+class _MyShaderState extends State<ActivePlayerStripesShaderView> {
   late Future<Stripes> helloWorld;
 
   late Ticker ticker;
@@ -76,8 +76,8 @@ class _MyShaderState extends State<StripesShaderBuilder> {
                       direction: widget.direction, // -1 to 1
                       warpScale: 0,
                       warpTiling: 0,
-                      color1: (Colors.amber[700] as Color).toColorVector(),
-                      color2: (Colors.grey[600] as Color).toColorVector(),
+                      color1: (Colors.red[700]!).toColorVector(),
+                      color2: (Colors.white).toColorVector(),
                     );
                   },
                 );

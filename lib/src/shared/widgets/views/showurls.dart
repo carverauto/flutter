@@ -10,6 +10,7 @@ import '../../../const/sizings.dart';
 import '../../../models/chase/network/chase_network.dart';
 import '../../../models/chase/network/chase_stream/chase_stream.dart';
 import '../../../modules/chase_view/view/parts/mp4_player/providers.dart';
+import '../../../modules/chase_view/view/providers/providers.dart';
 import '../../util/helpers/is_valid_youtube_url.dart';
 import '../buttons/glass_button.dart';
 
@@ -51,6 +52,8 @@ class NetworkLinks extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final String? currentlyPlayingUrl =
+        ref.watch(currentlyPlayingVideoUrlProvider);
     final bool isStreams = onYoutubeNetworkTap != null;
     final List<ChaseStream> streams =
         List.from(network.streams ?? <ChaseStream>[]);
@@ -128,10 +131,23 @@ class NetworkLinks extends ConsumerWidget {
                     ref
                         .read(youtubePlauerPlayEventsStreamProovider.state)
                         .update((String? state) => stream.url);
+                    ref
+                        .read(currentlyPlayingVideoUrlProvider.state)
+                        .update((String? state) => stream.url);
                   },
                   child: CircleAvatar(
-                    backgroundColor: primaryColor.shade300,
-                    backgroundImage: NetworkImage(getNetworkLogUrl(stream.url)),
+                    backgroundColor: Colors.red,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          currentlyPlayingUrl == stream.url
+                              ? Icons.pause
+                              : Icons.play_arrow_rounded,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -146,12 +162,17 @@ class NetworkLinks extends ConsumerWidget {
                     ref
                         .read(mp4PlauerPlayEventsStreamProovider.state)
                         .update((String? state) => stream.url);
+                    ref
+                        .read(currentlyPlayingVideoUrlProvider.state)
+                        .update((String? state) => stream.url);
                   },
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.blue,
                     child: FittedBox(
                       child: Icon(
-                        Icons.play_arrow_rounded,
+                        currentlyPlayingUrl == stream.url
+                            ? Icons.pause
+                            : Icons.play_arrow_rounded,
                         color: Colors.white,
                       ),
                     ),
