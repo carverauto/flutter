@@ -8,6 +8,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../../models/chase/chase.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
+import '../../providers/providers.dart';
 import '../video_animations_overlay.dart';
 import '../video_top_actions.dart';
 
@@ -32,6 +33,13 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
 
   GlobalKey playerKey = GlobalKey(debugLabel: 'Player');
   bool reloadVideoPlayer = false;
+
+  void isPlayingStatus() {
+    ref
+        .read(isPlayingAnyVideoProvider.state)
+        .update((bool state) => _controller.value.isPlaying);
+  }
+
   void initializeVideoController([bool autoPlay = true]) {
     final String? videoId = parseYoutubeUrlForVideoId(widget.url);
 
@@ -42,6 +50,7 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
         autoPlay: autoPlay,
       ),
     );
+    _controller.addListener(isPlayingStatus);
   }
 
   Future<void> changeYoutubeVideo(String url) async {
@@ -73,7 +82,9 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller
+      ..removeListener(isPlayingStatus)
+      ..dispose();
     super.dispose();
   }
 
@@ -83,7 +94,9 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
         ? const CircularAdaptiveProgressIndicatorWithBg()
         : YoutubePlayer(
             controller: _controller,
-            topActions: const VideoTopActions(),
+            topActions: VideoTopActions(
+              controller: _controller,
+            ),
             overlayInBetween: VideoAnimationsOverlay(
               controller: _controller,
               chase: widget.chase,

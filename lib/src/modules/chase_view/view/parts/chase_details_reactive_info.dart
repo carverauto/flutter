@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
@@ -12,7 +11,6 @@ import '../../../../shared/widgets/errors/error_widget.dart';
 import '../../../../shared/widgets/sentiment_analysis_slider.dart';
 import '../../../../shared/widgets/stripes_shader_builder.dart';
 import '../providers/providers.dart';
-import 'chase_details_page_internal.dart';
 import 'chase_hero.dart';
 import 'chase_wheel.dart';
 import 'donut_clap_button.dart';
@@ -114,11 +112,7 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
                                       child: RepaintBoundary(
                                         child: ColoredBox(
                                           color: Colors.grey[600]!,
-                                          child: AnimatedBuilder(
-                                            animation:
-                                                ChaseAppYoutubeController.of(
-                                              context,
-                                            ).youtubePlayerController,
+                                          child: Consumer(
                                             child: const SizedBox.expand(
                                               child: ColoredBox(
                                                 color: Colors.white,
@@ -126,17 +120,15 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
                                             ),
                                             builder: (
                                               BuildContext context,
+                                              WidgetRef ref,
                                               Widget? child,
                                             ) {
-                                              final YoutubePlayerController
-                                                  controller =
-                                                  ChaseAppYoutubeController.of(
-                                                context,
-                                              ).youtubePlayerController;
+                                              final bool isPlaying = ref.watch(
+                                                isPlayingAnyVideoProvider,
+                                              );
 
                                               return StripesShaderBuilder(
-                                                isActive:
-                                                    controller.value.isPlaying,
+                                                isActive: isPlaying,
                                                 direction: 0.25,
                                                 child: child!,
                                               );

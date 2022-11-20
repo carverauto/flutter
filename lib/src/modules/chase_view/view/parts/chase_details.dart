@@ -19,7 +19,6 @@ class ChaseDetails extends StatelessWidget {
     required this.imageURL,
     required this.logger,
     required this.chase,
-    required this.onYoutubeNetworkTap,
     required this.chatsRow,
     required this.chatsView,
   }) : super(key: key);
@@ -29,7 +28,6 @@ class ChaseDetails extends StatelessWidget {
   final Chase chase;
   final Widget chatsRow;
   final Widget chatsView;
-  final void Function(String url) onYoutubeNetworkTap;
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +192,6 @@ class ChaseDetails extends StatelessWidget {
             ),
             WatchHereLinksWrapper(
               chaseId: chase.id,
-              onYoutubeNetworkTap: onYoutubeNetworkTap,
             ),
             Divider(
               height: kItemsSpacingSmall,

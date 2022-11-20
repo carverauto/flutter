@@ -10,11 +10,9 @@ class WatchHereLinksWrapper extends ConsumerWidget {
   const WatchHereLinksWrapper({
     Key? key,
     required this.chaseId,
-    required this.onYoutubeNetworkTap,
   }) : super(key: key);
 
   final String chaseId;
-  final void Function(String url) onYoutubeNetworkTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,13 +33,14 @@ class WatchHereLinksWrapper extends ConsumerWidget {
         children: [
           NetworksList(
             networks: sortedNetworks,
-            onYoutubeNetworkTap: onYoutubeNetworkTap,
+            iStreams: true,
           ),
           const SizedBox(
             height: kItemsSpacingSmallConstant,
           ),
           NetworksList(
             networks: sortedNetworks,
+            iStreams: false,
           ),
         ],
       ),
@@ -53,16 +52,14 @@ class NetworksList extends StatelessWidget {
   const NetworksList({
     Key? key,
     required this.networks,
-    this.onYoutubeNetworkTap,
+    required this.iStreams,
   }) : super(key: key);
 
   final List<ChaseNetwork>? networks;
-  final void Function(String url)? onYoutubeNetworkTap;
+  final bool iStreams;
 
   @override
   Widget build(BuildContext context) {
-    final bool isStream = onYoutubeNetworkTap != null;
-
     return networks == null || networks!.isEmpty
         ? const SizedBox.shrink()
         : Column(
@@ -72,14 +69,14 @@ class NetworksList extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    isStream ? Icons.play_arrow_rounded : Icons.link_rounded,
-                    color: isStream ? Colors.white : Colors.blue,
+                    iStreams ? Icons.play_arrow_rounded : Icons.link_rounded,
+                    color: iStreams ? Colors.white : Colors.blue,
                   ),
                   const SizedBox(
                     width: kPaddingXSmallConstant,
                   ),
                   Text(
-                    "${isStream ? "Streams" : "Other"} :",
+                    "${iStreams ? "Streams" : "Other"} :",
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           //  decoration: TextDecoration.underline,
                           color: Theme.of(context).colorScheme.onBackground,
@@ -93,7 +90,7 @@ class NetworksList extends StatelessWidget {
               if (networks != null)
                 URLView(
                   networks: networks!,
-                  onYoutubeNetworkTap: onYoutubeNetworkTap,
+                  isStreams: iStreams,
                 )
               else
                 const Text('Please wait..'),

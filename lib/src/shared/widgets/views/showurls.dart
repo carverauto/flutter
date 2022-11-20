@@ -18,10 +18,10 @@ class URLView extends ConsumerWidget {
   const URLView({
     Key? key,
     required this.networks,
-    this.onYoutubeNetworkTap,
+    required this.isStreams,
   }) : super(key: key);
   final List<ChaseNetwork> networks;
-  final void Function(String url)? onYoutubeNetworkTap;
+  final bool isStreams;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +32,7 @@ class URLView extends ConsumerWidget {
         children: networks.map<Widget>((ChaseNetwork network) {
           return NetworkLinks(
             network: network,
-            onYoutubeNetworkTap: onYoutubeNetworkTap,
+            isStreams: isStreams,
           );
         }).toList(),
       ),
@@ -44,17 +44,16 @@ class NetworkLinks extends ConsumerWidget {
   const NetworkLinks({
     super.key,
     required this.network,
-    required this.onYoutubeNetworkTap,
+    required this.isStreams,
   });
 
   final ChaseNetwork network;
-  final void Function(String url)? onYoutubeNetworkTap;
+  final bool isStreams;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? currentlyPlayingUrl =
         ref.watch(currentlyPlayingVideoUrlProvider);
-    final bool isStreams = onYoutubeNetworkTap != null;
     final List<ChaseStream> streams =
         List.from(network.streams ?? <ChaseStream>[]);
     if (network.url != null) {

@@ -13,6 +13,10 @@ final StateProvider<String?> currentlyPlayingVideoUrlProvider =
     StateProvider<String?>((StateProviderRef<String?> ref) {
   return null;
 });
+final StateProvider<bool> isPlayingAnyVideoProvider =
+    StateProvider<bool>((StateProviderRef<bool> ref) {
+  return false;
+});
 
 final AutoDisposeStreamProviderFamily<Chase, String> streamChaseProvider =
     StreamProvider.autoDispose.family<Chase, String>(

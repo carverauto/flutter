@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../../const/sizings.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
+import '../../providers/providers.dart';
 import 'custom_video_progress_indicator.dart';
 
 class Mp4VideoPlayerView extends ConsumerStatefulWidget {
@@ -34,6 +35,9 @@ class _Mp4VideoPlayerViewState extends ConsumerState<Mp4VideoPlayerView> {
           isBuffering = _controller.value.isBuffering;
         });
       }
+      ref.read(isPlayingAnyVideoProvider.state).update(
+            (bool state) => _controller.value.isPlaying,
+          );
     });
   }
 

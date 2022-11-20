@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import 'animations_overlay_toggle_switch.dart';
-import 'chase_details_page_internal.dart';
 
 class VideoTopActions extends StatelessWidget {
   const VideoTopActions({
     Key? key,
+    required this.controller,
   }) : super(key: key);
+  final YoutubePlayerController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +25,13 @@ class VideoTopActions extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-              // shape: const CircleBorder(),
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
               ),
               onPressed: () {
                 if (MediaQuery.of(context).orientation ==
                     Orientation.landscape) {
-                  ChaseAppYoutubeController.of(context)
-                      .youtubePlayerController
-                      .toggleFullScreenMode();
+                  controller.toggleFullScreenMode();
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -47,8 +46,6 @@ class VideoTopActions extends StatelessWidget {
             const SizedBox(
               width: kItemsSpacingSmallConstant,
             ),
-            // if (MediaQuery.of(context).orientation == Orientation.portrait)
-            //   const ClosePlayingVideo(),
           ],
         ),
       ),
