@@ -113,15 +113,6 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
   }
 
   @override
-  void didUpdateWidget(covariant _Mp4VideoPlayerView oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    if (widget.mp4Url != oldWidget.mp4Url) {
-      changeYoutubeVideo(widget.mp4Url);
-    }
-  }
-
-  @override
   void dispose() {
     _controller
       ..removeListener(listenForBufferUpdate)

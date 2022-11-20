@@ -183,7 +183,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
                   )
                   .value;
 
-              return YoutubePlayerView(
+              return YoutubePlayerViewWrapper(
                 url: youtubeUrl!,
                 isLive: isLive ?? false,
                 chase: chase!,

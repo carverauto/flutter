@@ -12,8 +12,8 @@ import '../../providers/providers.dart';
 import '../video_animations_overlay.dart';
 import '../video_top_actions.dart';
 
-class YoutubePlayerView extends ConsumerStatefulWidget {
-  const YoutubePlayerView({
+class YoutubePlayerViewWrapper extends ConsumerStatefulWidget {
+  const YoutubePlayerViewWrapper({
     super.key,
     required this.url,
     required this.isLive,
@@ -25,10 +25,62 @@ class YoutubePlayerView extends ConsumerStatefulWidget {
   final Chase chase;
 
   @override
-  ConsumerState<YoutubePlayerView> createState() => _YoutubePlayerViewState();
+  ConsumerState<YoutubePlayerViewWrapper> createState() =>
+      _YoutubePlayerViewWrapperState();
 }
 
-class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
+class _YoutubePlayerViewWrapperState
+    extends ConsumerState<YoutubePlayerViewWrapper> {
+  bool reloadVideoPlayer = false;
+
+  Future<void> changeYoutubeVideo(String url) async {
+    setState(() {
+      reloadVideoPlayer = true;
+    });
+    Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        reloadVideoPlayer = false;
+      });
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant YoutubePlayerViewWrapper oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (widget.url != oldWidget.url) {
+      changeYoutubeVideo(widget.url);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return reloadVideoPlayer
+        ? const CircularAdaptiveProgressIndicatorWithBg()
+        : _YoutubePlayerView(
+            url: widget.url,
+            isLive: widget.isLive,
+            chase: widget.chase,
+          );
+  }
+}
+
+class _YoutubePlayerView extends ConsumerStatefulWidget {
+  const _YoutubePlayerView({
+    required this.url,
+    required this.isLive,
+    required this.chase,
+  });
+
+  final String url;
+  final bool isLive;
+  final Chase chase;
+
+  @override
+  ConsumerState<_YoutubePlayerView> createState() => _YoutubePlayerViewState();
+}
+
+class _YoutubePlayerViewState extends ConsumerState<_YoutubePlayerView> {
   late YoutubePlayerController _controller;
 
   GlobalKey playerKey = GlobalKey(debugLabel: 'Player');
@@ -53,31 +105,10 @@ class _YoutubePlayerViewState extends ConsumerState<YoutubePlayerView> {
     _controller.addListener(isPlayingStatus);
   }
 
-  Future<void> changeYoutubeVideo(String url) async {
-    initializeVideoController();
-    setState(() {
-      reloadVideoPlayer = true;
-    });
-    Timer(const Duration(milliseconds: 300), () {
-      setState(() {
-        reloadVideoPlayer = false;
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     initializeVideoController();
-  }
-
-  @override
-  void didUpdateWidget(covariant YoutubePlayerView oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    if (widget.url != oldWidget.url) {
-      changeYoutubeVideo(widget.url);
-    }
   }
 
   @override
