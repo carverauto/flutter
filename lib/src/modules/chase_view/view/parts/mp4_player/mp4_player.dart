@@ -11,8 +11,54 @@ import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import 'custom_video_progress_indicator.dart';
 
-class Mp4VideoPlayerView extends ConsumerStatefulWidget {
-  const Mp4VideoPlayerView({
+class Mp4VideoPlayerViewWrapper extends StatefulWidget {
+  const Mp4VideoPlayerViewWrapper({
+    super.key,
+    required this.mp4Url,
+  });
+
+  final String mp4Url;
+
+  @override
+  State<Mp4VideoPlayerViewWrapper> createState() =>
+      _Mp4VideoPlayerViewWrapperState();
+}
+
+class _Mp4VideoPlayerViewWrapperState extends State<Mp4VideoPlayerViewWrapper> {
+  bool reloadPlayer = false;
+
+  void reloadMp4Player() {
+    setState(() {
+      reloadPlayer = true;
+    });
+    Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        reloadPlayer = false;
+      });
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant Mp4VideoPlayerViewWrapper oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    if (widget.mp4Url != oldWidget.mp4Url) {
+      reloadMp4Player();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return reloadPlayer
+        ? const CircularAdaptiveProgressIndicatorWithBg()
+        : _Mp4VideoPlayerView(
+            mp4Url: widget.mp4Url,
+          );
+  }
+}
+
+class _Mp4VideoPlayerView extends ConsumerStatefulWidget {
+  const _Mp4VideoPlayerView({
     Key? key,
     required this.mp4Url,
   }) : super(key: key);
@@ -20,10 +66,11 @@ class Mp4VideoPlayerView extends ConsumerStatefulWidget {
   final String mp4Url;
 
   @override
-  ConsumerState<Mp4VideoPlayerView> createState() => _Mp4VideoPlayerViewState();
+  ConsumerState<_Mp4VideoPlayerView> createState() =>
+      _Mp4VideoPlayerViewState();
 }
 
-class _Mp4VideoPlayerViewState extends ConsumerState<Mp4VideoPlayerView> {
+class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
   late VideoPlayerController _controller;
   late bool isBuffering;
 
@@ -39,6 +86,10 @@ class _Mp4VideoPlayerViewState extends ConsumerState<Mp4VideoPlayerView> {
             (bool state) => _controller.value.isPlaying,
           );
     });
+  }
+
+  Future<void> changeYoutubeVideo(String url) async {
+    initializePlayer(url);
   }
 
   void initializePlayer(String mp4Url) {
@@ -62,11 +113,11 @@ class _Mp4VideoPlayerViewState extends ConsumerState<Mp4VideoPlayerView> {
   }
 
   @override
-  void didUpdateWidget(covariant Mp4VideoPlayerView oldWidget) {
+  void didUpdateWidget(covariant _Mp4VideoPlayerView oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (widget.mp4Url != oldWidget.mp4Url) {
-      initializePlayer(widget.mp4Url);
+      changeYoutubeVideo(widget.mp4Url);
     }
   }
 

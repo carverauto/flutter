@@ -264,7 +264,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
           ),
         // show the mp4 video
         if (!isYoutubeUrlPresent && mp4Url != null)
-          Mp4VideoPlayerView(
+          Mp4VideoPlayerViewWrapper(
             mp4Url: mp4Url!,
           ),
       ],
