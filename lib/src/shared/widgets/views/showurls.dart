@@ -92,8 +92,10 @@ class NetworkLinks extends ConsumerWidget {
 
             if (url != null) {
               final bool isYoutube = isValidYoutubeUrl(url);
-              return !isYoutube;
+
+              return !isYoutube && !url.endsWith('.mp4');
             }
+
             return false;
           }).toList()
         : [];
