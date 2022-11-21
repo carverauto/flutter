@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:logging/logging.dart';
 
 import '../../../const/sizings.dart';
 import '../../../core/modules/auth/view/providers/providers.dart';
@@ -75,8 +76,11 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
     WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
       ref.read(currentRouteProvider.state).state = RouteName.BUG_REPORT;
     });
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String? contactEmail =
+        user != null ? ref.read(userStreamProvider).value?.contactEmail : null;
     emailController = TextEditingController(
-      text: ref.read(userStreamProvider).value?.contactEmail,
+      text: contactEmail,
     );
     final String? description = ref.read(bugReportDescProvider)?.isEmpty ?? true
         ? null
@@ -513,104 +517,109 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
                         ),
                         Center(
                           child: ElevatedButton(
-                            onPressed: bugReportController.text.isEmpty
-                                ? null
-                                : () async {
-                                    Navigator.of(context)
-                                        .focusScopeNode
-                                        .unfocus();
-                                    setState(() {
-                                      isSubmittingReport = true;
+                            onPressed: () async {
+                              if (bugReportController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Please enter your query',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+                              Navigator.of(context).focusScopeNode.unfocus();
+                              setState(() {
+                                isSubmittingReport = true;
+                              });
+                              final String? userId =
+                                  FirebaseAuth.instance.currentUser?.uid;
+                              try {
+                                String? imageUrl;
+                                if (emailController.value.text.isNotEmpty) {
+                                  if (userId != null) {
+                                    await usersCollectionRef
+                                        .doc(userId)
+                                        .update({
+                                      'contactEmail':
+                                          emailController.value.text,
                                     });
-                                    final String? userId =
-                                        FirebaseAuth.instance.currentUser?.uid;
-                                    try {
-                                      String? imageUrl;
-                                      if (emailController
-                                          .value.text.isNotEmpty) {
-                                        await usersCollectionRef
-                                            .doc(userId)
-                                            .update({
-                                          'contactEmail':
-                                              emailController.value.text,
-                                        });
-                                      }
-                                      if (image != null) {
-                                        // store the image to firebase storage at child bug_reports/userid
-                                        final Reference firebaseStorage =
-                                            FirebaseStorage.instance
-                                                .ref()
-                                                .child('bug_reports/$userId')
-                                                .child(
-                                                  DateTime.now().toString(),
-                                                );
-                                        final ByteData? imagebytes =
-                                            await image.toByteData(
-                                          format: ui.ImageByteFormat.png,
-                                        );
+                                  }
+                                }
+                                if (image != null) {
+                                  // store the image to firebase storage at child bug_reports/userid
+                                  final String folder = userId ?? 'unknown';
+                                  final Reference firebaseStorage =
+                                      FirebaseStorage.instance
+                                          .ref()
+                                          .child(
+                                            'bug_reports/$folder',
+                                          )
+                                          .child(
+                                            DateTime.now().toString(),
+                                          );
+                                  log(firebaseStorage.fullPath);
+                                  final ByteData? imagebytes =
+                                      await image.toByteData(
+                                    format: ui.ImageByteFormat.png,
+                                  );
 
-                                        final TaskSnapshot uploadTask =
-                                            await firebaseStorage.putData(
-                                          imagebytes!.buffer.asUint8List(),
-                                          SettableMetadata(
-                                            contentType: 'image/png',
-                                          ),
-                                        );
-                                        imageUrl = await uploadTask.ref
-                                            .getDownloadURL();
-                                      }
+                                  final TaskSnapshot uploadTask =
+                                      await firebaseStorage.putData(
+                                    imagebytes!.buffer.asUint8List(),
+                                    SettableMetadata(
+                                      contentType: 'image/png',
+                                    ),
+                                  );
+                                  imageUrl =
+                                      await uploadTask.ref.getDownloadURL();
+                                }
 
-                                      final CollectionReference<
-                                              Map<String, dynamic>> firestore =
-                                          FirebaseFirestore.instance
-                                              .collection('bug_reports');
+                                final CollectionReference<Map<String, dynamic>>
+                                    firestore = FirebaseFirestore.instance
+                                        .collection('bug_reports');
 
-                                      await firestore
-                                          .doc()
-                                          .set(<String, dynamic>{
-                                        'desc': bugReportController.text,
-                                        'imageUrl': imageUrl,
-                                        'timestamp': DateTime.now(),
-                                        'uid': userId,
-                                        'contactEmail':
-                                            emailController.value.text,
-                                      });
-                                      await Future<void>.delayed(
-                                        const Duration(
-                                          seconds: 1,
-                                        ),
-                                      );
-                                      setState(() {
-                                        isReportSubmitted = true;
-                                      });
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'Report submitted successfully',
-                                          ),
-                                        ),
-                                      );
-                                    } catch (e, stk) {
-                                      logger.warning(
-                                        'Error while submitting bug report',
-                                        e,
-                                        stk,
-                                      );
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'Something went wrong. Please try again later.',
-                                          ),
-                                        ),
-                                      );
-                                    } finally {
-                                      setState(() {
-                                        isSubmittingReport = false;
-                                      });
-                                    }
-                                  },
+                                await firestore.doc().set(<String, dynamic>{
+                                  'desc': bugReportController.text,
+                                  'imageUrl': imageUrl,
+                                  'timestamp': DateTime.now(),
+                                  'uid': userId,
+                                  'contactEmail': emailController.value.text,
+                                });
+                                await Future<void>.delayed(
+                                  const Duration(
+                                    seconds: 1,
+                                  ),
+                                );
+                                setState(() {
+                                  isReportSubmitted = true;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Report submitted successfully',
+                                    ),
+                                  ),
+                                );
+                              } catch (e, stk) {
+                                logger.warning(
+                                  'Error while submitting bug report',
+                                  e,
+                                  stk,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Something went wrong. Please try again later.',
+                                    ),
+                                  ),
+                                );
+                              } finally {
+                                setState(() {
+                                  isSubmittingReport = false;
+                                });
+                              }
+                            },
                             child: const Text('Submit'),
                           ),
                         ),
