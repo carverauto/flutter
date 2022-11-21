@@ -47,11 +47,19 @@ class ChaseAppErrorWidget extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.black.withOpacity(0.2),
+              ),
               onPressed: () {
-                Navigator.of(context).pushNamed(RouteName.BUG_REPORT);
+                Navigator.of(context).pushNamed(RouteName.SUPPORT);
               },
-              child: const Text('Report'),
+              child: const Text(
+                'Report',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
