@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../const/sizings.dart';
+import '../../../routes/routeNames.dart';
 
 class ChaseAppErrorWidget extends StatelessWidget {
   const ChaseAppErrorWidget({
@@ -45,6 +46,12 @@ class ChaseAppErrorWidget extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(RouteName.BUG_REPORT);
+              },
+              child: const Text('Report'),
             ),
           ],
         ),
