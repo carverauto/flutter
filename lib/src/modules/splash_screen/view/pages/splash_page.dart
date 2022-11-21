@@ -15,7 +15,6 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
-import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../routes/routeNames.dart';
 import '../../../../shared/util/helpers/sizescaleconfig.dart';
@@ -80,7 +79,7 @@ class _SplashViewState extends ConsumerState<SplashView>
   void updateTimer(Duration duration) {
     timer.cancel();
     timer = Timer(duration, () async {
-      final User? user = await ref.read(streamLogInStatus.future);
+      final User? user = FirebaseAuth.instance.currentUser;
       if (mounted) {
         await Navigator.of(context).pushReplacementNamed(
           user != null
@@ -95,7 +94,7 @@ class _SplashViewState extends ConsumerState<SplashView>
     // TODO: Control the timer from Firebase as well
     timer.cancel();
     Timer(const Duration(seconds: 3), () async {
-      final User? user = await ref.read(streamLogInStatus.future);
+      final User? user = FirebaseAuth.instance.currentUser;
       if (mounted) {
         await Navigator.of(context).pushReplacementNamed(
           user != null
