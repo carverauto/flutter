@@ -21,6 +21,7 @@ import 'src/modules/feedback_form/view/feedback_form.dart';
 import 'src/routes/routeNames.dart';
 import 'src/routes/routes.dart';
 import 'src/shared/util/helpers/request_permissions.dart';
+import 'src/shared/widgets/errors/error_widget.dart';
 import 'src/theme/theme.dart';
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessangerKey =
@@ -54,7 +55,7 @@ class MyApp extends ConsumerWidget {
             children: [
               RepaintBoundary(
                 key: ref.read(appGlobalKeyProvider),
-                child: child!,
+                child: child,
               ),
               const CaptureButton(),
             ],
@@ -193,6 +194,24 @@ Future<void> setUpServices() async {
   );
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    // If we're in debug mode, use the normal error widget which shows the error
+    // message:
+    if (kDebugMode) {
+      return ErrorWidget(details.exception);
+    }
+    // In release builds, show a yellow-on-blue message instead:
+
+    return Material(
+      child: Center(
+        child: ChaseAppErrorWidget(
+          message: "Oops! This isn't good.",
+          onRefresh: () {},
+        ),
+      ),
+    );
+  };
 
   Logger.root.onRecord.listen((LogRecord record) {
     FirebaseCrashlytics.instance.recordError(
