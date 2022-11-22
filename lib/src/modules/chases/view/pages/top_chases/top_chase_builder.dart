@@ -71,8 +71,8 @@ class TopChaseBuilder extends StatelessWidget {
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(
+            onTap: () async {
+              await Navigator.pushNamed(
                 context,
                 RouteName.CHASE_VIEW,
                 arguments: {

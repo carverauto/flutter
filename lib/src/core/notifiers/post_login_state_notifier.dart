@@ -31,12 +31,16 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
       try {
         final User user = _read(firebaseAuthProvider).currentUser!;
         final UserData userData = await _read(userStreamProvider.future);
-        await PusherBeams.instance.start(EnvVaribales.instanceId);
+
         await _initFirebaseActions(user, userData);
+        final bool isNotificationsPermissionGranted =
+            await checkForPermissionsStatuses();
 
-        await checkUsersInterests();
+        if (isNotificationsPermissionGranted) {
+          await checkUsersInterests();
+          // await checkRequestPermissions();
+        }
 
-        await checkRequestPermissions();
         isInitialized = true;
       } catch (e, stk) {
         logger.severe('Error initializing post login actions', e, stk);
@@ -46,6 +50,8 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Future<void> checkUsersInterests() async {
     try {
+      await PusherBeams.instance.start(EnvVaribales.instanceId);
+
       final List<String?> usersInterests =
           await _read(pusherBeamsProvider).getDeviceInterests();
       final List<Interest> interests =

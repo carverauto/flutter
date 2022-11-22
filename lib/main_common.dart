@@ -156,7 +156,9 @@ class RoutesObserver extends NavigatorObserver {
     if (route.settings.name == RouteName.CHASE_VIEW) {
       Timer(const Duration(milliseconds: 500), () async {
         try {
-          await checkRequestPermissions();
+          if (previousRoute?.navigator?.context != null) {
+            await checkRequestPermissions(previousRoute!.navigator!.context);
+          }
         } catch (e, stk) {
           routesObserverLogger.warning(
             'Error while trying to check for permissions/requesting permissions.',
