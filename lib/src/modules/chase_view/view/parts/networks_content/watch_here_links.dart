@@ -49,7 +49,8 @@ class WatchHereLinksWrapper extends ConsumerWidget {
           ? streams.where((ChaseStream network) {
               final String url = network.url;
               if (url != null) {
-                final bool isMp4 = url.endsWith('.mp4');
+                final bool isMp4 =
+                    url.endsWith('.mp4') || url.endsWith('.m3u8');
                 return isMp4;
               }
               return false;
@@ -72,7 +73,9 @@ class WatchHereLinksWrapper extends ConsumerWidget {
               if (url != null) {
                 final bool isYoutube = isValidYoutubeUrl(url);
 
-                return !isYoutube && !url.endsWith('.mp4');
+                return !isYoutube &&
+                    !url.endsWith('.mp4') &&
+                    !url.endsWith('.m3u8');
               }
 
               return false;

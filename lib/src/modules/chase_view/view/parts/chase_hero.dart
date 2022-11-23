@@ -98,7 +98,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         final String url = network.url;
 
         if (url != null) {
-          return url.endsWith('.mp4');
+          return url.endsWith('.mp4') || url.endsWith('.m3u8');
         }
 
         return false;
