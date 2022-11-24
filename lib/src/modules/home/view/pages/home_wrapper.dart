@@ -17,6 +17,7 @@ import '../../../../routes/routeNames.dart';
 import '../../../../shared/notifications/notification_handler.dart';
 import '../../../../shared/notifications/notification_pop_up_banner.dart';
 import '../../../../shared/notifications/notifications_helpers.dart';
+import '../../../../shared/util/helpers/request_permissions.dart';
 import '../../../../shared/util/helpers/sizescaleconfig.dart';
 import '../../../dashboard/view/pages/dashboard.dart';
 import '../parts/helpers.dart';
@@ -113,8 +114,12 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     );
   }
 
-  void handleNotificationInForegroundState() {
-    PusherBeams.instance
+  Future<void> handleNotificationInForegroundState() async {
+    final bool checkForPermission = await checkForPermissionsStatuses();
+    if (!checkForPermission) {
+      return;
+    }
+    await PusherBeams.instance
         .onMessageReceivedInTheForeground((Map<Object?, Object?> message) {
       log('Pusher Message Recieved in the foreground--->$message');
       final Map<String, dynamic> data =
