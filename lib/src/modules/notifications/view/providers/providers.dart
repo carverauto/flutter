@@ -10,6 +10,7 @@ import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/app_typedefs/notifications_typedefs.dart';
 import '../../../../shared/util/firebase_collections.dart';
+import '../../../../shared/util/helpers/request_permissions.dart';
 import '../../data/notifications_db.dart';
 import '../../data/notifications_db_ab.dart';
 import '../../domain/notifications_repo.dart';
@@ -62,8 +63,11 @@ final ChaseAppNotificationStateNotifierProvider notificationsStreamProvider =
 final AutoDisposeFutureProvider<List<String?>> usersInterestsStreamProvider =
     FutureProvider.autoDispose<List<String?>>(
   (AutoDisposeFutureProviderRef<List<String?>> ref) async {
-    final List<String?> usersInterests =
-        await ref.read(pusherBeamsProvider).getDeviceInterests();
+    final bool isPermissionGranted = await checkForPermissionsStatuses();
+
+    final List<String?> usersInterests = isPermissionGranted
+        ? await ref.read(pusherBeamsProvider).getDeviceInterests()
+        : [];
     usersInterests.sort(
       (String? a, String? b) =>
           a?.toLowerCase().compareTo(b?.toLowerCase() ?? '') ?? -1,
