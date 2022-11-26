@@ -13,6 +13,7 @@ import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
+import 'ismp4orm3u8url.dart';
 import 'mp4_player/mp4_player.dart';
 import 'mp4_player/providers.dart';
 import 'watch_youtube_video_button.dart';
@@ -98,7 +99,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
         final String url = network.url;
 
         if (url != null) {
-          return url.endsWith('.mp4') || url.endsWith('.m3u8');
+          return ismp4orm3u8url(url);
         }
 
         return false;

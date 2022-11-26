@@ -8,6 +8,7 @@ import '../../../../../models/chase/network/chase_network.dart';
 import '../../../../../models/chase/network/chase_stream/chase_stream.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../providers/providers.dart';
+import '../ismp4orm3u8url.dart';
 import 'showurls.dart';
 
 class WatchHereLinksWrapper extends ConsumerWidget {
@@ -49,9 +50,7 @@ class WatchHereLinksWrapper extends ConsumerWidget {
           ? streams.where((ChaseStream network) {
               final String url = network.url;
               if (url != null) {
-                final bool isMp4 =
-                    url.endsWith('.mp4') || url.endsWith('.m3u8');
-                return isMp4;
+                return ismp4orm3u8url(url);
               }
               return false;
             }).toList()
@@ -73,9 +72,7 @@ class WatchHereLinksWrapper extends ConsumerWidget {
               if (url != null) {
                 final bool isYoutube = isValidYoutubeUrl(url);
 
-                return !isYoutube &&
-                    !url.endsWith('.mp4') &&
-                    !url.endsWith('.m3u8');
+                return !isYoutube && !ismp4orm3u8url(url);
               }
 
               return false;
