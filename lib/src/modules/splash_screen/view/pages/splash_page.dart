@@ -176,78 +176,74 @@ class _SplashViewState extends ConsumerState<SplashView>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(
-      builder: (BuildContext context, WidgetRef ref, _) {
-        return Scaffold(
-          backgroundColor: Colors.blueGrey,
-          body: Stack(
-            fit: StackFit.expand,
+    return Scaffold(
+      backgroundColor: Colors.blueGrey,
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Image.asset(
-                      chaseAppTextLogoAsset,
-                      height: kImageSizeSmall,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                ],
-              ),
-              Consumer(
-                builder: (BuildContext context, WidgetRef ref, _) {
-                  final AsyncValue<String> splashAnimationLoader =
-                      ref.watch(splashScreenAnimationFutureProvider);
-
-                  return splashAnimationLoader.when(
-                    data: (String animationUrl) {
-                      timer.cancel();
-
-                      return Center(
-                        child: Theme.of(context).platform == TargetPlatform.iOS
-                            ? Lottie.asset(
-                                animationUrl,
-                                errorBuilder: onSpalshScreenLoadError,
-                                onLoaded: onSpalshScreenLoad,
-                              )
-                            : Lottie.file(
-                                File(animationUrl),
-                                errorBuilder: onSpalshScreenLoadError,
-                                onLoaded: onSpalshScreenLoad,
-                              ),
-                      );
-                    },
-                    loading: () {
-                      updateTimer(
-                        const Duration(seconds: 3),
-                      );
-
-                      return const Center(
-                        child: CircularAdaptiveProgressIndicatorWithBg(),
-                      );
-                    },
-                    error: (Object error, StackTrace? stackTrace) {
-                      logger.severe(
-                        'Error in loading splash screen animation',
-                        error,
-                        stackTrace,
-                      );
-                      updateTimer(const Duration(milliseconds: 300));
-
-                      return const Center(
-                        child: CircularAdaptiveProgressIndicatorWithBg(),
-                      );
-                    },
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.only(bottom: 30),
+                child: Image.asset(
+                  chaseAppTextLogoAsset,
+                  height: kImageSizeSmall,
+                  fit: BoxFit.scaleDown,
+                ),
               ),
             ],
           ),
-        );
-      },
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, _) {
+              final AsyncValue<String> splashAnimationLoader =
+                  ref.watch(splashScreenAnimationFutureProvider);
+
+              return splashAnimationLoader.when(
+                data: (String animationUrl) {
+                  timer.cancel();
+
+                  return Center(
+                    child: Theme.of(context).platform == TargetPlatform.iOS
+                        ? Lottie.asset(
+                            animationUrl,
+                            errorBuilder: onSpalshScreenLoadError,
+                            onLoaded: onSpalshScreenLoad,
+                          )
+                        : Lottie.file(
+                            File(animationUrl),
+                            errorBuilder: onSpalshScreenLoadError,
+                            onLoaded: onSpalshScreenLoad,
+                          ),
+                  );
+                },
+                loading: () {
+                  updateTimer(
+                    const Duration(seconds: 3),
+                  );
+
+                  return const Center(
+                    child: CircularAdaptiveProgressIndicatorWithBg(),
+                  );
+                },
+                error: (Object error, StackTrace? stackTrace) {
+                  logger.severe(
+                    'Error in loading splash screen animation',
+                    error,
+                    stackTrace,
+                  );
+                  updateTimer(const Duration(milliseconds: 300));
+
+                  return const Center(
+                    child: CircularAdaptiveProgressIndicatorWithBg(),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
