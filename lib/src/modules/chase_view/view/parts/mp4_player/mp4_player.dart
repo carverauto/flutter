@@ -11,6 +11,26 @@ import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import 'custom_video_progress_indicator.dart';
 
+void popVideoView(BuildContext context, [VoidCallback? onLandscalePop]) {
+  if (MediaQuery.of(context).orientation == Orientation.landscape) {
+    final bool isTablet = DeviceScreen.isTablet(context);
+    if (!isTablet) {
+      if (onLandscalePop != null) {
+        onLandscalePop();
+      } else {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
+      }
+    } else {
+      Navigator.of(context).pop();
+    }
+  } else {
+    Navigator.of(context).pop();
+  }
+}
+
 class Mp4VideoPlayerViewWrapper extends StatefulWidget {
   const Mp4VideoPlayerViewWrapper({
     super.key,
@@ -137,15 +157,7 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
                 shape: const CircleBorder(),
               ),
               onPressed: () {
-                if (MediaQuery.of(context).orientation ==
-                    Orientation.landscape) {
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                    DeviceOrientation.portraitDown,
-                  ]);
-                } else {
-                  Navigator.of(context).pop();
-                }
+                popVideoView(context);
               },
               child: const Icon(
                 Icons.arrow_back,
@@ -318,19 +330,7 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
               shape: const CircleBorder(),
             ),
             onPressed: () {
-              if (MediaQuery.of(context).orientation == Orientation.landscape) {
-                final bool isTablet = DeviceScreen.isTablet(context);
-                if (!isTablet) {
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                    DeviceOrientation.portraitDown,
-                  ]);
-                } else {
-                  Navigator.of(context).pop();
-                }
-              } else {
-                Navigator.of(context).pop();
-              }
+              popVideoView(context);
             },
             child: const Icon(
               Icons.arrow_back,

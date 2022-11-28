@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
-import '../../../../device_info.dart';
 import 'animations_overlay_toggle_switch.dart';
+import 'mp4_player/mp4_player.dart';
 
 class VideoTopActions extends StatelessWidget {
   const VideoTopActions({
@@ -30,17 +30,7 @@ class VideoTopActions extends StatelessWidget {
                 shape: const CircleBorder(),
               ),
               onPressed: () {
-                if (MediaQuery.of(context).orientation ==
-                    Orientation.landscape) {
-                  final bool isTablet = DeviceScreen.isTablet(context);
-                  if (!isTablet) {
-                    controller.toggleFullScreenMode();
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                } else {
-                  Navigator.of(context).pop();
-                }
+                popVideoView(context, controller.toggleFullScreenMode);
               },
               child: const Icon(
                 Icons.arrow_back,
