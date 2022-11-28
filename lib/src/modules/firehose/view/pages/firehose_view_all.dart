@@ -48,12 +48,6 @@ class _FirehoseListViewAllState extends ConsumerState<FirehoseListViewAll>
           break;
         default:
       }
-      // if (state == AppLifecycleState.resumed) {
-      //   _timerLink = Timer(
-      //     const Duration(milliseconds: 1000),
-      //     () {},
-      //   );
-      // }
     }
   }
 
