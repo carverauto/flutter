@@ -7,6 +7,7 @@ import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/notifications/notification_tile.dart';
 import '../../../../shared/widgets/builders/SliverProviderPaginatedStateNotifierBuilder.dart';
+import '../../../../shared/widgets/builders/providerPaginatedStateNotfierBuilder.dart';
 import '../../../../shared/widgets/loaders/shimmer_tile.dart';
 
 class FireHoseView extends ConsumerWidget {
@@ -69,6 +70,69 @@ class FireHoseView extends ConsumerWidget {
                           : notifications.length
                       : notifications.length,
                 ),
+              );
+      },
+      watchThisStateNotifierProvider: itemsPaginationProvider,
+      logger: logger,
+    );
+  }
+}
+
+class FireHoseListView extends ConsumerWidget {
+  const FireHoseListView({
+    Key? key,
+    required this.itemsPaginationProvider,
+    required this.scrollController,
+    required this.showLimited,
+    required this.logger,
+  }) : super(key: key);
+
+  final AutoDisposeStateNotifierProvider<
+      PaginationNotifier<ChaseAppNotification>,
+      PaginationNotifierState<ChaseAppNotification>> itemsPaginationProvider;
+  final ScrollController scrollController;
+  final bool showLimited;
+  final Logger logger;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ProviderPaginatedStateNotifierBuilder<ChaseAppNotification>(
+      scrollController: scrollController,
+      loadingBuilder: () {
+        return const ShimmerTile(height: 68);
+      },
+      builder: (
+        List<ChaseAppNotification> notifications,
+        ScrollController controller,
+      ) {
+        return notifications.isEmpty
+            ? Column(
+                children: [
+                  const Icon(
+                    Icons.notifications_none_rounded,
+                  ),
+                  Chip(
+                    label: Text(
+                      'No New Notifications!',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : ListView.builder(
+                itemCount: showLimited
+                    ? notifications.length >= 5
+                        ? 5
+                        : notifications.length
+                    : notifications.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final ChaseAppNotification notification =
+                      notifications[index];
+
+                  return NotificationTile(notification: notification);
+                },
               );
       },
       watchThisStateNotifierProvider: itemsPaginationProvider,
