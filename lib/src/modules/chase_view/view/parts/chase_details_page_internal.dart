@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
+import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
 import '../providers/providers.dart';
 import 'chase_details.dart';
@@ -78,7 +79,13 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
             return orientation == Orientation.landscape
                 ? Scaffold(
                     backgroundColor: Colors.black,
-                    body: player,
+                    body: FullScreenChaseDetailsSideBar(
+                      chase: chase,
+                      chatsRow: widget.chatsRow,
+                      chatsView: widget.chatsView,
+                      logger: widget.logger,
+                      player: player,
+                    ),
                   )
                 : Scaffold(
                     backgroundColor: Colors.transparent,
@@ -109,6 +116,116 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                   );
           },
         ),
+      ),
+    );
+  }
+}
+
+class FullScreenChaseDetailsSideBar extends StatefulWidget {
+  const FullScreenChaseDetailsSideBar({
+    Key? key,
+    required this.chase,
+    required this.logger,
+    required this.chatsRow,
+    required this.chatsView,
+    required this.player,
+  }) : super(key: key);
+
+  final Chase chase;
+  final Logger logger;
+  final Widget chatsRow;
+  final Widget chatsView;
+  final Widget player;
+
+  @override
+  State<FullScreenChaseDetailsSideBar> createState() =>
+      _FullScreenChaseDetailsSideBarState();
+}
+
+class _FullScreenChaseDetailsSideBarState
+    extends State<FullScreenChaseDetailsSideBar> {
+  late bool isShowing;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isShowing = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.maxFinite,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Row(
+            children: [
+              Expanded(child: widget.player),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                child: SizedBox(
+                  width:
+                      isShowing ? MediaQuery.of(context).size.width * 0.4 : 0,
+                ),
+              ),
+            ],
+          ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            right: isShowing ? 0 : -MediaQuery.of(context).size.width * 0.4,
+            top: 0,
+            bottom: 0,
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: isShowing ? 1.0 : 0.0,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.4,
+                child: ChaseDetails(
+                  chase: widget.chase,
+                  imageURL: widget.chase.imageURL,
+                  logger: widget.logger,
+                  chatsRow: widget.chatsRow,
+                  chatsView: widget.chatsView,
+                ),
+              ),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 300),
+            top: 0,
+            right: !isShowing ? 0 : MediaQuery.of(context).size.width * 0.4,
+            child: Tooltip(
+              message: isShowing ? 'Hide Chase Details' : 'Show Chase Details',
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(kBorderRadiusLargeConstant),
+                      bottomLeft: Radius.circular(kBorderRadiusLargeConstant),
+                    ),
+                  ),
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    isShowing = !isShowing;
+                  });
+                },
+                child: isShowing
+                    ? const Icon(
+                        Icons.keyboard_arrow_right_rounded,
+                        color: Colors.black,
+                      )
+                    : const Icon(
+                        Icons.keyboard_arrow_left_rounded,
+                        color: Colors.black,
+                      ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
