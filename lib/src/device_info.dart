@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, avoid_classes_with_only_static_members
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -29,10 +31,11 @@ class DeviceScreen {
   // Get the device form factor as best we can.
   // Otherwise we will use the screen size to determine which class we fall into.
   static FormFactorType get(BuildContext context) {
-    double shortestSide = MediaQuery.of(context).size.shortestSide;
+    final double shortestSide = MediaQuery.of(context).size.shortestSide;
     if (shortestSide <= 300) return FormFactorType.SmallPhone;
     if (shortestSide <= 600) return FormFactorType.LargePhone;
     if (shortestSide <= 900) return FormFactorType.Tablet;
+
     return FormFactorType.Monitor;
   }
 
@@ -47,6 +50,10 @@ class DeviceScreen {
       get(context) == FormFactorType.SmallPhone;
   static bool isLargePhone(BuildContext context) =>
       get(context) == FormFactorType.LargePhone;
+  // is Landscape and tablet
+  static bool isLandscapeTablet(BuildContext context) =>
+      isTablet(context) &&
+      MediaQuery.of(context).orientation == Orientation.landscape;
 }
 
 // MediaQuery.of(context).orientation good enough to check between portrait and landscape, not on ipad unless rquirefull screen is on
