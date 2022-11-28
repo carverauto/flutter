@@ -116,14 +116,3 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-// List<Interest> activeInterests = [
-//   Interest(name: "Chases", isCompulsory: true),
-//   Interest(name: "firehose-notfiications", isCompulsory: false),
-//   Interest(name: "world", isCompulsory: false),
-// ];
-
-// class Interest {
-//   Interest({required this.name, required this.isCompulsory});
-//   final String name;
-//   final bool isCompulsory;
-// }
