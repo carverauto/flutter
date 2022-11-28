@@ -9,6 +9,7 @@ import '../../../../../const/images.dart';
 import '../../../../../const/sizings.dart';
 import '../../../../../models/chase/network/chase_network.dart';
 import '../../../../../models/chase/network/chase_stream/chase_stream.dart';
+import '../../../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../../../shared/widgets/buttons/glass_button.dart';
 import '../../providers/providers.dart';
 import '../mp4_player/providers.dart';
@@ -139,20 +140,45 @@ class _NetworkLinks extends ConsumerWidget {
                           .read(currentlyPlayingVideoUrlProvider.state)
                           .update((String? state) => stream.url);
                     },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            currentlyPlayingUrl == stream.url
-                                ? Icons.pause
-                                : Icons.play_arrow_rounded,
-                            color: Colors.white,
+                    child: currentlyPlayingUrl == stream.url
+                        ? CircleAvatar(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              fit: StackFit.expand,
+                              children: [
+                                const Positioned.fill(
+                                  child: AnimatingGradientShaderBuilder(
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  currentlyPlayingUrl == stream.url
+                                      ? Icons.pause
+                                      : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundColor: Colors.red,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Icon(
+                                  currentlyPlayingUrl == stream.url
+                                      ? Icons.pause
+                                      : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
             if (isStreams)
@@ -171,17 +197,42 @@ class _NetworkLinks extends ConsumerWidget {
                           .read(currentlyPlayingVideoUrlProvider.state)
                           .update((String? state) => stream.url);
                     },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: FittedBox(
-                        child: Icon(
-                          currentlyPlayingUrl == stream.url
-                              ? Icons.pause
-                              : Icons.play_arrow_rounded,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: currentlyPlayingUrl == stream.url
+                        ? CircleAvatar(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              fit: StackFit.expand,
+                              children: [
+                                const Positioned.fill(
+                                  child: AnimatingGradientShaderBuilder(
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  currentlyPlayingUrl == stream.url
+                                      ? Icons.pause
+                                      : Icons.play_arrow_rounded,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            child: FittedBox(
+                              child: Icon(
+                                currentlyPlayingUrl == stream.url
+                                    ? Icons.pause
+                                    : Icons.play_arrow_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
             if (!isStreams)
