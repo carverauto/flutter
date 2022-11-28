@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
+import '../../../../device_info.dart';
 import 'animations_overlay_toggle_switch.dart';
 
 class VideoTopActions extends StatelessWidget {
@@ -31,7 +32,12 @@ class VideoTopActions extends StatelessWidget {
               onPressed: () {
                 if (MediaQuery.of(context).orientation ==
                     Orientation.landscape) {
-                  controller.toggleFullScreenMode();
+                  final bool isTablet = DeviceScreen.isTablet(context);
+                  if (!isTablet) {
+                    controller.toggleFullScreenMode();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 } else {
                   Navigator.of(context).pop();
                 }
@@ -43,8 +49,10 @@ class VideoTopActions extends StatelessWidget {
             ),
             const Spacer(),
             const AnimationsOverlayToggleSwitch(),
-            const SizedBox(
-              width: kItemsSpacingSmallConstant,
+            SizedBox(
+              width: MediaQuery.of(context).orientation == Orientation.landscape
+                  ? 68
+                  : kItemsSpacingSmallConstant,
             ),
           ],
         ),
