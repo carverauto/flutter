@@ -148,7 +148,7 @@ class _FullScreenChaseDetailsSideBarState
   void initState() {
     // TODO: implement initState
     super.initState();
-    isShowing = false;
+    isShowing = true;
   }
 
   @override
