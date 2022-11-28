@@ -51,9 +51,13 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     final double width = MediaQuery.of(context).size.width;
+    final double minHeight =
+        width / (16 / 9) > MediaQuery.of(context).size.height * 0.4
+            ? MediaQuery.of(context).size.height * 0.4
+            : width / (16 / 9);
 
     appBarMaxHeightAnimation = Tween<double>(
-      begin: width / (16 / 9),
+      begin: minHeight,
       end: MediaQuery.of(context).size.height,
     )
         .chain(
@@ -113,9 +117,13 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     ref.listen<bool>(isBOFActiveProvider, (bool? prev, bool next) {
       if (next != null) {
         final double width = MediaQuery.of(context).size.width;
+        final double minHeight =
+            width / (16 / 9) > MediaQuery.of(context).size.height * 0.4
+                ? MediaQuery.of(context).size.height * 0.4
+                : width / (16 / 9);
 
         appBarMaxHeightAnimation = Tween<double>(
-          begin: width / (16 / 9),
+          begin: minHeight,
           end: MediaQuery.of(context).size.height + (next ? -150 : 0),
         )
             .chain(
@@ -163,7 +171,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
           centerTitle: true,
           // backgroundColor: Colors.transparent,
           title: title,
-          floating: true,
+          // floating: true,
           expandedHeight: appBarMaxHeightAnimation.value,
           flexibleSpace: map,
           actions: const [
