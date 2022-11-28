@@ -9,6 +9,7 @@ import '../../../../../models/chase/chase.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
+import '../mp4_player/providers.dart';
 import '../video_animations_overlay.dart';
 import '../video_top_actions.dart';
 
@@ -121,6 +122,19 @@ class _YoutubePlayerViewState extends ConsumerState<_YoutubePlayerView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool?>(
+      youtubePlauerPlayPauseEventsStreamProovider,
+      (bool? prev, bool? next) {
+        if (next != null && next != _controller.value.isPlaying) {
+          if (next) {
+            _controller.play();
+          } else {
+            _controller.pause();
+          }
+        }
+      },
+    );
+
     return reloadVideoPlayer
         ? const CircularAdaptiveProgressIndicatorWithBg()
         : YoutubePlayer(

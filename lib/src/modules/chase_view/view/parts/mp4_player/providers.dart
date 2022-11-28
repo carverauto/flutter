@@ -14,3 +14,14 @@ final StateProvider<String?> youtubePlauerPlayEventsStreamProovider =
     StateProvider<String?>((StateProviderRef<String?> ref) {
   return null;
 });
+
+final AutoDisposeStateProvider<bool?> mp4PlauerPlayPauseStateProovider =
+    StateProvider.autoDispose<bool?>((AutoDisposeStateProviderRef<bool?> ref) {
+  return null;
+});
+
+final AutoDisposeStateProvider<bool?>
+    youtubePlauerPlayPauseEventsStreamProovider =
+    StateProvider.autoDispose<bool?>((AutoDisposeStateProviderRef<bool?> ref) {
+  return null;
+});

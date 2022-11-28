@@ -130,55 +130,10 @@ class _NetworkLinks extends ConsumerWidget {
                   padding: const EdgeInsets.only(
                     left: kPaddingSmallConstant,
                   ),
-                  child: GestureDetector(
-                    onTap: () {
-                      ref.refresh(youtubePlauerPlayEventsStreamProovider);
-                      ref
-                          .read(youtubePlauerPlayEventsStreamProovider.state)
-                          .update((String? state) => stream.url);
-                      ref
-                          .read(currentlyPlayingVideoUrlProvider.state)
-                          .update((String? state) => stream.url);
-                    },
-                    child: currentlyPlayingUrl == stream.url
-                        ? CircleAvatar(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              fit: StackFit.expand,
-                              children: [
-                                const Positioned.fill(
-                                  child: AnimatingGradientShaderBuilder(
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Icon(
-                                  currentlyPlayingUrl == stream.url
-                                      ? Icons.pause
-                                      : Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          )
-                        : CircleAvatar(
-                            backgroundColor: Colors.red,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Icon(
-                                  currentlyPlayingUrl == stream.url
-                                      ? Icons.pause
-                                      : Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
+                  child: StreamButton(
+                    currentlyPlayingUrl: currentlyPlayingUrl,
+                    stream: stream,
+                    isYoutube: true,
                   ),
                 ),
             if (isStreams)
@@ -187,52 +142,10 @@ class _NetworkLinks extends ConsumerWidget {
                   padding: const EdgeInsets.only(
                     left: kPaddingSmallConstant,
                   ),
-                  child: GestureDetector(
-                    onTap: () {
-                      ref.refresh(mp4PlauerPlayEventsStreamProovider);
-                      ref
-                          .read(mp4PlauerPlayEventsStreamProovider.state)
-                          .update((String? state) => stream.url);
-                      ref
-                          .read(currentlyPlayingVideoUrlProvider.state)
-                          .update((String? state) => stream.url);
-                    },
-                    child: currentlyPlayingUrl == stream.url
-                        ? CircleAvatar(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              fit: StackFit.expand,
-                              children: [
-                                const Positioned.fill(
-                                  child: AnimatingGradientShaderBuilder(
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Icon(
-                                  currentlyPlayingUrl == stream.url
-                                      ? Icons.pause
-                                      : Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          )
-                        : CircleAvatar(
-                            backgroundColor: Colors.blue,
-                            child: FittedBox(
-                              child: Icon(
-                                currentlyPlayingUrl == stream.url
-                                    ? Icons.pause
-                                    : Icons.play_arrow_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                  child: StreamButton(
+                    currentlyPlayingUrl: currentlyPlayingUrl,
+                    stream: stream,
+                    isYoutube: false,
                   ),
                 ),
             if (!isStreams)
@@ -255,6 +168,94 @@ class _NetworkLinks extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class StreamButton extends ConsumerWidget {
+  const StreamButton({
+    Key? key,
+    required this.currentlyPlayingUrl,
+    required this.stream,
+    required this.isYoutube,
+  }) : super(key: key);
+
+  final String? currentlyPlayingUrl;
+  final ChaseStream stream;
+  final bool isYoutube;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AutoDisposeStateProvider<bool?> playPauseStateProvider = isYoutube
+        ? youtubePlauerPlayPauseEventsStreamProovider
+        : mp4PlauerPlayPauseStateProovider;
+    ref.listen<bool>(isPlayingAnyVideoProvider, (bool? previous, bool next) {
+      ref.read(playPauseStateProvider.state).update((bool? state) => next);
+    });
+
+    final bool? playerPlayPauseState = ref.watch(
+      playPauseStateProvider,
+    );
+    final bool isActive = currentlyPlayingUrl == stream.url;
+    final bool currentValue = playerPlayPauseState ?? isActive;
+
+    return GestureDetector(
+      onTap: () {
+        ref.read(playPauseStateProvider.notifier).update(
+              (bool? state) => isActive ? !currentValue : true,
+            );
+        if (isYoutube) {
+          ref.refresh(youtubePlauerPlayEventsStreamProovider);
+          ref
+              .read(youtubePlauerPlayEventsStreamProovider.state)
+              .update((String? state) => stream.url);
+        } else {
+          ref.refresh(mp4PlauerPlayEventsStreamProovider);
+          ref
+              .read(mp4PlauerPlayEventsStreamProovider.state)
+              .update((String? state) => stream.url);
+        }
+
+        ref
+            .read(currentlyPlayingVideoUrlProvider.state)
+            .update((String? state) => stream.url);
+      },
+      child: isActive
+          ? CircleAvatar(
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand,
+                children: [
+                  const Positioned.fill(
+                    child: AnimatingGradientShaderBuilder(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    isActive && currentValue
+                        ? Icons.pause
+                        : Icons.play_arrow_rounded,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            )
+          : CircleAvatar(
+              backgroundColor: isYoutube ? Colors.red : Colors.blue,
+              child: FittedBox(
+                child: Icon(
+                  isActive && currentValue
+                      ? Icons.pause
+                      : Icons.play_arrow_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ),
     );
   }
 }

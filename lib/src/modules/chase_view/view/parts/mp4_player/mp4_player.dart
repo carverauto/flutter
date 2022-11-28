@@ -10,6 +10,7 @@ import '../../../../../device_info.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import 'custom_video_progress_indicator.dart';
+import 'providers.dart';
 
 void popVideoView(BuildContext context, [VoidCallback? onLandscalePop]) {
   if (MediaQuery.of(context).orientation == Orientation.landscape) {
@@ -137,6 +138,18 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool?>(
+      mp4PlauerPlayPauseStateProovider,
+      (bool? prev, bool? next) {
+        if (next != null && next != _controller.value.isPlaying) {
+          if (next) {
+            _controller.play();
+          } else {
+            _controller.pause();
+          }
+        }
+      },
+    );
     return Stack(
       children: [
         Center(
