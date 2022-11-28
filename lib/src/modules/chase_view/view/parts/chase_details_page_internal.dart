@@ -62,6 +62,13 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
       chase: chase,
       imageUrl: chase.imageURL,
     );
+    final ChaseDetails chaseDetails = ChaseDetails(
+      chase: widget.chase,
+      imageURL: widget.chase.imageURL,
+      logger: widget.logger,
+      chatsRow: widget.chatsRow,
+      chatsView: widget.chatsView,
+    );
 
     return SafeArea(
       child: WillPopScope(
@@ -81,8 +88,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                     backgroundColor: Colors.black,
                     body: FullScreenChaseDetailsSideBar(
                       chase: chase,
-                      chatsRow: widget.chatsRow,
-                      chatsView: widget.chatsView,
+                      chaseDetails: chaseDetails,
                       logger: widget.logger,
                       player: player,
                     ),
@@ -102,13 +108,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                         children: [
                           player,
                           Expanded(
-                            child: ChaseDetails(
-                              chase: chase,
-                              imageURL: chase.imageURL,
-                              logger: widget.logger,
-                              chatsRow: widget.chatsRow,
-                              chatsView: widget.chatsView,
-                            ),
+                            child: chaseDetails,
                           ),
                         ],
                       ),
@@ -126,15 +126,13 @@ class FullScreenChaseDetailsSideBar extends StatefulWidget {
     Key? key,
     required this.chase,
     required this.logger,
-    required this.chatsRow,
-    required this.chatsView,
+    required this.chaseDetails,
     required this.player,
   }) : super(key: key);
 
   final Chase chase;
   final Logger logger;
-  final Widget chatsRow;
-  final Widget chatsView;
+  final Widget chaseDetails;
   final Widget player;
 
   @override
@@ -182,13 +180,7 @@ class _FullScreenChaseDetailsSideBarState
               opacity: isShowing ? 1.0 : 0.0,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
-                child: ChaseDetails(
-                  chase: widget.chase,
-                  imageURL: widget.chase.imageURL,
-                  logger: widget.logger,
-                  chatsRow: widget.chatsRow,
-                  chatsView: widget.chatsView,
-                ),
+                child: widget.chaseDetails,
               ),
             ),
           ),

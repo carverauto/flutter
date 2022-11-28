@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../const/sizings.dart';
+import '../../../../../device_info.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import 'custom_video_progress_indicator.dart';
@@ -318,10 +319,15 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
             ),
             onPressed: () {
               if (MediaQuery.of(context).orientation == Orientation.landscape) {
-                SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                ]);
+                final bool isTablet = DeviceScreen.isTablet(context);
+                if (!isTablet) {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                } else {
+                  Navigator.of(context).pop();
+                }
               } else {
                 Navigator.of(context).pop();
               }
