@@ -32,7 +32,7 @@ class _CarousalSliderState extends State<CarousalSlider> {
     // TODO: implement initState
     super.initState();
     pageController = PageController(
-      viewportFraction: 0.8,
+      viewportFraction: widget.carouselOptions.viewportFraction ?? 0.8,
     );
   }
 
@@ -50,6 +50,7 @@ class _CarousalSliderState extends State<CarousalSlider> {
       child: PageView.builder(
         controller: pageController,
         itemCount: widget.childrens.length,
+        padEnds: widget.carouselOptions.padEnds,
         onPageChanged: (int value) {
           log(value.toString());
         },
@@ -101,7 +102,11 @@ class _CarousalSliderState extends State<CarousalSlider> {
 class CarouselOptions {
   CarouselOptions({
     required this.height,
+    this.viewportFraction,
+    this.padEnds = true,
   });
 
   final double height;
+  final double? viewportFraction;
+  final bool padEnds;
 }
