@@ -1,10 +1,11 @@
-import 'package:chaseapp/src/core/notifiers/pagination_notifier.dart';
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
-import 'package:chaseapp/src/shared/widgets/errors/error_widget.dart';
-import 'package:chaseapp/src/shared/widgets/loaders/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../../core/notifiers/pagination_notifier.dart';
+import '../../../models/pagination_state/pagination_notifier_state.dart';
+import '../errors/error_widget.dart';
+import '../loaders/loading.dart';
 
 class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
   const ProviderPaginatedStateNotifierBuilder({
@@ -13,35 +14,40 @@ class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
     required this.watchThisStateNotifierProvider,
     required this.scrollController,
     required this.logger,
+    this.loadingBuilder,
   }) : super(key: key);
 
-  final StateNotifierProvider<PaginationNotifier<T>, PaginationNotifierState<T>>
-      watchThisStateNotifierProvider;
+  final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
+      PaginationNotifierState<T>> watchThisStateNotifierProvider;
 
   final Widget Function(List<T> data, ScrollController controller) builder;
 
   final ScrollController scrollController;
   final Logger logger;
 
+  final Widget Function()? loadingBuilder;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     scrollController.addListener(() {
-      double maxScroll = scrollController.position.maxScrollExtent;
-      double currentScroll = scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.width * 0.20;
+      final double maxScroll = scrollController.position.maxScrollExtent;
+      final double currentScroll = scrollController.position.pixels;
+      final double delta = MediaQuery.of(context).size.width * 0.20;
       if (maxScroll - currentScroll <= delta) {
         ref.read(watchThisStateNotifierProvider.notifier).fetchNextPage();
       }
     });
+
     return ref.watch(watchThisStateNotifierProvider).when(
-      data: (data) {
+      data: (List<T> data) {
         return builder(
           data,
           scrollController,
         );
       },
-      error: (e, stk) {
-        logger.log(Level.SEVERE, "Error Fetching Data", e, stk);
+      error: (Object? e, StackTrace? stk) {
+        logger.log(Level.SEVERE, 'Error Fetching Data', e, stk);
+
         return ChaseAppErrorWidget(
           onRefresh: () {
             ref
@@ -50,16 +56,20 @@ class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
           },
         );
       },
-      loading: (chases) {
-        return CircularAdaptiveProgressIndicatorWithBg();
+      loading: (List<T> chases) {
+        return RepaintBoundary(
+          child: loadingBuilder != null
+              ? loadingBuilder!()
+              : const CircularAdaptiveProgressIndicatorWithBg(),
+        );
       },
-      onGoingLoading: (data) {
+      onGoingLoading: (List<T> data) {
         return builder(
           data,
           scrollController,
         );
       },
-      onGoingError: (data, error, stk) {
+      onGoingError: (List<T> data, Object? error, StackTrace? stk) {
         return builder(
           data,
           scrollController,
