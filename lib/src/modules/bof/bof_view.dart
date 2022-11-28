@@ -81,64 +81,7 @@ class BofView extends ConsumerWidget {
                     ),
                     SizedBox(
                       height: kToolbarHeight + 10,
-                      child: ListView.builder(
-                        itemCount: bofGroups.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, int index) {
-                          final int clusterValue =
-                              bofGroups.keys.elementAt(index);
-                          final List<BirdsOfFire> bofgroup =
-                              bofGroups[clusterValue]!;
-
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              left: kPaddingMediumConstant,
-                            ),
-                            child: Row(
-                              children: bofgroup.map<Widget>((BirdsOfFire e) {
-                                final String imageUrl = e
-                                        .properties.imageUrl.isEmpty
-                                    ? defaultAssetChaseImage
-                                    : 'https://chaseapp.tv/${e.properties.imageUrl}';
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    ref
-                                        .read(
-                                          activeClusterCoordinateProvider.state,
-                                        )
-                                        .update(
-                                          (BirdsOfFire? state) => e,
-                                        );
-                                  },
-                                  child: Align(
-                                    widthFactor: 0.6,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 15,
-                                            spreadRadius: 1,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                          ),
-                                        ],
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 25,
-                                        backgroundImage: AdaptiveImageProvider(
-                                          imageUrl,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        },
-                      ),
+                      child: ClusterIconsList(bofGroups: bofGroups),
                     ),
                   ],
                 ),
@@ -153,3 +96,210 @@ class BofView extends ConsumerWidget {
     );
   }
 }
+
+class ClusterIconsList extends ConsumerStatefulWidget {
+  const ClusterIconsList({
+    Key? key,
+    required this.bofGroups,
+  }) : super(key: key);
+
+  final Map<int, List<BirdsOfFire>> bofGroups;
+
+  @override
+  ConsumerState<ClusterIconsList> createState() => _ClusterIconsListState();
+}
+
+class _ClusterIconsListState extends ConsumerState<ClusterIconsList> {
+  late List<int> activeClusters;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    activeClusters = [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.bofGroups.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        final int clusterValue = widget.bofGroups.keys.elementAt(index);
+        final List<BirdsOfFire> bofgroup = widget.bofGroups[clusterValue]!;
+
+        return Padding(
+          padding: const EdgeInsets.only(
+            left: kPaddingMediumConstant + kPaddingSmallConstant,
+          ),
+          child: Row(
+            children: bofgroup.map<Widget>((BirdsOfFire e) {
+              final String imageUrl = e.properties.imageUrl.isEmpty
+                  ? defaultAssetChaseImage
+                  : 'https://chaseapp.tv/${e.properties.imageUrl}';
+              final int? cluster = e.properties.cluster;
+              final bool isActive = activeClusters.contains(cluster);
+
+              return GestureDetector(
+                onTap: () {
+                  if (cluster != null) {
+                    if (!isActive) {
+                      setState(() {
+                        activeClusters.add(cluster);
+                      });
+                    }
+                  }
+                  ref
+                      .read(
+                        activeClusterCoordinateProvider.state,
+                      )
+                      .update(
+                        (BirdsOfFire? state) => e,
+                      );
+                },
+                child: AnimatedAlign(
+                  duration: const Duration(milliseconds: 300),
+                  alignment: Alignment.center,
+                  widthFactor: isActive ? 1.15 : 0.6,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 15,
+                          spreadRadius: 1,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AdaptiveImageProvider(
+                        imageUrl,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// // dummy data with 3 different groups with cluster value 0,1,2 and 3 items each group
+// List<BirdsOfFire> bofgroupDummyData = [
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 0,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 0,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 0,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 1,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 1,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 1,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 2,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+//   const BirdsOfFire(
+//     properties: BofProperties(
+//       title: 'title',
+//       imageUrl: '/networks/koco.jpg',
+//       cluster: 2,
+//       group: '0',
+//       dbscan: 'hello',
+//       type: 'plane',
+//     ),
+//     geometry: BOFGeometry(
+//       coordinates: [0, 0],
+//       type: 'plane',
+//     ),
+//   ),
+// ];
