@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import '../../../../const/colors.dart';
 import '../../../../const/sizings.dart';
 import '../../../../core/notifiers/pagination_notifier.dart';
+import '../../../../device_info.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../routes/routeNames.dart';
@@ -73,6 +74,36 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
   Widget build(
     BuildContext context,
   ) {
+    final Row firehoseHeader = Row(
+      children: [
+        Text(
+          '🔥 Firehose',
+          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+        ),
+        const Spacer(),
+        TextButton.icon(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              RouteName.FIREHOSE_VIEW_ALL,
+            );
+          },
+          icon: Text(
+            'View All',
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+          ),
+          label: Icon(
+            Icons.arrow_forward_ios_outlined,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+        ),
+      ],
+    );
+
     return RefreshIndicator(
       backgroundColor: Theme.of(context).colorScheme.onBackground,
       edgeOffset: kItemsSpacingLargeConstant,
@@ -171,6 +202,13 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
+                      const Spacer(),
+                      if (DeviceScreen.isLandscapeTablet(context))
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4 -
+                              kPaddingMediumConstant,
+                          child: firehoseHeader,
+                        ),
                     ],
                   ),
                 ),
@@ -191,54 +229,26 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                   height: kItemsSpacingMediumConstant,
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kPaddingMediumConstant,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      Text(
-                        '🔥 Firehose',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                              color: Theme.of(context).colorScheme.onBackground,
-                            ),
-                      ),
-                      const Spacer(),
-                      TextButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            RouteName.FIREHOSE_VIEW_ALL,
-                          );
-                        },
-                        icon: Text(
-                          'View All',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                        ),
-                        label: Icon(
-                          Icons.arrow_forward_ios_outlined,
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                      ),
-                    ],
+
+              if (!DeviceScreen.isLandscapeTablet(context))
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: kPaddingMediumConstant,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: firehoseHeader,
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: kItemsSpacingSmallConstant,
+              if (!DeviceScreen.isLandscapeTablet(context))
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: kItemsSpacingSmallConstant,
+                  ),
                 ),
-              ),
-              const FirehoseListViewAll(
-                showLimited: true,
-              ),
+              if (!DeviceScreen.isLandscapeTablet(context))
+                const FirehoseListViewAll(
+                  showLimited: true,
+                ),
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: kItemsSpacingSmallConstant,
@@ -352,14 +362,14 @@ class OverlayCustomPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..color = Colors.white
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         begin: Alignment.bottomCenter,
         end: Alignment.topCenter,
         colors: [
-          Color.fromARGB(255, 26, 25, 25),
+          Colors.white10.withOpacity(0.2),
           Colors.transparent,
         ],
-        stops: [
+        stops: const [
           0.0,
           0.2,
         ],
@@ -382,11 +392,11 @@ class DashboardBGPainter extends CustomPainter {
     final Paint paint = Paint()
       ..color = Colors.white
       ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
         colors: [
-          primaryColor.shade700,
-          primaryColor.shade900.withOpacity(0.4),
+          primaryColor.shade800,
+          primaryColor.shade900,
         ],
         stops: const [
           0.0,
