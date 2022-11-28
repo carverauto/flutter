@@ -9,6 +9,7 @@ import '../../const/images.dart';
 import '../../const/sizings.dart';
 import '../../core/modules/auth/view/providers/providers.dart';
 import '../../modules/notifications/view/parts/notification_settings.dart';
+import '../shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../util/helpers/request_permissions.dart';
 
 class NotificationsPermissionsDialogView extends ConsumerStatefulWidget {
@@ -66,17 +67,17 @@ class _NotificationsPermissionsDialogViewState
                 const SizedBox(
                   width: kPaddingXSmallConstant,
                 ),
-                ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    // add red-blue gradient mask animate it
+                AnimatingGradientShaderBuilder(
+                  // shaderCallback: (Rect bounds) {
+                  //   // add red-blue gradient mask animate it
 
-                    return const LinearGradient(
-                      colors: <Color>[
-                        Colors.red,
-                        Colors.blue,
-                      ],
-                    ).createShader(bounds);
-                  },
+                  //   return const LinearGradient(
+                  //     colors: <Color>[
+                  //       Colors.red,
+                  //       Colors.blue,
+                  //     ],
+                  //   ).createShader(bounds);
+                  // },
                   child: Text(
                     'Chase Alerts',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -91,7 +92,7 @@ class _NotificationsPermissionsDialogViewState
               height: kPaddingSmallConstant,
             ),
             Text(
-              'Recieve notifications alerts when a chase happens!',
+              'Recieve notification alerts when a chase happens!',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
@@ -235,7 +236,7 @@ class _NotificationsPermissionsDialogViewState
                         }
                       },
                       child: const Text(
-                        'Deny',
+                        'Remind Later',
                         style: TextStyle(
                           color: Colors.white,
                         ),
