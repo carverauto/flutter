@@ -91,49 +91,6 @@ class NotificationTile extends ConsumerWidget {
           body: notification.body,
           imageUrl: notification.data!.image,
         );
-      // return ProviderStateBuilder<YoutubeChannelData>(
-      //   loadingBuilder: () => const ShimmerTile(
-      //     height: 50,
-      //   ),
-      //   errorBuilder: (Object e, StackTrace? stk) {
-      //     return FirehoseErrorTile(
-      //       notification: notification,
-      //       onRefesh: () {
-      //         // ref.refresh(
-      //         //   fetchTweetAlongUserData(notification.data!.channelId!),
-      //         // );
-      //       },
-      //     );
-      //   },
-      //   builder:
-      //       (YoutubeChannelData channelData, WidgetRef ref, Widget? child) {
-      //     return _NotificationListTile(
-      //       notification: notification,
-      //       title: RichText(
-      //         overflow: TextOverflow.ellipsis,
-      //         text: TextSpan(
-      //           children: [
-      //             TextSpan(
-      //               text: channelData.name,
-      //               style: titleStyle,
-      //             ),
-      //             const TextSpan(text: ' '),
-      //             TextSpan(
-      //               text: NumberFormat.compact()
-      //                   .format(channelData.subcribersCount),
-      //               style: const TextStyle(color: Colors.grey),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       body: notification.body,
-      //       imageUrl: notification.data!.image,
-      //     );
-      //   },
-      //   watchThisProvider:
-      //       fetchYoutubeChannelDataProvider(notification.data!.channelId!),
-      //   logger: logger,
-      // );
 
       case FirehoseNotificationType.chase:
         return _NotificationListTile(
@@ -316,46 +273,52 @@ class _NotificationListTile extends StatelessWidget {
       padding: const EdgeInsets.only(
         bottom: kItemsSpacingMediumConstant,
       ),
-      child: ListTile(
-        shape: RoundedRectangleBorder(
+      //TODO: tile bg color not shown on IPad in recent updates, see why?
+      // This is temp fix for that
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 94, 94, 94),
           borderRadius: BorderRadius.circular(kBorderRadiusStandard),
         ),
-        onTap: () {
-          notificationHandler(
-            context,
-            notification,
-          );
-        },
-        isThreeLine: true,
-        tileColor: const Color.fromARGB(255, 94, 94, 94),
-        leading: Hero(
-          tag: notification.id,
-          child:
-              //leadingWidget ??
-              CircleAvatar(
-            backgroundImage: AdaptiveImageProvider(
-              imageUrl != null && imageUrl!.isNotEmpty
-                  ? imageUrl!
-                  : chaseAppLogoAssetImage,
-              //TODO: update later with parser
-              //  parseImageUrl(
-              //   notification.image ?? defaultPhotoURL,
-              //   ImageDimensions.LARGE,
-              // ),
+        child: ListTile(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+          ),
+          onTap: () {
+            notificationHandler(
+              context,
+              notification,
+            );
+          },
+          isThreeLine: true,
+          tileColor: const Color.fromARGB(255, 94, 94, 94),
+          leading: Hero(
+            tag: notification.id,
+            child: CircleAvatar(
+              backgroundImage: AdaptiveImageProvider(
+                imageUrl != null && imageUrl!.isNotEmpty
+                    ? imageUrl!
+                    : chaseAppLogoAssetImage,
+                //TODO: update later with parser
+                //  parseImageUrl(
+                //   notification.image ?? defaultPhotoURL,
+                //   ImageDimensions.LARGE,
+                // ),
+              ),
+              backgroundColor: Colors.white,
             ),
-            backgroundColor: Colors.white,
           ),
-        ),
-        title: title,
-        subtitle: Text(
-          body,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
+          title: title,
+          subtitle: Text(
+            body,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
           ),
+          trailing: NotificationTrailing(notification: notification),
         ),
-        trailing: NotificationTrailing(notification: notification),
       ),
     );
   }
