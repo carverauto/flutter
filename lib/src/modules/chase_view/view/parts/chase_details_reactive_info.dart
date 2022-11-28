@@ -195,12 +195,13 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
     final num bottomPadding =
         isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
     final num extraSizing = isTyping ? kToolbarHeight : 0;
-
+    final Orientation currentOrientation = MediaQuery.of(context).orientation;
+    final double height = currentOrientation == Orientation.portrait
+        ? MediaQuery.of(context).size.width * (9 / 16)
+        : MediaQuery.of(context).size.height;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: MediaQuery.of(context).size.width * (9 / 16) -
-          bottomPadding +
-          extraSizing,
+      height: height - bottomPadding + extraSizing,
       width: double.maxFinite,
       child: ChaseHeroSection(
         chaseId: chase.id,

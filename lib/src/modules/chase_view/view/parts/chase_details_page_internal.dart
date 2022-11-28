@@ -76,7 +76,10 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
         child: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
             return orientation == Orientation.landscape
-                ? Scaffold(body: player)
+                ? Scaffold(
+                    backgroundColor: Colors.black,
+                    body: player,
+                  )
                 : Scaffold(
                     backgroundColor: Colors.transparent,
                     resizeToAvoidBottomInset: false,

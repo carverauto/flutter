@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,16 +71,10 @@ class _Mp4VideoPlayerView extends ConsumerStatefulWidget {
 
 class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
   late VideoPlayerController _controller;
-  late bool isBuffering;
+  late bool isPlayerInitialized;
 
   void listenForBufferUpdate() {
     _controller.addListener(() {
-      if (_controller.value.isBuffering != isBuffering) {
-        log('BUffer Status Changed');
-        setState(() {
-          isBuffering = _controller.value.isBuffering;
-        });
-      }
       ref.read(isPlayingAnyVideoProvider.state).update(
             (bool state) => _controller.value.isPlaying,
           );
@@ -99,6 +92,7 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
 
     _controller.initialize().then((value) {
       setState(() {
+        isPlayerInitialized = true;
         _controller.play();
       });
     });
@@ -107,7 +101,7 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
   @override
   void initState() {
     super.initState();
-    isBuffering = true;
+    isPlayerInitialized = false;
     initializePlayer(widget.mp4Url);
     _controller.addListener(listenForBufferUpdate);
   }
@@ -130,11 +124,10 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
             child: VideoPlayer(_controller),
           ),
         ),
-        if (!isBuffering)
-          VideoOverlayControlls(
-            controller: _controller,
-          ),
-        if (!_controller.value.isInitialized || isBuffering)
+        VideoOverlayControlls(
+          controller: _controller,
+        ),
+        if (!isPlayerInitialized)
           Positioned(
             left: kPaddingSmallConstant,
             top: kPaddingSmallConstant,
@@ -159,7 +152,7 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
               ),
             ),
           ),
-        if (!_controller.value.isInitialized || isBuffering)
+        if (!isPlayerInitialized)
           const IgnorePointer(
             child: Center(
               child: CircularAdaptiveProgressIndicatorWithBg(),
