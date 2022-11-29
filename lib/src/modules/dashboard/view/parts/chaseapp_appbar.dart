@@ -51,6 +51,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     final double width = MediaQuery.of(context).size.width;
+    final bool isBOFActive = ref.read(isBOFActiveProvider);
     final double minHeight =
         width / (16 / 9) > MediaQuery.of(context).size.height * 0.4
             ? MediaQuery.of(context).size.height * 0.4
@@ -58,7 +59,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
 
     appBarMaxHeightAnimation = Tween<double>(
       begin: minHeight,
-      end: MediaQuery.of(context).size.height,
+      end: MediaQuery.of(context).size.height - (isBOFActive ? 150 : 0),
     )
         .chain(
           CurveTween(
