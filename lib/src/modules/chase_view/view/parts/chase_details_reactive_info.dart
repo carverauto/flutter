@@ -226,7 +226,8 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
                 ? (3 / 5) *
                     (MediaQuery.of(context).size.height -
                         bottomPadding -
-                        extraSizing)
+                        extraSizing -
+                        (isTyping ? extraSizing : 0))
                 // bottomPadding -
                 // 180 -
                 // extraSizing
@@ -234,7 +235,7 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
                     ? (3 / 5) *
                         (MediaQuery.of(context).size.height -
                             bottomPadding -
-                            extraSizing)
+                            extraSizing * 2)
                     : height - bottomPadding + extraSizing,
             width: double.maxFinite,
             child: ChaseHeroSection(
