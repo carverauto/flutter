@@ -85,6 +85,7 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
         child: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
             log('TOP-->$orientation');
+            //TODO: update later to show first view when in portrait mode but when its tablet or monitor mode(simply put when we have more than enough space to show both video,chat horizontally in portrait mode)
 
             return MediaQuery.of(context).orientation == Orientation.landscape
                 ? Scaffold(
