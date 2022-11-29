@@ -26,7 +26,6 @@ class ChatsView extends ConsumerWidget {
     final Channel channel = ref.watch(chatChannelProvider(chaseId));
 
     return Padding(
-      // duration: const Duration(milliseconds: 300),
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
@@ -37,11 +36,9 @@ class ChatsView extends ConsumerWidget {
               color: Theme.of(context).colorScheme.background,
             ),
             child: Padding(
-              //  duration: const Duration(milliseconds: 300),
               padding: const EdgeInsets.all(kPaddingMediumConstant).copyWith(
                 bottom: 0,
-                top:
-                    showButton ? kPaddingSmallConstant : kPaddingMediumConstant,
+                top: 0,
               ),
               child: Row(
                 children: [
