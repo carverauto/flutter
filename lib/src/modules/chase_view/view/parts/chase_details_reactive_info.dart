@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -191,22 +193,57 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
-    final num bottomPadding =
-        isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
-    final num extraSizing = isTyping ? kToolbarHeight : 0;
-    final Orientation currentOrientation = MediaQuery.of(context).orientation;
-    final double height = currentOrientation == Orientation.portrait
-        ? MediaQuery.of(context).size.width * (9 / 16)
-        : MediaQuery.of(context).size.height;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      height: height - bottomPadding + extraSizing,
-      width: double.maxFinite,
-      child: ChaseHeroSection(
-        chaseId: chase.id,
-        imageURL: imageUrl,
-      ),
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        // final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
+        // final num bottomPadding =
+        //     isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
+        // final num extraSizing = isTyping ? kToolbarHeight : 0;
+        // final Orientation currentOrientation =
+        //     MediaQuery.of(context).orientation;
+        // final double height = currentOrientation == Orientation.portrait
+        //     ? MediaQuery.of(context).size.width * (9 / 16)
+        //     : MediaQuery.of(context).size.height;
+        final bool isPortrait =
+            MediaQuery.of(context).orientation == Orientation.portrait;
+        final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
+        final num bottomPadding =
+            isTyping ? MediaQuery.of(context).viewInsets.bottom : 0;
+        final num extraSizing = isTyping ? kToolbarHeight : 0;
+        final double height = isPortrait
+            ? MediaQuery.of(context).size.width * (9 / 16)
+            : MediaQuery.of(context).size.height;
+        log(MediaQuery.of(context).viewInsets.toString());
+        log('Bottom-->${MediaQuery.of(context).size}');
+
+        return ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 180,
+          ),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: bottomPadding > height
+                ? (3 / 5) *
+                    (MediaQuery.of(context).size.height -
+                        bottomPadding -
+                        extraSizing)
+                // bottomPadding -
+                // 180 -
+                // extraSizing
+                : isTyping
+                    ? (3 / 5) *
+                        (MediaQuery.of(context).size.height -
+                            bottomPadding -
+                            extraSizing)
+                    : height - bottomPadding + extraSizing,
+            width: double.maxFinite,
+            child: ChaseHeroSection(
+              chaseId: chase.id,
+              imageURL: imageUrl,
+            ),
+          ),
+        );
+      },
     );
 
     // return TweenAnimationBuilder<double>(

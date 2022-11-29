@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,7 +84,9 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
         },
         child: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
-            return orientation == Orientation.landscape
+            log('TOP-->$orientation');
+
+            return MediaQuery.of(context).orientation == Orientation.landscape
                 ? Scaffold(
                     backgroundColor: Colors.black,
                     body: FullScreenChaseDetailsSideBar(
@@ -157,6 +160,7 @@ class _FullScreenChaseDetailsSideBarState
       width: double.maxFinite,
       child: Stack(
         clipBehavior: Clip.none,
+        fit: StackFit.expand,
         children: [
           Row(
             children: [
