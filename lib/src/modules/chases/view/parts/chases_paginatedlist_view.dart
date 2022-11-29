@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/notifiers/pagination_notifier.dart';
+import '../../../../device_info.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/util/helpers/image_url_parser.dart';
@@ -71,10 +72,12 @@ class ChasesPaginatedListView extends ConsumerWidget {
             : axis == Axis.horizontal
                 ? SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 300,
+                      height:
+                          DeviceScreen.isLandscapeTablet(context) ? 450 : 300,
                       child: GridView.count(
                         controller: scrollController,
-                        crossAxisCount: 1,
+                        crossAxisCount:
+                            DeviceScreen.isLandscapeTablet(context) ? 2 : 1,
                         childAspectRatio: 1.2,
                         mainAxisSpacing: kItemsSpacingSmallConstant,
                         padding: const EdgeInsets.symmetric(

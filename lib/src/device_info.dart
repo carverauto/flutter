@@ -52,7 +52,8 @@ class DeviceScreen {
       get(context) == FormFactorType.LargePhone;
   // is Landscape and tablet
   static bool isLandscapeTablet(BuildContext context) =>
-      isTablet(context) &&
+      isTablet(context) ||
+      isMonitor(context) ||
       MediaQuery.of(context).orientation == Orientation.landscape;
 }
 

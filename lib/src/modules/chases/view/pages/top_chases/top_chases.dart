@@ -41,6 +41,8 @@ class TopChasesListView extends ConsumerWidget {
         );
       },
       builder: (List<Chase> chases) {
+        final bool isTableOrLandscape = DeviceScreen.isLandscapeTablet(context);
+
         return SliverToBoxAdapter(
           child: chases.isEmpty
               ? Column(
@@ -60,7 +62,7 @@ class TopChasesListView extends ConsumerWidget {
                     ),
                   ],
                 )
-              : DeviceScreen.isLandscapeTablet(context)
+              : isTableOrLandscape
                   ? SizedBox(
                       height: carousalHeight + 100,
                       child: Row(
