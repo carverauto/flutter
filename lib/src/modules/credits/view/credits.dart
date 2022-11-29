@@ -30,7 +30,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   late final AnimationController _animationController;
 
-  late final Animation<Offset> crawlTextposition;
+  late Animation<Offset> crawlTextposition;
 
   late final Animation<double> disappearCrawlText;
 
