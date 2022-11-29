@@ -206,6 +206,7 @@ class _FullScreenChaseDetailsSideBarState
                 ),
                 onPressed: () {
                   setState(() {
+                    Navigator.of(context).focusScopeNode.unfocus();
                     isShowing = !isShowing;
                   });
                 },
