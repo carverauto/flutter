@@ -222,21 +222,7 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
           ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: bottomPadding > height
-                ? (3 / 5) *
-                    (MediaQuery.of(context).size.height -
-                        bottomPadding -
-                        extraSizing -
-                        (isTyping ? extraSizing : 0))
-                // bottomPadding -
-                // 180 -
-                // extraSizing
-                : isTyping
-                    ? (3 / 5) *
-                        (MediaQuery.of(context).size.height -
-                            bottomPadding -
-                            extraSizing * 2)
-                    : height - bottomPadding + extraSizing,
+            height: isPortrait ? height - (isTyping ? extraSizing : 0) : height,
             width: double.maxFinite,
             child: ChaseHeroSection(
               chaseId: chase.id,
@@ -246,29 +232,5 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
         );
       },
     );
-
-    // return TweenAnimationBuilder<double>(
-    //   tween: Tween<double>(
-    //     begin: MediaQuery.of(context).size.width * (9 / 16),
-    //     end: MediaQuery.of(context).size.width * (9 / 16) -
-    //         bottomPadding +
-    //         extraSizing,
-    //   ),
-    //   duration: const Duration(milliseconds: 200),
-    //   child: ChaseHeroSection(
-    //     chase: chase,
-    //     imageURL: imageUrl,
-    //     youtubeVideo: youtubeVideo,
-    //   ),
-    //   builder: (BuildContext context, double animation, Widget? child) {
-    //     log(animation.toString());
-
-    //     return SizedBox(
-    //       height: animation,
-    //       width: double.maxFinite,
-    //       child: child,
-    //     );
-    //   },
-    // );
   }
 }

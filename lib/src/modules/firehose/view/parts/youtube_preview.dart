@@ -69,7 +69,6 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
       child: YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
-          // showVideoProgressIndicator: true,
         ),
         builder: (BuildContext context, Widget video) {
           return Scaffold(
