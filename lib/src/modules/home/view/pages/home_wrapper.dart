@@ -147,22 +147,25 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    //Dynamic Links Handling
-    //Background
-    handleDynamicLinkOpenedFromBackgroundState();
-    //Terminated
-    handleDynamicLinkFromTerminatedState();
 
-    //Notifications Handling
-    //Called in Background or Terminated State
-    FirebaseMessaging.onBackgroundMessage(handlebgmessage);
-    //Foreground
-    handleNotificationInForegroundState();
-    //Terminated
-    handleMessagesFromTerminatedState();
-    //Background
-    handlemessagesthatopenedtheappFromBackgroundState();
-    initPostLoginActions();
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+      initPostLoginActions();
+      //Dynamic Links Handling
+      //Background
+      handleDynamicLinkOpenedFromBackgroundState();
+      //Terminated
+      handleDynamicLinkFromTerminatedState();
+
+      //Notifications Handling
+      //Called in Background or Terminated State
+      FirebaseMessaging.onBackgroundMessage(handlebgmessage);
+      //Foreground
+      handleNotificationInForegroundState();
+      //Terminated
+      handleMessagesFromTerminatedState();
+      //Background
+      handlemessagesthatopenedtheappFromBackgroundState();
+    });
   }
 
   void initPostLoginActions() {

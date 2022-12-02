@@ -38,7 +38,6 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
         if (isNotificationsPermissionGranted) {
           await checkUsersInterests();
-          // await checkRequestPermissions();
         }
 
         isInitialized = true;
@@ -51,6 +50,8 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> checkUsersInterests() async {
     try {
       await PusherBeams.instance.start(EnvVaribales.instanceId);
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       final List<String?> usersInterests =
           await _read(pusherBeamsProvider).getDeviceInterests();
@@ -115,4 +116,3 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
     }
   }
 }
-
