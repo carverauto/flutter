@@ -168,7 +168,7 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
                         // add button to enable notification permissions from settings
                         ElevatedButton(
                           onPressed: () async {
-                            final PermissionStatus permissionStatus =
+                            PermissionStatus permissionStatus =
                                 await checkPermissionStatusForNotification();
 
                             log(permissionStatus.name);
@@ -180,6 +180,9 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
                                 PermissionStatus.permanentlyDenied) {
                               await openAppSettings();
                             }
+
+                            permissionStatus =
+                                await checkPermissionStatusForNotification();
 
                             if (permissionStatus == PermissionStatus.granted) {
                               await ref
