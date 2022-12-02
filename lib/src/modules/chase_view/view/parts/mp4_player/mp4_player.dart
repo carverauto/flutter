@@ -14,7 +14,7 @@ import 'providers.dart';
 
 void popVideoView(BuildContext context, [VoidCallback? onLandscalePop]) {
   if (MediaQuery.of(context).orientation == Orientation.landscape) {
-    final bool isTablet = DeviceScreen.isTablet(context);
+    final bool isTablet = DeviceScreen.isLandscapeTablet(context);
     if (!isTablet) {
       if (onLandscalePop != null) {
         onLandscalePop();
