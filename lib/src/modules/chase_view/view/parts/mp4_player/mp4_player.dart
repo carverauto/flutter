@@ -9,6 +9,7 @@ import '../../../../../const/sizings.dart';
 import '../../../../../device_info.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
+import '../video_top_actions.dart';
 import 'custom_video_progress_indicator.dart';
 import 'providers.dart';
 
@@ -339,17 +340,30 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
         Positioned(
           left: kPaddingSmallConstant,
           top: kPaddingSmallConstant,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-            ),
-            onPressed: () {
-              popVideoView(context);
-            },
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
+          right: 0,
+          child: Row(
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                ),
+                onPressed: () {
+                  popVideoView(context);
+                },
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
+              const Spacer(),
+              const ChaseAppChromeCastButton(),
+              SizedBox(
+                width:
+                    MediaQuery.of(context).orientation == Orientation.landscape
+                        ? 90
+                        : kItemsSpacingSmallConstant,
+              ),
+            ],
           ),
         ),
         Align(
