@@ -124,5 +124,13 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<!-- End -->
+	<!-- // add key for permission for Local Network Access -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Uses for casting videos from chases</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_bonjour._tcp</string>
+		<string>_lnp._tcp.</string>
+	</array>
 </dict>
 </plist>
