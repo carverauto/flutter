@@ -9,7 +9,6 @@ import '../../../../../const/sizings.dart';
 import '../../../../../device_info.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
-import '../video_top_actions.dart';
 import 'custom_video_progress_indicator.dart';
 import 'providers.dart';
 
@@ -355,14 +354,14 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
                   color: Colors.white,
                 ),
               ),
-              const Spacer(),
-              const ChaseAppChromeCastButton(),
-              SizedBox(
-                width:
-                    MediaQuery.of(context).orientation == Orientation.landscape
-                        ? 90
-                        : kItemsSpacingSmallConstant,
-              ),
+              // const Spacer(),
+              // //    const ChaseAppChromeCastButton(),
+              // SizedBox(
+              //   width:
+              //       MediaQuery.of(context).orientation == Orientation.landscape
+              //           ? 90
+              //           : kItemsSpacingSmallConstant,
+              // ),
             ],
           ),
         ),

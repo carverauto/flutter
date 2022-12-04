@@ -4,6 +4,6 @@
     <string name="facebook_app_id">392332671355922</string>
     <string name="fb_login_protocol_scheme">fb392332671355922</string>
     <string name="facebook_client_token">1cc32b4fe3a584021cddfa956b666f3f</string>
-    <string name="mapbox_access_token">pk.eyJ1IjoicnV0dmlrMTEwIiwiYSI6ImNsOTVmOXB4bjBpZHUzbmpuZjNwdHl1aGsifQ.c_1xEjpPOtFyWdeOmUJipA</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoibWZyZWVtYW40NTEiLCJhIjoiY2tyaWRyYnNlMXJleTJwbTRjYTAzYWhjaCJ9.hhwesJS258kLg3-XdLmPqg</string>
     <!-- End: For Facebook auth -->
 </resources>
