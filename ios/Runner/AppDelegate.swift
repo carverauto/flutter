@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 import GoogleCast
 import Network
-
+import AVKit
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, GCKLoggerDelegate{
@@ -38,6 +38,16 @@ import Network
               result(FlutterMethodNotImplemented)
           }
       })
+    // End LNA channel
+
+    //For airplay paltform view
+
+    weak var registrar = self.registrar(forPlugin: "airplay_view_plugin")
+
+    let factory = AirPlayViewFactory(messenger: registrar!.messenger())
+    registrar!.register(
+            factory,
+            withId: "aiplay_view")
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
       
@@ -116,5 +126,76 @@ extension LocalNetworkAuthorization : NetServiceDelegate {
         self.reset()
         print("Local network permission has been granted")
         completion?(true)
+    }
+}
+
+
+//aireplay view
+
+ class AirPlayViewFactory: NSObject, FlutterPlatformViewFactory {
+    private var messenger: FlutterBinaryMessenger
+
+    init(messenger: FlutterBinaryMessenger) {
+        self.messenger = messenger
+        super.init()
+    }
+
+    func create(
+        withFrame frame: CGRect,
+        viewIdentifier viewId: Int64,
+        arguments args: Any?
+    ) -> FlutterPlatformView {
+        return AirPlayView(
+            frame: frame,
+            viewIdentifier: viewId,
+            arguments: args,
+            binaryMessenger: messenger)
+    }
+}
+
+ class AirPlayView: NSObject, FlutterPlatformView {
+    private var _view: UIView
+
+    init(
+        frame: CGRect,
+        viewIdentifier viewId: Int64,
+        arguments args: Any?,
+        binaryMessenger messenger: FlutterBinaryMessenger?
+    ) {
+        _view = UIView()
+        super.init()
+        // iOS views can be created here
+        createNativeView(view: _view)
+    }
+
+    func view() -> UIView {
+        return _view
+    }
+
+    func createNativeView(view _view: UIView){
+        var buttonView: UIView? = nil
+    let buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
+
+    // It's highly recommended to use the AVRoutePickerView in order to avoid AirPlay issues after iOS 11.
+    if #available(iOS 11.0, *) {
+        let airplayButton = AVRoutePickerView(frame: buttonFrame)
+        airplayButton.activeTintColor = UIColor.blue
+        airplayButton.tintColor = UIColor.gray
+        buttonView = airplayButton
+    } 
+
+    // If there are no AirPlay devices available, the button will not be displayed.
+    let buttonItem = UIBarButtonItem(customView: buttonView!)
+    // let viewController = UIViewController()
+    // viewController.navigationItem.setRightBarButton(buttonItem, animated: true)
+//     _view.backgroundColor = UIColor.blue
+//         let nativeLabel = UILabel()
+//         nativeLabel.text = "Native text from iOS"
+//         nativeLabel.textColor = UIColor.white
+//         nativeLabel.textAlignment = .center
+//         nativeLabel.frame = CGRect(x: 0, y: 0, width: 180, height: 48.0)
+//   _view.addSubview(nativeLabel)
+    // Return the view controller's view.
+    _view.addSubview(buttonView!)
     }
 }

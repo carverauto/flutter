@@ -40,15 +40,20 @@ class GlassBg extends StatelessWidget {
     Key? key,
     required this.child,
     this.padding,
+    this.color,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets? padding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: GlassBGPainter(blureBg: true),
+      painter: GlassBGPainter(
+        blureBg: true,
+        color: color,
+      ),
       child: Padding(
         padding: padding ??
             const EdgeInsets.all(
@@ -63,13 +68,15 @@ class GlassBg extends StatelessWidget {
 class GlassBGPainter extends CustomPainter {
   GlassBGPainter({
     this.blureBg = false,
+    this.color,
   });
   final bool blureBg;
+  final Color? color;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = primaryColor.shade600.withOpacity(0.3)
+      ..color = color ?? (primaryColor.shade600).withOpacity(0.3)
       ..imageFilter = blureBg
           ? ImageFilter.blur(
               sigmaX: blurValue,
