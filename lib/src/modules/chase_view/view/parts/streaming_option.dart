@@ -9,22 +9,16 @@ class StreamingOptionsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassBg(
-      color: Colors.grey[100]!.withOpacity(0.5),
+      color: Colors.grey[100]!.withOpacity(0.9),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (Theme.of(context).platform == TargetPlatform.iOS ||
               Theme.of(context).platform == TargetPlatform.macOS)
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.grey[300]!,
-                shape: BoxShape.circle,
-              ),
-              child: const SizedBox(
-                height: 44,
-                width: 44,
-                child: AirplayView(),
-              ),
+            const SizedBox(
+              height: 44,
+              width: 44,
+              child: AirplayView(),
             ),
         ],
       ),
