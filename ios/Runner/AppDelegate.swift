@@ -86,7 +86,7 @@ public class LocalNetworkAuthorization: NSObject {
         parameters.includePeerToPeer = true
         
         // Browse for a custom service type.
-        let browser = NWBrowser(for: .bonjour(type: "_bonjour._tcp", domain: nil), using: parameters)
+        let browser = NWBrowser(for: .bonjour(type: "_googlecast._tcp", domain: nil), using: parameters)
         print("Browsing for service type")
         self.browser = browser
         browser.stateUpdateHandler = { newState in

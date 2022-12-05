@@ -129,6 +129,7 @@
 	<string>Uses for casting videos from chases</string>
 	<key>NSBonjourServices</key>
 	<array>
+		<string>_googlecast._tcp</string>
 		<string>_bonjour._tcp</string>
 		<string>_lnp._tcp.</string>
 	</array>
