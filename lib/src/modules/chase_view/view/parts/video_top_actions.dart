@@ -8,6 +8,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
+import '../providers/providers.dart';
 import 'animations_overlay_toggle_switch.dart';
 import 'mp4_player/mp4_player.dart';
 import 'streaming_option.dart';
@@ -114,6 +115,8 @@ class _ChaseAppChromeCastButtonState
 
   @override
   Widget build(BuildContext context) {
+    final String? currentlyPlayingUrl =
+        ref.watch(currentlyPlayingVideoUrlProvider);
     final AsyncValue<bool?> state =
         ref.watch(localNetworkAccessStatusFutureProvider);
 
@@ -137,9 +140,11 @@ class _ChaseAppChromeCastButtonState
                         _controller.addSessionListener();
                       },
                       onSessionStarted: () {
-                        _controller.loadMedia(
-                          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                        );
+                        if (currentlyPlayingUrl != null) {
+                          _controller.loadMedia(
+                            currentlyPlayingUrl,
+                          );
+                        }
                       },
                     ),
                     const IgnorePointer(
