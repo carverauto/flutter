@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/platform_views/airplay_view.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
+import 'video_top_actions.dart';
 
 class StreamingOptionsList extends StatelessWidget {
   const StreamingOptionsList({super.key});
@@ -20,6 +21,7 @@ class StreamingOptionsList extends StatelessWidget {
               width: 44,
               child: AirplayView(),
             ),
+          const ChaseAppChromeCastButton(),
         ],
       ),
     );

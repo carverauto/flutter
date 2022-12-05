@@ -119,7 +119,7 @@ class _ChaseAppChromeCastButtonState
 
     return state.when(
       data: (bool? data) {
-        return false
+        return data == true
             ? DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.blue,
