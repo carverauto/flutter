@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../providers/providers.dart';
 import 'animations_overlay_toggle_switch.dart';
+import 'ismp4orm3u8url.dart';
 import 'mp4_player/mp4_player.dart';
 import 'streaming_option.dart';
 
@@ -119,6 +122,19 @@ class _ChaseAppChromeCastButtonState
         ref.watch(currentlyPlayingVideoUrlProvider);
     final AsyncValue<bool?> state =
         ref.watch(localNetworkAccessStatusFutureProvider);
+    String? finalUrl;
+    if (currentlyPlayingUrl != null) {
+      final bool isMp4 = ismp4orm3u8url(currentlyPlayingUrl);
+
+      if (isMp4) {
+        // parse and get part till .mp4 or m3u8
+        finalUrl = currentlyPlayingUrl.split('?').first;
+      } else {
+        finalUrl = currentlyPlayingUrl;
+      }
+
+      log(finalUrl);
+    }
 
     return state.when(
       data: (bool? data) {
@@ -140,9 +156,9 @@ class _ChaseAppChromeCastButtonState
                         _controller.addSessionListener();
                       },
                       onSessionStarted: () {
-                        if (currentlyPlayingUrl != null) {
+                        if (finalUrl != null) {
                           _controller.loadMedia(
-                            currentlyPlayingUrl,
+                            finalUrl,
                           );
                         }
                       },
