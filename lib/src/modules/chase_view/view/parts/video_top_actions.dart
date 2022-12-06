@@ -141,7 +141,6 @@ class _ChaseAppChromeCastButtonState
         return data == true
             ? DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(kBorderRadiusStandard),
                 ),
                 child: Stack(
@@ -164,7 +163,10 @@ class _ChaseAppChromeCastButtonState
                       },
                     ),
                     const IgnorePointer(
-                      child: Icon(Icons.cast),
+                      child: Icon(
+                        Icons.cast,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -311,7 +313,10 @@ class _ChaseAppChromeCastButtonState
                   }
                   ref.refresh(localNetworkAccessStatusFutureProvider);
                 },
-                icon: const Icon(Icons.cast),
+                icon: const Icon(
+                  Icons.cast,
+                  color: Colors.black,
+                ),
               );
       },
       loading: () => const SizedBox.shrink(),
