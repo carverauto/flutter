@@ -186,16 +186,7 @@ extension LocalNetworkAuthorization : NetServiceDelegate {
 
     // If there are no AirPlay devices available, the button will not be displayed.
     let buttonItem = UIBarButtonItem(customView: buttonView!)
-    // let viewController = UIViewController()
-    // viewController.navigationItem.setRightBarButton(buttonItem, animated: true)
-//     _view.backgroundColor = UIColor.blue
-//         let nativeLabel = UILabel()
-//         nativeLabel.text = "Native text from iOS"
-//         nativeLabel.textColor = UIColor.white
-//         nativeLabel.textAlignment = .center
-//         nativeLabel.frame = CGRect(x: 0, y: 0, width: 180, height: 48.0)
-//   _view.addSubview(nativeLabel)
-    // Return the view controller's view.
+    
     _view.addSubview(buttonView!)
     }
 }

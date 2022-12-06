@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 import '../../../../../const/sizings.dart';
 import '../../../../../models/chase/network/chase_network.dart';
@@ -26,10 +27,10 @@ class WatchHereLinksWrapper extends ConsumerWidget {
   ) {
     final List<ChaseStream> streams =
         List.from(network.streams ?? <ChaseStream>[]);
-    if (network.url != null) {
+    if (network.url != null && network.url!.isNotEmpty) {
       streams.add(ChaseStream(tier: 0, url: network.url!));
     }
-    if (network.mp4Url != null) {
+    if (network.mp4Url != null && network.mp4Url!.isNotEmpty) {
       streams.add(ChaseStream(tier: 0, url: network.mp4Url!));
     }
 
@@ -55,9 +56,6 @@ class WatchHereLinksWrapper extends ConsumerWidget {
               return false;
             }).toList()
           : [];
-      streams
-        ..addAll(youtubeStreams)
-        ..addAll(mp4Networks);
 
       return NetworkContentMapped(
         network: network,
@@ -71,14 +69,14 @@ class WatchHereLinksWrapper extends ConsumerWidget {
 
               if (url != null) {
                 final bool isYoutube = isValidYoutubeUrl(url);
+                final bool isMp4 = ismp4orm3u8url(url);
 
-                return !isYoutube && !ismp4orm3u8url(url);
+                return !isYoutube && !isMp4;
               }
 
               return false;
             }).toList()
           : [];
-      streams.addAll(otherNetworks);
 
       return NetworkContentMapped(
         network: network,
@@ -120,6 +118,7 @@ class WatchHereLinksWrapper extends ConsumerWidget {
     final List<ChaseNetwork> sortedNetworks = [...?networks]..sort(
         (ChaseNetwork a, ChaseNetwork b) => b.tier!.compareTo(a.tier!),
       );
+    final Logger logger = Logger('WatchHereLinksWrapper-$chaseId');
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -132,6 +131,7 @@ class WatchHereLinksWrapper extends ConsumerWidget {
           _NetworksList(
             networkContentMap: mappedNetworkContent(sortedNetworks, true),
             iStreams: true,
+            logger: logger,
           ),
           const SizedBox(
             height: kItemsSpacingSmallConstant,
@@ -139,6 +139,7 @@ class WatchHereLinksWrapper extends ConsumerWidget {
           _NetworksList(
             networkContentMap: mappedNetworkContent(sortedNetworks, false),
             iStreams: false,
+            logger: logger,
           ),
         ],
       ),
@@ -151,10 +152,12 @@ class _NetworksList extends StatelessWidget {
     Key? key,
     required this.networkContentMap,
     required this.iStreams,
+    required this.logger,
   }) : super(key: key);
 
   final List<NetworkContentMapped> networkContentMap;
   final bool iStreams;
+  final Logger logger;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +191,7 @@ class _NetworksList extends StatelessWidget {
               URLView(
                 networkContentMap: networkContentMap,
                 isStreams: iStreams,
+                logger: logger,
               ),
             ],
           );

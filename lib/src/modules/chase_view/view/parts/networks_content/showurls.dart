@@ -20,9 +20,11 @@ class URLView extends ConsumerWidget {
     Key? key,
     required this.networkContentMap,
     required this.isStreams,
+    required this.logger,
   }) : super(key: key);
   final List<NetworkContentMapped> networkContentMap;
   final bool isStreams;
+  final Logger logger;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,6 +37,7 @@ class URLView extends ConsumerWidget {
           return _NetworkLinks(
             networkContentMap: networkMap,
             isStreams: isStreams,
+            logger: logger,
           );
         }).toList(),
       ),
@@ -46,65 +49,17 @@ class _NetworkLinks extends ConsumerWidget {
   const _NetworkLinks({
     required this.networkContentMap,
     required this.isStreams,
+    required this.logger,
   });
 
   final NetworkContentMapped networkContentMap;
   final bool isStreams;
+  final Logger logger;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String? currentlyPlayingUrl =
         ref.watch(currentlyPlayingVideoUrlProvider);
-    // final List<ChaseStream> streams =
-    //     List.from(network.streams ?? <ChaseStream>[]);
-    // if (network.url != null) {
-    //   streams.add(ChaseStream(tier: 0, url: network.url!));
-    // }
-    // if (network.mp4Url != null) {
-    //   streams.add(ChaseStream(tier: 0, url: network.mp4Url!));
-    // }
-
-    // final List<ChaseStream> youtubeStreams = isStreams
-    //     ? streams.where((ChaseStream network) {
-    //         final String url = network.url;
-    //         if (url != null) {
-    //           final bool isYoutube = isValidYoutubeUrl(url);
-
-    //           return isYoutube;
-    //         }
-    //         return false;
-    //       }).toList()
-    //     : [];
-
-    // final List<ChaseStream> mp4Networks = isStreams
-    //     ? streams.where((ChaseStream network) {
-    //         final String url = network.url;
-    //         if (url != null) {
-    //           final bool isMp4 = url.endsWith('.mp4');
-    //           return isMp4;
-    //         }
-    //         return false;
-    //       }).toList()
-    //     : [];
-
-    // final List<ChaseStream> otherNetworks = !isStreams
-    //     ? streams.where((ChaseStream network) {
-    //         final String url = network.url;
-
-    //         if (url != null) {
-    //           final bool isYoutube = isValidYoutubeUrl(url);
-
-    //           return !isYoutube && !url.endsWith('.mp4');
-    //         }
-
-    //         return false;
-    //       }).toList()
-    //     : [];
-    // if (youtubeStreams.isEmpty &&
-    //     mp4Networks.isEmpty &&
-    //     otherNetworks.isEmpty) {
-    //   return const SizedBox.shrink();
-    // }
 
     final ChaseNetwork network = networkContentMap.network;
 
@@ -150,20 +105,41 @@ class _NetworkLinks extends ConsumerWidget {
                 ),
             if (!isStreams)
               for (final ChaseStream stream in networkContentMap.others)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: kPaddingSmallConstant,
-                  ),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await launchURL(context, stream.url);
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: primaryColor.shade300,
-                      backgroundImage:
-                          NetworkImage(getNetworkLogUrl(stream.url)),
-                    ),
-                  ),
+                Builder(
+                  builder: (BuildContext context) {
+                    final String? networkUrl = getNetworkLogUrl(stream.url);
+                    final bool isInvalidUrl =
+                        networkUrl == null || networkUrl.isEmpty;
+
+                    if (isInvalidUrl) {
+                      logger.warning(
+                        'Invalid ${networkContentMap.network.name} NetworkUrl : $networkUrl',
+                      );
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        left: kPaddingSmallConstant,
+                      ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await launchURL(context, stream.url);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: primaryColor.shade300,
+                          backgroundImage:
+                              !isInvalidUrl ? NetworkImage(networkUrl) : null,
+                          child: !isInvalidUrl
+                              ? null
+                              : Icon(
+                                  Icons.question_mark_rounded,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
           ],
         ),
@@ -260,9 +236,9 @@ class StreamButton extends ConsumerWidget {
   }
 }
 
-String getNetworkLogUrl(String? url) {
-  if (url == null) {
-    return defaultPhotoURL;
+String? getNetworkLogUrl(String? url) {
+  if (url == null || url.isEmpty) {
+    return null;
   }
   // parse the url to get the hose from it. match it agains the keys in the networkUrls
   final String hostName = Uri.parse(url).host.replaceAll('www.', '');
