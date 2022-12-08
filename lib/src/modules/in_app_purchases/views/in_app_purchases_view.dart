@@ -70,12 +70,13 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
             title: const Text('ChaseApp Premium✨ '),
             centerTitle: false,
           ),
-          body: SizedBox(
-            width: double.maxFinite,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
+          body: ListView(
+            children: [
+              const SizedBox(
+                height: kPaddingLargeConstant,
+              ),
+              Center(
+                child: SizedBox(
                   width: 270,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -132,20 +133,22 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 1,
-                  child: TabBarView(
-                    controller: tabController,
-                    children: const [
-                      SizedBox.shrink(),
-                      SizedBox.shrink(),
-                    ],
-                  ),
+              ),
+              SizedBox(
+                height: 1,
+                child: TabBarView(
+                  controller: tabController,
+                  children: const [
+                    SizedBox.shrink(),
+                    SizedBox.shrink(),
+                  ],
                 ),
-                const SizedBox(
-                  height: kPaddingSmallConstant,
-                ),
-                ConstrainedBox(
+              ),
+              const SizedBox(
+                height: kPaddingSmallConstant,
+              ),
+              Center(
+                child: ConstrainedBox(
                   constraints: const BoxConstraints(
                     minWidth: 300,
                     maxWidth: 600,
@@ -159,8 +162,8 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -264,84 +267,84 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.purple,
-        borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
-      ),
-      child: Column(
-        children: [
-          AnimatedBuilder(
-            animation: animation,
-            builder: (BuildContext context, Widget? child) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "${package.storeProduct.currencyCode ?? ''} ${animation.value.toInt()}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize:
-                          Theme.of(context).textTheme.headlineLarge!.fontSize,
-                    ),
+    return Column(
+      children: [
+        AnimatedBuilder(
+          animation: animation,
+          builder: (BuildContext context, Widget? child) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "${package.storeProduct.currencyCode ?? ''} ${animation.value.toInt()}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize:
+                        Theme.of(context).textTheme.headlineLarge!.fontSize,
                   ),
+                ),
 
-                  //show monthly yearly string
-                  Text(
-                    widget.isShowingMonthly ? '/Month' : '/Year',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                //show monthly yearly string
+                Text(
+                  widget.isShowingMonthly ? '/Month' : '/Year',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        const SizedBox(
+          height: kPaddingSmallConstant,
+        ),
+        if (!widget.isShowingMonthly)
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0, end: 1),
+            duration: const Duration(milliseconds: 300),
+            builder: (
+              BuildContext context,
+              double value,
+              Widget? child,
+            ) {
+              return FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animationController,
+                  curve: Curves.easeInOut,
+                ),
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, -1),
+                    end: const Offset(0, 0),
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animationController,
+                      curve: Curves.easeInOut,
                     ),
                   ),
-                ],
+                  child: Text(
+                    ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                ),
               );
             },
           ),
-          const SizedBox(
-            height: kPaddingSmallConstant,
-          ),
-          if (!widget.isShowingMonthly)
-            TweenAnimationBuilder<double>(
-              tween: Tween<double>(begin: 0, end: 1),
-              duration: const Duration(milliseconds: 300),
-              builder: (
-                BuildContext context,
-                double value,
-                Widget? child,
-              ) {
-                return FadeTransition(
-                  opacity: CurvedAnimation(
-                    parent: animationController,
-                    curve: Curves.easeInOut,
-                  ),
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: const Offset(0, -1),
-                      end: const Offset(0, 0),
-                    ).animate(
-                      CurvedAnimation(
-                        parent: animationController,
-                        curve: Curves.easeInOut,
-                      ),
-                    ),
-                    child: Text(
-                      ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
-                      style: TextStyle(
-                        color: Colors.grey[300],
-                      ),
-                    ),
-                  ),
-                );
-              },
+        const SizedBox(
+          height: kPaddingSmallConstant,
+        ),
+        if (package != null)
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.purple,
+              borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
             ),
-          const SizedBox(
-            height: kPaddingSmallConstant,
-          ),
-          if (package != null)
-            ConstrainedBox(
+            child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minHeight: 250,
                 maxHeight: 400,
@@ -390,9 +393,9 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
                                       colors: [
-                                        Colors.white10,
                                         Colors.transparent,
-                                        Colors.white10,
+                                        Colors.transparent,
+                                        Colors.white30,
                                       ],
                                       stops: [
                                         0.001,
@@ -408,53 +411,50 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: kPaddingSmallConstant,
-                    ),
-                    AnimatingGradientShaderBuilder(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(),
-                        onPressed: () async {
-                          try {
-                            final purchases.CustomerInfo purchaserInfo =
-                                await purchases.Purchases.purchasePackage(
-                              package,
-                            );
-                          } on PlatformException catch (e) {
-                            if (e.code != 1) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(e.message.toString()),
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                              ),
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Subscribe',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .fontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
-        ],
-      ),
+          ),
+        const SizedBox(
+          height: kPaddingSmallConstant,
+        ),
+        AnimatingGradientShaderBuilder(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(),
+            onPressed: () async {
+              try {
+                final purchases.CustomerInfo purchaserInfo =
+                    await purchases.Purchases.purchasePackage(
+                  package,
+                );
+              } on PlatformException catch (e) {
+                if (e.code != 1) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(e.message.toString()),
+                    ),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(e.toString()),
+                  ),
+                );
+              }
+            },
+            child: Text(
+              'Subscribe',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
