@@ -278,6 +278,7 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
               children: [
                 Text(
                   "${package.storeProduct.currencyCode ?? ''} ${animation.value.toInt()}",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -288,7 +289,7 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
 
                 //show monthly yearly string
                 Text(
-                  widget.isShowingMonthly ? '/Month' : '/Year',
+                  widget.isShowingMonthly ? '/ Month' : '/ Year',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -330,6 +331,7 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
                         padding: const EdgeInsets.all(kPaddingSmallConstant),
                         child: Text(
                           ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.black,
                           ),
