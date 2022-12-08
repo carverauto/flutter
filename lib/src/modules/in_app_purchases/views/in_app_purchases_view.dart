@@ -301,40 +301,44 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
         const SizedBox(
           height: kPaddingSmallConstant,
         ),
-        if (!widget.isShowingMonthly)
-          TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0, end: 1),
+        Center(
+          child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            builder: (
-              BuildContext context,
-              double value,
-              Widget? child,
-            ) {
-              return FadeTransition(
-                opacity: CurvedAnimation(
-                  parent: animationController,
-                  curve: Curves.easeInOut,
-                ),
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0, -1),
-                    end: const Offset(0, 0),
-                  ).animate(
-                    CurvedAnimation(
-                      parent: animationController,
-                      curve: Curves.easeInOut,
-                    ),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return SizeTransition(
+                sizeFactor: animation,
+                child: FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeInOut,
                   ),
-                  child: Text(
-                    ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                    ),
-                  ),
+                  child: child,
                 ),
               );
             },
+            child: widget.isShowingMonthly
+                ? null
+                : Center(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent[100],
+                        borderRadius: BorderRadius.circular(
+                          kBorderRadiusLargeConstant,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kPaddingSmallConstant),
+                        child: Text(
+                          ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
           ),
+        ),
         const SizedBox(
           height: kPaddingSmallConstant,
         ),
