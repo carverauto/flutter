@@ -102,4 +102,12 @@ class EnvVaribales {
   static const String _gcpServerApiKey =
       String.fromEnvironment('GCP_SERVER_API_KEY');
   static String get getGCPServerApiKey => _gcpServerApiKey;
+  static const String _revenueCat_Public_Google_SDK_Key =
+      String.fromEnvironment('RevenueCat_Public_Google_SDK_Key');
+  static String get revenueCat_Public_Google_SDK_Key =>
+      _revenueCat_Public_Google_SDK_Key;
+  static const String _revenueCat_Public_Ios_SDK_Key =
+      String.fromEnvironment('RevenueCat_Public_Ios_SDK_Key');
+  static String get revenueCat_Public_Ios_SDK_Key =>
+      _revenueCat_Public_Ios_SDK_Key;
 }

@@ -11,6 +11,7 @@
 		0F3223AE27EF342300C674E6 /* Release-testing.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F3223AB27EF342200C674E6 /* Release-testing.xcconfig */; };
 		0F3223AF27EF342300C674E6 /* Debug-testing.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F3223AC27EF342200C674E6 /* Debug-testing.xcconfig */; };
 		0F3223B027EF342300C674E6 /* Debug-testing.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F3223AC27EF342200C674E6 /* Debug-testing.xcconfig */; };
+		0F687D7E2941B6730020FA87 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F687D7D2941B6730020FA87 /* StoreKit.framework */; };
 		0F708D4E279EC578002FE2AB /* Release-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */; };
 		0F708D4F279EC578002FE2AB /* Release-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */; };
 		0F708D50279EC578002FE2AB /* Debug-dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0F708D4B279EC578002FE2AB /* Debug-dev.xcconfig */; };
@@ -72,6 +73,7 @@
 /* Begin PBXFileReference section */
 		0F3223AB27EF342200C674E6 /* Release-testing.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Release-testing.xcconfig"; path = "Flutter/Release-testing.xcconfig"; sourceTree = "<group>"; };
 		0F3223AC27EF342200C674E6 /* Debug-testing.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-testing.xcconfig"; path = "Flutter/Debug-testing.xcconfig"; sourceTree = "<group>"; };
+		0F687D7D2941B6730020FA87 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0F708D4A279EC578002FE2AB /* Release-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Release-prod.xcconfig"; path = "Flutter/Release-prod.xcconfig"; sourceTree = "<group>"; };
 		0F708D4B279EC578002FE2AB /* Debug-dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-dev.xcconfig"; path = "Flutter/Debug-dev.xcconfig"; sourceTree = "<group>"; };
 		0F708D4C279EC578002FE2AB /* Debug-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-prod.xcconfig"; path = "Flutter/Debug-prod.xcconfig"; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				DA4AA68C2797D9E6007088CC /* CoreLocation.framework in Frameworks */,
 				DA4AA68D2797D9E6007088CC /* CoreBluetooth.framework in Frameworks */,
 				91FA89C7BC1CB0291F530CCB /* Pods_Runner.framework in Frameworks */,
+				0F687D7E2941B6730020FA87 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +237,7 @@
 		DB107184520008D1A1153140 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0F687D7D2941B6730020FA87 /* StoreKit.framework */,
 				DA4AA68B2797D9E6007088CC /* CoreBluetooth.framework */,
 				DA4AA68A2797D9E6007088CC /* CoreLocation.framework */,
 				21DDC362060D9353A4B46626 /* Pods_Runner.framework */,
