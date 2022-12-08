@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 
+import 'package:chaseapp/main_prod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -196,14 +197,12 @@ Future<void> setUpServices() async {
   );
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  await initPlatformState();
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
-    // If we're in debug mode, use the normal error widget which shows the error
-    // message:
     if (kDebugMode) {
       return ErrorWidget(details.exception);
     }
-    // In release builds, show a yellow-on-blue message instead:
 
     return Material(
       child: Center(
@@ -223,73 +222,9 @@ Future<void> setUpServices() async {
       fatal: record.level == Level.SEVERE,
     );
   });
-
-  // if (F.appFlavor == Flavor.DEV) {
-  // const String instanceId = String.fromEnvironment('Pusher_Instance_Id');
-//  await PusherBeams.instance.start(EnvVaribales.instanceId);
-  // } else {
-  //   const String instanceId = String.fromEnvironment('Prod_Pusher_Instance_Id');
-
-  //   await PusherBeams.instance.start(instanceId);
-  // }
-
-  /*
-  PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
-  try {
-    await pusher.init(
-      apiKey: API_KEY,
-      cluster: API_CLUSTER,
-      onConnectionStateChange: onConnectionStateChange,
-      onError: onError,
-      onSubscriptionSucceeded: onSubscriptionSucceeded,
-      onEvent: onEvent,
-      onSubscriptionError: onSubscriptionError,
-      onDecryptionFailure: onDecryptionFailure,
-      onMemberAdded: onMemberAdded,
-      onMemberRemoved: onMemberRemoved,
-      // authEndpoint: "<Your Authendpoint>",
-      // onAuthorizer: onAuthorizer
-    );
-    await pusher.subscribe(channelName: 'presence-chatbox');
-    await pusher.connect();
-  } catch (e) {
-    print("ERROR: $e");
-  }
-   */
 }
 
 class ProvidersLogger extends ProviderObserver {
-//   @override
-//   void didAddProvider(
-//     ProviderBase provider,
-//     Object? newValue,
-//     ProviderContainer container,
-//   ) {
-//     print(
-//       '''
-// {
-//   "provider": "${provider.name ?? provider.runtimeType}",
-//   "newValue": "$newValue"
-// }''',
-//     );
-//   }
-
-//   @override
-//   void didUpdateProvider(
-//     ProviderBase provider,
-//     Object? previousValue,
-//     Object? newValue,
-//     ProviderContainer container,
-//   ) {
-//     print(
-//       '''
-// {
-//   "provider": "${provider.name ?? provider.runtimeType}",
-//   "newValue": "$newValue"
-// }''',
-//     );
-//   }
-
   @override
   void didDisposeProvider(
     ProviderBase provider,

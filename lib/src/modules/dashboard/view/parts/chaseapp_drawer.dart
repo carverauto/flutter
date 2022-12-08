@@ -129,6 +129,21 @@ class ChaseAppDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.pushNamed(context, RouteName.IN_APP_PURCHASES);
+            },
+            leading: Icon(
+              Icons.stars_outlined,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Premium',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
               Navigator.pushNamed(context, RouteName.SETTINGS);
             },
             leading: Icon(

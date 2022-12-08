@@ -17,6 +17,7 @@ import '../modules/feedback_form/view/feedback_form.dart';
 import '../modules/feedback_form/view/support_view.dart';
 import '../modules/firehose/view/pages/firehose_view_all.dart';
 import '../modules/home/view/pages/home_wrapper.dart';
+import '../modules/in_app_purchases/views/in_app_purchases_settings.dart';
 import '../modules/notifications/view/pages/notifications_view.dart';
 import '../modules/onboarding/view/pages/onboarding.dart';
 import '../modules/profile/view/pages/profile_page.dart';
@@ -101,6 +102,11 @@ class Routes {
         return MaterialPageRoute<bool>(
           settings: settings,
           builder: (_) => const FeedbackForm(),
+        );
+      case RouteName.IN_APP_PURCHASES:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => const InAppPurchasesSettings(),
         );
       default:
         return MaterialPageRoute<void>(
