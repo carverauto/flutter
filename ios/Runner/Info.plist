@@ -132,6 +132,7 @@
 		<string>_googlecast._tcp</string>
 		<string>_bonjour._tcp</string>
 		<string>_lnp._tcp.</string>
+  		<string>ChaseApp._googlecast._tcp</string>
 	</array>
 </dict>
 </plist>

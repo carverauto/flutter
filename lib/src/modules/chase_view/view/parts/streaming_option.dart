@@ -64,22 +64,33 @@ class _GoogleCastSolutionState extends State<GoogleCastSolution> {
 
     session.stateStream.listen((CastSessionState state) {
       if (state == CastSessionState.connected) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Connected To ${object.name} for casting ')),
+        );
         _sendMessage(session);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Session Start Message Sent')),
+        );
       }
     });
 
     session.messageStream.listen((Map<String, dynamic> message) {
-      print('receive message: $message');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Message Recieved--> $message')),
+      );
     });
 
     session.sendMessage(CastSession.kNamespaceReceiver, <String, dynamic>{
       'type': 'LAUNCH',
-      'appId': 'YouTube', // set the appId of your app here
+      'appId': 'ChaseApp', // set the appId of your app here
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Launching Message Sent')),
+    );
   }
 
   void _sendMessage(CastSession session) {
-    session.sendMessage('urn:x-cast:namespace-of-the-app', <String, dynamic>{
+    session.sendMessage('urn:x-cast:com.carverauto.chaseapp', <String, dynamic>{
       'type': 'sample',
     });
   }
