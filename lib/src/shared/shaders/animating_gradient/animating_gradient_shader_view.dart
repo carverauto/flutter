@@ -1,10 +1,8 @@
-import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:umbra_flutter/umbra_flutter.dart';
-
-import 'animating_gradient.dart';
+import 'package:flutter_shaders/flutter_shaders.dart';
 
 class AnimatingGradientShaderBuilder extends StatefulWidget {
   const AnimatingGradientShaderBuilder({
@@ -19,7 +17,7 @@ class AnimatingGradientShaderBuilder extends StatefulWidget {
 }
 
 class _MyShaderState extends State<AnimatingGradientShaderBuilder> {
-  late Future<AnimatingGradient> helloWorld;
+  // late Future<AnimatingGradient> helloWorld;
 
   late Ticker ticker;
 
@@ -29,7 +27,7 @@ class _MyShaderState extends State<AnimatingGradientShaderBuilder> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    helloWorld = AnimatingGradient.compile();
+    // helloWorld = AnimatingGradient.compile();
     delta = 0;
     ticker = Ticker((Duration elapsedTime) {
       setState(() {
@@ -48,27 +46,31 @@ class _MyShaderState extends State<AnimatingGradientShaderBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<AnimatingGradient>(
-      future: helloWorld,
-      builder:
-          (BuildContext context, AsyncSnapshot<AnimatingGradient> snapshot) {
-        if (snapshot.hasData) {
-          return ShaderMask(
-            child: widget.child,
-            shaderCallback: (Rect rect) {
-              return snapshot.data!.shader(
-                resolution: rect.size,
-                uTime: delta,
-                uResolution: Vector2(rect.size.width, rect.size.height),
-              );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return widget.child!;
-        }
+    return ShaderBuilder(
+      (BuildContext context, FragmentShader shader, Widget? child) {
+        return AnimatedSampler(
+          child: child ??
+              Container(
+                color: Colors.red,
+              ),
+          (ui.Image image, Size size, Offset offset, Canvas canvas) {
+            shader
+              ..setFloat(0, delta)
+              ..setFloat(1, size.width)
+              ..setFloat(2, size.height);
 
-        return widget.child!;
+            canvas
+              ..save()
+              ..drawRect(
+                Offset.zero & size,
+                Paint()..shader = shader,
+              )
+              ..restore();
+          },
+        );
       },
+      assetKey: 'shaders/animating_gradient.glsl',
+      child: widget.child ?? Container(color: Colors.red),
     );
   }
 }
