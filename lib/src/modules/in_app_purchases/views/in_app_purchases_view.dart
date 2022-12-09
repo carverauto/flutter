@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../const/sizings.dart';
+import '../../../core/top_level_providers/services_providers.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 
 final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
@@ -13,6 +15,16 @@ final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
         await purchases.Purchases.getOfferings();
 
     return offerings;
+  },
+);
+
+final AutoDisposeFutureProvider<purchases.CustomerInfo> currentCustomerInfo =
+    FutureProvider.autoDispose<purchases.CustomerInfo>(
+  (AutoDisposeFutureProviderRef<purchases.CustomerInfo> ref) async {
+    final purchases.CustomerInfo custemerInfo =
+        await purchases.Purchases.getCustomerInfo();
+
+    return custemerInfo;
   },
 );
 
@@ -47,6 +59,9 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
   Widget build(
     BuildContext context,
   ) {
+    final bool isPremiumMember =
+        ref.watch(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+
     final AsyncValue<purchases.Offerings> offeringsState =
         ref.watch(currentOfferingFutureProvider);
 
@@ -60,10 +75,45 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
             (yearlyPricing?.storeProduct.price ?? 0) / 12;
 
         final int discount =
-            (((monthlyPricing!.storeProduct.price - perMonthYearlyPrice) /
+            (((monthlyPricing!.storeProduct.price - perMonthYearlyPrice).abs() /
                         (monthlyPricing.storeProduct.price)) *
                     100)
                 .round();
+        if (isPremiumMember) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  const Text('You are a premium member'),
+                  // add cancel subs button and refund button
+
+                  ElevatedButton(
+                    onPressed: () async {
+                      final String? managementUrl = ref
+                          .read(inAppPurchasesStateNotifier.notifier)
+                          .state
+                          .value
+                          ?.managementURL;
+                      if (managementUrl != null) {
+                        await launchURL(context, managementUrl);
+                        await ref
+                            .read(inAppPurchasesStateNotifier.notifier)
+                            .updateCustomerInfo();
+                      }
+                    },
+                    child: const Text('Cancel Subscription'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await purchases.Purchases.restorePurchases();
+                    },
+                    child: const Text('Restore Purchases'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
 
         return Scaffold(
           appBar: AppBar(

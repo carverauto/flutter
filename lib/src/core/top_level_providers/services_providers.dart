@@ -13,6 +13,7 @@ import '../modules/chase/data/chase_db_ab.dart';
 import '../modules/chase/domain/chase_repo.dart';
 import '../modules/chase/domain/chase_repo_ab.dart';
 import '../notifiers/app_update_notifier.dart';
+import '../notifiers/in_app_purchases_state_notifier.dart';
 
 final Provider<SharedPreferences> sharedPreferancesProvider =
     Provider<SharedPreferences>((ProviderRef<SharedPreferences> ref) {
@@ -69,3 +70,15 @@ final Provider<GlobalKey> appGlobalKeyProvider =
     Provider<GlobalKey>((ProviderRef<GlobalKey> ref) {
   return GlobalKey();
 });
+
+final StateNotifierProvider<InAppPurchasesStateNotifier, AsyncValue<void>>
+    inAppPurchasesStateNotifier =
+    StateNotifierProvider<InAppPurchasesStateNotifier, AsyncValue<void>>(
+  (
+    StateNotifierProviderRef<InAppPurchasesStateNotifier, AsyncValue<void>> ref,
+  ) {
+    return InAppPurchasesStateNotifier(
+      ref,
+    );
+  },
+);
