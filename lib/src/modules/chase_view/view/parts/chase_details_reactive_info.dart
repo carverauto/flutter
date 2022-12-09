@@ -45,7 +45,7 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
               children: [
                 Text(
                   'Sentiment Analysis :',
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),

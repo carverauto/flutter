@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 
@@ -61,7 +60,8 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
             (yearlyPricing?.storeProduct.price ?? 0) / 12;
 
         final int discount =
-            ((perMonthYearlyPrice / (monthlyPricing?.storeProduct.price ?? 0)) *
+            (((monthlyPricing!.storeProduct.price - perMonthYearlyPrice) /
+                        (monthlyPricing.storeProduct.price)) *
                     100)
                 .round();
 
@@ -330,7 +330,7 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
                       child: Padding(
                         padding: const EdgeInsets.all(kPaddingSmallConstant),
                         child: Text(
-                          ' (Save ${widget.discount}%) for 12 months at ${(package.storeProduct.price ?? 0) / 12}/month',
+                          ' (Save ${widget.discount}%) for 12 months at ${package.storeProduct.currencyCode} ${((package.storeProduct.price) / 12).round()}/month',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.black,
@@ -347,7 +347,7 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
         if (package != null)
           DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.purple,
+              color: Colors.purple[400],
               borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
             ),
             child: ConstrainedBox(
@@ -380,35 +380,27 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
                           ),
                           const Positioned.fill(
                             child: IgnorePointer(
-                              child: AnimatingGradientShaderBuilder(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                        kBorderRadiusSmallConstant,
-                                      ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      kBorderRadiusSmallConstant,
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 10,
-                                        spreadRadius: 1,
-                                      ),
+                                  ),
+                                  boxShadow: [],
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.white38,
                                     ],
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.white30,
-                                      ],
-                                      stops: [
-                                        0.001,
-                                        0.5,
-                                        1.0,
-                                      ],
-                                    ),
+                                    stops: [
+                                      0.001,
+                                      0.5,
+                                      1.0,
+                                    ],
                                   ),
                                 ),
                               ),
@@ -423,42 +415,76 @@ class _OfferingsDescriptionState extends State<OfferingsDescription>
             ),
           ),
         const SizedBox(
-          height: kPaddingSmallConstant,
+          height: kPaddingMediumConstant,
         ),
-        AnimatingGradientShaderBuilder(
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(),
-            onPressed: () async {
-              try {
-                final purchases.CustomerInfo purchaserInfo =
-                    await purchases.Purchases.purchasePackage(
-                  package,
-                );
-              } on PlatformException catch (e) {
-                if (e.code != 1) {
+        Stack(
+          children: [
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.all(2),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    kBorderRadiusSmallConstant,
+                  ),
+                  child: AnimatingGradientShaderBuilder(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          kBorderRadiusSmallConstant,
+                        ),
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    kBorderRadiusSmallConstant,
+                  ),
+                ),
+                backgroundColor:
+                    Theme.of(context).colorScheme.background.withOpacity(
+                          0.3,
+                        ),
+              ),
+              onPressed: () async {
+                try {
+                  final purchases.CustomerInfo purchaserInfo =
+                      await purchases.Purchases.purchasePackage(
+                    package,
+                  );
+                } on PlatformException catch (e) {
+                  if (e.code != 1) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.message.toString()),
+                      ),
+                    );
+                  }
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(e.message.toString()),
+                      content: Text(e.toString()),
                     ),
                   );
                 }
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(e.toString()),
-                  ),
-                );
-              }
-            },
-            child: Text(
-              'Subscribe',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Theme.of(context).textTheme.headline5!.fontSize,
-                fontWeight: FontWeight.bold,
+              },
+              child: Text(
+                'Subscribe',
+                style: TextStyle(
+                  fontSize:
+                      Theme.of(context).textTheme.headlineMedium!.fontSize,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ],
     );

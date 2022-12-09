@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
@@ -10,7 +8,7 @@ class AnimatingGradientShaderBuilder extends StatefulWidget {
     required this.child,
   }) : super(key: key);
 
-  final Widget? child;
+  final Widget child;
 
   @override
   State<AnimatingGradientShaderBuilder> createState() => _MyShaderState();
@@ -48,29 +46,18 @@ class _MyShaderState extends State<AnimatingGradientShaderBuilder> {
   Widget build(BuildContext context) {
     return ShaderBuilder(
       (BuildContext context, FragmentShader shader, Widget? child) {
-        return AnimatedSampler(
-          child: child ??
-              Container(
-                color: Colors.red,
-              ),
-          (ui.Image image, Size size, Offset offset, Canvas canvas) {
-            shader
+        return ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return shader
               ..setFloat(0, delta)
-              ..setFloat(1, size.width)
-              ..setFloat(2, size.height);
-
-            canvas
-              ..save()
-              ..drawRect(
-                Offset.zero & size,
-                Paint()..shader = shader,
-              )
-              ..restore();
+              ..setFloat(1, bounds.width)
+              ..setFloat(2, bounds.height);
           },
+          child: child,
         );
       },
       assetKey: 'shaders/animating_gradient.glsl',
-      child: widget.child ?? Container(color: Colors.red),
+      child: widget.child,
     );
   }
 }

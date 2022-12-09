@@ -1,7 +1,7 @@
 #define PI 3.14159265359
 
-uniform float height;
 uniform float width;
+uniform float height;
 uniform float u_time;
 uniform float tiles;
 uniform float speed;
@@ -16,6 +16,8 @@ uniform float c2g;
 uniform float c2b;
 vec3 color1=vec3(c1r,c1g,c1b);
 vec3 color2=vec3(c2r,c2g,c2b);
+
+out vec4 fragColor;
 
 vec2 rotatePoint(vec2 pt,vec2 center,float angle){
     float sinAngle=sin(angle);

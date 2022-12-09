@@ -1,5 +1,3 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
@@ -16,7 +14,7 @@ class StripesShaderBuilder extends StatefulWidget {
     required this.isActive,
   }) : super(key: key);
 
-  final Widget? child;
+  final Widget child;
   final double direction;
   // final Widget Function(BuildContext context, Stripes shader, double uTime)?
   //     builder;
@@ -35,6 +33,8 @@ class _MyShaderState extends State<StripesShaderBuilder> {
 
   late final vector_math_64.Vector3 color1;
   late final vector_math_64.Vector3 color2;
+
+  FragmentShader? myshader;
 
   @override
   void initState() {
@@ -61,43 +61,42 @@ class _MyShaderState extends State<StripesShaderBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return ShaderBuilder(
-      (BuildContext context, FragmentShader shader, Widget? child) {
-        return AnimatedSampler(
-          child: child ??
-              Container(
-                color: Colors.red,
-              ),
-          (ui.Image image, Size size, Offset offset, Canvas canvas) {
-            shader
-              ..setFloat(0, size.width)
-              ..setFloat(1, size.height)
-              ..setFloat(2, delta)
-              ..setFloat(3, 4)
-              ..setFloat(4, !widget.isActive ? 0 : delta)
-              ..setFloat(5, widget.direction)
-              ..setFloat(6, 0)
-              ..setFloat(7, 0)
-              ..setFloat(8, color1.r)
-              ..setFloat(9, color1.g)
-              ..setFloat(10, color1.b)
-              ..setFloat(11, color2.r)
-              ..setFloat(12, color2.g)
-              ..setFloat(13, color2.b);
+    return myshader != null
+        ? ShaderMask(
+            child: widget.child,
+            shaderCallback: (Rect rect) {
+              return myshader!
+                ..setFloat(0, rect.width)
+                ..setFloat(1, rect.height)
+                ..setFloat(2, delta)
+                ..setFloat(3, 4)
+                ..setFloat(4, !widget.isActive ? 0 : delta)
+                ..setFloat(5, widget.direction)
+                ..setFloat(6, 0)
+                ..setFloat(7, 0)
+                ..setFloat(8, color1.r)
+                ..setFloat(9, color1.g)
+                ..setFloat(10, color1.b)
+                ..setFloat(11, color2.r)
+                ..setFloat(12, color2.g)
+                ..setFloat(13, color2.b);
+            },
+          )
+        : ShaderBuilder(
+            (BuildContext context, FragmentShader shader, Widget? child) {
+              WidgetsBinding.instance.addPostFrameCallback((Duration t) {
+                if (myshader == null) {
+                  setState(() {
+                    myshader = shader;
+                  });
+                }
+              });
 
-            canvas
-              ..save()
-              ..drawRect(
-                Offset.zero & size,
-                Paint()..shader = shader,
-              )
-              ..restore();
-          },
-        );
-      },
-      assetKey: 'shaders/animating_gradient.glsl',
-      child: widget.child ?? Container(color: Colors.red),
-    );
+              return const SizedBox.shrink();
+            },
+            assetKey: 'shaders/stripes.glsl',
+            child: widget.child,
+          );
 
     //  FutureBuilder<Stripes>(
     //   future: helloWorld,

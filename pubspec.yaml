@@ -180,6 +180,7 @@ flutter:
   generate: true
   shaders:
     - shaders/animating_gradient.glsl
+    - shaders/stripes.glsl
   assets:
     - assets/
     - assets/icon/
