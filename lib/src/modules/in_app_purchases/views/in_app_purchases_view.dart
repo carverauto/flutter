@@ -9,6 +9,8 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
+import '../../../device_info.dart';
+import '../../../routes/routeNames.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
 import '../../../shared/widgets/buttons/glass_button.dart';
@@ -61,6 +63,19 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
         title: const Text('ChaseApp Premium✨'),
         centerTitle: false,
         backgroundColor: isPremium ? Colors.black : null,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return InAppPurchasesInfoDialog(ref: ref);
+                },
+              );
+            },
+            icon: const Icon(Icons.info),
+          ),
+        ],
       ),
       body: offeringsState.when(
         data: (purchases.Offerings offerings) {
@@ -114,6 +129,13 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                            ),
+                            const SizedBox(
+                              height: kPaddingXSmallConstant,
+                            ),
+                            const PremiumFeaturesDisplayView(),
+                            const SizedBox(
+                              height: kPaddingXSmallConstant,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +207,7 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -230,6 +252,116 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
           );
         },
       ),
+    );
+  }
+}
+
+class InAppPurchasesInfoDialog extends StatelessWidget {
+  const InAppPurchasesInfoDialog({
+    super.key,
+    required this.ref,
+  });
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      title: Row(
+        children: [
+          const Icon(Icons.info),
+          const SizedBox(
+            width: kPaddingXSmallConstant,
+          ),
+          Text(
+            'Support',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              onTap: () async {
+                try {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Checking to restore any purchases made in past.',
+                      ),
+                    ),
+                  );
+                  final purchases.CustomerInfo customerInfo =
+                      await purchases.Purchases.restorePurchases();
+
+                  await ref
+                      .read(inAppPurchasesStateNotifier.notifier)
+                      .updateCustomerInfo(customerInfo);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Details updated.',
+                      ),
+                    ),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Something went wrong. Please try again.',
+                      ),
+                    ),
+                  );
+                }
+              },
+              leading: Icon(
+                Icons.restore,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              title: Text(
+                'Restore Previous Purchases',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                "Restore any purchases you've made in the past which are active.",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+            ListTile(
+              onTap: () async {
+                await Navigator.of(context).pushNamed(RouteName.SUPPORT);
+              },
+              leading: Icon(
+                Icons.support_agent_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              title: Text(
+                'Get In Touch',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(
+                '',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -365,141 +497,150 @@ class _PurchasePremiumSubscriptionViewState
                 100)
             .round();
 
-    return ListView(
+    return Stack(
+      fit: StackFit.expand,
       children: [
-        const SizedBox(
-          height: kPaddingLargeConstant,
-        ),
-        Center(
-          child: SizedBox(
-            width: 270,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ClipRRect(
+        ListView(
+          children: [
+            const SizedBox(
+              height: kPaddingLargeConstant,
+            ),
+            Center(
+              child: SizedBox(
+                width: 270,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(100),
-                    clipBehavior: Clip.hardEdge,
-                    child: Banner(
-                      message: 'Save $discount%',
-                      location: BannerLocation.topEnd,
-                      color: isShowingMonthly ? Colors.grey : Colors.green,
-                      child: TabBar(
-                        padding: const EdgeInsets.all(0),
-                        controller: tabController,
-                        onTap: (int value) {
-                          isShowingMonthly = value == 0;
-                          package = widget.offerings.current?.availablePackages
-                              .firstWhereOrNull(
-                            (purchases.Package package) =>
-                                package.packageType ==
-                                (isShowingMonthly
-                                    ? purchases.PackageType.monthly
-                                    : purchases.PackageType.annual),
-                          )!;
-
-                          setState(() {});
-                        },
-                        unselectedLabelColor: Colors.grey,
-                        labelStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        indicator: BoxDecoration(
-                          color: Colors.purple,
-                          border: Border.all(
-                            color: Colors.grey[300]!,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            100,
-                          ),
-                        ),
-                        labelPadding:
-                            const EdgeInsets.all(kPaddingSmallConstant)
-                                .copyWith(
-                          bottom: kPaddingSmallConstant + 10,
-                          top: kPaddingSmallConstant + 10,
-                        ),
-                        tabs: const [
-                          Text('Monthly'),
-                          Text('Yearly'),
-                        ],
-                      ),
-                    ),
                   ),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        clipBehavior: Clip.hardEdge,
+                        child: Banner(
+                          message: 'Save $discount%',
+                          location: BannerLocation.topEnd,
+                          color: isShowingMonthly ? Colors.grey : Colors.green,
+                          child: TabBar(
+                            padding: const EdgeInsets.all(0),
+                            controller: tabController,
+                            onTap: (int value) {
+                              isShowingMonthly = value == 0;
+                              package = widget
+                                  .offerings.current?.availablePackages
+                                  .firstWhereOrNull(
+                                (purchases.Package package) =>
+                                    package.packageType ==
+                                    (isShowingMonthly
+                                        ? purchases.PackageType.monthly
+                                        : purchases.PackageType.annual),
+                              )!;
+
+                              setState(() {});
+                            },
+                            unselectedLabelColor: Colors.grey,
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            indicator: BoxDecoration(
+                              color: Colors.purple,
+                              border: Border.all(
+                                color: Colors.grey[300]!,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                100,
+                              ),
+                            ),
+                            labelPadding:
+                                const EdgeInsets.all(kPaddingSmallConstant)
+                                    .copyWith(
+                              bottom: kPaddingSmallConstant + 10,
+                              top: kPaddingSmallConstant + 10,
+                            ),
+                            tabs: const [
+                              Text('Monthly'),
+                              Text('Yearly'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 1,
+              child: TabBarView(
+                controller: tabController,
+                children: const [
+                  SizedBox.shrink(),
+                  SizedBox.shrink(),
                 ],
               ),
             ),
-          ),
-        ),
-        SizedBox(
-          height: 1,
-          child: TabBarView(
-            controller: tabController,
-            children: const [
-              SizedBox.shrink(),
-              SizedBox.shrink(),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: kPaddingSmallConstant,
-        ),
-        Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minWidth: 300,
-              maxWidth: 600,
+            const SizedBox(
+              height: kPaddingSmallConstant,
             ),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: OfferingsDescription(
-                package: package!,
-                isShowingMonthly: isShowingMonthly,
-                discount: discount,
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: 300,
+                  maxWidth: 600,
+                ),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: OfferingsDescription(
+                    package: package!,
+                    isShowingMonthly: isShowingMonthly,
+                    discount: discount,
+                  ),
+                ),
               ),
             ),
-          ),
+            const SizedBox(
+              height: kPaddingSmallConstant,
+            )
+          ],
         ),
-        const SizedBox(
-          height: kPaddingSmallConstant,
-        ),
-        Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: makePurchase,
-                child: AnimatedContainer(
-                  width: isMakingPurchase ? 48 : 150,
-                  height: 48,
-                  clipBehavior: Clip.hardEdge,
-                  duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(
-                      isMakingPurchase ? 150 : kBorderRadiusSmallConstant,
-                    ),
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.none,
-                    children: [
-                      const Positioned.fill(
-                        child: AnimatingGradientShaderBuilder(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Material(
+            child: InkWell(
+              onTap: makePurchase,
+              child: AnimatedContainer(
+                width: isMakingPurchase ? 48 : 150,
+                clipBehavior: Clip.hardEdge,
+                duration: const Duration(milliseconds: 300),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.circular(
+                  //   isMakingPurchase ? 150 : kBorderRadiusSmallConstant,
+                  // ),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: [
+                    const Positioned.fill(
+                      child: AnimatingGradientShaderBuilder(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(4),
+                    ),
+                    GlassBg(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4).copyWith(
+                          bottom: MediaQuery.of(context).viewPadding.bottom,
+                        ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
                           transitionBuilder: (
@@ -516,34 +657,33 @@ class _PurchasePremiumSubscriptionViewState
                             );
                           },
                           child: Center(
-                            child: FittedBox(
-                              child: isMakingPurchase
-                                  ? Theme.of(context).platform ==
-                                          TargetPlatform.iOS
-                                      ? const CupertinoActivityIndicator(
-                                          color: Colors.white,
-                                        )
-                                      : const CircularProgressIndicator()
-                                  : Text(
-                                      'Subscribe',
-                                      style: TextStyle(
-                                        fontSize: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium!
-                                            .fontSize,
-                                        fontWeight: FontWeight.bold,
+                            child: isMakingPurchase
+                                ? Theme.of(context).platform ==
+                                        TargetPlatform.iOS
+                                    ? const CupertinoActivityIndicator(
                                         color: Colors.white,
-                                      ),
+                                      )
+                                    : const CircularProgressIndicator()
+                                : Text(
+                                    'Subscribe',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall!
+                                          .fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
                                     ),
-                            ),
+                                  ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ],
@@ -693,77 +833,98 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
         const SizedBox(
           height: kPaddingSmallConstant,
         ),
-        if (package != null)
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: Colors.purple[400],
-              borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minHeight: 250,
-                maxHeight: 400,
-              ),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: Column(
+        if (package != null) const PremiumFeaturesDisplayView(),
+      ],
+    );
+  }
+}
+
+class PremiumFeaturesDisplayView extends StatelessWidget {
+  const PremiumFeaturesDisplayView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.purple[400],
+        borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minHeight: 250,
+          maxHeight: 400,
+        ),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: ListView.builder(
-                              itemCount: premiumFeatures.length,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: kPaddingSmallConstant,
-                              ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: kPaddingXSmallConstant,
-                                  ),
-                                  child: premiumFeatures[index],
-                                );
-                              },
-                            ),
-                          ),
-                          const Positioned.fill(
-                            child: IgnorePointer(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      kBorderRadiusSmallConstant,
-                                    ),
-                                  ),
-                                  boxShadow: [],
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.transparent,
-                                      Colors.white38,
-                                    ],
-                                    stops: [
-                                      0.001,
-                                      0.5,
-                                      1.0,
-                                    ],
-                                  ),
+                    Positioned.fill(
+                      child: GridView.count(
+                        //  itemCount: premiumFeatures.length,
+                        crossAxisCount: DeviceScreen.get(context).gridCount,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: kPaddingSmallConstant,
+                        ),
+
+                        mainAxisSpacing: kPaddingXSmallConstant,
+                        //   crossAxisSpacing: kPaddingXSmallConstant,
+
+                        children: premiumFeatures
+                            .map(
+                              (PremiumFeatureTile e) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: kPaddingXSmallConstant,
+                                  horizontal: kPaddingXSmallConstant,
                                 ),
+                                child: e,
+                              ),
+                            )
+                            .toList(),
+                        // itemBuilder: (BuildContext context, int index) {
+                        //   return ;
+                        // },
+                      ),
+                    ),
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                kBorderRadiusSmallConstant,
                               ),
                             ),
+                            boxShadow: [],
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.transparent,
+                                Colors.white38,
+                              ],
+                              stops: [
+                                0.001,
+                                0.5,
+                                1.0,
+                              ],
+                            ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+            ],
           ),
-      ],
+        ),
+      ),
     );
   }
 }
@@ -782,47 +943,61 @@ class PremiumFeatureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(kPaddingXSmallConstant / 2),
-      child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Colors.white38,
-                  shape: BoxShape.circle,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.purple[300],
+        borderRadius: BorderRadius.circular(kBorderRadiusStandard),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(kPaddingXSmallConstant),
+        child: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DecoratedBox(
+                  decoration: const BoxDecoration(
+                    color: Colors.white38,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(kPaddingXSmallConstant),
+                    child: leading,
+                  ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(kPaddingXSmallConstant),
-                  child: leading,
+                const SizedBox(
+                  width: kPaddingXSmallConstant,
                 ),
-              ),
-              const SizedBox(
-                width: kPaddingXSmallConstant,
-              ),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: kPaddingXSmallConstant,
-          ),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey[300],
+              ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: kPaddingXSmallConstant,
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  Text(
+                    description,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
