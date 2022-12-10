@@ -59,10 +59,12 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
         ref.watch(currentOfferingFutureProvider);
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('ChaseApp Premium✨'),
         centerTitle: false,
-        backgroundColor: isPremium ? Colors.black : null,
+        backgroundColor: Colors.black,
+        shadowColor: Colors.white38,
         actions: [
           IconButton(
             onPressed: () async {
@@ -131,9 +133,16 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                               ),
                             ),
                             const SizedBox(
-                              height: kPaddingXSmallConstant,
+                              height: kPaddingLargeConstant,
                             ),
-                            const PremiumFeaturesDisplayView(),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                maxWidth: 600,
+                              ),
+                              child: PremiumFeaturesDisplayView(
+                                isPremium: isPremium,
+                              ),
+                            ),
                             const SizedBox(
                               height: kPaddingXSmallConstant,
                             ),
@@ -831,9 +840,12 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
           ),
         ),
         const SizedBox(
-          height: kPaddingSmallConstant,
+          height: kPaddingLargeConstant + kPaddingXSmallConstant,
         ),
-        if (package != null) const PremiumFeaturesDisplayView(),
+        if (package != null)
+          const PremiumFeaturesDisplayView(
+            isPremium: false,
+          ),
       ],
     );
   }
@@ -842,88 +854,119 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
 class PremiumFeaturesDisplayView extends StatelessWidget {
   const PremiumFeaturesDisplayView({
     super.key,
+    required this.isPremium,
   });
+
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.purple[400],
-        borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
-      ),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minHeight: 250,
-          maxHeight: 400,
-        ),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Column(
-            children: [
-              Expanded(
-                child: Stack(
+    return GlassBg(
+      color: Colors.purple[400]!.withOpacity(0.6),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              // color: Colors.purple[400],
+              borderRadius: BorderRadius.circular(kBorderRadiusSmallConstant),
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: 250,
+                maxHeight: 400,
+              ),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: Column(
                   children: [
-                    Positioned.fill(
-                      child: GridView.count(
-                        //  itemCount: premiumFeatures.length,
-                        crossAxisCount: DeviceScreen.get(context).gridCount,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: kPaddingSmallConstant,
-                        ),
-
-                        mainAxisSpacing: kPaddingXSmallConstant,
-                        //   crossAxisSpacing: kPaddingXSmallConstant,
-
-                        children: premiumFeatures
-                            .map(
-                              (PremiumFeatureTile e) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: kPaddingXSmallConstant,
-                                  horizontal: kPaddingXSmallConstant,
-                                ),
-                                child: e,
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: GridView.count(
+                              //  itemCount: premiumFeatures.length,
+                              crossAxisCount:
+                                  DeviceScreen.get(context).gridCount,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: kPaddingSmallConstant,
                               ),
-                            )
-                            .toList(),
-                        // itemBuilder: (BuildContext context, int index) {
-                        //   return ;
-                        // },
-                      ),
-                    ),
-                    const Positioned.fill(
-                      child: IgnorePointer(
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                kBorderRadiusSmallConstant,
-                              ),
-                            ),
-                            boxShadow: [],
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.transparent,
-                                Colors.white38,
-                              ],
-                              stops: [
-                                0.001,
-                                0.5,
-                                1.0,
-                              ],
+
+                              mainAxisSpacing: kPaddingXSmallConstant,
+                              //   crossAxisSpacing: kPaddingXSmallConstant,
+
+                              children: premiumFeatures
+                                  .map(
+                                    (PremiumFeatureTile e) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: kPaddingXSmallConstant,
+                                        horizontal: kPaddingXSmallConstant,
+                                      ),
+                                      child: e,
+                                    ),
+                                  )
+                                  .toList(),
+                              // itemBuilder: (BuildContext context, int index) {
+                              //   return ;
+                              // },
                             ),
                           ),
-                        ),
+                          const Positioned.fill(
+                            child: IgnorePointer(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      kBorderRadiusSmallConstant,
+                                    ),
+                                  ),
+                                  boxShadow: [],
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.white38,
+                                    ],
+                                    stops: [
+                                      0.001,
+                                      0.5,
+                                      1.0,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            top: -29,
+            left: 0,
+            right: 0,
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                color: Colors.white38,
+                shape: BoxShape.circle,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(kPaddingXSmallConstant),
+                child: Icon(
+                  isPremium ? Icons.lock_open_rounded : Icons.lock_rounded,
+                  size: kIconSizeLargeConstant,
+                  color: isPremium ? Colors.green : Colors.redAccent,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -945,7 +988,7 @@ class PremiumFeatureTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Colors.purple[300],
+        color: Colors.purple[300]!.withOpacity(0.6),
         borderRadius: BorderRadius.circular(kBorderRadiusStandard),
       ),
       child: Padding(
