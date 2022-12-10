@@ -11,6 +11,7 @@ import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
+import '../../../shared/widgets/buttons/glass_button.dart';
 
 final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
     FutureProvider<purchases.Offerings>(
@@ -69,6 +70,8 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
           final DateTime memberSince = DateTime.parse(memeberSince.first);
           final DateTime latestSubscriptionDate =
               DateTime.parse(memeberSince.last);
+          final DateTime renewsAt =
+              DateTime.parse(info.value!.latestExpirationDate!);
 
           return Scaffold(
             appBar: AppBar(
@@ -89,98 +92,123 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                   ),
                 ),
                 Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const AnimatingGradientShaderBuilder(
-                            child: Text(
-                              'You are a ChaseApp Premium Member',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
+                  child: GlassBg(
+                    color: Colors.white10,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const AnimatingGradientShaderBuilder(
+                              child: Text(
+                                '🌟 You are a ChaseApp Premium Member',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Member since  ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Member since  ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                // format date in dd mm yyyy
-                                DateFormat('dd MMM yyyy').format(memberSince),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  // format date in dd mm yyyy
+                                  DateFormat('dd MMM yyyy').format(memberSince),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: kPaddingXSmallConstant,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Latest Subscription Date  ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
+                              ],
+                            ),
+                            const SizedBox(
+                              height: kPaddingXSmallConstant,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Latest subscription date  ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                // format date in dd mm yyyy
-                                DateFormat('dd MMM yyyy')
-                                    .format(latestSubscriptionDate),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
+                                Text(
+                                  // format date in dd mm yyyy
+                                  DateFormat('dd MMM yyyy')
+                                      .format(latestSubscriptionDate),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: kPaddingSmallConstant,
-                      ),
-                      // add cancel subs button and refund button
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Renews at  ',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  // format date in dd mm yyyy
+                                  DateFormat('dd MMM yyyy').format(renewsAt),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: kPaddingSmallConstant,
+                        ),
+                        // add cancel subs button and refund button
 
-                      ElevatedButton(
-                        onPressed: () async {
-                          final String? managementUrl = ref
-                              .read(inAppPurchasesStateNotifier.notifier)
-                              .state
-                              .value
-                              ?.managementURL;
-                          if (managementUrl != null) {
-                            await launchURL(context, managementUrl);
-                            await ref
+                        ElevatedButton(
+                          onPressed: () async {
+                            final String? managementUrl = ref
                                 .read(inAppPurchasesStateNotifier.notifier)
-                                .updateCustomerInfo();
-                          }
-                        },
-                        child: const Text('Manage Subscription'),
-                      ),
-                    ],
+                                .state
+                                .value
+                                ?.managementURL;
+                            if (managementUrl != null) {
+                              await launchURL(context, managementUrl);
+                              await ref
+                                  .read(inAppPurchasesStateNotifier.notifier)
+                                  .updateCustomerInfo();
+                            }
+                          },
+                          child: const Text('Manage Subscription'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
