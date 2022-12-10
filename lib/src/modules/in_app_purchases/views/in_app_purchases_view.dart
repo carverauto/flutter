@@ -1,13 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
+import '../../../shared/shaders/confetti/confetti_shader_view.dart';
 
 final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
     FutureProvider<purchases.Offerings>(
@@ -54,37 +57,133 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
     return offeringsState.when(
       data: (purchases.Offerings offerings) {
         if (isPremium) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                children: [
-                  const Text('You are a premium member'),
-                  // add cancel subs button and refund button
+          final List<String> memeberSince = info.value!.allPurchaseDates.values
+              .sortedByCompare<String>(
+                (String element) => element,
+                (String a, String b) => DateTime.parse(b).millisecond <
+                        DateTime.parse(a).millisecond
+                    ? 1
+                    : -1,
+              )
+              .toList();
+          final DateTime memberSince = DateTime.parse(memeberSince.first);
+          final DateTime latestSubscriptionDate =
+              DateTime.parse(memeberSince.last);
 
-                  ElevatedButton(
-                    onPressed: () async {
-                      final String? managementUrl = ref
-                          .read(inAppPurchasesStateNotifier.notifier)
-                          .state
-                          .value
-                          ?.managementURL;
-                      if (managementUrl != null) {
-                        await launchURL(context, managementUrl);
-                        await ref
-                            .read(inAppPurchasesStateNotifier.notifier)
-                            .updateCustomerInfo();
-                      }
-                    },
-                    child: const Text('Cancel Subscription'),
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('ChaseApp Premium'),
+              centerTitle: false,
+              backgroundColor: Colors.black,
+            ),
+            body: Stack(
+              children: [
+                const Positioned.fill(
+                  child: RotatedBox(
+                    quarterTurns: 2,
+                    child: ConfettiShaderView(
+                      child: ColoredBox(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await purchases.Purchases.restorePurchases();
-                    },
-                    child: const Text('Restore Purchases'),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const AnimatingGradientShaderBuilder(
+                            child: Text(
+                              'You are a ChaseApp Premium Member',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Member since  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                // format date in dd mm yyyy
+                                DateFormat('dd MMM yyyy').format(memberSince),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: kPaddingXSmallConstant,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Latest Subscription Date  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                // format date in dd mm yyyy
+                                DateFormat('dd MMM yyyy')
+                                    .format(latestSubscriptionDate),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: kPaddingSmallConstant,
+                      ),
+                      // add cancel subs button and refund button
+
+                      ElevatedButton(
+                        onPressed: () async {
+                          final String? managementUrl = ref
+                              .read(inAppPurchasesStateNotifier.notifier)
+                              .state
+                              .value
+                              ?.managementURL;
+                          if (managementUrl != null) {
+                            await launchURL(context, managementUrl);
+                            await ref
+                                .read(inAppPurchasesStateNotifier.notifier)
+                                .updateCustomerInfo();
+                          }
+                        },
+                        child: const Text('Manage Subscription'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         }
@@ -264,7 +363,6 @@ class _PurchasePremiumSubscriptionViewState
                         message: 'Save $discount%',
                         location: BannerLocation.topEnd,
                         color: isShowingMonthly ? Colors.grey : Colors.green,
-                        layoutDirection: TextDirection.ltr,
                         child: TabBar(
                           padding: const EdgeInsets.all(0),
                           controller: tabController,
