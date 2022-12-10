@@ -9,7 +9,6 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
-import '../../../device_info.dart';
 import '../../../routes/routeNames.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
@@ -601,7 +600,7 @@ class _PurchasePremiumSubscriptionViewState
                   maxWidth: 600,
                 ),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  //  width: MediaQuery.of(context).size.width * 0.6,
                   child: OfferingsDescription(
                     package: package!,
                     isShowingMonthly: isShowingMonthly,
@@ -884,10 +883,11 @@ class PremiumFeaturesDisplayView extends StatelessWidget {
                       child: Stack(
                         children: [
                           Positioned.fill(
-                            child: GridView.count(
+                            child: GridView.extent(
                               //  itemCount: premiumFeatures.length,
-                              crossAxisCount:
-                                  DeviceScreen.get(context).gridCount,
+                              // crossAxisCount:
+                              //     DeviceScreen.get(context).gridCount,
+                              maxCrossAxisExtent: 250,
                               padding: const EdgeInsets.symmetric(
                                 vertical: kPaddingSmallConstant,
                               ),
@@ -1015,6 +1015,8 @@ class PremiumFeatureTile extends StatelessWidget {
                   child: Text(
                     title,
                     textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
