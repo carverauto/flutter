@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -71,11 +72,14 @@ final Provider<GlobalKey> appGlobalKeyProvider =
   return GlobalKey();
 });
 
-final StateNotifierProvider<InAppPurchasesStateNotifier, AsyncValue<void>>
-    inAppPurchasesStateNotifier =
-    StateNotifierProvider<InAppPurchasesStateNotifier, AsyncValue<void>>(
+final StateNotifierProvider<InAppPurchasesStateNotifier,
+        AsyncValue<purchases.CustomerInfo>> inAppPurchasesStateNotifier =
+    StateNotifierProvider<InAppPurchasesStateNotifier,
+        AsyncValue<purchases.CustomerInfo>>(
   (
-    StateNotifierProviderRef<InAppPurchasesStateNotifier, AsyncValue<void>> ref,
+    StateNotifierProviderRef<InAppPurchasesStateNotifier,
+            AsyncValue<purchases.CustomerInfo>>
+        ref,
   ) {
     return InAppPurchasesStateNotifier(
       ref,

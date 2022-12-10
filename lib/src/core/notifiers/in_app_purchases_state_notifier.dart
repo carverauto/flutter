@@ -22,11 +22,10 @@ class InAppPurchasesStateNotifier
 
   Logger logger = Logger('InAppPurchasesStateNotifier');
 
-  bool get isPremiumMember =>
-      state.value?.entitlements.all['Premium']?.isActive ?? false;
+  bool get isPremiumMember => state.value?.isPremiumMember ?? false;
 
   void _updateCustomInfoStatus(CustomerInfo customerInfo) {
-    state = AsyncValue.data(customerInfo);
+    state = AsyncValue<CustomerInfo>.data(customerInfo);
   }
 
   void listenToAuthChanges() {
@@ -41,7 +40,7 @@ class InAppPurchasesStateNotifier
           if (isUserLoggedIn) {
             isUserLoggedIn = false;
             final CustomerInfo customerInfo = await Purchases.logOut();
-            state = AsyncValue.data(customerInfo);
+            state = AsyncValue<CustomerInfo>.data(customerInfo);
             Purchases.removeCustomerInfoUpdateListener(_updateCustomInfoStatus);
           }
         }
@@ -49,12 +48,13 @@ class InAppPurchasesStateNotifier
     );
   }
 
-  Future<void> updateCustomerInfo() async {
+  Future<void> updateCustomerInfo([CustomerInfo? latestValue]) async {
     try {
-      final CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-      state = AsyncValue.data(customerInfo);
+      final CustomerInfo customerInfo =
+          latestValue ?? await Purchases.getCustomerInfo();
+      state = AsyncValue<CustomerInfo>.data(customerInfo);
     } catch (e, stk) {
-      state = AsyncValue.error(e, stackTrace: stk);
+      state = AsyncValue<CustomerInfo>.error(e, stackTrace: stk);
     }
   }
 
@@ -68,9 +68,9 @@ class InAppPurchasesStateNotifier
       logInResult = await Purchases.logIn(uid);
 
       isUserLoggedIn = true;
-      state = AsyncValue.data(logInResult.customerInfo);
+      state = AsyncValue<CustomerInfo>.data(logInResult.customerInfo);
     } catch (e, stk) {
-      state = AsyncValue.error(e, stackTrace: stk);
+      state = AsyncValue<CustomerInfo>.error(e, stackTrace: stk);
       logger.severe('Error initializing revenue cat use', e, stk);
     }
   }
@@ -91,4 +91,8 @@ class InAppPurchasesStateNotifier
     }
     await Purchases.configure(configuration..appUserID = uid);
   }
+}
+
+extension CheckIfPremium on CustomerInfo {
+  bool get isPremiumMember => entitlements.all['Premium']?.isActive ?? false;
 }
