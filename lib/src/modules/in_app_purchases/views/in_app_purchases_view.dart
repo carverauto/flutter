@@ -12,6 +12,7 @@ import '../../../core/top_level_providers/services_providers.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
 import '../../../shared/widgets/buttons/glass_button.dart';
+import '../../../shared/widgets/loaders/loading.dart';
 
 final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
     FutureProvider<purchases.Offerings>(
@@ -55,31 +56,32 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
     final AsyncValue<purchases.Offerings> offeringsState =
         ref.watch(currentOfferingFutureProvider);
 
-    return offeringsState.when(
-      data: (purchases.Offerings offerings) {
-        if (isPremium) {
-          final List<String> memeberSince = info.value!.allPurchaseDates.values
-              .sortedByCompare<String>(
-                (String element) => element,
-                (String a, String b) => DateTime.parse(b).millisecond <
-                        DateTime.parse(a).millisecond
-                    ? 1
-                    : -1,
-              )
-              .toList();
-          final DateTime memberSince = DateTime.parse(memeberSince.first);
-          final DateTime latestSubscriptionDate =
-              DateTime.parse(memeberSince.last);
-          final DateTime renewsAt =
-              DateTime.parse(info.value!.latestExpirationDate!);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ChaseApp Premium✨'),
+        centerTitle: false,
+        backgroundColor: isPremium ? Colors.black : null,
+      ),
+      body: offeringsState.when(
+        data: (purchases.Offerings offerings) {
+          if (isPremium) {
+            final List<String> memeberSince =
+                info.value!.allPurchaseDates.values
+                    .sortedByCompare<String>(
+                      (String element) => element,
+                      (String a, String b) => DateTime.parse(b).millisecond <
+                              DateTime.parse(a).millisecond
+                          ? 1
+                          : -1,
+                    )
+                    .toList();
+            final DateTime memberSince = DateTime.parse(memeberSince.first);
+            final DateTime latestSubscriptionDate =
+                DateTime.parse(memeberSince.last);
+            final DateTime renewsAt =
+                DateTime.parse(info.value!.latestExpirationDate!);
 
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('ChaseApp Premium'),
-              centerTitle: false,
-              backgroundColor: Colors.black,
-            ),
-            body: Stack(
+            return Stack(
               children: [
                 const Positioned.fill(
                   child: RotatedBox(
@@ -212,22 +214,22 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
                   ),
                 ),
               ],
-            ),
-          );
-        }
+            );
+          }
 
-        return PurchasePremiumSubscriptionView(
-          offerings: offerings,
-        );
-      },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+          return PurchasePremiumSubscriptionView(
+            offerings: offerings,
+          );
+        },
+        loading: () => const Center(
+          child: CircularAdaptiveProgressIndicatorWithBg(),
+        ),
+        error: (Object error, StackTrace? stackTrace) {
+          return Center(
+            child: Text(error.toString()),
+          );
+        },
       ),
-      error: (Object error, StackTrace? stackTrace) {
-        return Container(
-          child: Text(error.toString()),
-        );
-      },
     );
   }
 }
@@ -363,195 +365,188 @@ class _PurchasePremiumSubscriptionViewState
                 100)
             .round();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ChaseApp Premium✨ '),
-        centerTitle: false,
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(
-            height: kPaddingLargeConstant,
-          ),
-          Center(
-            child: SizedBox(
-              width: 270,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      clipBehavior: Clip.hardEdge,
-                      child: Banner(
-                        message: 'Save $discount%',
-                        location: BannerLocation.topEnd,
-                        color: isShowingMonthly ? Colors.grey : Colors.green,
-                        child: TabBar(
-                          padding: const EdgeInsets.all(0),
-                          controller: tabController,
-                          onTap: (int value) {
-                            isShowingMonthly = value == 0;
-                            package = widget
-                                .offerings.current?.availablePackages
-                                .firstWhereOrNull(
-                              (purchases.Package package) =>
-                                  package.packageType ==
-                                  (isShowingMonthly
-                                      ? purchases.PackageType.monthly
-                                      : purchases.PackageType.annual),
-                            )!;
-
-                            setState(() {});
-                          },
-                          unselectedLabelColor: Colors.grey,
-                          labelStyle: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                          indicator: BoxDecoration(
-                            color: Colors.purple,
-                            border: Border.all(
-                              color: Colors.grey[300]!,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              100,
-                            ),
-                          ),
-                          labelPadding:
-                              const EdgeInsets.all(kPaddingSmallConstant)
-                                  .copyWith(
-                            bottom: kPaddingSmallConstant + 10,
-                            top: kPaddingSmallConstant + 10,
-                          ),
-                          tabs: const [
-                            Text('Monthly'),
-                            Text('Yearly'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+    return ListView(
+      children: [
+        const SizedBox(
+          height: kPaddingLargeConstant,
+        ),
+        Center(
+          child: SizedBox(
+            width: 270,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(100),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 1,
-            child: TabBarView(
-              controller: tabController,
-              children: const [
-                SizedBox.shrink(),
-                SizedBox.shrink(),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: kPaddingSmallConstant,
-          ),
-          Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 300,
-                maxWidth: 600,
-              ),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
-                child: OfferingsDescription(
-                  package: package!,
-                  isShowingMonthly: isShowingMonthly,
-                  discount: discount,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: kPaddingSmallConstant,
-          ),
-          Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: makePurchase,
-                  child: AnimatedContainer(
-                    width: isMakingPurchase ? 48 : 150,
-                    height: 48,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
                     clipBehavior: Clip.hardEdge,
-                    duration: const Duration(milliseconds: 300),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        isMakingPurchase ? 150 : kBorderRadiusSmallConstant,
+                    child: Banner(
+                      message: 'Save $discount%',
+                      location: BannerLocation.topEnd,
+                      color: isShowingMonthly ? Colors.grey : Colors.green,
+                      child: TabBar(
+                        padding: const EdgeInsets.all(0),
+                        controller: tabController,
+                        onTap: (int value) {
+                          isShowingMonthly = value == 0;
+                          package = widget.offerings.current?.availablePackages
+                              .firstWhereOrNull(
+                            (purchases.Package package) =>
+                                package.packageType ==
+                                (isShowingMonthly
+                                    ? purchases.PackageType.monthly
+                                    : purchases.PackageType.annual),
+                          )!;
+
+                          setState(() {});
+                        },
+                        unselectedLabelColor: Colors.grey,
+                        labelStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        indicator: BoxDecoration(
+                          color: Colors.purple,
+                          border: Border.all(
+                            color: Colors.grey[300]!,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            100,
+                          ),
+                        ),
+                        labelPadding:
+                            const EdgeInsets.all(kPaddingSmallConstant)
+                                .copyWith(
+                          bottom: kPaddingSmallConstant + 10,
+                          top: kPaddingSmallConstant + 10,
+                        ),
+                        tabs: const [
+                          Text('Monthly'),
+                          Text('Yearly'),
+                        ],
                       ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        const Positioned.fill(
-                          child: AnimatingGradientShaderBuilder(
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (
-                              Widget child,
-                              Animation<double> animation,
-                            ) {
-                              return SizeTransition(
-                                sizeFactor: animation,
-                                axis: Axis.horizontal,
-                                child: FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                ),
-                              );
-                            },
-                            child: Center(
-                              child: FittedBox(
-                                child: isMakingPurchase
-                                    ? Theme.of(context).platform ==
-                                            TargetPlatform.iOS
-                                        ? const CupertinoActivityIndicator(
-                                            color: Colors.white,
-                                          )
-                                        : const CircularProgressIndicator()
-                                    : Text(
-                                        'Subscribe',
-                                        style: TextStyle(
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .headlineMedium!
-                                              .fontSize,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 1,
+          child: TabBarView(
+            controller: tabController,
+            children: const [
+              SizedBox.shrink(),
+              SizedBox.shrink(),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: kPaddingSmallConstant,
+        ),
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: 300,
+              maxWidth: 600,
+            ),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: OfferingsDescription(
+                package: package!,
+                isShowingMonthly: isShowingMonthly,
+                discount: discount,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: kPaddingSmallConstant,
+        ),
+        Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: makePurchase,
+                child: AnimatedContainer(
+                  width: isMakingPurchase ? 48 : 150,
+                  height: 48,
+                  clipBehavior: Clip.hardEdge,
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                      isMakingPurchase ? 150 : kBorderRadiusSmallConstant,
+                    ),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: [
+                      const Positioned.fill(
+                        child: AnimatingGradientShaderBuilder(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (
+                            Widget child,
+                            Animation<double> animation,
+                          ) {
+                            return SizeTransition(
+                              sizeFactor: animation,
+                              axis: Axis.horizontal,
+                              child: FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: Center(
+                            child: FittedBox(
+                              child: isMakingPurchase
+                                  ? Theme.of(context).platform ==
+                                          TargetPlatform.iOS
+                                      ? const CupertinoActivityIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : const CircularProgressIndicator()
+                                  : Text(
+                                      'Subscribe',
+                                      style: TextStyle(
+                                        fontSize: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium!
+                                            .fontSize,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
