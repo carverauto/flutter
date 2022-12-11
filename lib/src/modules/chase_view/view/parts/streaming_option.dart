@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:cast/device.dart';
 import 'package:cast/discovery_service.dart';
 import 'package:cast/session.dart';
 import 'package:cast/session_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../shared/platform_views/airplay_view.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
+import '../providers/providers.dart';
 import 'video_top_actions.dart';
 
 class StreamingOptionsList extends StatelessWidget {
@@ -51,15 +55,16 @@ class StreamingOptionsList extends StatelessWidget {
   }
 }
 
-class GoogleCastSolution extends StatefulWidget {
+class GoogleCastSolution extends ConsumerStatefulWidget {
   const GoogleCastSolution({super.key});
 
   @override
-  State<GoogleCastSolution> createState() => _GoogleCastSolutionState();
+  ConsumerState<GoogleCastSolution> createState() => _GoogleCastSolutionState();
 }
 
-class _GoogleCastSolutionState extends State<GoogleCastSolution> {
+class _GoogleCastSolutionState extends ConsumerState<GoogleCastSolution> {
   Future<void> _connect(BuildContext context, CastDevice object) async {
+    late String sessionId;
     final CastSession session = await CastSessionManager().startSession(object);
 
     session.stateStream.listen((CastSessionState state) {
@@ -67,7 +72,7 @@ class _GoogleCastSolutionState extends State<GoogleCastSolution> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Connected To ${object.name} for casting ')),
         );
-        _sendMessage(session);
+        // _sendMessage(session, sessionId);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Session Start Message Sent')),
         );
@@ -75,6 +80,15 @@ class _GoogleCastSolutionState extends State<GoogleCastSolution> {
     });
 
     session.messageStream.listen((Map<String, dynamic> message) {
+      if (message['status']['applications'] != null) {
+        final List items = message['status']['applications'] as List;
+        if (items.isNotEmpty) {
+          sessionId =
+              message['status']['applications'][0]['sessionId'] as String;
+          _sendMessage(session, sessionId);
+        }
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Message Recieved--> $message')),
       );
@@ -82,17 +96,33 @@ class _GoogleCastSolutionState extends State<GoogleCastSolution> {
 
     session.sendMessage(CastSession.kNamespaceReceiver, <String, dynamic>{
       'type': 'LAUNCH',
-      'appId': 'ChaseApp', // set the appId of your app here
+      'appId': '277F8C02', // set the appId of your app here
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Launching Message Sent')),
     );
   }
 
-  void _sendMessage(CastSession session) {
-    session.sendMessage('urn:x-cast:com.carverauto.chaseapp', <String, dynamic>{
-      'type': 'sample',
-    });
+  void _sendMessage(CastSession session, String sessionId) {
+    final String? url = ref.read(currentlyPlayingVideoUrlProvider);
+    log(sessionId.toString());
+    session.sendMessage(
+      CastSession.kNamespaceMedia, //'urn:x-cast:com.carverauto.chaseapp',
+      <String, dynamic>{
+        'type': 'LOAD',
+        'appId': '277F8C02',
+        'videoUrl': url,
+        'videoId': url,
+        'content_type': 'video/mp4',
+        'media': {
+          'contentId': // add bunny video url here
+              url,
+          'contentType': 'video/mp4',
+          'streamType': 'BUFFERED',
+        },
+        'sessionId': sessionId,
+      },
+    );
   }
 
   @override
