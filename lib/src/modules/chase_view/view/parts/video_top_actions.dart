@@ -10,9 +10,9 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
+import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../providers/providers.dart';
 import 'animations_overlay_toggle_switch.dart';
-import 'ismp4orm3u8url.dart';
 import 'mp4_player/mp4_player.dart';
 import 'streaming_option.dart';
 
