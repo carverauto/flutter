@@ -1,5 +1,6 @@
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
+
+import '../../../const/sizings.dart';
 
 class CircularAdaptiveProgressIndicatorWithBg extends StatelessWidget {
   const CircularAdaptiveProgressIndicatorWithBg({
@@ -9,13 +10,15 @@ class CircularAdaptiveProgressIndicatorWithBg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Theme.of(context).colorScheme.onBackground,
         ),
-        padding: EdgeInsets.all(kPaddingSmallConstant / 2),
-        child: CircularProgressIndicator.adaptive(),
+        child: const Padding(
+          padding: EdgeInsets.all(kPaddingSmallConstant / 2),
+          child: CircularProgressIndicator.adaptive(),
+        ),
       ),
     );
   }
@@ -26,7 +29,7 @@ class CircularAdaptiveProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator.adaptive(),
     );
   }
