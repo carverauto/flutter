@@ -6,6 +6,7 @@ import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/chase/chase.dart';
 import '../../../../models/chase/network/chase_network.dart';
 import '../../../../models/chase_animation_event.dart/chase_animation_event.dart';
+import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../chats/view/providers/providers.dart';
 import '../notifiers/chase_events_notifier.dart';
 
@@ -13,6 +14,13 @@ final StateProvider<String?> currentlyPlayingVideoUrlProvider =
     StateProvider<String?>((StateProviderRef<String?> ref) {
   return null;
 });
+final StateProvider<MediaPlayer> currentlyPlayingMediaProvider =
+    StateProvider<MediaPlayer>((StateProviderRef<MediaPlayer> ref) {
+  final String? url = ref.watch(currentlyPlayingVideoUrlProvider);
+
+  return MediaPlayer.getMediaType(url);
+});
+
 final StateProvider<bool> isPlayingAnyVideoProvider =
     StateProvider<bool>((StateProviderRef<bool> ref) {
   return false;

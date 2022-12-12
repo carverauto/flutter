@@ -78,6 +78,7 @@ analyzer:
     - /Users/rutviktak/fvm/**
     - youtube_player_flutter
     - flutter_to_airplay
+    - flutter_cast
     - test/**
   plugins:
     - dart_code_metrics

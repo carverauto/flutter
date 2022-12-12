@@ -124,7 +124,8 @@ dependencies:
   flutter_video_cast:
     git:
       url: https://github.com/kkoken/flutter_video_cast.git
-  cast: ^1.1.1
+  cast:
+    path: flutter_cast
   purchases_flutter: 4.5.0
   vector_math: ^2.1.4
   intl: ^0.17.0

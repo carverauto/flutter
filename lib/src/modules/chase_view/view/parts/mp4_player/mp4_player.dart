@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cast/cast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../../const/sizings.dart';
 import '../../../../../device_info.dart';
+import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import '../streaming_option.dart';
@@ -152,6 +154,7 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
         }
       },
     );
+
     return Stack(
       children: [
         Center(
@@ -273,6 +276,7 @@ class _VideoOverlayControllsState extends State<VideoOverlayControlls> {
 
 class Mp4VideoPlayerControlls extends ConsumerStatefulWidget {
   const Mp4VideoPlayerControlls({
+    super.key,
     required this.controller,
     this.bufferIndicator,
     required this.onVideoTapped,
@@ -294,12 +298,71 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
 
   late bool isPlaying;
 
+  void listenForCastingSessionUpdates(CastSessionState castSessionState) {
+    switch (castSessionState) {
+      case CastSessionState.connected:
+        _controller.setVolume(0);
+        break;
+      case CastSessionState.connecting:
+        _controller.pause();
+        break;
+      case CastSessionState.closed:
+        _controller.setVolume(1);
+        break;
+      default:
+    }
+  }
+
+  void listenForVideoUrlChanges(String? url) {
+    if (url == null) {
+      _controller.setVolume(1);
+      return;
+    }
+    final MediaPlayer currentMediaType = MediaPlayer.getMediaType(url);
+    switch (currentMediaType) {
+      case MediaPlayer.youtube:
+        _controller.setVolume(1);
+
+        break;
+      case MediaPlayer.mp4:
+        if (ref
+            .read(googleCastVideoPlayControllerProvider.notifier)
+            .isSessionStarted) {
+          _controller.setVolume(0);
+        } else {
+          _controller.setVolume(1);
+        }
+        break;
+      case MediaPlayer.m3u8:
+        _controller.setVolume(0);
+
+        break;
+      default:
+    }
+  }
+
   void playPauseListener() {
     if (_controller.value.isPlaying != isPlaying) {
       setState(() {
         isPlaying = _controller.value.isPlaying;
+        if (isPlaying) {
+          ref
+              .read(
+                googleCastVideoPlayControllerProvider.notifier,
+              )
+              .playVideo();
+        } else {
+          ref
+              .read(
+                googleCastVideoPlayControllerProvider.notifier,
+              )
+              .pauseVideo();
+        }
       });
+      listenForVideoUrlChanges(ref.read(currentlyPlayingVideoUrlProvider));
     }
+    ref.read(googleCastVideoPlayControllerProvider.notifier).duration =
+        _controller.value.position;
   }
 
   @override
@@ -320,6 +383,21 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<CastSessionState>(
+      googleCastVideoPlayControllerProvider,
+      (CastSessionState? prev, CastSessionState next) {
+        listenForCastingSessionUpdates(next);
+      },
+    );
+
+    // ignore: cascade_invocations
+    ref.listen<String?>(
+      currentlyPlayingVideoUrlProvider,
+      (String? prev, String? next) {
+        listenForVideoUrlChanges(next);
+      },
+    );
+
     return Stack(
       alignment: Alignment.center,
       fit: StackFit.expand,
@@ -382,6 +460,11 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
                     final Duration backToDuration =
                         Duration(seconds: currentPosition.inSeconds - 10);
                     await widget.controller.seekTo(backToDuration);
+                    ref
+                        .read(
+                          googleCastVideoPlayControllerProvider.notifier,
+                        )
+                        .seekVideo(duration: backToDuration.inSeconds);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(5),
@@ -427,6 +510,11 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
                     final Duration forwardToDuration =
                         Duration(seconds: currentPosition.inSeconds + 10);
                     await widget.controller.seekTo(forwardToDuration);
+                    ref
+                        .read(
+                          googleCastVideoPlayControllerProvider.notifier,
+                        )
+                        .seekVideo(duration: forwardToDuration.inSeconds);
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(5),
@@ -449,7 +537,14 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
               Expanded(
                 child: VideoDurationProgrssBar(
                   controller: _controller,
-                  onVideoTapped: widget.onVideoTapped,
+                  onVideoTapped: (Duration duration) {
+                    widget.onVideoTapped();
+                    ref
+                        .read(
+                          googleCastVideoPlayControllerProvider.notifier,
+                        )
+                        .seekVideo(duration: duration.inSeconds);
+                  },
                 ),
               ),
               IconButton(
@@ -492,7 +587,7 @@ class VideoDurationProgrssBar extends StatelessWidget {
         super(key: key);
 
   final VideoPlayerController _controller;
-  final VoidCallback onVideoTapped;
+  final Function(Duration duration) onVideoTapped;
 
   @override
   Widget build(BuildContext context) {
