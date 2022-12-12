@@ -12,7 +12,6 @@ import '../../../../shared/platform_views/airplay_view.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
-import 'video_top_actions.dart';
 
 class StreamingOptionsList extends StatelessWidget {
   const StreamingOptionsList({super.key});
@@ -31,9 +30,9 @@ class StreamingOptionsList extends StatelessWidget {
               width: 44,
               child: AirplayView(),
             ),
-          if (Theme.of(context).platform == TargetPlatform.iOS ||
-              Theme.of(context).platform == TargetPlatform.macOS)
-            const ChaseAppChromeCastButton(),
+          // if (Theme.of(context).platform == TargetPlatform.iOS ||
+          //     Theme.of(context).platform == TargetPlatform.macOS)
+          //   const ChaseAppChromeCastButton(),
           IconButton(
             onPressed: () {
               showDialog<void>(
@@ -107,16 +106,15 @@ class _GoogleCastSolutionState extends ConsumerState<GoogleCastSolution> {
     final String? url = ref.read(currentlyPlayingVideoUrlProvider);
     log(sessionId.toString());
     session.sendMessage(
-      CastSession.kNamespaceMedia, //'urn:x-cast:com.carverauto.chaseapp',
+      CastSession.kNamespaceMedia,
       <String, dynamic>{
         'type': 'LOAD',
-        'appId': '277F8C02',
-        'videoUrl': url,
-        'videoId': url,
-        'content_type': 'video/mp4',
+        // 'appId': '277F8C02',
+        // 'videoUrl': url,
+        // 'videoId': url,
+        //'content_type': 'video/mp4',
         'media': {
-          'contentId': // add bunny video url here
-              url,
+          'contentId': url,
           'contentType': 'video/mp4',
           'streamType': 'BUFFERED',
         },
