@@ -346,7 +346,7 @@ class ChaseappInfoDialog extends ConsumerWidget {
       ),
       child: AboutDialog(
         applicationName: 'ChaseApp',
-        applicationVersion: packageInfo.version,
+        applicationVersion: 'v ${packageInfo.version}',
         applicationIcon: const ChaseAppLogoImage(),
       ),
     );
