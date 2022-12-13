@@ -721,6 +721,7 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
   late Animation<double> animation;
+  late Animation<double> fractionalPriceAnimation;
 
   @override
   void initState() {
@@ -734,6 +735,11 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
 
     animation = Tween<double>(begin: 0, end: widget.package.storeProduct.price)
         .animate(animationController);
+    fractionalPriceAnimation = Tween<double>(
+      begin: 0,
+      end: widget.package.storeProduct.price -
+          widget.package.storeProduct.price.floor(),
+    ).animate(animationController);
     animationController.forward();
   }
 
@@ -745,6 +751,12 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
       animation = Tween<double>(
         begin: oldWidget.package.storeProduct.price,
         end: widget.package.storeProduct.price,
+      ).animate(animationController);
+      fractionalPriceAnimation = Tween<double>(
+        begin: oldWidget.package.storeProduct.price -
+            oldWidget.package.storeProduct.price.floor(),
+        end: widget.package.storeProduct.price -
+            widget.package.storeProduct.price.floor(),
       ).animate(animationController);
       animationController
         ..reset()
@@ -766,14 +778,25 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
     return Column(
       children: [
         AnimatedBuilder(
-          animation: animation,
+          animation: animationController,
           builder: (BuildContext context, Widget? child) {
+            final double fractionalValue = fractionalPriceAnimation.value;
+            String finalFractionString = '';
+
+            if (fractionalValue > 0) {
+              finalFractionString =
+                  '.${fractionalValue.toStringAsFixed(2).replaceFirst("0.", "")}';
+            }
+
+            final String finalValue =
+                '${animation.value.floor()}$finalFractionString';
+
             return Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${package.storeProduct.currencyCode} ${animation.value}',
+                  '${package.storeProduct.currencyCode} $finalValue',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
