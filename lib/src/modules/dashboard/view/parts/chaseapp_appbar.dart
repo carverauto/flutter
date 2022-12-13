@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-import '../../../../const/images.dart';
+import '../../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 import '../../../bof/bof_view.dart';
 import '../../../map/map_view.dart';
 import '../../../notifications/view/parts/notifications_appbar_button.dart';
@@ -140,7 +140,7 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
         }
       }
     });
-    const ChaseAppLogoImage title = ChaseAppLogoImage();
+    const ChaseAppNameLogoImage title = ChaseAppNameLogoImage();
     const NotificationsAppbarButton notificationButton =
         NotificationsAppbarButton();
 
@@ -180,20 +180,6 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
           ],
         );
       },
-    );
-  }
-}
-
-class ChaseAppLogoImage extends StatelessWidget {
-  const ChaseAppLogoImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      chaseAppNameImage,
-      color: Colors.white,
-      cacheHeight: 60,
-      cacheWidth: 478,
     );
   }
 }

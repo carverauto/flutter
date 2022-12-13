@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:logging/logging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../../const/images.dart';
@@ -15,6 +16,7 @@ import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/user/user_data.dart';
+import '../../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../../../dashboard/view/parts/chaseapp_drawer.dart';
@@ -43,6 +45,19 @@ class _ProfileViewState extends State<ProfileView> {
           title: const Text('Profile'),
           centerTitle: false,
           elevation: 1,
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ChaseappInfoDialog();
+                  },
+                );
+              },
+              icon: const Icon(Icons.info),
+            ),
+          ],
         ),
         body: ProviderStateBuilder<UserData>(
           watchThisProvider: userStreamProvider,
@@ -72,7 +87,7 @@ class _ProfileViewState extends State<ProfileView> {
                           user.userName!,
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1!
+                              .titleMedium!
                               .copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
@@ -80,7 +95,10 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       Text(
                         user.email ?? '',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
@@ -98,9 +116,6 @@ class _ProfileViewState extends State<ProfileView> {
                             fixedSize: const Size.fromWidth(double.maxFinite),
                           ),
                           onPressed: () async {
-                            // await ref
-                            //     .read(chatsServiceStateNotifierProvider.notifier)
-                            //     .disconnectUser();
                             Navigator.pop(context, true);
                           },
                           child: Text(
@@ -302,6 +317,37 @@ class _ProfileViewState extends State<ProfileView> {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class ChaseappInfoDialog extends ConsumerWidget {
+  const ChaseappInfoDialog({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final PackageInfo packageInfo = ref.read(appInfoProvider);
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: const ColorScheme.dark(
+          primary: Colors.white,
+        ),
+        textTheme: Theme.of(context).textTheme.copyWith(
+              bodyMedium: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.grey[300],
+                  ),
+              headlineSmall:
+                  Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Colors.white,
+                      ),
+            ),
+      ),
+      child: AboutDialog(
+        applicationName: 'ChaseApp',
+        applicationVersion: packageInfo.version,
+        applicationIcon: const ChaseAppLogoImage(),
       ),
     );
   }

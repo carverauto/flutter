@@ -6,7 +6,7 @@ import '../../../const/info.dart';
 import '../../../const/links.dart';
 import '../../../const/sizings.dart';
 import '../../../shared/util/helpers/launchLink.dart';
-import '../../dashboard/view/parts/chaseapp_appbar.dart';
+import '../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 
 class AboutUsView extends ConsumerStatefulWidget {
   const AboutUsView({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _AboutUsViewState extends ConsumerState<AboutUsView> {
             ),
             child: Column(
               children: const [
-                ChaseAppLogoImage(),
+                ChaseAppNameLogoImage(),
                 SizedBox(
                   height: kPaddingMediumConstant,
                 ),

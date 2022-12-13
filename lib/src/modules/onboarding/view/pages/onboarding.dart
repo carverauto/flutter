@@ -4,7 +4,7 @@ import '../../../../const/images.dart';
 import '../../../../const/info.dart';
 import '../../../../const/sizings.dart';
 import '../../../../routes/routeNames.dart';
-import '../../../dashboard/view/parts/chaseapp_appbar.dart';
+import '../../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 import '../parts/onboarding_page.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -43,7 +43,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               SizedBox(
                 height: kItemsSpacingLarge,
               ),
-              const ChaseAppLogoImage(),
+              const ChaseAppNameLogoImage(),
               Expanded(
                 child: PageView(
                   controller: pageController,
@@ -59,13 +59,15 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                           Text(
                             'Welcome To ChaseApp!',
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline4!.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
                           ),
                         ],
                       ),
