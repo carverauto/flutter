@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AirplayView extends StatelessWidget {
-  const AirplayView({super.key});
+class AirplayButton extends StatelessWidget {
+  const AirplayButton({super.key});
 
   @override
   Widget build(BuildContext context) {

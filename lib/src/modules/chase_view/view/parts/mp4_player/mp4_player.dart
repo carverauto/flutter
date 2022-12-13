@@ -11,7 +11,8 @@ import '../../../../../device_info.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
-import '../streaming_option.dart';
+import '../casting_options/google_cast/google_cast_controller.dart';
+import '../casting_options/streaming_option.dart';
 import 'custom_video_progress_indicator.dart';
 import 'providers.dart';
 
