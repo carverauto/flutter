@@ -27,6 +27,7 @@ mixin _$Interest {
   String get name => throw _privateConstructorUsedError;
   bool get isCompulsory => throw _privateConstructorUsedError;
   bool get isDefault => throw _privateConstructorUsedError;
+  bool get isPremium => throw _privateConstructorUsedError;
   @DatetimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -47,6 +48,7 @@ abstract class $InterestCopyWith<$Res> {
       String name,
       bool isCompulsory,
       bool isDefault,
+      bool isPremium,
       @DatetimeTimestampConverter() DateTime createdAt});
 }
 
@@ -68,6 +70,7 @@ class _$InterestCopyWithImpl<$Res, $Val extends Interest>
     Object? name = null,
     Object? isCompulsory = null,
     Object? isDefault = null,
+    Object? isPremium = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -91,6 +94,10 @@ class _$InterestCopyWithImpl<$Res, $Val extends Interest>
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
+      isPremium: null == isPremium
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -112,6 +119,7 @@ abstract class _$$_InterestCopyWith<$Res> implements $InterestCopyWith<$Res> {
       String name,
       bool isCompulsory,
       bool isDefault,
+      bool isPremium,
       @DatetimeTimestampConverter() DateTime createdAt});
 }
 
@@ -131,6 +139,7 @@ class __$$_InterestCopyWithImpl<$Res>
     Object? name = null,
     Object? isCompulsory = null,
     Object? isDefault = null,
+    Object? isPremium = null,
     Object? createdAt = null,
   }) {
     return _then(_$_Interest(
@@ -154,6 +163,10 @@ class __$$_InterestCopyWithImpl<$Res>
           ? _value.isDefault
           : isDefault // ignore: cast_nullable_to_non_nullable
               as bool,
+      isPremium: null == isPremium
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -172,6 +185,7 @@ class _$_Interest extends _Interest {
       required this.name,
       required this.isCompulsory,
       required this.isDefault,
+      required this.isPremium,
       @DatetimeTimestampConverter() required this.createdAt})
       : super._();
 
@@ -191,12 +205,14 @@ class _$_Interest extends _Interest {
   @override
   final bool isDefault;
   @override
+  final bool isPremium;
+  @override
   @DatetimeTimestampConverter()
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Interest(id: $id, instanceId: $instanceId, name: $name, isCompulsory: $isCompulsory, isDefault: $isDefault, createdAt: $createdAt)';
+    return 'Interest(id: $id, instanceId: $instanceId, name: $name, isCompulsory: $isCompulsory, isDefault: $isDefault, isPremium: $isPremium, createdAt: $createdAt)';
   }
 
   @override
@@ -212,14 +228,16 @@ class _$_Interest extends _Interest {
                 other.isCompulsory == isCompulsory) &&
             (identical(other.isDefault, isDefault) ||
                 other.isDefault == isDefault) &&
+            (identical(other.isPremium, isPremium) ||
+                other.isPremium == isPremium) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, instanceId, name, isCompulsory, isDefault, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, instanceId, name,
+      isCompulsory, isDefault, isPremium, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -242,6 +260,7 @@ abstract class _Interest extends Interest {
           required final String name,
           required final bool isCompulsory,
           required final bool isDefault,
+          required final bool isPremium,
           @DatetimeTimestampConverter() required final DateTime createdAt}) =
       _$_Interest;
   const _Interest._() : super._();
@@ -259,6 +278,8 @@ abstract class _Interest extends Interest {
   bool get isCompulsory;
   @override
   bool get isDefault;
+  @override
+  bool get isPremium;
   @override
   @DatetimeTimestampConverter()
   DateTime get createdAt;
