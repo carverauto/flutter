@@ -16,8 +16,7 @@ class StripesShaderBuilder extends StatefulWidget {
 
   final Widget child;
   final double direction;
-  // final Widget Function(BuildContext context, Stripes shader, double uTime)?
-  //     builder;
+
   final bool isActive;
 
   @override
@@ -25,8 +24,6 @@ class StripesShaderBuilder extends StatefulWidget {
 }
 
 class _MyShaderState extends State<StripesShaderBuilder> {
-//  late Future<Stripes> helloWorld;
-
   late Ticker ticker;
 
   late double delta;
@@ -40,7 +37,6 @@ class _MyShaderState extends State<StripesShaderBuilder> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //  helloWorld = Stripes.compile();
     color1 = (Colors.amber[700] as Color).toColorVector();
     color2 = (Colors.grey[600] as Color).toColorVector();
     delta = 0;
@@ -68,18 +64,18 @@ class _MyShaderState extends State<StripesShaderBuilder> {
               return myshader!
                 ..setFloat(0, rect.width)
                 ..setFloat(1, rect.height)
-                ..setFloat(2, delta)
-                ..setFloat(3, 4)
-                ..setFloat(4, !widget.isActive ? 0 : delta)
-                ..setFloat(5, widget.direction)
+                // ..setFloat(2, delta)
+                ..setFloat(2, 4)
+                ..setFloat(3, !widget.isActive ? 0 : delta)
+                ..setFloat(4, widget.direction)
+                ..setFloat(5, 0)
                 ..setFloat(6, 0)
-                ..setFloat(7, 0)
-                ..setFloat(8, color1.r)
-                ..setFloat(9, color1.g)
-                ..setFloat(10, color1.b)
-                ..setFloat(11, color2.r)
-                ..setFloat(12, color2.g)
-                ..setFloat(13, color2.b);
+                ..setFloat(7, color1.r)
+                ..setFloat(8, color1.g)
+                ..setFloat(9, color1.b)
+                ..setFloat(10, color2.r)
+                ..setFloat(11, color2.g)
+                ..setFloat(12, color2.b);
             },
           )
         : ShaderBuilder(

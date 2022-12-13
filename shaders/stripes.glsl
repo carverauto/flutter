@@ -2,7 +2,7 @@
 
 uniform float width;
 uniform float height;
-uniform float u_time;
+// uniform float u_time;
 uniform float tiles;
 uniform float speed;
 uniform float direction;
