@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:typed_data';
 
 import 'package:collection/collection.dart' as collection;
 import 'package:flutter/foundation.dart';
@@ -27,6 +26,7 @@ import '../../models/weather/weather_station/weather_station.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
 import '../bof/bof_view.dart';
 import 'providers.dart';
+import 'space_x_launch_map.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 List<List<LatLng>> createGeoJSONCircle(
@@ -133,6 +133,8 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData boat = await rootBundle.load('assets/boat.png');
     final ByteData stormSurge = await rootBundle.load('assets/storm_surge.png');
 
+    await updateLaunchCoordinates();
+
     //fetch weather radar raster tiles from mesonet then add as a mapbox source
 
     const RasterSourceProperties weatherRadarSource = RasterSourceProperties(
@@ -218,6 +220,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   Future<void> _onMapCreated(MapboxMapController controller) async {
     log('Map Controller Loaded');
     mapboxMapController = controller;
+    mapboxMapController.addListener(updateLaunchCoordinates);
   }
 
   Future<void> onSymbolTappedErrorWrapper(Symbol symbol) async {
@@ -683,6 +686,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     }
   }
 
+  math.Point<num> startingCoordinate = const math.Point(0, 0);
+  math.Point<num> currentCoordinate = const math.Point(0, 0);
+
   @override
   void initState() {
     // TODO: implement initState
@@ -716,6 +722,35 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     // mapboxMapController.dispose();
 
     super.dispose();
+  }
+
+  Future<void> updateLaunchCoordinates() async {
+    startingCoordinate = await mapboxMapController.toScreenLocation(
+      const LatLng(
+        34.052235,
+        -118.243683,
+      ),
+    );
+    currentCoordinate = await mapboxMapController.toScreenLocation(
+      const LatLng(
+        31.052235,
+        -116.243683,
+      ),
+    );
+    setState(() {});
+    startingCoordinate = await mapboxMapController.toScreenLocation(
+      const LatLng(
+        34.052235,
+        -118.243683,
+      ),
+    );
+    currentCoordinate = await mapboxMapController.toScreenLocation(
+      const LatLng(
+        31.052235,
+        -116.243683,
+      ),
+    );
+    setState(() {});
   }
 
   @override
@@ -849,6 +884,12 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               zoom: widget.latLng != null ? 10 : 4,
             ),
           ),
+          IgnorePointer(
+            child: SpaceXMapView(
+              startingCoordinate: startingCoordinate,
+              currentCoordinate: currentCoordinate,
+            ),
+          ),
           AnimatedBuilder(
             animation: widget.animation,
             builder: (BuildContext context, Widget? child) {
@@ -883,8 +924,8 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       InkWell(
-                        onTap: () {
-                          mapboxMapController.animateCamera(
+                        onTap: () async {
+                          await mapboxMapController.animateCamera(
                             CameraUpdate.newCameraPosition(
                               CameraPosition(
                                 target:
@@ -894,6 +935,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                               ),
                             ),
                           );
+                          await updateLaunchCoordinates();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(
@@ -916,8 +958,8 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                         ),
                       ),
                       InkWell(
-                        onTap: () {
-                          mapboxMapController.animateCamera(
+                        onTap: () async {
+                          await mapboxMapController.animateCamera(
                             CameraUpdate.newCameraPosition(
                               CameraPosition(
                                 target:
@@ -927,6 +969,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                               ),
                             ),
                           );
+                          await updateLaunchCoordinates();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(
@@ -983,54 +1026,3 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
   }
 }
-
-    // await mapboxMapController.addSource(
-    //   'ADSBSOURCE',
-    //   GeojsonSourceProperties(
-    //     cluster: true,
-    //     data: <String, dynamic>{
-    //       'type': 'FeatureCollection',
-    //       'features': adsbList.map((ADSB adsb) {
-    //         final String image = adsb.type == 'plane' ? 'plane' : 'heli';
-
-    //         final String? imageUrl = adsb.imageUrl != null
-    //             ? 'https://chaseapp.tv${adsb.imageUrl}'
-    //             : null;
-
-    //         return {
-    //           'type': 'Feature',
-    //           'id': adsb.id,
-    //           'properties': {
-    //             // 'title': adsb.id,
-    //             'id': adsb.id,
-    //             'group': adsb.group,
-    //             'subtitle': adsb.group,
-    //             'imageUrl': imageUrl,
-    //             'type': 'adsb',
-    //             'iconRotation': adsb.track,
-    //             'iconImage': image,
-    //             // 'icon': {
-    //             //   'iconImage': image,
-    //             //   'iconRotate': adsb.track,
-    //             // },
-    //           },
-    //           'geometry': {
-    //             'type': 'Point',
-    //             'coordinates': [
-    //               adsb.lon,
-    //               adsb.lat,
-    //             ],
-    //           },
-    //         };
-    //       }).toList(),
-    //     },
-    //   ),
-    // );
-    // await mapboxMapController.addSymbolLayer(
-    //   'ADSBSOURCE',
-    //   'ADSBLAYER',
-    //   const SymbolLayerProperties(
-    //     iconImage: ['get', 'iconImage'],
-    //     iconRotate: ['get', 'iconRotation'],
-    //   ),
-    // );
