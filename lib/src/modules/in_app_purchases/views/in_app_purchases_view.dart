@@ -732,9 +732,8 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
       duration: const Duration(milliseconds: 300),
     );
 
-    animation =
-        Tween<double>(begin: 0, end: widget.package.storeProduct.price ?? 0)
-            .animate(animationController);
+    animation = Tween<double>(begin: 0, end: widget.package.storeProduct.price)
+        .animate(animationController);
     animationController.forward();
   }
 
@@ -774,7 +773,7 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${package.storeProduct.currencyCode} ${animation.value.toInt()}',
+                  '${package.storeProduct.currencyCode} ${animation.value}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -783,8 +782,6 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
                         Theme.of(context).textTheme.headlineLarge!.fontSize,
                   ),
                 ),
-
-                //show monthly yearly string
                 Text(
                   widget.isShowingMonthly ? '/ Month' : '/ Year',
                   style: const TextStyle(
