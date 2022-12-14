@@ -72,6 +72,7 @@ class MapBoxView extends ConsumerStatefulWidget {
     required this.animation,
     this.symbolId,
     this.latLng,
+    this.isInDraggableContainer = false,
   });
 
   final bool showAppBar;
@@ -83,6 +84,7 @@ class MapBoxView extends ConsumerStatefulWidget {
   final Animation<double> animation;
   final String? symbolId;
   final LatLng? latLng;
+  final bool isInDraggableContainer;
 
   @override
   ConsumerState<MapBoxView> createState() => _MapBoxViewState();
@@ -832,12 +834,14 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
 
     return Scaffold(
-      appBar: widget.showAppBar
-          ? AppBar(
-              title: const Text('Map'),
-              centerTitle: false,
-            )
-          : null,
+      appBar: widget.isInDraggableContainer
+          ? null
+          : widget.showAppBar
+              ? AppBar(
+                  title: const Text('Map'),
+                  centerTitle: false,
+                )
+              : null,
       resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
@@ -884,143 +888,150 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               zoom: widget.latLng != null ? 10 : 4,
             ),
           ),
-          IgnorePointer(
-            child: SpaceXMapView(
-              startingCoordinate: startingCoordinate,
-              currentCoordinate: currentCoordinate,
+          if (!widget.isInDraggableContainer)
+            IgnorePointer(
+              child: SpaceXMapView(
+                startingCoordinate: startingCoordinate,
+                currentCoordinate: currentCoordinate,
+              ),
             ),
-          ),
-          AnimatedBuilder(
-            animation: widget.animation,
-            builder: (BuildContext context, Widget? child) {
-              return Positioned(
-                bottom: Theme.of(context).platform == TargetPlatform.android
-                    ? kPaddingSmallConstant +
-                        (widget.showAppBar
-                            ? (MediaQuery.of(context).size.height / 2 - 50)
-                            : 0)
-                    : kPaddingSmallConstant +
-                        (MediaQuery.of(context).size.height / 2 - 50) *
-                            widget.animation.value,
-                right: 0,
-                child: child!,
-              );
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary.withOpacity(
-                          0.9,
-                        ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(kBorderRadiusMediumConstant),
-                      bottomLeft: Radius.circular(kBorderRadiusMediumConstant),
+          if (!widget.isInDraggableContainer)
+            AnimatedBuilder(
+              animation: widget.animation,
+              builder: (BuildContext context, Widget? child) {
+                return Positioned(
+                  bottom: Theme.of(context).platform == TargetPlatform.android
+                      ? kPaddingSmallConstant +
+                          (widget.showAppBar
+                              ? (MediaQuery.of(context).size.height / 2 - 50)
+                              : 0)
+                      : kPaddingSmallConstant +
+                          (MediaQuery.of(context).size.height / 2 - 50) *
+                              widget.animation.value,
+                  right: 0,
+                  child: child!,
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.secondary.withOpacity(
+                                0.9,
+                              ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(kBorderRadiusMediumConstant),
+                        bottomLeft:
+                            Radius.circular(kBorderRadiusMediumConstant),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          await mapboxMapController.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                              CameraPosition(
-                                target:
-                                    mapboxMapController.cameraPosition!.target,
-                                zoom: mapboxMapController.cameraPosition!.zoom +
-                                    1,
-                              ),
-                            ),
-                          );
-                          await updateLaunchCoordinates();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            kPaddingSmallConstant,
-                          ),
-                          child: Icon(
-                            Icons.zoom_in,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      ColoredBox(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondary
-                            .withOpacity(0.7),
-                        child: const SizedBox(
-                          height: 2,
-                          width: 34,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          await mapboxMapController.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                              CameraPosition(
-                                target:
-                                    mapboxMapController.cameraPosition!.target,
-                                zoom: mapboxMapController.cameraPosition!.zoom -
-                                    1,
-                              ),
-                            ),
-                          );
-                          await updateLaunchCoordinates();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            kPaddingSmallConstant,
-                          ),
-                          child: Icon(
-                            Icons.zoom_out,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      ColoredBox(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondary
-                            .withOpacity(0.7),
-                        child: const SizedBox(
-                          height: 2,
-                          width: 34,
-                        ),
-                      ),
-                      if (!widget.showAppBar)
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                         InkWell(
-                          onTap: widget.onExpansionButtonTap,
+                          onTap: () async {
+                            await mapboxMapController.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: mapboxMapController
+                                      .cameraPosition!.target,
+                                  zoom:
+                                      mapboxMapController.cameraPosition!.zoom +
+                                          1,
+                                ),
+                              ),
+                            );
+                            await updateLaunchCoordinates();
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(
                               kPaddingSmallConstant,
                             ),
                             child: Icon(
-                              Icons.open_with,
+                              Icons.zoom_in,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                         ),
-                    ],
+                        ColoredBox(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.7),
+                          child: const SizedBox(
+                            height: 2,
+                            width: 34,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await mapboxMapController.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: mapboxMapController
+                                      .cameraPosition!.target,
+                                  zoom:
+                                      mapboxMapController.cameraPosition!.zoom -
+                                          1,
+                                ),
+                              ),
+                            );
+                            await updateLaunchCoordinates();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              kPaddingSmallConstant,
+                            ),
+                            child: Icon(
+                              Icons.zoom_out,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                        ColoredBox(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.7),
+                          child: const SizedBox(
+                            height: 2,
+                            width: 34,
+                          ),
+                        ),
+                        if (!widget.showAppBar)
+                          InkWell(
+                            onTap: widget.onExpansionButtonTap,
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                kPaddingSmallConstant,
+                              ),
+                              child: Icon(
+                                Icons.open_with,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: kPaddingSmallConstant,
-                ),
-              ],
-            ),
-          ),
-          if (Theme.of(context).platform == TargetPlatform.android)
-            if (widget.showAppBar)
-              const Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: BofView(),
+                  const SizedBox(
+                    height: kPaddingSmallConstant,
+                  ),
+                ],
               ),
+            ),
+          if (!widget.isInDraggableContainer)
+            if (Theme.of(context).platform == TargetPlatform.android)
+              if (widget.showAppBar)
+                const Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: BofView(),
+                ),
         ],
       ),
     );
