@@ -18,6 +18,23 @@ class ChaseAppDraggableContainer extends StatefulWidget {
 class _ChaseAppDraggableContainerState
     extends State<ChaseAppDraggableContainer> {
   Offset topLeft = const Offset(0, 0);
+  bool isMoved = false;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (!isMoved) {
+      final double calculatedWidth =
+          MediaQuery.of(context).size.width * (1 - 0.5);
+      topLeft = Offset(
+        calculatedWidth > 350
+            ? MediaQuery.of(context).size.width - 350
+            : calculatedWidth,
+        0,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +43,20 @@ class _ChaseAppDraggableContainerState
       left: topLeft.dx,
       child: GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
+          isMoved = true;
           setState(() {
             topLeft += details.delta;
           });
         },
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxHeight: 400,
+            maxWidth: 350,
           ),
           child: SizedBox(
-            height: MediaQuery.of(context).size.width * 0.5 * 9 / 16,
+            width: MediaQuery.of(context).size.width * 0.5,
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: Stack(
-                //fit: StackFit.expand,
                 children: [
                   widget.child,
                   Align(
