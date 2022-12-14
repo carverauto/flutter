@@ -26,6 +26,7 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
       isLive: false,
     );
     final MapBoxView map = MapBoxView(
+      isInDraggableContainer: true,
       onSymbolTap: (
         String? id,
         LatLng? latLng,
@@ -35,8 +36,9 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
       onExpansionButtonTap: () {},
     );
 
-    return Material(
-      child: Stack(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Stack(
         children: [
           if (isMapExpanded) map else player,
           const SpaceXLaunchChatsWindow(),
