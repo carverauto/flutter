@@ -1,26 +1,55 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
+import '../../../../shared/widgets/draggables/chaseapp_draggable.dart';
+import '../../../chase_view/view/parts/youtube_player/youtube_player_view.dart';
 import '../../../chats/view/parts/chats_view.dart';
+import '../../map_view.dart';
 
-class MapViewWrapper extends StatelessWidget {
+class MapViewWrapper extends StatefulWidget {
   const MapViewWrapper({
     super.key,
-    required this.mapView,
-    required this.chatView,
   });
 
-  final Widget mapView;
-  final Widget chatView;
+  @override
+  State<MapViewWrapper> createState() => _MapViewWrapperState();
+}
 
+class _MapViewWrapperState extends State<MapViewWrapper> {
+  bool isMapExpanded = true;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        mapView,
-        chatView,
-      ],
+    const YoutubePlayerViewWrapper player = YoutubePlayerViewWrapper(
+      url: 'https://www.youtube.com/watch?v=ONJ2Cr8h6A8',
+      isLive: false,
+    );
+    final MapBoxView map = MapBoxView(
+      onSymbolTap: (
+        String? id,
+        LatLng? latLng,
+      ) {},
+      showAppBar: true,
+      animation: const AlwaysStoppedAnimation(0),
+      onExpansionButtonTap: () {},
+    );
+
+    return Material(
+      child: Stack(
+        children: [
+          if (isMapExpanded) map else player,
+          const SpaceXLaunchChatsWindow(),
+          ChaseAppDraggableContainer(
+            onExpandTap: () {
+              setState(() {
+                isMapExpanded = !isMapExpanded;
+              });
+            },
+            child: isMapExpanded ? player : map,
+          ),
+        ],
+      ),
     );
   }
 }
