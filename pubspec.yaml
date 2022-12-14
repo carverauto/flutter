@@ -181,6 +181,7 @@ flutter:
 
   generate: true
   shaders:
+    - shaders/trajectory_path.glsl
     - shaders/animating_gradient.glsl
     - shaders/stripes.glsl
     - shaders/confetti.glsl

@@ -15,8 +15,22 @@ class SpaceXMapView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: TrajectoryPainter(startingCoordinate, currentCoordinate),
+      painter: TrajectoryPainter(
+        startingCoordinate,
+        currentCoordinate,
+      ),
     );
+    // return TrajectoryShaderView(
+    //   builder: (FragmentShader shader, double delta) {
+    //     return const ColoredBox(
+    //       color: Colors.white,
+    //     );
+
+    //     //  CustomPaint(
+    //     //   painter: ,
+    //     // );
+    //   },
+    // );
 
     // return Scaffold(
     //   body: WebView(
@@ -39,8 +53,19 @@ class TrajectoryPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..color = Colors.red
+      ..color = Colors.white
       ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..shader = const LinearGradient(
+        colors: [
+          Colors.transparent,
+          Color.fromARGB(255, 255, 183, 75),
+        ],
+        stops: [
+          0.0,
+          1.0,
+        ],
+      ).createShader(Offset.zero & size)
       ..strokeWidth = 4;
 
     Path path = Path();
@@ -58,7 +83,7 @@ class TrajectoryPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(TrajectoryPainter oldDelegate) {
-    return oldDelegate.start != start || oldDelegate.current != current;
+    return true;
   }
 }
 

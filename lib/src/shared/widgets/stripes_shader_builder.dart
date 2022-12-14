@@ -12,12 +12,14 @@ class StripesShaderBuilder extends StatefulWidget {
     required this.direction,
     // this.builder,
     required this.isActive,
+    this.speedFactor = 1.0,
   }) : super(key: key);
 
   final Widget child;
   final double direction;
 
   final bool isActive;
+  final double speedFactor;
 
   @override
   State<StripesShaderBuilder> createState() => _MyShaderState();
@@ -66,7 +68,7 @@ class _MyShaderState extends State<StripesShaderBuilder> {
                 ..setFloat(1, rect.height)
                 // ..setFloat(2, delta)
                 ..setFloat(2, 4)
-                ..setFloat(3, !widget.isActive ? 0 : delta)
+                ..setFloat(3, !widget.isActive ? 0 : delta / widget.speedFactor)
                 ..setFloat(4, widget.direction)
                 ..setFloat(5, 0)
                 ..setFloat(6, 0)
