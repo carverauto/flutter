@@ -59,10 +59,9 @@ Symbol? findSymbol(Map<String, dynamic> value) {
   final Symbol? symbol = adsbSymbols.firstWhereOrNull(
     (Symbol element) => element.data?['id'] == id,
   );
+
   return symbol;
 }
-
-//TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
 
 class MapBoxView extends ConsumerStatefulWidget {
   const MapBoxView({
@@ -839,6 +838,7 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               centerTitle: false,
             )
           : null,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
         children: [
