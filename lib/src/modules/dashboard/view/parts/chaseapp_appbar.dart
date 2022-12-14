@@ -7,7 +7,6 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import '../../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 import '../../../bof/bof_view.dart';
 import '../../../map/map_view.dart';
-import '../../../map/view/map_wrapper/map_wrapper.dart';
 import '../../../notifications/view/parts/notifications_appbar_button.dart';
 
 class ChaseAppBar extends ConsumerStatefulWidget {
@@ -89,19 +88,16 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
       Navigator.of(context).push<void>(
         MaterialPageRoute(
           builder: (BuildContext context) {
-            return MapViewWrapper(
-              chatView: const SpaceXLaunchChatsWindow(),
-              mapView: MapBoxView(
-                symbolId: symbolId,
-                latLng: latlng,
-                onSymbolTap: (
-                  String? id,
-                  LatLng? latLng,
-                ) {},
-                showAppBar: true,
-                animation: const AlwaysStoppedAnimation(0),
-                onExpansionButtonTap: () {},
-              ),
+            return MapBoxView(
+              symbolId: symbolId,
+              latLng: latlng,
+              onSymbolTap: (
+                String? id,
+                LatLng? latLng,
+              ) {},
+              showAppBar: true,
+              animation: const AlwaysStoppedAnimation(0),
+              onExpansionButtonTap: () {},
             );
           },
         ),
@@ -151,35 +147,32 @@ class _ChaseAppBarState extends ConsumerState<ChaseAppBar>
     return AnimatedBuilder(
       animation: animationController,
       child: FlexibleSpaceBar(
-        background: MapViewWrapper(
-          chatView: animationController.isCompleted
-              ? const SpaceXLaunchChatsWindow()
-              : const SizedBox.shrink(),
-          mapView: MapBoxView(
-            onSymbolTap: extendTheMap,
-            animation: animationController.view,
-            onExpansionButtonTap: () {
-              if (io.Platform.isAndroid) {
-                navigateToMapFullView(context);
-                return;
-              }
+        background: MapBoxView(
+          onSymbolTap: extendTheMap,
+          animation: animationController.view,
+          onExpansionButtonTap: () {
+            if (io.Platform.isAndroid) {
+              navigateToMapFullView(context);
+              return;
+            }
 
-              if (animationController.isAnimating) {
-                return;
-              }
-              if (animationController.isCompleted) {
-                animationController.reverse();
-              } else {
-                animationController.forward();
-              }
-            },
-          ),
+            if (animationController.isAnimating) {
+              return;
+            }
+            if (animationController.isCompleted) {
+              animationController.reverse();
+            } else {
+              animationController.forward();
+            }
+          },
         ),
       ),
       builder: (BuildContext context, Widget? map) {
         return SliverAppBar(
           centerTitle: true,
+          // backgroundColor: Colors.transparent,
           title: title,
+          // floating: true,
           expandedHeight: appBarMaxHeightAnimation.value,
           flexibleSpace: map,
           actions: const [

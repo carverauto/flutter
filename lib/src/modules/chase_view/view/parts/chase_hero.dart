@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_player_flutter/src/utils/youtube_player_controller.dart';
 
 import '../../../../const/images.dart';
 import '../../../../const/sizings.dart';
@@ -13,9 +14,10 @@ import '../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../shared/widgets/builders/image_builder.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 import '../providers/providers.dart';
-import 'ismp4orm3u8url.dart';
 import 'mp4_player/mp4_player.dart';
 import 'mp4_player/providers.dart';
+import 'video_animations_overlay.dart';
+import 'video_top_actions.dart';
 import 'watch_youtube_video_button.dart';
 import 'youtube_player/youtube_player_view.dart';
 
@@ -187,7 +189,19 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
               return YoutubePlayerViewWrapper(
                 url: youtubeUrl!,
                 isLive: isLive ?? false,
-                chase: chase!,
+                videoTopActions:
+                    (BuildContext context, YoutubePlayerController controller) {
+                  return VideoTopActions(
+                    controller: controller,
+                  );
+                },
+                overlayInBetween:
+                    (BuildContext context, YoutubePlayerController controller) {
+                  return VideoAnimationsOverlay(
+                    controller: controller,
+                    chase: chase!,
+                  );
+                },
               );
             },
           ),

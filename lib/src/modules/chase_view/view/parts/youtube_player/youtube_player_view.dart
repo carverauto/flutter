@@ -5,25 +5,35 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../../../../models/chase/chase.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../../../shared/widgets/loaders/loading.dart';
 import '../../providers/providers.dart';
 import '../mp4_player/providers.dart';
-import '../video_animations_overlay.dart';
-import '../video_top_actions.dart';
+
+typedef OverlayInBetweenBuilder = Widget Function(
+  BuildContext context,
+  YoutubePlayerController controller,
+);
+typedef VideoTopActionsBuilder = Widget Function(
+  BuildContext context,
+  YoutubePlayerController controller,
+);
 
 class YoutubePlayerViewWrapper extends ConsumerStatefulWidget {
   const YoutubePlayerViewWrapper({
     super.key,
     required this.url,
     required this.isLive,
-    required this.chase,
+    // required this.chase,
+    this.overlayInBetween,
+    this.videoTopActions,
   });
 
   final String url;
   final bool isLive;
-  final Chase chase;
+  // final Chase chase;
+  final OverlayInBetweenBuilder? overlayInBetween;
+  final VideoTopActionsBuilder? videoTopActions;
 
   @override
   ConsumerState<YoutubePlayerViewWrapper> createState() =>
@@ -61,7 +71,9 @@ class _YoutubePlayerViewWrapperState
         : _YoutubePlayerView(
             url: widget.url,
             isLive: widget.isLive,
-            chase: widget.chase,
+            // chase: widget.chase,
+            overlayInBetween: widget.overlayInBetween,
+            videoTopActions: widget.videoTopActions,
           );
   }
 }
@@ -70,12 +82,16 @@ class _YoutubePlayerView extends ConsumerStatefulWidget {
   const _YoutubePlayerView({
     required this.url,
     required this.isLive,
-    required this.chase,
+    // required this.chase,
+    this.overlayInBetween,
+    this.videoTopActions,
   });
 
   final String url;
   final bool isLive;
-  final Chase chase;
+  // final Chase chase;
+  final OverlayInBetweenBuilder? overlayInBetween;
+  final VideoTopActionsBuilder? videoTopActions;
 
   @override
   ConsumerState<_YoutubePlayerView> createState() => _YoutubePlayerViewState();
@@ -139,13 +155,12 @@ class _YoutubePlayerViewState extends ConsumerState<_YoutubePlayerView> {
         ? const CircularAdaptiveProgressIndicatorWithBg()
         : YoutubePlayer(
             controller: _controller,
-            topActions: VideoTopActions(
-              controller: _controller,
-            ),
-            overlayInBetween: VideoAnimationsOverlay(
-              controller: _controller,
-              chase: widget.chase,
-            ),
+            topActions: widget.videoTopActions == null
+                ? null
+                : widget.videoTopActions!(context, _controller),
+            overlayInBetween: widget.overlayInBetween == null
+                ? null
+                : widget.overlayInBetween!(context, _controller),
           );
   }
 }
