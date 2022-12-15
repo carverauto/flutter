@@ -67,7 +67,6 @@ class _MyShaderState extends State<CountDownTimer>
             child: Padding(
               padding: const EdgeInsets.all(kPaddingSmallConstant),
               child: Text(
-                // use animationcontroller value and dispaly duration
                 DateFormat('mm:ss').format(
                   DateTime.now().copyWith(
                     minute: 0,
@@ -86,33 +85,5 @@ class _MyShaderState extends State<CountDownTimer>
         ),
       ),
     );
-    // return Center(
-    //   child: SizedBox(
-    //     height: 100,
-    //     width: 100,
-    //     child: ShaderBuilder(
-    //       (BuildContext context, FragmentShader shader, Widget? child) {
-    //         return AnimatedSampler(
-    //           (ui.Image image, Size size, Offset offset, Canvas canvas) {
-    //             shader
-    //               ..setFloat(0, size.width)
-    //               ..setFloat(1, size.height)
-    //               ..setFloat(2, delta)
-    //               ..setImageSampler(0, image);
-
-    //             canvas
-    //               ..save()
-    //               // ..translate(offset.dx, offset.dy)
-    //               ..drawRect(offset & size, Paint()..shader = shader)
-    //               ..restore();
-    //           },
-    //           child: child!,
-    //         );
-    //       },
-    //       assetKey: 'shaders/glitch.glsl',
-    //       child: ,
-    //     ),
-    //   ),
-    // );
   }
 }
