@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../../shared/widgets/draggables/chaseapp_draggable.dart';
+import '../../../chase_view/view/parts/chase_details_page_internal.dart';
 import '../../../chase_view/view/parts/youtube_player/youtube_player_view.dart';
 import '../../../chats/view/parts/chats_view.dart';
 import '../../map_view.dart';
@@ -38,19 +40,69 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
 
     return Scaffold(
       appBar: AppBar(),
-      body: Stack(
-        children: [
-          if (isMapExpanded) map else player,
-          const SpaceXLaunchChatsWindow(),
-          ChaseAppDraggableContainer(
-            onExpandTap: () {
-              setState(() {
-                isMapExpanded = !isMapExpanded;
-              });
-            },
-            child: isMapExpanded ? player : map,
-          ),
-        ],
+      resizeToAvoidBottomInset: false,
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          final bool isPortrait = orientation == Orientation.portrait;
+
+          return isPortrait
+              ? Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Column(
+                        children: [
+                          const Flexible(child: player),
+                          Flexible(child: map),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width * 9 / 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                      right: 0,
+                      left: 0,
+                      child: const SpaceXLaunchChatsWindow(),
+                    ),
+                  ],
+                )
+              : Stack(
+                  children: [
+                    FullScreenChaseDetailsSideBar(
+                      chaseDetails: const SpaceXLaunchChatsWindow(),
+                      logger: Logger('SpaceMaplandscape'),
+                      player: player,
+                    ),
+                    ChaseAppDraggableContainer(
+                      onExpandTap: () {
+                        setState(() {
+                          isMapExpanded = !isMapExpanded;
+                        });
+                      },
+                      child: map,
+                    ),
+                  ],
+                );
+
+          //  Stack(
+          //     children: [
+          //       // FullScreenChaseDetailsSideBar(
+          //       //   chaseDetails: const SpaceXLaunchChatsWindow(),
+          //       //   logger: Logger('SpaceMaplandscape'),
+          //       //   player: player,
+          //       // ),
+          //       ChaseAppDraggableContainer(
+          //         onExpandTap: () {
+          //           setState(() {
+          //             isMapExpanded = !isMapExpanded;
+          //           });
+          //         },
+          //         child: map,
+          //       ),
+          //     ],
+          //   );
+        },
       ),
     );
   }
@@ -65,17 +117,12 @@ class SpaceXLaunchChatsWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     log(MediaQuery.of(context).viewInsets.bottom.toString());
 
-    return Positioned(
-      bottom: MediaQuery.of(context).viewInsets.bottom,
-      right: 0,
-      left: 0,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.width * 9 / 16,
-        child: Material(
-          child: ChatsView(
-            chaseId: '9na10xianw',
-            respectBottomPadding: false,
-          ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.width * 9 / 16,
+      child: Material(
+        child: ChatsView(
+          chaseId: '9na10xianw',
+          respectBottomPadding: false,
         ),
       ),
     );

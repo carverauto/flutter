@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../const/sizings.dart';
+
 class ChaseAppDraggableContainer extends StatefulWidget {
   const ChaseAppDraggableContainer({
     super.key,
@@ -41,39 +43,51 @@ class _ChaseAppDraggableContainerState
     return Positioned(
       top: topLeft.dy,
       left: topLeft.dx,
-      child: GestureDetector(
-        onPanUpdate: (DragUpdateDetails details) {
-          isMoved = true;
-          setState(() {
-            topLeft += details.delta;
-          });
-        },
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 350,
-          ),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.5,
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Stack(
-                children: [
-                  widget.child,
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: widget.onExpandTap,
-                      icon: const Icon(
-                        Icons.fullscreen,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ],
+      child: Stack(
+        //clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            left: -10,
+            right: -10,
+            top: -10,
+            bottom: -10,
+            child: GestureDetector(
+              onPanUpdate: (DragUpdateDetails details) {
+                isMoved = true;
+                setState(() {
+                  topLeft += details.delta;
+                });
+              },
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius:
+                      BorderRadius.circular(kBorderRadiusLargeConstant),
+                ),
               ),
             ),
           ),
-        ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 350,
+            ),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(kBorderRadiusLargeConstant),
+                    clipBehavior: Clip.hardEdge,
+                    child: widget.child,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
