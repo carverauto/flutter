@@ -22,6 +22,7 @@ class _MyShaderState extends State<CountDownTimer>
   late double delta;
 
   late AnimationController animationController;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _MyShaderState extends State<CountDownTimer>
       vsync: this,
       duration: const Duration(minutes: 3),
     )..repeat(reverse: true);
+    animation = Tween<double>(begin: 0, end: 180).animate(animationController);
     // helloWorld = AnimatingGradient.compile();
     delta = 0;
     animationController.addListener(() {
@@ -70,7 +72,7 @@ class _MyShaderState extends State<CountDownTimer>
                 DateFormat('mm:ss').format(
                   DateTime.now().copyWith(
                     minute: 0,
-                    second: animationController.lastElapsedDuration!.inSeconds,
+                    second: animation.value.toInt(),
                   ),
                 ),
                 style: TextStyle(
