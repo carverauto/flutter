@@ -29,10 +29,11 @@ class _ChaseAppDraggableContainerState
     if (!isMoved) {
       final double calculatedWidth =
           MediaQuery.of(context).size.width * (1 - 0.5);
-      topLeft = Offset(
-        calculatedWidth > 350
-            ? MediaQuery.of(context).size.width - 350
-            : calculatedWidth,
+      topLeft = const Offset(
+        0,
+        // calculatedWidth > 350
+        //     ? MediaQuery.of(context).size.width - 350
+        //     : calculatedWidth,
         0,
       );
     }
@@ -44,7 +45,7 @@ class _ChaseAppDraggableContainerState
       top: topLeft.dy,
       left: topLeft.dx,
       child: Stack(
-        //clipBehavior: Clip.none,
+        // clipBehavior: Clip.none,
         children: [
           Positioned.fill(
             left: -10,

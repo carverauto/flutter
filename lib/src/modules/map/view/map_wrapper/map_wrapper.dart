@@ -67,22 +67,22 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
                     ),
                   ],
                 )
-              : Stack(
-                  children: [
-                    FullScreenChaseDetailsSideBar(
-                      chaseDetails: const SpaceXLaunchChatsWindow(),
-                      logger: Logger('SpaceMaplandscape'),
-                      player: player,
-                    ),
-                    ChaseAppDraggableContainer(
-                      onExpandTap: () {
-                        setState(() {
-                          isMapExpanded = !isMapExpanded;
-                        });
-                      },
-                      child: map,
-                    ),
-                  ],
+              : FullScreenChaseDetailsSideBar(
+                  chaseDetails: const SpaceXLaunchChatsWindow(),
+                  logger: Logger('SpaceMaplandscape'),
+                  player: Stack(
+                    children: [
+                      player,
+                      ChaseAppDraggableContainer(
+                        onExpandTap: () {
+                          setState(() {
+                            isMapExpanded = !isMapExpanded;
+                          });
+                        },
+                        child: map,
+                      ),
+                    ],
+                  ),
                 );
 
           //  Stack(
