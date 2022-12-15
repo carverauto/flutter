@@ -25,12 +25,8 @@ class ChaseAppDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isPremiumMember = ref
-            .read(inAppPurchasesStateNotifier.notifier)
-            .state
-            .value
-            ?.isPremiumMember ??
-        false;
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
 
     return Drawer(
       child: Column(

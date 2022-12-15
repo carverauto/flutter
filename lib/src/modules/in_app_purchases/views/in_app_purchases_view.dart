@@ -235,8 +235,7 @@ class InAppPurchasesMainView extends ConsumerWidget {
                       ElevatedButton(
                         onPressed: () async {
                           final String? managementUrl = ref
-                              .read(inAppPurchasesStateNotifier.notifier)
-                              .state
+                              .read(inAppPurchasesStateNotifier)
                               .value
                               ?.managementURL;
                           if (managementUrl != null) {

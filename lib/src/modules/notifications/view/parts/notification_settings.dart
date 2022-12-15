@@ -74,12 +74,8 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
     final AsyncValue<NotificationPermissionStatuses>
         userNotificationAcceptanceState =
         ref.watch(userNotificationAcceptanceFutureProvider);
-    final bool isPremiumMember = ref
-            .watch(inAppPurchasesStateNotifier.notifier)
-            .state
-            .value
-            ?.isPremiumMember ??
-        false;
+    final bool isPremiumMember =
+        ref.watch(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
 
     return Scaffold(
       appBar: AppBar(
