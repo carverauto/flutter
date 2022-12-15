@@ -185,6 +185,7 @@ flutter:
     - shaders/animating_gradient.glsl
     - shaders/stripes.glsl
     - shaders/confetti.glsl
+    - shaders/glitch.glsl
   assets:
     - assets/
     - assets/icon/
@@ -215,6 +216,9 @@ flutter:
     - family: Crawl
       fonts:
         - asset: assets/fonts/crawl_regular.ttf
+    - family: digital_7
+      fonts:
+        - asset: assets/fonts/digital_7.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

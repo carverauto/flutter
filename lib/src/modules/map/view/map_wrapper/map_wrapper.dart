@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
+import '../../../../shared/widgets/countdown_timer/countdown_timer.dart';
 import '../../../../shared/widgets/draggables/chaseapp_draggable.dart';
 import '../../../chase_view/view/parts/chase_details_page_internal.dart';
 import '../../../chase_view/view/parts/youtube_player/youtube_player_view.dart';
@@ -65,6 +66,11 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
                       left: 0,
                       child: const SpaceXLaunchChatsWindow(),
                     ),
+                    const Positioned(
+                      top: 0,
+                      right: 0,
+                      child: CountDownTimer(),
+                    ),
                   ],
                 )
               : FullScreenChaseDetailsSideBar(
@@ -80,6 +86,11 @@ class _MapViewWrapperState extends State<MapViewWrapper> {
                           });
                         },
                         child: map,
+                      ),
+                      const Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: CountDownTimer(),
                       ),
                     ],
                   ),
