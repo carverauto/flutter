@@ -48,15 +48,6 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
   Widget build(
     BuildContext context,
   ) {
-    final AsyncValue<purchases.CustomerInfo> info =
-        ref.watch(inAppPurchasesStateNotifier);
-
-    final bool isPremium =
-        info.value?.entitlements.all['Premium']?.isActive ?? false;
-
-    final AsyncValue<purchases.Offerings> offeringsState =
-        ref.watch(currentOfferingFutureProvider);
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -70,7 +61,7 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
               await showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return InAppPurchasesInfoDialog(ref: ref);
+                  return _InAppPurchasesInfoDialog(ref: ref);
                 },
               );
             },
@@ -78,195 +69,211 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
           ),
         ],
       ),
-      body: offeringsState.when(
-        data: (purchases.Offerings offerings) {
-          if (isPremium) {
-            final List<String> memeberSince =
-                info.value!.allPurchaseDates.values
-                    .sortedByCompare<String>(
-                      (String element) => element,
-                      (String a, String b) => DateTime.parse(b).millisecond <
-                              DateTime.parse(a).millisecond
-                          ? 1
-                          : -1,
-                    )
-                    .toList();
-            final DateTime memberSince = DateTime.parse(memeberSince.first);
-            final DateTime latestSubscriptionDate =
-                DateTime.parse(memeberSince.last);
-            final DateTime renewsAt =
-                DateTime.parse(info.value!.latestExpirationDate!);
-
-            return Stack(
-              children: [
-                const Positioned.fill(
-                  child: RotatedBox(
-                    quarterTurns: 2,
-                    child: ConfettiShaderView(
-                      child: ColoredBox(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: GlassBg(
-                    color: Colors.white10,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const AnimatingGradientShaderBuilder(
-                              child: Text(
-                                '🌟 You are a ChaseApp Premium Member',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: kPaddingLargeConstant,
-                            ),
-                            ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                maxWidth: 600,
-                              ),
-                              child: PremiumFeaturesDisplayView(
-                                isPremium: isPremium,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: kPaddingXSmallConstant,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Member since  ',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  // format date in dd mm yyyy
-                                  DateFormat('dd MMM yyyy').format(memberSince),
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: kPaddingXSmallConstant,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Latest subscription date  ',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  // format date in dd mm yyyy
-                                  DateFormat('dd MMM yyyy')
-                                      .format(latestSubscriptionDate),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Renews at  ',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  // format date in dd mm yyyy
-                                  DateFormat('dd MMM yyyy').format(renewsAt),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: kPaddingSmallConstant,
-                        ),
-                        // add cancel subs button and refund button
-
-                        ElevatedButton(
-                          onPressed: () async {
-                            final String? managementUrl = ref
-                                .read(inAppPurchasesStateNotifier.notifier)
-                                .state
-                                .value
-                                ?.managementURL;
-                            if (managementUrl != null) {
-                              await launchURL(context, managementUrl);
-                              await ref
-                                  .read(inAppPurchasesStateNotifier.notifier)
-                                  .updateCustomerInfo();
-                            }
-                          },
-                          child: const Text('Manage Subscription'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          }
-
-          return PurchasePremiumSubscriptionView(
-            offerings: offerings,
-          );
-        },
-        loading: () => const Center(
-          child: CircularAdaptiveProgressIndicatorWithBg(),
-        ),
-        error: (Object error, StackTrace? stackTrace) {
-          return Center(
-            child: Text(error.toString()),
-          );
-        },
-      ),
+      body: const InAppPurchasesMainView(),
     );
   }
 }
 
-class InAppPurchasesInfoDialog extends StatelessWidget {
-  const InAppPurchasesInfoDialog({
-    super.key,
+class InAppPurchasesMainView extends ConsumerWidget {
+  const InAppPurchasesMainView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<purchases.CustomerInfo> info =
+        ref.watch(inAppPurchasesStateNotifier);
+
+    final bool isPremium =
+        info.value?.entitlements.all['Premium']?.isActive ?? false;
+
+    final AsyncValue<purchases.Offerings> offeringsState =
+        ref.watch(currentOfferingFutureProvider);
+
+    return offeringsState.when(
+      data: (purchases.Offerings offerings) {
+        if (isPremium) {
+          final List<String> memeberSince = info.value!.allPurchaseDates.values
+              .sortedByCompare<String>(
+                (String element) => element,
+                (String a, String b) => DateTime.parse(b).millisecond <
+                        DateTime.parse(a).millisecond
+                    ? 1
+                    : -1,
+              )
+              .toList();
+          final DateTime memberSince = DateTime.parse(memeberSince.first);
+          final DateTime latestSubscriptionDate =
+              DateTime.parse(memeberSince.last);
+          final DateTime renewsAt =
+              DateTime.parse(info.value!.latestExpirationDate!);
+
+          return Stack(
+            children: [
+              const Positioned.fill(
+                child: RotatedBox(
+                  quarterTurns: 2,
+                  child: ConfettiShaderView(
+                    child: ColoredBox(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: GlassBg(
+                  color: Colors.white10,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const AnimatingGradientShaderBuilder(
+                            child: Text(
+                              '🌟 You are a ChaseApp Premium Member',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: kPaddingLargeConstant,
+                          ),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 600,
+                            ),
+                            child: _PremiumFeaturesDisplayView(
+                              isPremium: isPremium,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: kPaddingXSmallConstant,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Member since  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                // format date in dd mm yyyy
+                                DateFormat('dd MMM yyyy').format(memberSince),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: kPaddingXSmallConstant,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Latest subscription date  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                // format date in dd mm yyyy
+                                DateFormat('dd MMM yyyy')
+                                    .format(latestSubscriptionDate),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Renews at  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                // format date in dd mm yyyy
+                                DateFormat('dd MMM yyyy').format(renewsAt),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: kPaddingSmallConstant,
+                      ),
+                      // add cancel subs button and refund button
+
+                      ElevatedButton(
+                        onPressed: () async {
+                          final String? managementUrl = ref
+                              .read(inAppPurchasesStateNotifier.notifier)
+                              .state
+                              .value
+                              ?.managementURL;
+                          if (managementUrl != null) {
+                            await launchURL(context, managementUrl);
+                            await ref
+                                .read(inAppPurchasesStateNotifier.notifier)
+                                .updateCustomerInfo();
+                          }
+                        },
+                        child: const Text('Manage Subscription'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+
+        return _PurchasePremiumSubscriptionView(
+          offerings: offerings,
+        );
+      },
+      loading: () => const Center(
+        child: CircularAdaptiveProgressIndicatorWithBg(),
+      ),
+      error: (Object error, StackTrace? stackTrace) {
+        return Center(
+          child: Text(error.toString()),
+        );
+      },
+    );
+  }
+}
+
+class _InAppPurchasesInfoDialog extends StatelessWidget {
+  const _InAppPurchasesInfoDialog({
     required this.ref,
   });
 
@@ -374,21 +381,20 @@ class InAppPurchasesInfoDialog extends StatelessWidget {
   }
 }
 
-class PurchasePremiumSubscriptionView extends ConsumerStatefulWidget {
-  const PurchasePremiumSubscriptionView({
-    super.key,
+class _PurchasePremiumSubscriptionView extends ConsumerStatefulWidget {
+  const _PurchasePremiumSubscriptionView({
     required this.offerings,
   });
 
   final purchases.Offerings offerings;
 
   @override
-  ConsumerState<PurchasePremiumSubscriptionView> createState() =>
+  ConsumerState<_PurchasePremiumSubscriptionView> createState() =>
       _PurchasePremiumSubscriptionViewState();
 }
 
 class _PurchasePremiumSubscriptionViewState
-    extends ConsumerState<PurchasePremiumSubscriptionView>
+    extends ConsumerState<_PurchasePremiumSubscriptionView>
     with SingleTickerProviderStateMixin {
   bool isShowingMonthly = true;
 
@@ -455,7 +461,7 @@ class _PurchasePremiumSubscriptionViewState
   }
 
   @override
-  void didUpdateWidget(covariant PurchasePremiumSubscriptionView oldWidget) {
+  void didUpdateWidget(covariant _PurchasePremiumSubscriptionView oldWidget) {
     super.didUpdateWidget(oldWidget);
     package = widget.offerings.current!.availablePackages.firstWhereOrNull(
       (purchases.Package package) =>
@@ -601,7 +607,7 @@ class _PurchasePremiumSubscriptionViewState
                 ),
                 child: SizedBox(
                   //  width: MediaQuery.of(context).size.width * 0.6,
-                  child: OfferingsDescription(
+                  child: _OfferingsDescription(
                     package: package!,
                     isShowingMonthly: isShowingMonthly,
                     discount: discount,
@@ -699,9 +705,8 @@ class _PurchasePremiumSubscriptionViewState
   }
 }
 
-class OfferingsDescription extends ConsumerStatefulWidget {
-  const OfferingsDescription({
-    super.key,
+class _OfferingsDescription extends ConsumerStatefulWidget {
+  const _OfferingsDescription({
     required this.isShowingMonthly,
     required this.discount,
     required this.package,
@@ -713,11 +718,11 @@ class OfferingsDescription extends ConsumerStatefulWidget {
   final int discount;
 
   @override
-  ConsumerState<OfferingsDescription> createState() =>
+  ConsumerState<_OfferingsDescription> createState() =>
       _OfferingsDescriptionState();
 }
 
-class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
+class _OfferingsDescriptionState extends ConsumerState<_OfferingsDescription>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
   late Animation<double> animation;
@@ -744,7 +749,7 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
   }
 
   @override
-  void didUpdateWidget(covariant OfferingsDescription oldWidget) {
+  void didUpdateWidget(covariant _OfferingsDescription oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (oldWidget.package.packageType != widget.package.packageType) {
@@ -862,7 +867,7 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
           height: kPaddingLargeConstant + kPaddingXSmallConstant,
         ),
         if (package != null)
-          const PremiumFeaturesDisplayView(
+          const _PremiumFeaturesDisplayView(
             isPremium: false,
           ),
       ],
@@ -870,9 +875,8 @@ class _OfferingsDescriptionState extends ConsumerState<OfferingsDescription>
   }
 }
 
-class PremiumFeaturesDisplayView extends StatelessWidget {
-  const PremiumFeaturesDisplayView({
-    super.key,
+class _PremiumFeaturesDisplayView extends StatelessWidget {
+  const _PremiumFeaturesDisplayView({
     required this.isPremium,
   });
 
@@ -917,7 +921,7 @@ class PremiumFeaturesDisplayView extends StatelessWidget {
 
                               children: premiumFeatures
                                   .map(
-                                    (PremiumFeatureTile e) => Padding(
+                                    (_PremiumFeatureTile e) => Padding(
                                       padding: const EdgeInsets.symmetric(
                                         vertical: kPaddingXSmallConstant,
                                         horizontal: kPaddingXSmallConstant,
@@ -992,9 +996,8 @@ class PremiumFeaturesDisplayView extends StatelessWidget {
   }
 }
 
-class PremiumFeatureTile extends StatelessWidget {
-  const PremiumFeatureTile({
-    super.key,
+class _PremiumFeatureTile extends StatelessWidget {
+  const _PremiumFeatureTile({
     required this.description,
     required this.leading,
     required this.title,
@@ -1068,59 +1071,59 @@ class PremiumFeatureTile extends StatelessWidget {
   }
 }
 
-List<PremiumFeatureTile> premiumFeatures = [
-  const PremiumFeatureTile(
+List<_PremiumFeatureTile> premiumFeatures = [
+  const _PremiumFeatureTile(
     title: 'Firehose',
     leading: Text('🔥', style: TextStyle(fontSize: 24)),
     description:
         'Get real-time notifications from our curated twitter feed, also includes alerts for major earthquakes, severe weather, and more.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Airport Inventory',
     leading: Icon(Icons.airport_shuttle),
     description:
         'Get notified when a media airship arrives or leaves an airport.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Cluster Alerts',
     leading: Icon(Icons.flight),
     description:
         'Receive a notification when media and law enforcement aircraft find themselves in the same airspace.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Flight Time Estimation',
     leading: Icon(Icons.map),
     description:
         'Use our map tools to determine how far away a helicopter is from a given point. Useful to see when media might arrive on-scene.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Helicopter Tracks',
     leading: Icon(Icons.chat_outlined),
     description: 'Show helicopter flight paths on the map.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'StormSurge Notifications',
     leading: Icon(Icons.wb_cloudy),
     description:
         'Get an alert when a major coastal storm surge event is happening. Useful to show and get notified about rising water levels before/during a storm.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Community Lounge',
     leading: Icon(Icons.chat),
     description:
         'A dedicated chat and lounge area for premium users, available 24/7.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Discord Integration',
     leading: Icon(Icons.discord),
     description: 'Get notifications in your Discord server.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Slack Integration',
     leading: Icon(Icons.message),
     description: 'Get notifications in your Slack server.',
   ),
-  const PremiumFeatureTile(
+  const _PremiumFeatureTile(
     title: 'Rocket Launches',
     leading: Icon(Icons.rocket),
     description:

@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/notifiers/in_app_purchases_state_notifier.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/interest/interest.dart';
+import '../../../in_app_purchases/views/view_helpers.dart';
 import '../providers/providers.dart';
 
 class NotificationSettingTile extends StatelessWidget {
@@ -65,7 +69,21 @@ class _NotificationSettingTileSwitchState
     isEnabled = widget.interest.isCompulsory || widget.isUsersInterest;
   }
 
+  // ignore: long-method
   Future<void> toggleSubscription(bool value) async {
+    final bool isPremiumMember = ref
+            .read(inAppPurchasesStateNotifier.notifier)
+            .state
+            .value
+            ?.isPremiumMember ??
+        false;
+
+    if (!isPremiumMember) {
+      await showInAppPurchasesBottomSheet(context);
+
+      return;
+    }
+
     try {
       if (value) {
         await ref
