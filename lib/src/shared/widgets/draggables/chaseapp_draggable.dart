@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../../../const/sizings.dart';
@@ -21,12 +23,14 @@ class _ChaseAppDraggableContainerState
     extends State<ChaseAppDraggableContainer> {
   Offset topLeft = const Offset(0, 0);
   bool isMoved = false;
+  late double width;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (!isMoved) {
+      width = MediaQuery.of(context).size.width * 0.5;
       final double calculatedWidth =
           MediaQuery.of(context).size.width * (1 - 0.5);
       topLeft = const Offset(
@@ -45,13 +49,9 @@ class _ChaseAppDraggableContainerState
       top: topLeft.dy,
       left: topLeft.dx,
       child: Stack(
-        // clipBehavior: Clip.none,
+        clipBehavior: Clip.none,
         children: [
           Positioned.fill(
-            left: -10,
-            right: -10,
-            top: -10,
-            bottom: -10,
             child: GestureDetector(
               onPanUpdate: (DragUpdateDetails details) {
                 isMoved = true;
@@ -62,28 +62,47 @@ class _ChaseAppDraggableContainerState
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  borderRadius:
-                      BorderRadius.circular(kBorderRadiusLargeConstant),
                 ),
               ),
             ),
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(
-              maxWidth: 350,
+              maxWidth: 900,
+              minWidth: 150,
             ),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
+              width: width,
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.circular(kBorderRadiusLargeConstant),
                     clipBehavior: Clip.hardEdge,
                     child: widget.child,
                   ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: GestureDetector(
+              onPanUpdate: (DragUpdateDetails drag) {
+                final bool isIncreasing = drag.delta.direction.isNegative;
+                setState(() {
+                  width += drag.delta.dx;
+                  print(isIncreasing);
+                });
+              },
+              child: Transform.rotate(
+                angle: pi / 2,
+                child: const Icon(
+                  Icons.open_in_full,
+                  color: Colors.white,
                 ),
               ),
             ),
