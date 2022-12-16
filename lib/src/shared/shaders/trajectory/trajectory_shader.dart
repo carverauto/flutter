@@ -8,9 +8,15 @@ class TrajectoryShaderView extends StatefulWidget {
   const TrajectoryShaderView({
     Key? key,
     required this.builder,
+    required this.startingPoint,
+    required this.controlPoint,
+    required this.endingPoint,
   }) : super(key: key);
 
   final Widget Function(FragmentShader shader, double delta) builder;
+  final Offset startingPoint;
+  final Offset controlPoint;
+  final Offset endingPoint;
 
   @override
   State<TrajectoryShaderView> createState() => _MyShaderState();
@@ -50,11 +56,18 @@ class _MyShaderState extends State<TrajectoryShaderView> {
     if (shader != null) {
       // return widget.builder(shader!, delta);
       return ShaderMask(
+        //  blendMode: BlendMode.hardLight,
         shaderCallback: (ui.Rect rect) {
           return shader!
             ..setFloat(0, rect.width)
             ..setFloat(1, rect.height)
-            ..setFloat(2, delta);
+            ..setFloat(2, delta)
+            ..setFloat(3, widget.startingPoint.dx)
+            ..setFloat(4, widget.startingPoint.dy)
+            ..setFloat(5, widget.controlPoint.dx)
+            ..setFloat(6, widget.controlPoint.dy)
+            ..setFloat(7, widget.endingPoint.dx)
+            ..setFloat(8, widget.endingPoint.dy);
         },
         child: widget.builder(shader!, delta),
       );
@@ -82,7 +95,7 @@ class _MyShaderState extends State<TrajectoryShaderView> {
         //   child: child!,
         // );
       },
-      assetKey: 'shaders/trajectory_path.glsl',
+      assetKey: 'shaders/trajectory_glow.glsl',
       child: const SizedBox.shrink(),
     );
   }

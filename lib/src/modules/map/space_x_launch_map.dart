@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_shaders/flutter_shaders.dart';
+
+import '../../shared/shaders/trajectory/trajectory_shader.dart';
 
 class SpaceXMapView extends StatelessWidget {
   const SpaceXMapView({
@@ -14,23 +17,35 @@ class SpaceXMapView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: TrajectoryPainter(
-        startingCoordinate,
-        currentCoordinate,
-      ),
-    );
-    // return TrajectoryShaderView(
-    //   builder: (FragmentShader shader, double delta) {
-    //     return const ColoredBox(
-    //       color: Colors.white,
-    //     );
-
-    //     //  CustomPaint(
-    //     //   painter: ,
-    //     // );
-    //   },
+    // return CustomPaint(
+    //   painter: TrajectoryPainter(
+    //     startingCoordinate,
+    //     currentCoordinate,
+    //   ),
     // );
+    return TrajectoryShaderView(
+      startingPoint: const Offset(
+        0.1,
+        0.1,
+      ),
+      controlPoint: const Offset(
+        0.1,
+        0.5,
+      ),
+      endingPoint: const Offset(
+        0.9,
+        0.9,
+      ),
+      builder: (FragmentShader shader, double delta) {
+        return const ColoredBox(
+          color: Colors.white,
+        );
+
+        //  CustomPaint(
+        //   painter: ,
+        // );
+      },
+    );
 
     // return Scaffold(
     //   body: WebView(
