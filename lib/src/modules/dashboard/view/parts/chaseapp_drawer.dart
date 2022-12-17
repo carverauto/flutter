@@ -55,6 +55,7 @@ class ChaseAppDrawer extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           if (isPremiumMember)
                             const GlassBg(
