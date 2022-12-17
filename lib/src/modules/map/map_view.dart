@@ -99,10 +99,12 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
 
   Future<void> saveCameralastPosition(LatLng? latlng) async {
     if (latlng != null) {
-      await ref.read(mapDBProvider).setLastMapCenteredCoordinates([
-        latlng.latitude,
-        latlng.longitude,
-      ]);
+      if (mounted) {
+        await ref.read(mapDBProvider).setLastMapCenteredCoordinates([
+          latlng.latitude,
+          latlng.longitude,
+        ]);
+      }
     }
   }
 
@@ -132,8 +134,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     final ByteData plane = await rootBundle.load('assets/plane.png');
     final ByteData boat = await rootBundle.load('assets/boat.png');
     final ByteData stormSurge = await rootBundle.load('assets/storm_surge.png');
-
-    await updateLaunchCoordinates();
 
     //fetch weather radar raster tiles from mesonet then add as a mapbox source
 
@@ -220,7 +220,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
   Future<void> _onMapCreated(MapboxMapController controller) async {
     log('Map Controller Loaded');
     mapboxMapController = controller;
-    mapboxMapController.addListener(updateLaunchCoordinates);
   }
 
   Future<void> onSymbolTappedErrorWrapper(Symbol symbol) async {
@@ -718,39 +717,8 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
       saveCameralastPosition(mapboxMapController.cameraPosition?.target);
     }
-    // called by mapboxview on dispose
-    // mapboxMapController.dispose();
 
     super.dispose();
-  }
-
-  Future<void> updateLaunchCoordinates() async {
-    startingCoordinate = await mapboxMapController.toScreenLocation(
-      const LatLng(
-        34.052235,
-        -118.243683,
-      ),
-    );
-    currentCoordinate = await mapboxMapController.toScreenLocation(
-      const LatLng(
-        31.052235,
-        -116.243683,
-      ),
-    );
-    setState(() {});
-    startingCoordinate = await mapboxMapController.toScreenLocation(
-      const LatLng(
-        34.052235,
-        -118.243683,
-      ),
-    );
-    currentCoordinate = await mapboxMapController.toScreenLocation(
-      const LatLng(
-        31.052235,
-        -116.243683,
-      ),
-    );
-    setState(() {});
   }
 
   @override
@@ -759,8 +727,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       activeClusterCoordinateProvider,
       (BirdsOfFire? prev, BirdsOfFire? next) {
         if (next != null) {
-          // find the symbol from choppers who'se id is next
-
           moveToSymbol(next.properties.title);
         }
       },
@@ -772,7 +738,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         final List<Ship> shipsList = next.value ?? [];
         final List<Ship> prevItems = previous?.value ?? [];
         if (hasStylesLoaded && previous != null) {
-          // find ship objects that've changed in next list
           final List<Ship> deletedItems = prevItems.where((Ship prevItem) {
             return shipsList.firstWhereOrNull(
                       (Ship element) => element.id == prevItem.id,
@@ -943,7 +908,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                                 ),
                               ),
                             );
-                            await updateLaunchCoordinates();
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(
@@ -978,7 +942,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
                                 ),
                               ),
                             );
-                            await updateLaunchCoordinates();
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(
