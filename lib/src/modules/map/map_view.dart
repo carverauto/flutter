@@ -26,7 +26,6 @@ import '../../models/weather/weather_station/weather_station.dart';
 import '../../shared/util/helpers/widget_to_image.dart';
 import '../bof/bof_view.dart';
 import 'providers.dart';
-import 'space_x_launch_map.dart';
 // import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 List<List<LatLng>> createGeoJSONCircle(
@@ -888,13 +887,13 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               zoom: widget.latLng != null ? 10 : 4,
             ),
           ),
-          if (!widget.isInDraggableContainer)
-            IgnorePointer(
-              child: SpaceXMapView(
-                startingCoordinate: startingCoordinate,
-                currentCoordinate: currentCoordinate,
-              ),
-            ),
+          // if (!widget.isInDraggableContainer)
+          //   IgnorePointer(
+          //     child: SpaceXMapView(
+          //       startingCoordinate: startingCoordinate,
+          //       currentCoordinate: currentCoordinate,
+          //     ),
+          //   ),
           if (!widget.isInDraggableContainer)
             AnimatedBuilder(
               animation: widget.animation,

@@ -161,20 +161,20 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                 onMapExpansion: onMapExpansion,
               ),
 
-              // Error if removed (Need to report)
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        RouteName.SPACEXMAP,
-                      );
-                    },
-                    child: const Icon(Icons.map),
-                  ),
-                ),
-              ),
+              // // Error if removed (Need to report)
+              // SliverToBoxAdapter(
+              //   child: SizedBox(
+              //     child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.pushNamed(
+              //           context,
+              //           RouteName.SPACEXMAP,
+              //         );
+              //       },
+              //       child: const Icon(Icons.map),
+              //     ),
+              //   ),
+              // ),
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: kPaddingSmallConstant,
