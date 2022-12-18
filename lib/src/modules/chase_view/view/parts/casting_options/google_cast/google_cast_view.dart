@@ -90,7 +90,7 @@ class _GoogleCastButtonState extends ConsumerState<GoogleCastButton> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Expanded(
+                                Flexible(
                                   child: Text(
                                     device.name,
                                     maxLines: 2,
