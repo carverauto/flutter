@@ -9,6 +9,7 @@ import '../core/notifiers/pagination_notifier.dart';
 import '../models/chase/chase.dart';
 import '../models/pagination_state/pagination_notifier_state.dart';
 import '../modules/about/view/about.dart';
+import '../modules/change_logs/view/change_logs.dart';
 import '../modules/chase_view/view/pages/chaseDetails_page.dart';
 import '../modules/chases/view/pages/recent_chases/recent_chases_view_all.dart';
 import '../modules/check_permissions/view/pages/check_permissions_status.dart';
@@ -113,6 +114,11 @@ class Routes {
         return MaterialPageRoute<bool>(
           settings: settings,
           builder: (_) => const MapViewWrapper(),
+        );
+      case RouteName.CHANGELOGS:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => const ChangeLogs(),
         );
       default:
         return MaterialPageRoute<void>(

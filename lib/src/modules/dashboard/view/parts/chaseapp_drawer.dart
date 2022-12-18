@@ -195,6 +195,21 @@ class ChaseAppDrawer extends ConsumerWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.pushNamed(context, RouteName.CHANGELOGS);
+            },
+            leading: Icon(
+              Icons.update_rounded,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Changelogs',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
               Navigator.pushNamed(context, RouteName.SETTINGS);
             },
             leading: Icon(
