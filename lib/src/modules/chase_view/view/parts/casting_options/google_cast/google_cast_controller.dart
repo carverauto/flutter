@@ -77,7 +77,14 @@ class GoogleCastVideoPlayerController extends StateNotifier<CastSessionState> {
       'appId': '277F8C02', // set the appId of your app here
     });
 
-    session.stateStream.listen(listenToCastSessionState);
+    session.stateStream.listen((CastSessionState value) {
+      listenToCastSessionState(value);
+      if (value == CastSessionState.connected) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Connected to device')),
+        );
+      }
+    });
 
     session.messageStream.listen((Map<String, dynamic> message) {
       String type = message['type'] as String;
@@ -91,13 +98,13 @@ class GoogleCastVideoPlayerController extends StateNotifier<CastSessionState> {
         _startSession(session, sessionId);
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Message Recieved--> $message')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Message Recieved--> $message')),
+      // );
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Launching Message Sent')),
+      const SnackBar(content: Text('Connecting to device...')),
     );
   }
 
