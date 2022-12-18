@@ -118,7 +118,7 @@ class Routes {
       case RouteName.CHANGELOGS:
         return MaterialPageRoute<bool>(
           settings: settings,
-          builder: (_) => const ChangeLogs(),
+          builder: (_) => ChangeLogs(),
         );
       default:
         return MaterialPageRoute<void>(
