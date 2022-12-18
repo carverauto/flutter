@@ -929,9 +929,6 @@ class _PremiumFeaturesDisplayView extends StatelessWidget {
                                     ),
                                   )
                                   .toList(),
-                              // itemBuilder: (BuildContext context, int index) {
-                              //   return ;
-                              // },
                             ),
                           ),
                           const Positioned.fill(
@@ -1000,15 +997,18 @@ class _PremiumFeatureTile extends StatelessWidget {
     required this.description,
     required this.leading,
     required this.title,
+    // ignore: unused_element
+    this.isLanded = false,
   });
 
   final Widget leading;
   final String description;
   final String title;
+  final bool isLanded;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    final DecoratedBox child = DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.purple[300]!.withOpacity(0.6),
         borderRadius: BorderRadius.circular(kBorderRadiusStandard),
@@ -1067,6 +1067,15 @@ class _PremiumFeatureTile extends StatelessWidget {
         ),
       ),
     );
+
+    return isLanded
+        ? child
+        : Banner(
+            message: 'Coming soon',
+            location: BannerLocation.topEnd,
+            color: Colors.grey,
+            child: child,
+          );
   }
 }
 
@@ -1076,16 +1085,17 @@ List<_PremiumFeatureTile> premiumFeatures = [
     leading: Text('🔥', style: TextStyle(fontSize: 24)),
     description:
         'Get real-time notifications from our curated twitter feed, also includes alerts for major earthquakes, severe weather, and more.',
+    isLanded: true,
   ),
   const _PremiumFeatureTile(
     title: 'Airport Inventory',
-    leading: Icon(Icons.airport_shuttle),
+    leading: Icon(Icons.flight),
     description:
         'Get notified when a media airship arrives or leaves an airport.',
   ),
   const _PremiumFeatureTile(
     title: 'Cluster Alerts',
-    leading: Icon(Icons.flight),
+    leading: Icon(Icons.change_history),
     description:
         'Receive a notification when media and law enforcement aircraft find themselves in the same airspace.',
   ),
@@ -1097,7 +1107,7 @@ List<_PremiumFeatureTile> premiumFeatures = [
   ),
   const _PremiumFeatureTile(
     title: 'Helicopter Tracks',
-    leading: Icon(Icons.chat_outlined),
+    leading: Icon(Icons.track_changes),
     description: 'Show helicopter flight paths on the map.',
   ),
   const _PremiumFeatureTile(
