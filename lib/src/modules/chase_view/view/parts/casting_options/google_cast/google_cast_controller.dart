@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cast/cast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
 import '../../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../../providers/providers.dart';
@@ -32,6 +33,7 @@ class GoogleCastVideoPlayerController extends StateNotifier<CastSessionState> {
   int mediaSessionId;
   late String sessionId;
   Duration duration = Duration.zero;
+  Logger logger = Logger('GoogleCastVideoPlayerController');
 
   void init() {
     listenForUrlChangesToVideo();

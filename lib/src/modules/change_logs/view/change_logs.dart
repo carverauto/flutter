@@ -15,7 +15,9 @@ import '../../../shared/widgets/errors/error_widget.dart';
 import '../../../shared/widgets/loaders/loading.dart';
 
 class ChangeLogs extends ConsumerWidget {
-  const ChangeLogs({super.key});
+  ChangeLogs({super.key});
+
+  final Logger logger = Logger('ChangeLogsView');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,6 +138,8 @@ class ChangeLogs extends ConsumerWidget {
           );
         },
         error: (Object e, StackTrace? stk) {
+          logger.warning('Error while checking changelogs', e, stk);
+
           return Center(
             child: ChaseAppErrorWidget(
               onRefresh: () {
