@@ -7,6 +7,10 @@ import 'dart:io';
 import '../../flavors.dart';
 
 class AppBundleInfo {
+  static const String playStoreUrl =
+      'https://play.google.com/store/apps/details?id=com.carverauto.chaseapp';
+  static const String appStoreUrl =
+      'itms-apps://itunes.apple.com/app/apple-store/1462719760?mt=8';
   static const String _appstoreId = '1462719760';
   static String get appstoreId => _appstoreId;
 
@@ -70,6 +74,10 @@ class AppBundleInfo {
     } else {
       return prodIosBundleId;
     }
+  }
+
+  static String get storeUrl {
+    return Platform.isAndroid ? playStoreUrl : appStoreUrl;
   }
 }
 
