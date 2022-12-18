@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../const/other.dart';
 import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
 import '../../../routes/routeNames.dart';
@@ -167,7 +167,7 @@ class InAppPurchasesMainView extends ConsumerWidget {
                               ),
                               Text(
                                 // format date in dd mm yyyy
-                                DateFormat('dd MMM yyyy').format(memberSince),
+                                kDateFormat.format(memberSince),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: Colors.white,
@@ -191,8 +191,7 @@ class InAppPurchasesMainView extends ConsumerWidget {
                               ),
                               Text(
                                 // format date in dd mm yyyy
-                                DateFormat('dd MMM yyyy')
-                                    .format(latestSubscriptionDate),
+                                kDateFormat.format(latestSubscriptionDate),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Theme.of(context)
@@ -215,7 +214,7 @@ class InAppPurchasesMainView extends ConsumerWidget {
                               ),
                               Text(
                                 // format date in dd mm yyyy
-                                DateFormat('dd MMM yyyy').format(renewsAt),
+                                kDateFormat.format(renewsAt),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Theme.of(context)
