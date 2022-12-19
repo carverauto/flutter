@@ -68,16 +68,6 @@ class _NotificationsPermissionsDialogViewState
                   width: kPaddingXSmallConstant,
                 ),
                 AnimatingGradientShaderBuilder(
-                  // shaderCallback: (Rect bounds) {
-                  //   // add red-blue gradient mask animate it
-
-                  //   return const LinearGradient(
-                  //     colors: <Color>[
-                  //       Colors.red,
-                  //       Colors.blue,
-                  //     ],
-                  //   ).createShader(bounds);
-                  // },
                   child: Text(
                     'Chase Alerts',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(

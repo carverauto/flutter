@@ -123,106 +123,110 @@ class InAppPurchasesMainView extends ConsumerWidget {
                   const SizedBox(
                     height: kPaddingLargeConstant,
                   ),
-                  GlassBg(
-                    color: Colors.white10,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const AnimatingGradientShaderBuilder(
-                          child: Text(
-                            '🌟 You are a ChaseApp Premium Member',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
+                  Center(
+                    child: GlassBg(
+                      color: Colors.white10,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const AnimatingGradientShaderBuilder(
+                            child: Text(
+                              '🌟 You are a ChaseApp Premium Member',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: kPaddingLargeConstant,
-                        ),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxWidth: 600,
+                          const SizedBox(
+                            height: kPaddingLargeConstant,
                           ),
-                          child: _PremiumFeaturesDisplayView(
-                            isPremium: isPremium,
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 600,
+                            ),
+                            child: _PremiumFeaturesDisplayView(
+                              isPremium: isPremium,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: kPaddingXSmallConstant,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Member since  ',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
+                          const SizedBox(
+                            height: kPaddingXSmallConstant,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Member since  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              // format date in dd mm yyyy
-                              kDateFormat.format(memberSince),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              Text(
+                                // format date in dd mm yyyy
+                                kDateFormat.format(memberSince),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: kPaddingXSmallConstant,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Latest subscription date  ',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: kPaddingXSmallConstant,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Latest subscription date  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              // format date in dd mm yyyy
-                              kDateFormat.format(latestSubscriptionDate),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                              Text(
+                                // format date in dd mm yyyy
+                                kDateFormat.format(latestSubscriptionDate),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Renews at  ',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Renews at  ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              // format date in dd mm yyyy
-                              kDateFormat.format(renewsAt),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                              Text(
+                                // format date in dd mm yyyy
+                                kDateFormat.format(renewsAt),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
