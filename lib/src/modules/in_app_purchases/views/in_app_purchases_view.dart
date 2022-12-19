@@ -118,137 +118,136 @@ class InAppPurchasesMainView extends ConsumerWidget {
                   ),
                 ),
               ),
-              Center(
-                child: GlassBg(
-                  color: Colors.white10,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const AnimatingGradientShaderBuilder(
-                            child: Text(
-                              '🌟 You are a ChaseApp Premium Member',
+              ListView(
+                children: [
+                  const SizedBox(
+                    height: kPaddingLargeConstant,
+                  ),
+                  GlassBg(
+                    color: Colors.white10,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const AnimatingGradientShaderBuilder(
+                          child: Text(
+                            '🌟 You are a ChaseApp Premium Member',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kPaddingLargeConstant,
+                        ),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 600,
+                          ),
+                          child: _PremiumFeaturesDisplayView(
+                            isPremium: isPremium,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kPaddingXSmallConstant,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Member since  ',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: kPaddingLargeConstant,
-                          ),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(
-                              maxWidth: 600,
+                            Text(
+                              // format date in dd mm yyyy
+                              kDateFormat.format(memberSince),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-                            child: _PremiumFeaturesDisplayView(
-                              isPremium: isPremium,
+                          ],
+                        ),
+                        const SizedBox(
+                          height: kPaddingXSmallConstant,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Latest subscription date  ',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: kPaddingXSmallConstant,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Member since  ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
+                            Text(
+                              // format date in dd mm yyyy
+                              kDateFormat.format(latestSubscriptionDate),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
                               ),
-                              Text(
-                                // format date in dd mm yyyy
-                                kDateFormat.format(memberSince),
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Renews at  ',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: kPaddingXSmallConstant,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Latest subscription date  ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
+                            ),
+                            Text(
+                              // format date in dd mm yyyy
+                              kDateFormat.format(renewsAt),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
                               ),
-                              Text(
-                                // format date in dd mm yyyy
-                                kDateFormat.format(latestSubscriptionDate),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                'Renews at  ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                // format date in dd mm yyyy
-                                kDateFormat.format(renewsAt),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: kPaddingSmallConstant,
-                      ),
-                      // add cancel subs button and refund button
-
-                      ElevatedButton(
-                        onPressed: () async {
-                          final String? managementUrl = ref
-                              .read(inAppPurchasesStateNotifier)
-                              .value
-                              ?.managementURL;
-                          if (managementUrl != null) {
-                            await launchURL(context, managementUrl);
-                            await ref
-                                .read(inAppPurchasesStateNotifier.notifier)
-                                .updateCustomerInfo();
-                          }
-                        },
-                        child: const Text('Manage Subscription'),
-                      ),
-                    ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: kPaddingSmallConstant,
+                  ),
+                  // add cancel subs button and refund button
+
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final String? managementUrl = ref
+                            .read(inAppPurchasesStateNotifier)
+                            .value
+                            ?.managementURL;
+                        if (managementUrl != null) {
+                          await launchURL(context, managementUrl);
+                          await ref
+                              .read(inAppPurchasesStateNotifier.notifier)
+                              .updateCustomerInfo();
+                        }
+                      },
+                      child: const Text('Manage Subscription'),
+                    ),
+                  ),
+                ],
               ),
             ],
           );
