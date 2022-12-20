@@ -242,46 +242,45 @@ class ChaseAppDrawer extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const Spacer(),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: RichText(
-                    textAlign: TextAlign.left,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Privacy policy',
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launchUrl(privacyPolicy);
-                            },
-                        ),
-                        TextSpan(
-                          text: ' . ',
-                          style: TextStyle(
-                            color: primaryColor.shade400,
-                            fontSize: 18,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'Tos',
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launchUrl(tosPolicy);
-                            },
-                        ),
-                      ],
+              ],
+            ),
+          ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: RichText(
+              textAlign: TextAlign.left,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Privacy policy',
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        launchUrl(privacyPolicy);
+                      },
+                  ),
+                  TextSpan(
+                    text: ' . ',
+                    style: TextStyle(
+                      color: primaryColor.shade400,
+                      fontSize: 18,
                     ),
                   ),
-                ),
-              ],
+                  TextSpan(
+                    text: 'Tos',
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        launchUrl(tosPolicy);
+                      },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
