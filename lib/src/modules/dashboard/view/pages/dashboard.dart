@@ -78,7 +78,7 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
       children: [
         Text(
           '🔥 Firehose',
-          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
         ),
@@ -92,7 +92,7 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
           },
           icon: Text(
             'View All',
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
           ),
@@ -161,7 +161,20 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                 onMapExpansion: onMapExpansion,
               ),
 
-              // Error if removed (Need to report)
+              // // Error if removed (Need to report)
+              // SliverToBoxAdapter(
+              //   child: SizedBox(
+              //     child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.pushNamed(
+              //           context,
+              //           RouteName.SPACEXMAP,
+              //         );
+              //       },
+              //       child: const Icon(Icons.map),
+              //     ),
+              //   ),
+              // ),
               const SliverToBoxAdapter(
                 child: SizedBox(
                   height: kPaddingSmallConstant,
@@ -198,7 +211,10 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                       ),
                       Text(
                         'Top Chases',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
@@ -268,7 +284,10 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                       ),
                       Text(
                         'Recent',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                       ),
@@ -288,7 +307,7 @@ class _DashboardMainViewState extends ConsumerState<_DashboardMainView> {
                           'See More',
                           style: Theme.of(context)
                               .textTheme
-                              .subtitle1!
+                              .titleMedium!
                               .copyWith(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,

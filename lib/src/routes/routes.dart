@@ -9,6 +9,7 @@ import '../core/notifiers/pagination_notifier.dart';
 import '../models/chase/chase.dart';
 import '../models/pagination_state/pagination_notifier_state.dart';
 import '../modules/about/view/about.dart';
+import '../modules/change_logs/view/change_logs.dart';
 import '../modules/chase_view/view/pages/chaseDetails_page.dart';
 import '../modules/chases/view/pages/recent_chases/recent_chases_view_all.dart';
 import '../modules/check_permissions/view/pages/check_permissions_status.dart';
@@ -17,6 +18,8 @@ import '../modules/feedback_form/view/feedback_form.dart';
 import '../modules/feedback_form/view/support_view.dart';
 import '../modules/firehose/view/pages/firehose_view_all.dart';
 import '../modules/home/view/pages/home_wrapper.dart';
+import '../modules/in_app_purchases/views/in_app_purchases_settings.dart';
+import '../modules/map/view/map_wrapper/map_wrapper.dart';
 import '../modules/notifications/view/pages/notifications_view.dart';
 import '../modules/onboarding/view/pages/onboarding.dart';
 import '../modules/profile/view/pages/profile_page.dart';
@@ -101,6 +104,21 @@ class Routes {
         return MaterialPageRoute<bool>(
           settings: settings,
           builder: (_) => const FeedbackForm(),
+        );
+      case RouteName.IN_APP_PURCHASES:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => const InAppPurchasesSettings(),
+        );
+      case RouteName.SPACEXMAP:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => const MapViewWrapper(),
+        );
+      case RouteName.CHANGELOGS:
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => ChangeLogs(),
         );
       default:
         return MaterialPageRoute<void>(

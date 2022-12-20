@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:typed_data';
 
 import 'package:collection/collection.dart' as collection;
 import 'package:flutter/foundation.dart';
@@ -59,10 +58,9 @@ Symbol? findSymbol(Map<String, dynamic> value) {
   final Symbol? symbol = adsbSymbols.firstWhereOrNull(
     (Symbol element) => element.data?['id'] == id,
   );
+
   return symbol;
 }
-
-//TODO: Find a good way to dispose off stream listeners or use streamcontrollers for listening to streams and disposing
 
 class MapBoxView extends ConsumerStatefulWidget {
   const MapBoxView({
@@ -73,6 +71,7 @@ class MapBoxView extends ConsumerStatefulWidget {
     required this.animation,
     this.symbolId,
     this.latLng,
+    this.isInDraggableContainer = false,
   });
 
   final bool showAppBar;
@@ -84,6 +83,7 @@ class MapBoxView extends ConsumerStatefulWidget {
   final Animation<double> animation;
   final String? symbolId;
   final LatLng? latLng;
+  final bool isInDraggableContainer;
 
   @override
   ConsumerState<MapBoxView> createState() => _MapBoxViewState();
@@ -99,10 +99,12 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
 
   Future<void> saveCameralastPosition(LatLng? latlng) async {
     if (latlng != null) {
-      await ref.read(mapDBProvider).setLastMapCenteredCoordinates([
-        latlng.latitude,
-        latlng.longitude,
-      ]);
+      if (mounted) {
+        await ref.read(mapDBProvider).setLastMapCenteredCoordinates([
+          latlng.latitude,
+          latlng.longitude,
+        ]);
+      }
     }
   }
 
@@ -683,6 +685,9 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     }
   }
 
+  math.Point<num> startingCoordinate = const math.Point(0, 0);
+  math.Point<num> currentCoordinate = const math.Point(0, 0);
+
   @override
   void initState() {
     // TODO: implement initState
@@ -712,8 +717,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       mapboxMapController.onSymbolTapped.remove(onSymbolTappedErrorWrapper);
       saveCameralastPosition(mapboxMapController.cameraPosition?.target);
     }
-    // called by mapboxview on dispose
-    // mapboxMapController.dispose();
 
     super.dispose();
   }
@@ -724,8 +727,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
       activeClusterCoordinateProvider,
       (BirdsOfFire? prev, BirdsOfFire? next) {
         if (next != null) {
-          // find the symbol from choppers who'se id is next
-
           moveToSymbol(next.properties.title);
         }
       },
@@ -737,7 +738,6 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
         final List<Ship> shipsList = next.value ?? [];
         final List<Ship> prevItems = previous?.value ?? [];
         if (hasStylesLoaded && previous != null) {
-          // find ship objects that've changed in next list
           final List<Ship> deletedItems = prevItems.where((Ship prevItem) {
             return shipsList.firstWhereOrNull(
                       (Ship element) => element.id == prevItem.id,
@@ -798,12 +798,15 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
     );
 
     return Scaffold(
-      appBar: widget.showAppBar
-          ? AppBar(
-              title: const Text('Map'),
-              centerTitle: false,
-            )
-          : null,
+      appBar: widget.isInDraggableContainer
+          ? null
+          : widget.showAppBar
+              ? AppBar(
+                  title: const Text('Map'),
+                  centerTitle: false,
+                )
+              : null,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -849,188 +852,150 @@ class _MapBoxViewState extends ConsumerState<MapBoxView>
               zoom: widget.latLng != null ? 10 : 4,
             ),
           ),
-          AnimatedBuilder(
-            animation: widget.animation,
-            builder: (BuildContext context, Widget? child) {
-              return Positioned(
-                bottom: Theme.of(context).platform == TargetPlatform.android
-                    ? kPaddingSmallConstant +
-                        (widget.showAppBar
-                            ? (MediaQuery.of(context).size.height / 2 - 50)
-                            : 0)
-                    : kPaddingSmallConstant +
-                        (MediaQuery.of(context).size.height / 2 - 50) *
-                            widget.animation.value,
-                right: 0,
-                child: child!,
-              );
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary.withOpacity(
-                          0.9,
-                        ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(kBorderRadiusMediumConstant),
-                      bottomLeft: Radius.circular(kBorderRadiusMediumConstant),
+          // if (!widget.isInDraggableContainer)
+          //   IgnorePointer(
+          //     child: SpaceXMapView(
+          //       startingCoordinate: startingCoordinate,
+          //       currentCoordinate: currentCoordinate,
+          //     ),
+          //   ),
+          if (!widget.isInDraggableContainer)
+            AnimatedBuilder(
+              animation: widget.animation,
+              builder: (BuildContext context, Widget? child) {
+                return Positioned(
+                  bottom: Theme.of(context).platform == TargetPlatform.android
+                      ? kPaddingSmallConstant +
+                          (widget.showAppBar
+                              ? (MediaQuery.of(context).size.height / 2 - 50)
+                              : 0)
+                      : kPaddingSmallConstant +
+                          (MediaQuery.of(context).size.height / 2 - 50) *
+                              widget.animation.value,
+                  right: 0,
+                  child: child!,
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color:
+                          Theme.of(context).colorScheme.secondary.withOpacity(
+                                0.9,
+                              ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(kBorderRadiusMediumConstant),
+                        bottomLeft:
+                            Radius.circular(kBorderRadiusMediumConstant),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          mapboxMapController.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                              CameraPosition(
-                                target:
-                                    mapboxMapController.cameraPosition!.target,
-                                zoom: mapboxMapController.cameraPosition!.zoom +
-                                    1,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            kPaddingSmallConstant,
-                          ),
-                          child: Icon(
-                            Icons.zoom_in,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      ColoredBox(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondary
-                            .withOpacity(0.7),
-                        child: const SizedBox(
-                          height: 2,
-                          width: 34,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          mapboxMapController.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                              CameraPosition(
-                                target:
-                                    mapboxMapController.cameraPosition!.target,
-                                zoom: mapboxMapController.cameraPosition!.zoom -
-                                    1,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            kPaddingSmallConstant,
-                          ),
-                          child: Icon(
-                            Icons.zoom_out,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      ColoredBox(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSecondary
-                            .withOpacity(0.7),
-                        child: const SizedBox(
-                          height: 2,
-                          width: 34,
-                        ),
-                      ),
-                      if (!widget.showAppBar)
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                         InkWell(
-                          onTap: widget.onExpansionButtonTap,
+                          onTap: () async {
+                            await mapboxMapController.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: mapboxMapController
+                                      .cameraPosition!.target,
+                                  zoom:
+                                      mapboxMapController.cameraPosition!.zoom +
+                                          1,
+                                ),
+                              ),
+                            );
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(
                               kPaddingSmallConstant,
                             ),
                             child: Icon(
-                              Icons.open_with,
+                              Icons.zoom_in,
                               color: Theme.of(context).primaryColor,
                             ),
                           ),
                         ),
-                    ],
+                        ColoredBox(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.7),
+                          child: const SizedBox(
+                            height: 2,
+                            width: 34,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await mapboxMapController.animateCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: mapboxMapController
+                                      .cameraPosition!.target,
+                                  zoom:
+                                      mapboxMapController.cameraPosition!.zoom -
+                                          1,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              kPaddingSmallConstant,
+                            ),
+                            child: Icon(
+                              Icons.zoom_out,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                        ColoredBox(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondary
+                              .withOpacity(0.7),
+                          child: const SizedBox(
+                            height: 2,
+                            width: 34,
+                          ),
+                        ),
+                        if (!widget.showAppBar)
+                          InkWell(
+                            onTap: widget.onExpansionButtonTap,
+                            child: Padding(
+                              padding: const EdgeInsets.all(
+                                kPaddingSmallConstant,
+                              ),
+                              child: Icon(
+                                Icons.open_with,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: kPaddingSmallConstant,
-                ),
-              ],
-            ),
-          ),
-          if (Theme.of(context).platform == TargetPlatform.android)
-            if (widget.showAppBar)
-              const Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: BofView(),
+                  const SizedBox(
+                    height: kPaddingSmallConstant,
+                  ),
+                ],
               ),
+            ),
+          if (!widget.isInDraggableContainer)
+            if (Theme.of(context).platform == TargetPlatform.android)
+              if (widget.showAppBar)
+                const Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: BofView(),
+                ),
         ],
       ),
     );
   }
 }
-
-    // await mapboxMapController.addSource(
-    //   'ADSBSOURCE',
-    //   GeojsonSourceProperties(
-    //     cluster: true,
-    //     data: <String, dynamic>{
-    //       'type': 'FeatureCollection',
-    //       'features': adsbList.map((ADSB adsb) {
-    //         final String image = adsb.type == 'plane' ? 'plane' : 'heli';
-
-    //         final String? imageUrl = adsb.imageUrl != null
-    //             ? 'https://chaseapp.tv${adsb.imageUrl}'
-    //             : null;
-
-    //         return {
-    //           'type': 'Feature',
-    //           'id': adsb.id,
-    //           'properties': {
-    //             // 'title': adsb.id,
-    //             'id': adsb.id,
-    //             'group': adsb.group,
-    //             'subtitle': adsb.group,
-    //             'imageUrl': imageUrl,
-    //             'type': 'adsb',
-    //             'iconRotation': adsb.track,
-    //             'iconImage': image,
-    //             // 'icon': {
-    //             //   'iconImage': image,
-    //             //   'iconRotate': adsb.track,
-    //             // },
-    //           },
-    //           'geometry': {
-    //             'type': 'Point',
-    //             'coordinates': [
-    //               adsb.lon,
-    //               adsb.lat,
-    //             ],
-    //           },
-    //         };
-    //       }).toList(),
-    //     },
-    //   ),
-    // );
-    // await mapboxMapController.addSymbolLayer(
-    //   'ADSBSOURCE',
-    //   'ADSBLAYER',
-    //   const SymbolLayerProperties(
-    //     iconImage: ['get', 'iconImage'],
-    //     iconRotate: ['get', 'iconRotation'],
-    //   ),
-    // );

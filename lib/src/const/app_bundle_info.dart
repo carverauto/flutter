@@ -7,6 +7,10 @@ import 'dart:io';
 import '../../flavors.dart';
 
 class AppBundleInfo {
+  static const String playStoreUrl =
+      'https://play.google.com/store/apps/details?id=com.carverauto.chaseapp';
+  static const String appStoreUrl =
+      'itms-apps://itunes.apple.com/app/apple-store/1462719760?mt=8';
   static const String _appstoreId = '1462719760';
   static String get appstoreId => _appstoreId;
 
@@ -71,6 +75,10 @@ class AppBundleInfo {
       return prodIosBundleId;
     }
   }
+
+  static String get storeUrl {
+    return Platform.isAndroid ? playStoreUrl : appStoreUrl;
+  }
 }
 
 class EnvVaribales {
@@ -102,4 +110,12 @@ class EnvVaribales {
   static const String _gcpServerApiKey =
       String.fromEnvironment('GCP_SERVER_API_KEY');
   static String get getGCPServerApiKey => _gcpServerApiKey;
+  static const String _revenueCat_Public_Google_SDK_Key =
+      String.fromEnvironment('RevenueCat_Public_Google_SDK_Key');
+  static String get revenueCat_Public_Google_SDK_Key =>
+      _revenueCat_Public_Google_SDK_Key;
+  static const String _revenueCat_Public_Ios_SDK_Key =
+      String.fromEnvironment('RevenueCat_Public_Ios_SDK_Key');
+  static String get revenueCat_Public_Ios_SDK_Key =>
+      _revenueCat_Public_Ios_SDK_Key;
 }

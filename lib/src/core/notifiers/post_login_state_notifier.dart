@@ -29,6 +29,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions() async {
     if (!isInitialized) {
       try {
+        await _read(inAppPurchasesStateNotifier.notifier).initUser();
         final User user = _read(firebaseAuthProvider).currentUser!;
         final UserData userData = await _read(userStreamProvider.future);
 
@@ -62,6 +63,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
         if (interest.isCompulsory) {
           if (!usersInterests.contains(interest.name)) {
             await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+            log('User subscribed to chases notifications from launch:');
           }
         } else if (interest.isDefault) {
           final bool wasAdded =

@@ -8,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -578,6 +577,8 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
                                 final CollectionReference<Map<String, dynamic>>
                                     firestore = FirebaseFirestore.instance
                                         .collection('bug_reports');
+                                final String version =
+                                    ref.read(appInfoProvider).version;
 
                                 await firestore.doc().set(<String, dynamic>{
                                   'desc': bugReportController.text,
@@ -585,6 +586,8 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
                                   'timestamp': DateTime.now(),
                                   'uid': userId,
                                   'contactEmail': emailController.value.text,
+                                  'platform': Theme.of(context).platform.name,
+                                  'appVersion': version,
                                 });
                                 await Future<void>.delayed(
                                   const Duration(

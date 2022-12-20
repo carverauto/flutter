@@ -17,4 +17,7 @@ class RouteName {
   static const String NOTIFICATIONS = 'NOTIFICATIONS';
   static const String SUPPORT = 'SUPPORT';
   static const String BUG_REPORT = 'BUG_REPORT';
+  static const String IN_APP_PURCHASES = 'IN_APP_PURCHASES';
+  static const String SPACEXMAP = 'SPACEXMAP';
+  static const String CHANGELOGS = 'CHANGELOGS';
 }

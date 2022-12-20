@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +18,8 @@ import '../../../../top_level_providers/services_providers.dart';
 import '../providers/providers.dart';
 
 class AuthViewWrapper extends ConsumerWidget {
+  AuthViewWrapper({super.key});
+
   final Logger logger = Logger('AuthViewWrapper');
 
   @override
@@ -51,6 +55,7 @@ class AuthViewWrapper extends ConsumerWidget {
         if (user == null) {
           return const LogInView();
         }
+
         final AutoDisposeFutureProvider<UserData> userFutureProvider =
             fetchUserProvider(user);
 

@@ -2,7 +2,6 @@ import 'dart:core';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -91,7 +90,6 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
                 ? Scaffold(
                     backgroundColor: Colors.black,
                     body: FullScreenChaseDetailsSideBar(
-                      chase: chase,
                       chaseDetails: chaseDetails,
                       logger: widget.logger,
                       player: player,
@@ -128,13 +126,11 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 class FullScreenChaseDetailsSideBar extends StatefulWidget {
   const FullScreenChaseDetailsSideBar({
     Key? key,
-    required this.chase,
     required this.logger,
     required this.chaseDetails,
     required this.player,
   }) : super(key: key);
 
-  final Chase chase;
   final Logger logger;
   final Widget chaseDetails;
   final Widget player;

@@ -45,7 +45,7 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
               children: [
                 Text(
                   'Sentiment Analysis :',
-                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
@@ -195,15 +195,6 @@ class ChaseHeroSectionBuilder extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
-        // final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;
-        // final num bottomPadding =
-        //     isTyping ? MediaQuery.of(context).size.height * 0.15 : 0;
-        // final num extraSizing = isTyping ? kToolbarHeight : 0;
-        // final Orientation currentOrientation =
-        //     MediaQuery.of(context).orientation;
-        // final double height = currentOrientation == Orientation.portrait
-        //     ? MediaQuery.of(context).size.width * (9 / 16)
-        //     : MediaQuery.of(context).size.height;
         final bool isPortrait =
             MediaQuery.of(context).orientation == Orientation.portrait;
         final bool isTyping = MediaQuery.of(context).viewInsets.bottom > 0;

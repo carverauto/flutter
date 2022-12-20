@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/notifiers/in_app_purchases_state_notifier.dart';
 import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/interest/interest.dart';
+import '../../../in_app_purchases/views/view_helpers.dart';
 import '../providers/providers.dart';
 
 class NotificationSettingTile extends StatelessWidget {
@@ -62,46 +66,63 @@ class _NotificationSettingTileSwitchState
   @override
   void initState() {
     super.initState();
-    isEnabled = widget.interest.isCompulsory || widget.isUsersInterest;
+    isEnabled = widget.isUsersInterest;
   }
 
-  Future<void> toggleSubscription(bool value) async {
+  // ignore: long-method
+  Future<void> toggleSubscription(BuildContext context, bool value) async {
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
+
+    if (!isPremiumMember) {
+      await showInAppPurchasesBottomSheet(context);
+
+      return;
+    }
+
     try {
       if (value) {
         await ref
             .read(pusherBeamsProvider)
             .addDeviceInterest(widget.interest.name);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Subscribed to ${widget.displayName} notifications.',
+        if (mounted) {
+          ScaffoldMessenger.of(this.context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Subscribed to ${widget.displayName} notifications.',
+              ),
             ),
-          ),
-        );
+          );
+        }
       } else {
         await ref
             .read(pusherBeamsProvider)
             .removeDeviceInterest(widget.interest.name);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'UnSubscribed from ${widget.displayName} notifications.',
+        if (mounted) {
+          ScaffoldMessenger.of(this.context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'UnSubscribed from ${widget.displayName} notifications.',
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
+
       setState(() {
         isEnabled = value;
         ref.refresh(usersInterestsStreamProvider);
       });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Something went wrong. Please try again later.',
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Something went wrong. Please try again later.',
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 
@@ -109,7 +130,12 @@ class _NotificationSettingTileSwitchState
   Widget build(BuildContext context) {
     return Switch(
       value: isEnabled,
-      onChanged: widget.interest.isCompulsory ? null : toggleSubscription,
+      onChanged: (bool value) {
+        if (widget.interest.isCompulsory && isEnabled) {
+          return;
+        }
+        toggleSubscription(context, value);
+      },
     );
   }
 }

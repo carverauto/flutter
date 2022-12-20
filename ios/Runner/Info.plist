@@ -134,5 +134,7 @@
 		<string>_lnp._tcp.</string>
   		<string>ChaseApp._googlecast._tcp</string>
 	</array>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

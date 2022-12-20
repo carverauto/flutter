@@ -2,13 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../../../const/sizings.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/notifiers/in_app_purchases_state_notifier.dart';
+import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/interest/interest.dart';
+import '../../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../../shared/util/helpers/request_permissions.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
 import '../../../../shared/widgets/notification_permission_bottom_sheet.dart';
@@ -72,6 +74,8 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
     final AsyncValue<NotificationPermissionStatuses>
         userNotificationAcceptanceState =
         ref.watch(userNotificationAcceptanceFutureProvider);
+    final bool isPremiumMember =
+        ref.watch(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,12 +108,19 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
                       ),
                       child: CustomScrollView(
                         slivers: [
-                          const InterestsHeader(name: 'Default'),
+                          InterestsHeader(
+                            name: 'Default',
+                            isPremiumMember: isPremiumMember,
+                          ),
                           InterestsList(
                             interests: defaultInterests,
                             usersInterests: usersInterests,
                           ),
-                          const InterestsHeader(name: 'Optional'),
+                          InterestsHeader(
+                            name: 'Premium',
+                            isPremium: true,
+                            isPremiumMember: isPremiumMember,
+                          ),
                           InterestsList(
                             interests: optionalInterests,
                             usersInterests: usersInterests,
@@ -224,31 +235,60 @@ class InterestsHeader extends StatelessWidget {
   const InterestsHeader({
     Key? key,
     required this.name,
+    this.isPremium = false,
+    required this.isPremiumMember,
   }) : super(key: key);
 
   final String name;
+  final bool isPremium;
+  final bool isPremiumMember;
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Row(
-        children: [
-          Text(
-            name,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
-            ),
-          ),
+    Widget row = Row(
+      children: [
+        if (isPremium)
           const SizedBox(
             width: kItemsSpacingSmallConstant,
           ),
-          const Expanded(
-            child: Divider(),
+        Text(
+          name,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+          ),
+        ),
+        const SizedBox(
+          width: kItemsSpacingSmallConstant,
+        ),
+        Expanded(
+          child: Divider(
+            height: isPremium ? 10 : 1,
+            color: isPremium ? Colors.white : null,
+          ),
+        ),
+      ],
+    );
+    if (isPremium) {
+      row = Row(
+        children: [
+          if (isPremium)
+            Icon(
+              isPremiumMember ? Icons.lock_open_rounded : Icons.lock,
+              color: isPremiumMember ? Colors.green : Colors.red,
+            ),
+          Expanded(
+            child: AnimatingGradientShaderBuilder(
+              child: row,
+            ),
           ),
         ],
-      ),
+      );
+    }
+
+    return SliverToBoxAdapter(
+      child: row,
     );
   }
 }
@@ -291,6 +331,7 @@ class InterestsList extends StatelessWidget {
                 final Interest interest = interests[index];
                 final bool isUsersInterest =
                     usersInterests.contains(interest.name);
+
                 return NotificationSettingTile(
                   interest: interest,
                   isUsersInterest: isUsersInterest,

@@ -202,13 +202,11 @@ class StreamButton extends ConsumerWidget {
                 alignment: Alignment.center,
                 fit: StackFit.expand,
                 children: [
-                  const Positioned.fill(
-                    child: AnimatingGradientShaderBuilder(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
+                  const AnimatingGradientShaderBuilder(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       ),
                     ),
                   ),

@@ -38,7 +38,7 @@ class CustomVideoProgressIndicator extends StatefulWidget {
   /// Defaults to `top: 5.0`.
   final EdgeInsets padding;
 
-  final VoidCallback onScrubbed;
+  final Function(Duration duration) onScrubbed;
 
   @override
   State<CustomVideoProgressIndicator> createState() =>
@@ -130,6 +130,7 @@ class _VideoProgressIndicatorState extends State<CustomVideoProgressIndicator> {
 
 class CustomVideoScrubber extends StatefulWidget {
   const CustomVideoScrubber({
+    super.key,
     required this.child,
     required this.controller,
     required this.onScrubbed,
@@ -137,7 +138,7 @@ class CustomVideoScrubber extends StatefulWidget {
 
   final Widget child;
   final VideoPlayerController controller;
-  final VoidCallback onScrubbed;
+  final Function(Duration duration) onScrubbed;
 
   @override
   _VideoScrubberState createState() => _VideoScrubberState();
@@ -148,21 +149,28 @@ class _VideoScrubberState extends State<CustomVideoScrubber> {
 
   VideoPlayerController get controller => widget.controller;
 
+  Duration duration = Duration.zero;
+
+  void seekToRelativePosition(Offset globalPosition) {
+    duration = calculateDurationFromOffset(globalPosition);
+    controller.seekTo(duration);
+  }
+
+  Duration calculateDurationFromOffset(Offset globalPosition) {
+    final RenderBox box = context.findRenderObject()! as RenderBox;
+    final Offset tapPos = box.globalToLocal(globalPosition);
+    final double relative = tapPos.dx / box.size.width;
+
+    return controller.value.duration * relative;
+  }
+
   @override
   Widget build(BuildContext context) {
-    void seekToRelativePosition(Offset globalPosition) {
-      final RenderBox box = context.findRenderObject()! as RenderBox;
-      final Offset tapPos = box.globalToLocal(globalPosition);
-      final double relative = tapPos.dx / box.size.width;
-      final Duration position = controller.value.duration * relative;
-      controller.seekTo(position);
-    }
-
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: widget.child,
       onHorizontalDragStart: (DragStartDetails details) {
-        widget.onScrubbed();
+        widget.onScrubbed(duration);
         if (!controller.value.isInitialized) {
           return;
         }
@@ -172,21 +180,21 @@ class _VideoScrubberState extends State<CustomVideoScrubber> {
         }
       },
       onHorizontalDragUpdate: (DragUpdateDetails details) {
-        widget.onScrubbed();
+        widget.onScrubbed(duration);
         if (!controller.value.isInitialized) {
           return;
         }
         seekToRelativePosition(details.globalPosition);
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        widget.onScrubbed();
+        widget.onScrubbed(duration);
         if (_controllerWasPlaying &&
             controller.value.position != controller.value.duration) {
           controller.play();
         }
       },
       onTapDown: (TapDownDetails details) {
-        widget.onScrubbed();
+        widget.onScrubbed(duration);
         if (!controller.value.isInitialized) {
           return;
         }

@@ -20,6 +20,8 @@ final CollectionReference animationsCollection =
 
 final CollectionReference _stormSurgeAlertsCollection =
     _firestore.collection('weather');
+final CollectionReference changelogsCollection =
+    _firestore.collection('changelogs');
 
 final CollectionReference<UserData> usersCollectionRef =
     usersCollection.withConverter<UserData>(

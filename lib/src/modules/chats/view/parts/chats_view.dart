@@ -16,9 +16,12 @@ class ChatsView extends ConsumerWidget {
   ChatsView({
     Key? key,
     required this.chaseId,
+    this.respectBottomPadding = true,
   }) : super(key: key);
   final String chaseId;
   final Logger logger = Logger('ChatsView');
+
+  bool respectBottomPadding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +30,8 @@ class ChatsView extends ConsumerWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom:
+            respectBottomPadding ? MediaQuery.of(context).viewInsets.bottom : 0,
       ),
       child: Column(
         children: [
@@ -44,7 +48,7 @@ class ChatsView extends ConsumerWidget {
                 children: [
                   Text(
                     'Chats',
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.onBackground,
                         ),

@@ -58,3 +58,21 @@ class DeviceScreen {
 }
 
 // MediaQuery.of(context).orientation good enough to check between portrait and landscape, not on ipad unless rquirefull screen is on
+
+extension GetGridCount on FormFactorType {
+  int get gridCount {
+    switch (this) {
+      case FormFactorType.SmallPhone:
+        return 1;
+
+      case FormFactorType.LargePhone:
+        return 2;
+
+      case FormFactorType.Tablet:
+        return 3;
+
+      case FormFactorType.Monitor:
+        return 5;
+    }
+  }
+}

@@ -46,9 +46,9 @@ target 'Runner' do
   # use_modular_headers!
 
   # pod 'NodleSDK'
-  pod 'SQLite.swift', '~> 0.13.2'
-  pod 'SwiftCBOR', '~> 0.4.4'
-  pod 'SwiftProtobuf', '~> 1.18.0'
+  # pod 'SQLite.swift', '~> 0.13.2'
+  # pod 'SwiftCBOR', '~> 0.4.4'
+  # pod 'SwiftProtobuf', '~> 1.18.0'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
@@ -62,6 +62,7 @@ post_install do |installer|
     target.build_configurations.each do |config|
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
       config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
       # Start - Enabling permissions
       # Enabling permissions here is required as per new updates on permission_handler plugin
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [

@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -13,6 +14,7 @@ import '../modules/chase/data/chase_db_ab.dart';
 import '../modules/chase/domain/chase_repo.dart';
 import '../modules/chase/domain/chase_repo_ab.dart';
 import '../notifiers/app_update_notifier.dart';
+import '../notifiers/in_app_purchases_state_notifier.dart';
 
 final Provider<SharedPreferences> sharedPreferancesProvider =
     Provider<SharedPreferences>((ProviderRef<SharedPreferences> ref) {
@@ -69,3 +71,18 @@ final Provider<GlobalKey> appGlobalKeyProvider =
     Provider<GlobalKey>((ProviderRef<GlobalKey> ref) {
   return GlobalKey();
 });
+
+final StateNotifierProvider<InAppPurchasesStateNotifier,
+        AsyncValue<purchases.CustomerInfo>> inAppPurchasesStateNotifier =
+    StateNotifierProvider<InAppPurchasesStateNotifier,
+        AsyncValue<purchases.CustomerInfo>>(
+  (
+    StateNotifierProviderRef<InAppPurchasesStateNotifier,
+            AsyncValue<purchases.CustomerInfo>>
+        ref,
+  ) {
+    return InAppPurchasesStateNotifier(
+      ref,
+    );
+  },
+);

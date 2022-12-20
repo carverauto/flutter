@@ -7,19 +7,27 @@ import '../../../../const/images.dart';
 import '../../../../const/links.dart';
 import '../../../../const/sizings.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../core/notifiers/in_app_purchases_state_notifier.dart';
+import '../../../../core/top_level_providers/services_providers.dart';
 import '../../../../models/user/user_data.dart';
 import '../../../../routes/routeNames.dart';
+import '../../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
+import '../../../../shared/shaders/confetti/confetti_shader_view.dart';
 import '../../../../shared/util/helpers/launchLink.dart';
+import '../../../../shared/widgets/buttons/glass_button.dart';
 import '../../../chats/view/providers/providers.dart';
 import '../../../firehose/view/providers/providers.dart';
 
-class ChaseAppDrawer extends StatelessWidget {
+class ChaseAppDrawer extends ConsumerWidget {
   const ChaseAppDrawer({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
+
     return Drawer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +38,7 @@ class ChaseAppDrawer extends StatelessWidget {
 
               return state.maybeWhen(
                 data: (UserData userData) {
-                  return InkWell(
+                  Widget header = InkWell(
                     onTap: () async {
                       final bool? shouldSignOut =
                           await Navigator.pushNamed<bool>(
@@ -44,54 +52,95 @@ class ChaseAppDrawer extends StatelessWidget {
                       }
                     },
                     child: DrawerHeader(
-                      child: Row(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: primaryColor.shade800,
-                            backgroundImage: NetworkImage(
-                              userData.photoURL ?? defaultPhotoURL,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: kItemsSpacingSmallConstant,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (userData.userName != null)
-                                  Text(
-                                    userData.userName!,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                                  ),
-                                Text(
-                                  userData.email ?? '',
+                          if (isPremiumMember)
+                            const GlassBg(
+                              child: AnimatingGradientShaderBuilder(
+                                child: Text(
+                                  '✨Premium Member',
                                   style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
                           const SizedBox(
-                            width: kPaddingXSmallConstant,
+                            height: kPaddingSmallConstant,
                           ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: primaryColor.shade800,
+                                backgroundImage: NetworkImage(
+                                  userData.photoURL ?? defaultPhotoURL,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: kItemsSpacingSmallConstant,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (userData.userName != null)
+                                      Text(
+                                        userData.userName!,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                        ),
+                                      ),
+                                    Text(
+                                      userData.email ?? '',
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: kPaddingXSmallConstant,
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
                   );
+
+                  if (isPremiumMember) {
+                    header = Stack(
+                      children: [
+                        const Positioned.fill(
+                          child: RotatedBox(
+                            quarterTurns: 2,
+                            child: ConfettiShaderView(
+                              child: ColoredBox(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        header,
+                      ],
+                    );
+                  }
+
+                  return header;
                 },
                 orElse: SizedBox.shrink,
               );
@@ -122,6 +171,38 @@ class ChaseAppDrawer extends StatelessWidget {
             ),
             title: Text(
               'Credits',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+            ),
+          ),
+          AnimatingGradientShaderBuilder(
+            child: ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, RouteName.IN_APP_PURCHASES);
+              },
+              leading: Icon(
+                Icons.star,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              title: Text(
+                'ChaseApp Premium',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, RouteName.CHANGELOGS);
+            },
+            leading: Icon(
+              Icons.update_rounded,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Changelogs',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
               ),
