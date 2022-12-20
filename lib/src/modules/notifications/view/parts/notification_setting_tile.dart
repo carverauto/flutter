@@ -131,9 +131,6 @@ class _NotificationSettingTileSwitchState
     return Switch(
       value: isEnabled,
       onChanged: (bool value) {
-        if (widget.interest.isCompulsory && isEnabled) {
-          return;
-        }
         toggleSubscription(context, value);
       },
     );

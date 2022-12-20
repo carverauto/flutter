@@ -95,10 +95,10 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
                     Widget? child,
                   ) {
                     final List<Interest> defaultInterests = interests
-                        .where((Interest interest) => interest.isDefault)
+                        .where((Interest interest) => !interest.isPremium)
                         .toList();
-                    final List<Interest> optionalInterests = interests
-                        .where((Interest interest) => !interest.isDefault)
+                    final List<Interest> premiumInterests = interests
+                        .where((Interest interest) => interest.isPremium)
                         .toList();
 
                     return Padding(
@@ -122,7 +122,7 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
                             isPremiumMember: isPremiumMember,
                           ),
                           InterestsList(
-                            interests: optionalInterests,
+                            interests: premiumInterests,
                             usersInterests: usersInterests,
                           ),
                         ],

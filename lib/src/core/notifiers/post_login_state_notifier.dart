@@ -50,6 +50,8 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
   Future<void> checkUsersInterests() async {
     try {
+      final bool isPremiumMember =
+          _read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
       await PusherBeams.instance.start(EnvVaribales.instanceId);
 
       await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -60,6 +62,10 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
           await _read(notificationRepoProvider).fetchInterests();
 
       await Future.forEach<Interest>(interests, (Interest interest) async {
+        if (interest.isPremium && !isPremiumMember) {
+          return;
+        }
+
         if (interest.isCompulsory) {
           if (!usersInterests.contains(interest.name)) {
             await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
