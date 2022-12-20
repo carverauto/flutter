@@ -74,7 +74,7 @@ class _NotificationSettingTileSwitchState
     final bool isPremiumMember =
         ref.read(inAppPurchasesStateNotifier).value?.isPremiumMember ?? false;
 
-    if (!isPremiumMember) {
+    if (widget.interest.isPremium && !isPremiumMember) {
       await showInAppPurchasesBottomSheet(context);
 
       return;

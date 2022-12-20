@@ -6,6 +6,7 @@ import 'in_app_purchases_view.dart';
 Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
   showBottomSheet<void>(
     context: context,
+    backgroundColor: Colors.black,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(kBorderRadiusMediumConstant),
