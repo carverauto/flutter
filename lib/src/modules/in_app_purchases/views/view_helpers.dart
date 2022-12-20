@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../const/sizings.dart';
+import '../../../shared/widgets/buttons/glass_button.dart';
 import 'in_app_purchases_view.dart';
 
 Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
@@ -33,6 +34,16 @@ Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
                   width: 150,
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            top: 5,
+            left: kPaddingMediumConstant,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: const GlassBg(child: Icon(Icons.close)),
             ),
           ),
         ],

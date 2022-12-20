@@ -146,135 +146,142 @@ class ChaseAppDrawer extends ConsumerWidget {
               );
             },
           ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.ABOUT_US);
-            },
-            leading: Icon(
-              Icons.people_outline,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'About Us',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.CREDITS);
-            },
-            leading: Icon(
-              Icons.stars_outlined,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Credits',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          AnimatingGradientShaderBuilder(
-            child: ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, RouteName.IN_APP_PURCHASES);
-              },
-              leading: Icon(
-                Icons.star,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-              title: Text(
-                'ChaseApp Premium',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.CHANGELOGS);
-            },
-            leading: Icon(
-              Icons.update_rounded,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Changelogs',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, RouteName.SETTINGS);
-            },
-            leading: Icon(
-              Icons.settings_outlined,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Settings',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed(RouteName.SUPPORT);
-            },
-            leading: Icon(
-              Icons.help_outline,
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-            title: Text(
-              'Support',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-            ),
-          ),
-          const Spacer(),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: RichText(
-              textAlign: TextAlign.left,
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Privacy policy',
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        launchUrl(privacyPolicy);
-                      },
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(0),
+              children: [
+                ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteName.ABOUT_US);
+                  },
+                  leading: Icon(
+                    Icons.people_outline,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
-                  TextSpan(
-                    text: ' . ',
+                  title: Text(
+                    'About Us',
                     style: TextStyle(
-                      color: primaryColor.shade400,
-                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                  TextSpan(
-                    text: 'Tos',
-                    style: const TextStyle(
-                      decoration: TextDecoration.underline,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        launchUrl(tosPolicy);
-                      },
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteName.CREDITS);
+                  },
+                  leading: Icon(
+                    Icons.stars_outlined,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
-                ],
-              ),
+                  title: Text(
+                    'Credits',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                ),
+                AnimatingGradientShaderBuilder(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.IN_APP_PURCHASES);
+                    },
+                    leading: Icon(
+                      Icons.star,
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                    title: Text(
+                      'ChaseApp Premium',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteName.CHANGELOGS);
+                  },
+                  leading: Icon(
+                    Icons.update_rounded,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  title: Text(
+                    'Changelogs',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteName.SETTINGS);
+                  },
+                  leading: Icon(
+                    Icons.settings_outlined,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(RouteName.SUPPORT);
+                  },
+                  leading: Icon(
+                    Icons.help_outline,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  title: Text(
+                    'Support',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: RichText(
+                    textAlign: TextAlign.left,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Privacy policy',
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launchUrl(privacyPolicy);
+                            },
+                        ),
+                        TextSpan(
+                          text: ' . ',
+                          style: TextStyle(
+                            color: primaryColor.shade400,
+                            fontSize: 18,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Tos',
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launchUrl(tosPolicy);
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

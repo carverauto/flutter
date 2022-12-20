@@ -79,11 +79,12 @@ class InAppPurchasesMainView extends ConsumerStatefulWidget {
   const InAppPurchasesMainView({super.key});
 
   @override
-  ConsumerState<InAppPurchasesMainView> createState() => _InAppPurchasesMainViewState();
+  ConsumerState<InAppPurchasesMainView> createState() =>
+      _InAppPurchasesMainViewState();
 }
 
-class _InAppPurchasesMainViewState extends ConsumerState<InAppPurchasesMainView> {
-
+class _InAppPurchasesMainViewState
+    extends ConsumerState<InAppPurchasesMainView> {
   final Logger _logger = Logger('InAppPurchasesMainView');
   @override
   Widget build(BuildContext context) {
@@ -273,13 +274,18 @@ class _InAppPurchasesMainViewState extends ConsumerState<InAppPurchasesMainView>
         child: CircularAdaptiveProgressIndicatorWithBg(),
       ),
       error: (Object error, StackTrace? stackTrace) {
-        _logger.severe('Error getting in app purchases info', error, stackTrace);
-        
+        _logger.severe(
+          'Error getting in app purchases info',
+          error,
+          stackTrace,
+        );
+
         return Center(
-          child: ChaseAppErrorWidget(onRefresh: (){
-            ref.refresh(inAppPurchasesStateNotifier);
-          
-          },),
+          child: ChaseAppErrorWidget(
+            onRefresh: () {
+              ref.refresh(inAppPurchasesStateNotifier);
+            },
+          ),
         );
       },
     );
@@ -1100,6 +1106,21 @@ List<_PremiumFeatureTile> premiumFeatures = [
     leading: Text('🔥', style: TextStyle(fontSize: 24)),
     description:
         'Get real-time notifications from our curated twitter feed, also includes alerts for major earthquakes, severe weather, and more.',
+    isLanded: true,
+  ),
+  const _PremiumFeatureTile(
+    title: 'Airplay',
+    leading: Text('🖥', style: TextStyle(fontSize: 24)),
+    description: 'Airplay Chase streams to your other apple devices.',
+    isLanded: true,
+  ),
+  const _PremiumFeatureTile(
+    title: 'Google Cast',
+    leading: Icon(
+      Icons.cast,
+      color: Colors.blue,
+    ),
+    description: 'Cast Chase mp4 streams to your Chromecast devices.',
     isLanded: true,
   ),
   const _PremiumFeatureTile(
