@@ -49,6 +49,8 @@ class ChangeLogs extends ConsumerWidget {
               return Padding(
                 padding: const EdgeInsets.only(
                   top: kPaddingSmallConstant,
+                  left: kPaddingMediumConstant,
+                  right: kPaddingMediumConstant,
                 ),
                 child: Column(
                   children: [
@@ -60,13 +62,15 @@ class ChangeLogs extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    Text(
-                      changelog.title,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
+                    if (changelog.title != null)
+                      Text(
+                        changelog.title!,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Colors.white,
+                            ),
+                      ),
+
                     const SizedBox(
                       height: kPaddingXSmallConstant,
                     ),
@@ -106,15 +110,59 @@ class ChangeLogs extends ConsumerWidget {
                           ),
                         ),
                       ),
+
                     const SizedBox(
                       height: kPaddingSmallConstant,
                     ),
+                    // add whats new text
                     Text(
-                      changelog.description,
+                      "What's new?",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: changelog.updates.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final String update = changelog.updates[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 1,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.circle,
+                                size: 5,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(
+                                width: kPaddingXSmallConstant,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  update,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        color: Colors.white,
+                                        textBaseline: TextBaseline.ideographic,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: kPaddingSmallConstant,

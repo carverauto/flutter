@@ -16,8 +16,9 @@ abstract class Changelog implements _$Changelog {
     // All documents must have an id
 
     @JsonKey(name: 'Version') required String version,
-    @JsonKey(name: 'Title') required String title,
+    @JsonKey(name: 'Title') String? title,
     @JsonKey(name: 'Description') required String description,
+    @JsonKey(name: 'Updates') required List<String> updates,
     @DatetimeTimestampConverter() required DateTime updatedOn,
     @JsonKey(name: 'ImageUrl') String? imageUrl,
   }) = _Changelog;

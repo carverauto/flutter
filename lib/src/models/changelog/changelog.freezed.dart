@@ -25,9 +25,11 @@ mixin _$Changelog {
   @JsonKey(name: 'Version')
   String get version => throw _privateConstructorUsedError;
   @JsonKey(name: 'Title')
-  String get title => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'Description')
   String get description => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Updates')
+  List<String> get updates => throw _privateConstructorUsedError;
   @DatetimeTimestampConverter()
   DateTime get updatedOn => throw _privateConstructorUsedError;
   @JsonKey(name: 'ImageUrl')
@@ -46,8 +48,9 @@ abstract class $ChangelogCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'Version') String version,
-      @JsonKey(name: 'Title') String title,
+      @JsonKey(name: 'Title') String? title,
       @JsonKey(name: 'Description') String description,
+      @JsonKey(name: 'Updates') List<String> updates,
       @DatetimeTimestampConverter() DateTime updatedOn,
       @JsonKey(name: 'ImageUrl') String? imageUrl});
 }
@@ -66,8 +69,9 @@ class _$ChangelogCopyWithImpl<$Res, $Val extends Changelog>
   @override
   $Res call({
     Object? version = null,
-    Object? title = null,
+    Object? title = freezed,
     Object? description = null,
+    Object? updates = null,
     Object? updatedOn = null,
     Object? imageUrl = freezed,
   }) {
@@ -76,14 +80,18 @@ class _$ChangelogCopyWithImpl<$Res, $Val extends Changelog>
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      updates: null == updates
+          ? _value.updates
+          : updates // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       updatedOn: null == updatedOn
           ? _value.updatedOn
           : updatedOn // ignore: cast_nullable_to_non_nullable
@@ -105,8 +113,9 @@ abstract class _$$_ChangelogCopyWith<$Res> implements $ChangelogCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'Version') String version,
-      @JsonKey(name: 'Title') String title,
+      @JsonKey(name: 'Title') String? title,
       @JsonKey(name: 'Description') String description,
+      @JsonKey(name: 'Updates') List<String> updates,
       @DatetimeTimestampConverter() DateTime updatedOn,
       @JsonKey(name: 'ImageUrl') String? imageUrl});
 }
@@ -123,8 +132,9 @@ class __$$_ChangelogCopyWithImpl<$Res>
   @override
   $Res call({
     Object? version = null,
-    Object? title = null,
+    Object? title = freezed,
     Object? description = null,
+    Object? updates = null,
     Object? updatedOn = null,
     Object? imageUrl = freezed,
   }) {
@@ -133,14 +143,18 @@ class __$$_ChangelogCopyWithImpl<$Res>
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      updates: null == updates
+          ? _value._updates
+          : updates // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       updatedOn: null == updatedOn
           ? _value.updatedOn
           : updatedOn // ignore: cast_nullable_to_non_nullable
@@ -159,11 +173,13 @@ class __$$_ChangelogCopyWithImpl<$Res>
 class _$_Changelog extends _Changelog {
   const _$_Changelog(
       {@JsonKey(name: 'Version') required this.version,
-      @JsonKey(name: 'Title') required this.title,
+      @JsonKey(name: 'Title') this.title,
       @JsonKey(name: 'Description') required this.description,
+      @JsonKey(name: 'Updates') required final List<String> updates,
       @DatetimeTimestampConverter() required this.updatedOn,
       @JsonKey(name: 'ImageUrl') this.imageUrl})
-      : super._();
+      : _updates = updates,
+        super._();
 
   factory _$_Changelog.fromJson(Map<String, dynamic> json) =>
       _$$_ChangelogFromJson(json);
@@ -175,10 +191,18 @@ class _$_Changelog extends _Changelog {
   final String version;
   @override
   @JsonKey(name: 'Title')
-  final String title;
+  final String? title;
   @override
   @JsonKey(name: 'Description')
   final String description;
+  final List<String> _updates;
+  @override
+  @JsonKey(name: 'Updates')
+  List<String> get updates {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_updates);
+  }
+
   @override
   @DatetimeTimestampConverter()
   final DateTime updatedOn;
@@ -188,7 +212,7 @@ class _$_Changelog extends _Changelog {
 
   @override
   String toString() {
-    return 'Changelog(version: $version, title: $title, description: $description, updatedOn: $updatedOn, imageUrl: $imageUrl)';
+    return 'Changelog(version: $version, title: $title, description: $description, updates: $updates, updatedOn: $updatedOn, imageUrl: $imageUrl)';
   }
 
   @override
@@ -200,6 +224,7 @@ class _$_Changelog extends _Changelog {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            const DeepCollectionEquality().equals(other._updates, _updates) &&
             (identical(other.updatedOn, updatedOn) ||
                 other.updatedOn == updatedOn) &&
             (identical(other.imageUrl, imageUrl) ||
@@ -208,8 +233,8 @@ class _$_Changelog extends _Changelog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, version, title, description, updatedOn, imageUrl);
+  int get hashCode => Object.hash(runtimeType, version, title, description,
+      const DeepCollectionEquality().hash(_updates), updatedOn, imageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -228,8 +253,9 @@ class _$_Changelog extends _Changelog {
 abstract class _Changelog extends Changelog {
   const factory _Changelog(
       {@JsonKey(name: 'Version') required final String version,
-      @JsonKey(name: 'Title') required final String title,
+      @JsonKey(name: 'Title') final String? title,
       @JsonKey(name: 'Description') required final String description,
+      @JsonKey(name: 'Updates') required final List<String> updates,
       @DatetimeTimestampConverter() required final DateTime updatedOn,
       @JsonKey(name: 'ImageUrl') final String? imageUrl}) = _$_Changelog;
   const _Changelog._() : super._();
@@ -243,10 +269,13 @@ abstract class _Changelog extends Changelog {
   String get version;
   @override
   @JsonKey(name: 'Title')
-  String get title;
+  String? get title;
   @override
   @JsonKey(name: 'Description')
   String get description;
+  @override
+  @JsonKey(name: 'Updates')
+  List<String> get updates;
   @override
   @DatetimeTimestampConverter()
   DateTime get updatedOn;
