@@ -13,6 +13,7 @@ import '../../../routes/routeNames.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
 import '../../../shared/widgets/buttons/glass_button.dart';
+import '../../../shared/widgets/errors/error_widget.dart';
 import '../../../shared/widgets/loaders/loading.dart';
 
 final FutureProvider<purchases.Offerings> currentOfferingFutureProvider =
@@ -74,11 +75,18 @@ class _InAppPurchasesViewState extends ConsumerState<InAppPurchasesView>
   }
 }
 
-class InAppPurchasesMainView extends ConsumerWidget {
+class InAppPurchasesMainView extends ConsumerStatefulWidget {
   const InAppPurchasesMainView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<InAppPurchasesMainView> createState() => _InAppPurchasesMainViewState();
+}
+
+class _InAppPurchasesMainViewState extends ConsumerState<InAppPurchasesMainView> {
+
+  final Logger _logger = Logger('InAppPurchasesMainView');
+  @override
+  Widget build(BuildContext context) {
     final AsyncValue<purchases.CustomerInfo> info =
         ref.watch(inAppPurchasesStateNotifier);
 
@@ -265,8 +273,13 @@ class InAppPurchasesMainView extends ConsumerWidget {
         child: CircularAdaptiveProgressIndicatorWithBg(),
       ),
       error: (Object error, StackTrace? stackTrace) {
+        _logger.severe('Error getting in app purchases info', error, stackTrace);
+        
         return Center(
-          child: Text(error.toString()),
+          child: ChaseAppErrorWidget(onRefresh: (){
+            ref.refresh(inAppPurchasesStateNotifier);
+          
+          },),
         );
       },
     );
