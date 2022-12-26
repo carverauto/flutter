@@ -1,17 +1,21 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' as purchases;
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../const/colors.dart';
+import '../../../const/links.dart';
 import '../../../const/other.dart';
 import '../../../const/sizings.dart';
 import '../../../core/top_level_providers/services_providers.dart';
 import '../../../routes/routeNames.dart';
 import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/shaders/confetti/confetti_shader_view.dart';
+import '../../../shared/util/helpers/launchLink.dart';
 import '../../../shared/widgets/buttons/glass_button.dart';
 import '../../../shared/widgets/errors/error_widget.dart';
 import '../../../shared/widgets/loaders/loading.dart';
@@ -890,6 +894,119 @@ class _OfferingsDescriptionState extends ConsumerState<_OfferingsDescription>
           const _PremiumFeaturesDisplayView(
             isPremium: false,
           ),
+        if (Theme.of(context).platform == TargetPlatform.iOS)
+          SubscriptionsInfoDisclosure(
+            purchaseString:
+                '${widget.package.storeProduct.priceString}${widget.isShowingMonthly ? '/Month' : '/Year'}',
+          ),
+        const SizedBox(
+          height: kPaddingLargeConstant * 3,
+        ),
+      ],
+    );
+  }
+}
+
+class SubscriptionsInfoDisclosure extends StatefulWidget {
+  const SubscriptionsInfoDisclosure({
+    super.key,
+    required this.purchaseString,
+  });
+
+  final String purchaseString;
+
+  @override
+  State<SubscriptionsInfoDisclosure> createState() =>
+      _SubscriptionsInfoDisclosureState();
+}
+
+class _SubscriptionsInfoDisclosureState
+    extends State<SubscriptionsInfoDisclosure> {
+  bool isExpanded = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        IconButton(
+          onPressed: () {
+            setState(() {
+              isExpanded = !isExpanded;
+            });
+          },
+          icon: const Icon(
+            CupertinoIcons.chevron_compact_up,
+          ),
+        ),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return SizeTransition(
+              sizeFactor: animation,
+              child: FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                ),
+                child: child,
+              ),
+            );
+          },
+          child: isExpanded
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'A ${widget.purchaseString} purchase will be applied to your iTunes account on confirmation. Subscriptions will automatically renew unless canceled within 24-hours before the end of the current period. You can cancel anytime with your iTunes account settings. Any unused portion of a free trial will be forfeited if you purchase a subscription',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: kPaddingSmallConstant,
+                    ),
+                    RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Privacy policy',
+                            style: const TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(privacyPolicy);
+                              },
+                          ),
+                          TextSpan(
+                            text: ' . ',
+                            style: TextStyle(
+                              color: primaryColor.shade400,
+                              fontSize: 18,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Tos',
+                            style: const TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(tosPolicy);
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: kPaddingLargeConstant * 3 +
+                          MediaQuery.of(context).padding.bottom,
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
+        ),
       ],
     );
   }
