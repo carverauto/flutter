@@ -59,28 +59,40 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
                     Material(
                       child: ButtonBar(
                         children: [
-                          IconButton(
-                            onPressed: () async {
-                              try {
-                                final String shareLink =
-                                    await createChaseDynamicLink(
-                                  chase,
-                                  ref.read(
-                                    firebaseDynamicLinksProvider,
-                                  ),
-                                );
-                                await Share.share(shareLink);
-                              } catch (e, stk) {
-                                logger.warning(
-                                  'Chase Sharing Failed!',
-                                  e,
-                                  stk,
-                                );
-                              }
+                          Builder(
+                            builder: (BuildContext context) {
+                              return IconButton(
+                                onPressed: () async {
+                                  try {
+                                    final RenderBox? box = context
+                                        .findRenderObject() as RenderBox?;
+
+                                    final String shareLink =
+                                        await createChaseDynamicLink(
+                                      chase,
+                                      ref.read(
+                                        firebaseDynamicLinksProvider,
+                                      ),
+                                    );
+                                    await Share.share(
+                                      shareLink,
+                                      sharePositionOrigin:
+                                          box!.localToGlobal(Offset.zero) &
+                                              box.size,
+                                    );
+                                  } catch (e, stk) {
+                                    logger.warning(
+                                      'Chase Sharing Failed!',
+                                      e,
+                                      stk,
+                                    );
+                                  }
+                                },
+                                icon: const Icon(
+                                  Icons.share,
+                                ),
+                              );
                             },
-                            icon: const Icon(
-                              Icons.share,
-                            ),
                           ),
                           // IconButton(
                           //   onPressed: () {},
