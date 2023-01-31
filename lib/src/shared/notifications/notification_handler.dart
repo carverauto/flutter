@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 import '../../const/sizings.dart';
 import '../../core/top_level_providers/services_providers.dart';
@@ -17,7 +18,7 @@ import 'notification_dialog.dart';
 Future<void> notificationHandler(
   BuildContext context,
   ChaseAppNotification notification, {
-  Reader? read,
+  WidgetRef? ref,
 }) async {
   switch (notification.getInterestEnumFromName) {
     case Interests.chases:
@@ -28,8 +29,10 @@ Future<void> notificationHandler(
       break;
 
     case Interests.appUpdates:
-      if (read != null) {
-        await read(checkForUpdateStateNotifier.notifier).checkForUpdate(true);
+      if (ref != null) {
+        await ref
+            .read(checkForUpdateStateNotifier.notifier)
+            .checkForUpdate(true);
       }
       // handlebgmessage(notification).then<void>(
       //   (value) => read != null
@@ -67,6 +70,14 @@ Future<void> _showFirehosePreview(
 
   switch (firehoseNotificationType) {
     case FirehoseNotificationType.twitter:
+      final String? tweetId =
+          notification.data?.tweetData?.tweetId ?? notification.data?.tweetId;
+      if (tweetId == null) {
+        Logger('showFirehosePreview').warning(
+          'Tweetid missing in twitter notifcation : ${notification.data?.toJson()}',
+        );
+        return;
+      }
       await _showNotificationDialog(
         context,
         Dialog(
@@ -79,7 +90,7 @@ Future<void> _showFirehosePreview(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TweetPreview(
-                tweetId: notification.data!.tweetData!.tweetId,
+                tweetId: tweetId,
                 showMedia: false,
               ),
             ],
@@ -116,17 +127,6 @@ Future<void> _showFirehosePreview(
         ),
       );
       break;
-    // default:
-    //   Navigator.push(
-    //     context,
-    //     HeroDialogRoute<void>(
-    //       builder: (context) {
-    //         return NotificationDialog(
-    //           notification: notification,
-    //         );
-    //       },
-    //     ),
-    //   );
   }
 }
 

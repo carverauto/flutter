@@ -26,6 +26,8 @@ mixin _$NotificationData {
   String? get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'YoutubeId')
   String? get youtubeId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Tweetid')
+  String? get tweetId => throw _privateConstructorUsedError;
   @JsonKey(name: 'ChannelId')
   String? get channelId => throw _privateConstructorUsedError;
   @JsonKey(name: 'ConfigState')
@@ -49,6 +51,7 @@ abstract class $NotificationDataCopyWith<$Res> {
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
+      @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'ChannelId') String? channelId,
       @JsonKey(name: 'ConfigState') String? configState,
       TweetData? tweetData,
@@ -74,6 +77,7 @@ class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
     Object? id = freezed,
     Object? image = freezed,
     Object? youtubeId = freezed,
+    Object? tweetId = freezed,
     Object? channelId = freezed,
     Object? configState = freezed,
     Object? tweetData = freezed,
@@ -91,6 +95,10 @@ class _$NotificationDataCopyWithImpl<$Res, $Val extends NotificationData>
       youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tweetId: freezed == tweetId
+          ? _value.tweetId
+          : tweetId // ignore: cast_nullable_to_non_nullable
               as String?,
       channelId: freezed == channelId
           ? _value.channelId
@@ -148,6 +156,7 @@ abstract class _$$_NotificationDataCopyWith<$Res>
       {@JsonKey(name: 'Id') String? id,
       @JsonKey(name: 'Image') String? image,
       @JsonKey(name: 'YoutubeId') String? youtubeId,
+      @JsonKey(name: 'Tweetid') String? tweetId,
       @JsonKey(name: 'ChannelId') String? channelId,
       @JsonKey(name: 'ConfigState') String? configState,
       TweetData? tweetData,
@@ -173,6 +182,7 @@ class __$$_NotificationDataCopyWithImpl<$Res>
     Object? id = freezed,
     Object? image = freezed,
     Object? youtubeId = freezed,
+    Object? tweetId = freezed,
     Object? channelId = freezed,
     Object? configState = freezed,
     Object? tweetData = freezed,
@@ -190,6 +200,10 @@ class __$$_NotificationDataCopyWithImpl<$Res>
       youtubeId: freezed == youtubeId
           ? _value.youtubeId
           : youtubeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tweetId: freezed == tweetId
+          ? _value.tweetId
+          : tweetId // ignore: cast_nullable_to_non_nullable
               as String?,
       channelId: freezed == channelId
           ? _value.channelId
@@ -219,6 +233,7 @@ class _$_NotificationData extends _NotificationData {
       {@JsonKey(name: 'Id') this.id,
       @JsonKey(name: 'Image') this.image,
       @JsonKey(name: 'YoutubeId') this.youtubeId,
+      @JsonKey(name: 'Tweetid') this.tweetId,
       @JsonKey(name: 'ChannelId') this.channelId,
       @JsonKey(name: 'ConfigState') this.configState,
       this.tweetData,
@@ -238,6 +253,9 @@ class _$_NotificationData extends _NotificationData {
   @JsonKey(name: 'YoutubeId')
   final String? youtubeId;
   @override
+  @JsonKey(name: 'Tweetid')
+  final String? tweetId;
+  @override
   @JsonKey(name: 'ChannelId')
   final String? channelId;
   @override
@@ -250,7 +268,7 @@ class _$_NotificationData extends _NotificationData {
 
   @override
   String toString() {
-    return 'NotificationData(id: $id, image: $image, youtubeId: $youtubeId, channelId: $channelId, configState: $configState, tweetData: $tweetData, youtubeData: $youtubeData)';
+    return 'NotificationData(id: $id, image: $image, youtubeId: $youtubeId, tweetId: $tweetId, channelId: $channelId, configState: $configState, tweetData: $tweetData, youtubeData: $youtubeData)';
   }
 
   @override
@@ -262,6 +280,7 @@ class _$_NotificationData extends _NotificationData {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.youtubeId, youtubeId) ||
                 other.youtubeId == youtubeId) &&
+            (identical(other.tweetId, tweetId) || other.tweetId == tweetId) &&
             (identical(other.channelId, channelId) ||
                 other.channelId == channelId) &&
             (identical(other.configState, configState) ||
@@ -274,8 +293,8 @@ class _$_NotificationData extends _NotificationData {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, image, youtubeId, channelId,
-      configState, tweetData, youtubeData);
+  int get hashCode => Object.hash(runtimeType, id, image, youtubeId, tweetId,
+      channelId, configState, tweetData, youtubeData);
 
   @JsonKey(ignore: true)
   @override
@@ -296,6 +315,7 @@ abstract class _NotificationData extends NotificationData {
       {@JsonKey(name: 'Id') final String? id,
       @JsonKey(name: 'Image') final String? image,
       @JsonKey(name: 'YoutubeId') final String? youtubeId,
+      @JsonKey(name: 'Tweetid') final String? tweetId,
       @JsonKey(name: 'ChannelId') final String? channelId,
       @JsonKey(name: 'ConfigState') final String? configState,
       final TweetData? tweetData,
@@ -314,6 +334,9 @@ abstract class _NotificationData extends NotificationData {
   @override
   @JsonKey(name: 'YoutubeId')
   String? get youtubeId;
+  @override
+  @JsonKey(name: 'Tweetid')
+  String? get tweetId;
   @override
   @JsonKey(name: 'ChannelId')
   String? get channelId;

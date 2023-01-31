@@ -13,6 +13,7 @@ abstract class NotificationData implements _$NotificationData {
     @JsonKey(name: 'Id') String? id,
     @JsonKey(name: 'Image') String? image,
     @JsonKey(name: 'YoutubeId') String? youtubeId,
+    @JsonKey(name: 'Tweetid') String? tweetId,
     @JsonKey(name: 'ChannelId') String? channelId,
     @JsonKey(name: 'ConfigState') String? configState,
     TweetData? tweetData,

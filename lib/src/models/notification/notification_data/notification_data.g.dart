@@ -11,6 +11,7 @@ _$_NotificationData _$$_NotificationDataFromJson(Map<String, dynamic> json) =>
       id: json['Id'] as String?,
       image: json['Image'] as String?,
       youtubeId: json['YoutubeId'] as String?,
+      tweetId: json['Tweetid'] as String?,
       channelId: json['ChannelId'] as String?,
       configState: json['ConfigState'] as String?,
       tweetData: json['tweetData'] == null
@@ -26,6 +27,7 @@ Map<String, dynamic> _$$_NotificationDataToJson(_$_NotificationData instance) =>
       'Id': instance.id,
       'Image': instance.image,
       'YoutubeId': instance.youtubeId,
+      'Tweetid': instance.tweetId,
       'ChannelId': instance.channelId,
       'ConfigState': instance.configState,
       'tweetData': instance.tweetData?.toJson(),
