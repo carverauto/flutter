@@ -107,7 +107,7 @@ final StateNotifierProviderFamily<ChaseEventsNotifier, void, String>
   ) =>
       ChaseEventsNotifier(
     chaseId: chaseId,
-    read: ref.read,
+    ref: ref,
     streamFeedClient: ref.read(streamFeedClientProvider),
   ),
 );

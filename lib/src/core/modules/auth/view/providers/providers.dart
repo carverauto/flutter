@@ -17,13 +17,13 @@ final AutoDisposeStateNotifierProvider<PostLoginStateNotifier, AsyncValue<void>>
             AsyncValue<void>>
         ref,
   ) {
-    return PostLoginStateNotifier(ref.read);
+    return PostLoginStateNotifier(ref);
   },
 );
 
 final Provider<AuthRepositoryAB> authRepoProvider = Provider<AuthRepositoryAB>(
   (ProviderRef<AuthRepositoryAB> ref) => AuthRepository(
-    read: ref.read,
+    ref: ref,
   ),
 );
 final Provider<AuthDB> authDbProvider = Provider<AuthDB>(

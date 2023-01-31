@@ -13,7 +13,7 @@ import '../../../shared/util/helpers/launchLink.dart';
 import '../../../shared/util/helpers/sizescaleconfig.dart';
 
 class CreditsView extends ConsumerStatefulWidget {
-  const CreditsView({Key? key}) : super(key: key);
+  const CreditsView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CreditsViewState();
@@ -34,13 +34,11 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
   late final Animation<double> disappearCrawlText;
 
-  late AudioCache audioPlayer = AudioCache(
-    fixedPlayer: AudioPlayer(),
-  );
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   Future<void> playTrack() async {
     await audioPlayer.play(
-      'audio/about_music.mp3',
+      AssetSource('audio/about_music.mp3'),
       volume: 0.03,
     );
   }
@@ -80,7 +78,7 @@ While the Congress of the Republic endlessly debates this alarming chain of even
   @override
   void dispose() {
     _animationController.dispose();
-    audioPlayer.fixedPlayer!.dispose();
+    audioPlayer.dispose();
     super.dispose();
   }
 
@@ -146,11 +144,11 @@ While the Congress of the Republic endlessly debates this alarming chain of even
 
 class VolumeController extends StatefulWidget {
   const VolumeController({
-    Key? key,
+    super.key,
     required this.audioController,
-  }) : super(key: key);
+  });
 
-  final AudioCache audioController;
+  final AudioPlayer audioController;
 
   @override
   State<VolumeController> createState() => _VolumeControllerState();
@@ -175,7 +173,7 @@ class _VolumeControllerState extends State<VolumeController> {
                     thumbColor: starWarsCrawlTextColor,
                     onChanged: (double volume) {
                       setState(() {
-                        widget.audioController.fixedPlayer!.setVolume(volume);
+                        widget.audioController.setVolume(volume);
                         _volume = volume;
                       });
                     },
@@ -186,7 +184,7 @@ class _VolumeControllerState extends State<VolumeController> {
                     thumbColor: starWarsCrawlTextColor,
                     onChanged: (double volume) {
                       setState(() {
-                        widget.audioController.fixedPlayer!.setVolume(volume);
+                        widget.audioController.setVolume(volume);
                         _volume = volume;
                       });
                     },
@@ -205,10 +203,10 @@ class _VolumeControllerState extends State<VolumeController> {
             setState(() {
               if (_volume == 0.0) {
                 _volume = 0.02;
-                widget.audioController.fixedPlayer!.setVolume(_volume);
+                widget.audioController.setVolume(_volume);
               } else {
                 _volume = 0.0;
-                widget.audioController.fixedPlayer!.setVolume(_volume);
+                widget.audioController.setVolume(_volume);
               }
             });
           },
@@ -223,13 +221,12 @@ class _VolumeControllerState extends State<VolumeController> {
 
 class CrawlText extends StatelessWidget {
   const CrawlText({
-    Key? key,
+    super.key,
     required AnimationController animationController,
     required this.crawlText,
     required this.crawlTextposition,
     required this.disappearCrawlText,
-  })  : _animationController = animationController,
-        super(key: key);
+  }) : _animationController = animationController;
 
   final AnimationController _animationController;
   final String crawlText;
@@ -278,9 +275,9 @@ class CrawlText extends StatelessWidget {
 
 class CrawlContributions extends StatelessWidget {
   const CrawlContributions({
-    Key? key,
+    super.key,
     required this.animationController,
-  }) : super(key: key);
+  });
 
   final AnimationController animationController;
 
@@ -289,8 +286,8 @@ class CrawlContributions extends StatelessWidget {
     final TextStyle crawlBodyTextStyle = TextStyle(
       height: 1.3,
       fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-          ? Theme.of(context).textTheme.bodyText1!.fontSize
-          : Theme.of(context).textTheme.subtitle1!.fontSize,
+          ? Theme.of(context).textTheme.bodyLarge!.fontSize
+          : Theme.of(context).textTheme.titleMedium!.fontSize,
       color: starWarsCrawlTextColor,
       fontFamily: 'Crawl',
     );
@@ -331,8 +328,8 @@ class CrawlContributions extends StatelessWidget {
                 height: 1.3,
                 fontSize:
                     Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
-                        ? Theme.of(context).textTheme.subtitle1!.fontSize
-                        : Theme.of(context).textTheme.headline5!.fontSize,
+                        ? Theme.of(context).textTheme.titleMedium!.fontSize
+                        : Theme.of(context).textTheme.headlineSmall!.fontSize,
                 color: starWarsCrawlTextColor,
                 fontFamily: 'Crawl',
               ),
@@ -450,8 +447,8 @@ class CrawlContributions extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: Sizescaleconfig.getDeviceType == DeviceType.MOBILE
-                    ? Theme.of(context).textTheme.subtitle1!.fontSize
-                    : Theme.of(context).textTheme.headline5!.fontSize,
+                    ? Theme.of(context).textTheme.titleMedium!.fontSize
+                    : Theme.of(context).textTheme.headlineSmall!.fontSize,
                 color: starWarsCrawlTextColor,
                 fontFamily: 'Crawl',
               ),
@@ -468,10 +465,10 @@ class CrawlContributions extends StatelessWidget {
 
 class CustomAvatar extends StatelessWidget {
   const CustomAvatar({
-    Key? key,
+    super.key,
     required this.name,
     required this.link,
-  }) : super(key: key);
+  });
 
   final String name;
   final String link;
@@ -480,8 +477,8 @@ class CustomAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle textStyle = TextStyle(
       fontSize: Sizescaleconfig.getDeviceType == DeviceType.SMALL_MOBILE
-          ? Theme.of(context).textTheme.overline!.fontSize
-          : Theme.of(context).textTheme.button!.fontSize,
+          ? Theme.of(context).textTheme.labelSmall!.fontSize
+          : Theme.of(context).textTheme.labelLarge!.fontSize,
     );
 
     return Padding(
@@ -527,8 +524,8 @@ class CustomAvatar extends StatelessWidget {
 
 class BackButton extends StatelessWidget {
   const BackButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import '../../../../shared/util/helpers/sizescaleconfig.dart';
 import '../../../../shared/widgets/loaders/loading.dart';
 
 class TweetPreview extends StatelessWidget {
-  const TweetPreview({required this.tweetId, this.showMedia = true});
+  const TweetPreview({super.key, required this.tweetId, this.showMedia = true});
   final String tweetId;
   final bool showMedia;
 
@@ -44,9 +44,9 @@ class TweetPreview extends StatelessWidget {
 
 class EmbeddedTweetWebView extends StatefulWidget {
   const EmbeddedTweetWebView({
-    Key? key,
+    super.key,
     required this.tweetId,
-  }) : super(key: key);
+  });
 
   final String tweetId;
 
@@ -70,6 +70,22 @@ class _EmbeddedTweetWebViewState extends State<EmbeddedTweetWebView> {
       encoding: Encoding.getByName('utf-8'),
     ).toString();
     previewHeight = Sizescaleconfig.screenheight! * 0.5;
+    //  webViewController = WebViewController();
+    // webViewController
+    //   ..setBackgroundColor(Colors.transparent)
+    //   ..setNavigationDelegate(setUpDelegate)
+    //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    //   ..addJavaScriptChannel(
+    //     'Twitter',
+    //     onMessageReceived: (JavaScriptMessage message) {
+    //       log(message.message);
+    //       setState(() {
+    //         isLoaded = true;
+    //         previewHeight = double.parse(message.message);
+    //       });
+    //     },
+    //   )
+    //   ..loadRequest(Uri.parse(initialUrl));
   }
 
   @override

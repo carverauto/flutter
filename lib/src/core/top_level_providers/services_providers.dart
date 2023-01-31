@@ -28,7 +28,7 @@ final Provider<ChaseDbAB> chaseDbProvider = Provider<ChaseDbAB>(
 );
 
 final Provider<ChaseRepoAB> chaseRepoProvider = Provider<ChaseRepoAB>(
-  (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(read: ref.read),
+  (ProviderRef<ChaseRepoAB> ref) => ChaseRepository(ref: ref),
 );
 
 final StreamProvider<bool> isConnectedStreamProvider =
@@ -58,7 +58,7 @@ final StateNotifierProvider<AppUpdateStateNotifier, AsyncValue<AppUpdateInfo>>
         ref,
   ) {
     return AppUpdateStateNotifier(
-      read: ref.read,
+      ref: ref,
     );
   },
 );

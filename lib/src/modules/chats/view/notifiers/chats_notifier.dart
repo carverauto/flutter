@@ -7,11 +7,11 @@ import '../providers/providers.dart';
 
 class ChatStateNotifier extends StateNotifier<void> {
   ChatStateNotifier({
-    required this.read,
+    required this.ref,
     required this.client,
   }) : super(null);
 
-  final Reader read;
+  final Ref ref;
 
   final Logger logger = Logger('ChatsServiceStateNotifier');
 
@@ -19,9 +19,9 @@ class ChatStateNotifier extends StateNotifier<void> {
 
   Future<void> connectUserToGetStream(UserData userData) async {
     try {
-      final String userToken =
-          await read(getStreamUserTokenStateNotifierProvider.notifier)
-              .getUserToken(userData.uid);
+      final String userToken = await ref
+          .read(getStreamUserTokenStateNotifierProvider.notifier)
+          .getUserToken(userData.uid);
 
       if (client.wsConnectionStatus == stream.ConnectionStatus.disconnected) {
         await client.connectUser(

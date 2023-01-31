@@ -18,8 +18,9 @@ import '../../../routes/routeNames.dart';
 import '../../../shared/util/firebase_collections.dart';
 import '../../../shared/widgets/loaders/loading.dart';
 
-Future<ui.Image> takeAppScreenshot(Reader read) async {
-  final RenderRepaintBoundary boundary = read(appGlobalKeyProvider)
+Future<ui.Image> takeAppScreenshot(WidgetRef ref) async {
+  final RenderRepaintBoundary boundary = ref
+      .read(appGlobalKeyProvider)
       .currentContext!
       .findRenderObject() as RenderRepaintBoundary;
 
@@ -639,9 +640,9 @@ class _FeedbackFormState extends ConsumerState<FeedbackForm> {
 
 class GetUserContactEmail extends StatefulWidget {
   const GetUserContactEmail({
-    Key? key,
+    super.key,
     required this.emailController,
-  }) : super(key: key);
+  });
 
   final TextEditingController emailController;
 

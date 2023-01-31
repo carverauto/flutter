@@ -14,11 +14,11 @@ import '../providers/providers.dart';
 class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   ChaseEventsNotifier({
     required this.chaseId,
-    required this.read,
+    required this.ref,
     required this.streamFeedClient,
   }) : super(const AsyncValue.data(null));
 
-  final Reader read;
+  final Ref ref;
 
   final String chaseId;
 
@@ -36,7 +36,7 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   Future<List<ChaseAnimationEvent>> fetchAnimationEvents() async {
     // state = const AsyncValue.loading();
     // //  final feed.Filter filter = feed.Filter().;
-    final String? videoId = read(playingVideoIdProvider);
+    final String? videoId = ref.read(playingVideoIdProvider);
     try {
       final List<feed.Activity> activities = await firehoseFeed.getActivities(
           // filter: filter,
@@ -76,7 +76,7 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   Future<void> subscribeToEventsStream() async {
-    final Chase chase = await read(streamChaseProvider(chaseId).future);
+    final Chase chase = await ref.read(streamChaseProvider(chaseId).future);
     if (chase.live ?? false) {
       feedSubscription = await firehoseFeed.subscribe(
         (feed.RealtimeMessage<Object?, Object?, Object?, Object?>? message) {
@@ -97,16 +97,18 @@ class ChaseEventsNotifier extends StateNotifier<AsyncValue<void>> {
               // extraData['animstate'] = 'Horse Fist';
               final ChaseAnimationEvent animationevent =
                   ChaseAnimationEvent.fromJson(extraData);
-              final String? videoId = read(playingVideoIdProvider);
+              final String? videoId = ref.read(playingVideoIdProvider);
               final String chaseId = chase.id;
 
               if (animationevent.id == chaseId &&
                   animationevent.videoId == videoId) {
                 if (animationevent.animtype == AnimType.pop_up) {
-                  read(popupsEvetnsStreamControllerProvider)
+                  ref
+                      .read(popupsEvetnsStreamControllerProvider)
                       .add(animationevent);
                 } else if (animationevent.animtype == AnimType.theater) {
-                  read(theaterEvetnsStreamControllerProvider)
+                  ref
+                      .read(theaterEvetnsStreamControllerProvider)
                       .add(animationevent);
                 } else {
                   logger.warning('Animation Event type not identified');

@@ -29,7 +29,7 @@ final GlobalKey<NavigatorState> navigatorGlobalKey =
     GlobalKey<NavigatorState>();
 
 class MyApp extends ConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,8 +76,8 @@ class MyApp extends ConsumerWidget {
 
 class CaptureButton extends ConsumerWidget {
   const CaptureButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,7 +117,7 @@ class CaptureButton extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    final ui.Image image = await takeAppScreenshot(ref.read);
+                    final ui.Image image = await takeAppScreenshot(ref);
                     ref
                         .read(
                           capturedSupportAppImageProvider.state,

@@ -23,7 +23,7 @@ final StateNotifierProvider<FirehoseStateNotifier, void>
     StateNotifierProvider<FirehoseStateNotifier, void>(
   (StateNotifierProviderRef<FirehoseStateNotifier, void> ref) =>
       FirehoseStateNotifier(
-    read: ref.read,
+    ref: ref,
     streamFeedClient: ref.read(
       streamFeedClientProvider,
     ),

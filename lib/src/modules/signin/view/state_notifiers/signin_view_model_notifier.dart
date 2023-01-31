@@ -10,10 +10,10 @@ import '../../../../shared/enums/social_logins.dart';
 
 class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
   SignInViewModelStateNotifier({
-    required this.read,
+    required this.ref,
   }) : super(const LogInState.data());
 
-  final Reader read;
+  final Ref ref;
 
   final Logger logger = Logger('LogInView');
 
@@ -27,9 +27,9 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
       switch (e.code) {
         case 'account-exists-with-different-credential':
           //TODO: cover this call for any errors
-          final List<String> existingAuthProviers =
-              await read(firebaseAuthProvider)
-                  .fetchSignInMethodsForEmail(e.email!);
+          final List<String> existingAuthProviers = await ref
+              .read(firebaseAuthProvider)
+              .fetchSignInMethodsForEmail(e.email!);
 
           state = LogInState.multiAuth(existingAuthProviers, e.credential!);
 
@@ -55,18 +55,18 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
   }
 
   Future<void> signInUser(SIGNINMETHOD signinmethod) async {
-    await read(authRepoProvider).socialLogin(signinmethod);
+    await ref.read(authRepoProvider).socialLogin(signinmethod);
   }
 
   Future<void> sendSignInLinkToEmail(String email) async {
-    await read(authRepoProvider).sendSignInLinkToEmail(email);
+    await ref.read(authRepoProvider).sendSignInLinkToEmail(email);
   }
 
   Future<void> signInWithEmail(String email, String link) async {
     state = const LogInState.loading();
 
     try {
-      await read(authRepoProvider).signInWithEmailAndLink(email, link);
+      await ref.read(authRepoProvider).signInWithEmailAndLink(email, link);
 
       state = const LogInState.data();
     } on FirebaseAuthException catch (e, stk) {
@@ -94,7 +94,8 @@ class SignInViewModelStateNotifier extends StateNotifier<LogInState> {
   ) async {
     state = const LogInState.loading();
     try {
-      await read(authRepoProvider)
+      await ref
+          .read(authRepoProvider)
           .handleMutliProviderSignIn(knownAuthProvider, credential);
     } catch (e, stk) {
       logger.severe('Error occured while handling MutliProviderSignIn', e, stk);

@@ -8,13 +8,14 @@ import '../../../core/top_level_providers/firebase_providers.dart';
 import 'chats_db_ab.dart';
 
 class ChatsDatabase implements ChatsDatabaseAB {
-  ChatsDatabase(this.read);
+  ChatsDatabase(this.ref);
 
-  final Reader read;
+  final Ref ref;
   @override
   Future<String> getUserToken(String userId) async {
     log('Getting User Token');
-    final String projectId = read(firebaseAuthProvider).app.options.projectId;
+    final String projectId =
+        ref.read(firebaseAuthProvider).app.options.projectId;
     final Uri url = Uri.parse(
       'https://us-central1-$projectId.cloudfunctions.net/GetStreamToken',
     );

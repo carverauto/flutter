@@ -21,10 +21,10 @@ import '../top_level_providers/services_providers.dart';
 //the [request] in the doRequest function will take precendence over the [request] in the constructor
 class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
   AppUpdateStateNotifier({
-    required this.read,
+    required this.ref,
   }) : super(const AsyncValue.loading());
 
-  final Reader read;
+  final Ref ref;
 
   late AppUpdateInfo _appUpdateInfo;
 
@@ -52,9 +52,10 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
         //get should fetch data bool from shared preferances
 
         final bool shouldFetch =
-            read(sharedPreferancesProvider).getBool('should_fetch') ?? false;
+            ref.read(sharedPreferancesProvider).getBool('should_fetch') ??
+                false;
         final FirebaseRemoteConfig remoteConfig =
-            read(firebaseRemoteConfigProvider);
+            ref.read(firebaseRemoteConfigProvider);
 
         late final bool updated;
         if (shouldFetch || force_fetch) {
@@ -73,7 +74,7 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
           updated = await remoteConfig.activate();
         }
 
-        final PackageInfo packageInfo = read(appInfoProvider);
+        final PackageInfo packageInfo = ref.read(appInfoProvider);
 
         final String current_app_version = packageInfo.version;
 
@@ -118,7 +119,9 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
 
         isInfoInitialized = true;
 
-        await read(sharedPreferancesProvider).setBool('should_fetch', false);
+        await ref
+            .read(sharedPreferancesProvider)
+            .setBool('should_fetch', false);
 
         state = AsyncValue.data(_appUpdateInfo);
       } catch (e, stk) {
@@ -127,7 +130,7 @@ class AppUpdateStateNotifier extends StateNotifier<AsyncValue<AppUpdateInfo>> {
           e,
           stk,
         );
-        state = AsyncValue.error(e);
+        state = AsyncValue.error(e, stk);
       }
     } else {
       // state = AsyncValue.data(_appUpdateInfo);

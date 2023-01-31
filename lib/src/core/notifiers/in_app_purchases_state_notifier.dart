@@ -54,7 +54,7 @@ class InAppPurchasesStateNotifier
           latestValue ?? await Purchases.getCustomerInfo();
       state = AsyncValue<CustomerInfo>.data(customerInfo);
     } catch (e, stk) {
-      state = AsyncValue<CustomerInfo>.error(e, stackTrace: stk);
+      state = AsyncValue<CustomerInfo>.error(e, stk);
     }
   }
 
@@ -70,7 +70,7 @@ class InAppPurchasesStateNotifier
       isUserLoggedIn = true;
       state = AsyncValue<CustomerInfo>.data(logInResult.customerInfo);
     } catch (e, stk) {
-      state = AsyncValue<CustomerInfo>.error(e, stackTrace: stk);
+      state = AsyncValue<CustomerInfo>.error(e, stk);
       logger.severe('Error initializing revenue cat use', e, stk);
     }
   }

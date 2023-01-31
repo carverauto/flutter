@@ -9,11 +9,11 @@ import '../../../chats/view/providers/providers.dart';
 
 class FirehoseStateNotifier extends StateNotifier<void> {
   FirehoseStateNotifier({
-    required this.read,
+    required this.ref,
     required this.streamFeedClient,
   }) : super(null);
 
-  final Reader read;
+  final Ref ref;
   final feed.StreamFeedClient streamFeedClient;
 
   final Logger logger = Logger('FirehoseServiceStateNotifier');
@@ -35,12 +35,12 @@ class FirehoseStateNotifier extends StateNotifier<void> {
   }
 
   Future<void> setUserAndSubscribe() async {
-    final String uid = read(firebaseAuthProvider).currentUser!.uid;
+    final String uid = ref.read(firebaseAuthProvider).currentUser!.uid;
 
     if (streamFeedClient.currentUser?.id != uid) {
-      final String userToken =
-          await read(getStreamUserTokenStateNotifierProvider.notifier)
-              .getUserToken(uid);
+      final String userToken = await ref
+          .read(getStreamUserTokenStateNotifierProvider.notifier)
+          .getUserToken(uid);
       await streamFeedClient.setUser(
         feed.User(
           id: uid,

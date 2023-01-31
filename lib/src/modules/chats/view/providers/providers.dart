@@ -12,7 +12,7 @@ import '../notifiers/chats_notifier.dart';
 
 final Provider<ChatsRepository> chatsRepoProvider = Provider<ChatsRepository>(
   (ProviderRef<ChatsRepository> ref) => ChatsRepository(
-    db: ChatsDatabase(ref.read),
+    db: ChatsDatabase(ref),
   ),
 );
 
@@ -51,7 +51,7 @@ final StateNotifierProvider<ChatStateNotifier, void>
     StateNotifierProviderRef<ChatStateNotifier, void> ref,
   ) =>
       ChatStateNotifier(
-    read: ref.read,
+    ref: ref,
     client: ref.watch(streamChatClientProvider),
   ),
 );
@@ -64,7 +64,7 @@ final StateNotifierProvider<GetStreamTokenNotifier, void>
     ref.watch(streamLogInStatus);
 
     return GetStreamTokenNotifier(
-      read: ref.read,
+      ref: ref,
     );
   },
 );

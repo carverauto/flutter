@@ -6,10 +6,10 @@ import '../../modules/chats/view/providers/providers.dart';
 
 class GetStreamTokenNotifier extends StateNotifier<void> {
   GetStreamTokenNotifier({
-    required this.read,
+    required this.ref,
   }) : super(null);
 
-  final Reader read;
+  final Ref ref;
 
   final Logger logger = Logger('GetStreamUserTokenStateNotifier');
 
@@ -18,7 +18,7 @@ class GetStreamTokenNotifier extends StateNotifier<void> {
 
   Future<String> getUserToken(String uid) async {
     if (!isTokenInitialized) {
-      userToken = await read(chatsRepoProvider).getUserToken(uid);
+      userToken = await ref.read(chatsRepoProvider).getUserToken(uid);
 
       isTokenInitialized = true;
     }

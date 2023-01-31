@@ -17,9 +17,9 @@ import 'notification_handler.dart';
 
 class NotificationTile extends ConsumerWidget {
   NotificationTile({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   final ChaseAppNotification notification;
 
@@ -135,9 +135,9 @@ class NotificationTile extends ConsumerWidget {
 
 class NotificationTrailing extends StatelessWidget {
   const NotificationTrailing({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   final ChaseAppNotification notification;
 
@@ -163,9 +163,9 @@ class NotificationTrailing extends StatelessWidget {
 
 class NotificationTrailingIcon extends StatelessWidget {
   const NotificationTrailingIcon({
-    Key? key,
+    super.key,
     required this.notificationType,
-  }) : super(key: key);
+  });
 
   final String notificationType;
 
@@ -214,10 +214,10 @@ class NotificationTrailingIcon extends StatelessWidget {
 
 class FirehoseErrorTile extends StatelessWidget {
   const FirehoseErrorTile({
-    Key? key,
+    super.key,
     required this.notification,
     required this.onRefesh,
-  }) : super(key: key);
+  });
 
   final ChaseAppNotification notification;
   final VoidCallback onRefesh;
@@ -253,12 +253,12 @@ class FirehoseErrorTile extends StatelessWidget {
 
 class _NotificationListTile extends StatelessWidget {
   const _NotificationListTile({
-    Key? key,
+    super.key,
     required this.notification,
     required this.title,
     required this.body,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   final ChaseAppNotification notification;
   final Widget title;

@@ -27,8 +27,7 @@ final AutoDisposeProvider<NotificationsDbAB> notificationDbProvider =
 );
 final AutoDisposeProvider<NotificationsRepoAB> notificationRepoProvider =
     Provider.autoDispose<NotificationsRepoAB>(
-  (AutoDisposeProviderRef<NotificationsRepoAB> ref) =>
-      NotificationsRepository(ref.read),
+  NotificationsRepository.new,
 );
 
 final ChaseAppNotificationStateNotifierProvider notificationsStreamProvider =

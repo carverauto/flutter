@@ -17,10 +17,10 @@ import '../top_level_providers/services_providers.dart';
 
 class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   PostLoginStateNotifier(
-    this._read,
+    this.ref,
   ) : super(const AsyncValue.data(null));
 
-  final Reader _read;
+  final Ref ref;
 
   bool isInitialized = false;
 
@@ -29,9 +29,9 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> initPostLoginActions() async {
     if (!isInitialized) {
       try {
-        await _read(inAppPurchasesStateNotifier.notifier).initUser();
-        final User user = _read(firebaseAuthProvider).currentUser!;
-        final UserData userData = await _read(userStreamProvider.future);
+        await ref.read(inAppPurchasesStateNotifier.notifier).initUser();
+        final User user = ref.read(firebaseAuthProvider).currentUser!;
+        final UserData userData = await ref.read(userStreamProvider.future);
 
         await _initFirebaseActions(user, userData);
         final bool isNotificationsPermissionGranted =
@@ -51,15 +51,15 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> checkUsersInterests() async {
     try {
       final bool isPremiumMember =
-          _read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+          ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
       await PusherBeams.instance.start(EnvVaribales.instanceId);
 
       await Future<void>.delayed(const Duration(milliseconds: 100));
 
       final List<String?> usersInterests =
-          await _read(pusherBeamsProvider).getDeviceInterests();
+          await ref.read(pusherBeamsProvider).getDeviceInterests();
       final List<Interest> interests =
-          await _read(notificationRepoProvider).fetchInterests();
+          await ref.read(notificationRepoProvider).fetchInterests();
 
       await Future.forEach<Interest>(interests, (Interest interest) async {
         if (interest.isPremium && !isPremiumMember) {
@@ -68,16 +68,23 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
         if (interest.isCompulsory) {
           if (!usersInterests.contains(interest.name)) {
-            await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
+            await ref
+                .read(pusherBeamsProvider)
+                .addDeviceInterest(interest.name);
             log('User subscribed to chases notifications from launch:');
           }
         } else if (interest.isDefault) {
           final bool wasAdded =
-              _read(sharedPreferancesProvider).getBool(interest.name) ?? false;
+              ref.read(sharedPreferancesProvider).getBool(interest.name) ??
+                  false;
           log('was added: $wasAdded');
           if (!wasAdded) {
-            await _read(pusherBeamsProvider).addDeviceInterest(interest.name);
-            await _read(sharedPreferancesProvider).setBool(interest.name, true);
+            await ref
+                .read(pusherBeamsProvider)
+                .addDeviceInterest(interest.name);
+            await ref
+                .read(sharedPreferancesProvider)
+                .setBool(interest.name, true);
           }
         }
       });
@@ -90,7 +97,7 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> _initFirebaseActions(User user, UserData userData) async {
     final DateTime? lastTokenUpdate = userData.lastTokenUpdate;
     final List<PushToken>? tokens = userData.tokens;
-    final String? token = await _read(firebaseMessagingProvider).getToken();
+    final String? token = await ref.read(firebaseMessagingProvider).getToken();
 
     if (token != null) {
       try {
@@ -102,20 +109,24 @@ class PostLoginStateNotifier extends StateNotifier<AsyncValue<void>> {
 
           if (difference > 7 || !isTokenPresent) {
             //update tokens
-            await _read(authRepoProvider)
+            await ref
+                .read(authRepoProvider)
                 .saveDeviceTokenToDatabase(user, token);
           }
           if (difference > 28 || !isTokenPresent) {
-            await _read(authRepoProvider).subscribeToTopics();
+            await ref.read(authRepoProvider).subscribeToTopics();
           }
         } else {
-          await _read(authRepoProvider).saveDeviceTokenToDatabase(user, token);
-          await _read(authRepoProvider).subscribeToTopics();
+          await ref
+              .read(authRepoProvider)
+              .saveDeviceTokenToDatabase(user, token);
+          await ref.read(authRepoProvider).subscribeToTopics();
         }
 
-        await _read(firebaseCrashlyticsProvider)
+        await ref
+            .read(firebaseCrashlyticsProvider)
             .setUserIdentifier(userData.uid);
-        _read(authRepoProvider).updateTokenWhenRefreshed(user);
+        ref.read(authRepoProvider).updateTokenWhenRefreshed(user);
       } catch (e, stk) {
         logger.warning('Error in initPostLogin Firebase Actions', e, stk);
 
