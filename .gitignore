@@ -90,3 +90,5 @@ actions-runner
 
 distribution.sh
 distribute_android.sh
+
+pusher_testing
