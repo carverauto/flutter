@@ -200,10 +200,11 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
   }
 
   bool get shouldShowFirehosePremiumHeader {
-    return true;
     if (isFirehosePremiumHeaderHidden) {
       return false;
     }
+
+    return true;
     final bool isPremiumMember =
         ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
     log(getFirehoseViewCount.toString());
