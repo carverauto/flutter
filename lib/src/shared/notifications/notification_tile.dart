@@ -10,6 +10,7 @@ import '../../const/sizings.dart';
 import '../../models/notification/notification.dart';
 import '../../models/tweet_data/tweet_data.dart';
 import '../../models/youtube_data/youtube_data.dart';
+import '../../modules/app_review/app_review_notifier.dart';
 import '../enums/firehose_notification_type.dart';
 import '../util/helpers/date_added.dart';
 import '../widgets/builders/image_builder.dart';
@@ -251,9 +252,8 @@ class FirehoseErrorTile extends StatelessWidget {
   }
 }
 
-class _NotificationListTile extends StatelessWidget {
+class _NotificationListTile extends ConsumerWidget {
   const _NotificationListTile({
-    super.key,
     required this.notification,
     required this.title,
     required this.body,
@@ -268,7 +268,7 @@ class _NotificationListTile extends StatelessWidget {
   // final Widget? leadingWidget;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(
         bottom: kItemsSpacingMediumConstant,
@@ -285,6 +285,7 @@ class _NotificationListTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(kBorderRadiusStandard),
           ),
           onTap: () {
+            ref.read(appReviewStateNotifier.notifier).updateFirehoseViewCount();
             notificationHandler(
               context,
               notification,

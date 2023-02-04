@@ -21,7 +21,7 @@ import '../parts/chaseapp_drawer.dart';
 import '../parts/connectivity_status.dart';
 
 class Dashboard extends StatelessWidget {
-  Dashboard({Key? key}) : super(key: key);
+  Dashboard({super.key});
 
   // final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('Dashboard');
@@ -44,10 +44,9 @@ class Dashboard extends StatelessWidget {
 
 class _DashboardMainView extends ConsumerStatefulWidget {
   const _DashboardMainView({
-    Key? key,
     required this.chasesPaginationProvider,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;

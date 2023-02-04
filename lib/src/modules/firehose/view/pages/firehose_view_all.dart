@@ -12,9 +12,9 @@ import 'firehose.dart';
 
 class FirehoseListViewAll extends ConsumerStatefulWidget {
   const FirehoseListViewAll({
-    Key? key,
+    super.key,
     required this.showLimited,
-  }) : super(key: key);
+  });
 
   final bool showLimited;
 

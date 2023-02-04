@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -175,5 +177,52 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
     final SharedPreferences sharedPreferance =
         ref.read(sharedPreferancesProvider);
     await sharedPreferance.setBool('isdoNotAskAgain', value);
+  }
+  // firehose premium header
+
+  int get getFirehoseViewCount {
+    return ref.read(sharedPreferancesProvider).getInt('firehose_view_count') ??
+        0;
+  }
+
+  // update firehose view count
+  Future<int> updateFirehoseViewCount() async {
+    final SharedPreferences sharedPreferance =
+        ref.read(sharedPreferancesProvider);
+    final int firehoseViewCount =
+        (sharedPreferance.getInt('firehose_view_count') ?? 0) + 1;
+    await sharedPreferance.setInt(
+      'firehose_view_count',
+      firehoseViewCount,
+    );
+
+    return firehoseViewCount;
+  }
+
+  bool get shouldShowFirehosePremiumHeader {
+    return true;
+    if (isFirehosePremiumHeaderHidden) {
+      return false;
+    }
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+    log(getFirehoseViewCount.toString());
+
+    return getFirehoseViewCount > 2 && !isPremiumMember;
+  }
+
+  bool get isFirehosePremiumHeaderHidden {
+    final bool? isHidden = ref.read(sharedPreferancesProvider).getBool(
+          'hide_premium_firehose_header',
+        );
+
+    return isHidden ?? false;
+  }
+
+  Future<void> hideFirehosePremiumHeader() async {
+    await ref.read(sharedPreferancesProvider).setBool(
+          'hide_premium_firehose_header',
+          true,
+        );
   }
 }

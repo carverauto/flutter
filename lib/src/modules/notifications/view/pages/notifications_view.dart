@@ -9,18 +9,20 @@ import '../../../../core/notifiers/pagination_notifier.dart';
 import '../../../../models/notification/notification.dart';
 import '../../../../models/pagination_state/pagination_notifier_state.dart';
 import '../../../../shared/widgets/builders/providerStateBuilder.dart';
+import '../../../app_review/app_review_notifier.dart';
+import '../../../chase_view/view/parts/chase_details.dart';
 import '../parts/notification_settings.dart';
 import '../parts/notification_types_list.dart';
 import '../parts/notifications_list.dart';
 import '../providers/providers.dart';
 
-class NotificationsView extends StatelessWidget {
-  NotificationsView({Key? key}) : super(key: key);
+class NotificationsView extends ConsumerWidget {
+  NotificationsView({super.key});
 
   final Logger logger = Logger('NotificationsView');
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final AutoDisposeStateNotifierProvider<
             PaginationNotifier<ChaseAppNotification>,
             PaginationNotifierState<ChaseAppNotification>>
@@ -46,6 +48,21 @@ class NotificationsView extends StatelessWidget {
       ),
       body: Column(
         children: [
+          ChaseAppPremiumChaseViewHeader(
+            action: 'Go Premium',
+            label:
+                'Recieve Firehose notifications and alerts for earthquakes, sever weather, and more...',
+            onHide: () {
+              ref
+                  .read(appReviewStateNotifier.notifier)
+                  .hideFirehosePremiumHeader();
+            },
+            showHeader: () {
+              return ref
+                  .read(appReviewStateNotifier.notifier)
+                  .shouldShowFirehosePremiumHeader;
+            },
+          ),
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final AsyncValue<NotificationPermissionStatuses> state =

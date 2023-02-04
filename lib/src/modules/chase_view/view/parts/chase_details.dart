@@ -64,13 +64,25 @@ class ChaseDetails extends ConsumerWidget {
                 Material(
                   child: Column(
                     children: [
-                      const ChaseAppPremiumChaseViewHeader(),
+                      ChaseAppPremiumChaseViewHeader(
+                        action: 'Go Premium',
+                        label: 'Explore more with ChaseApp Premium',
+                        onHide: () {},
+                        showHeader: () {
+                          return ref
+                              .read(appReviewStateNotifier.notifier)
+                              .shouldShowPremiumHeader;
+                        },
+                      ),
                       const SizedBox(
                         height: kPaddingSmallConstant,
                       ),
                       InkWell(
                         onTap: () {
                           showDescriptionDialog(context, chase.id);
+                          ref
+                              .read(appReviewStateNotifier.notifier)
+                              .hideChaseViewPremiumHeader();
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -213,7 +225,20 @@ class ChaseDetails extends ConsumerWidget {
 }
 
 class ChaseAppPremiumChaseViewHeader extends ConsumerStatefulWidget {
-  const ChaseAppPremiumChaseViewHeader({super.key});
+  const ChaseAppPremiumChaseViewHeader({
+    super.key,
+    required this.label,
+    required this.onHide,
+    required this.showHeader,
+    this.axis = Axis.horizontal,
+    required this.action,
+  });
+
+  final String label;
+  final VoidCallback onHide;
+  final bool Function() showHeader;
+  final Axis axis;
+  final String action;
 
   @override
   ConsumerState<ChaseAppPremiumChaseViewHeader> createState() =>
@@ -224,8 +249,7 @@ class _ChaseAppPremiumChaseViewHeaderState
     extends ConsumerState<ChaseAppPremiumChaseViewHeader> {
   @override
   Widget build(BuildContext context) {
-    final bool showHeader =
-        ref.read(appReviewStateNotifier.notifier).shouldShowPremiumHeader;
+    final bool showHeader = widget.showHeader();
 
     if (!showHeader) {
       return const SizedBox.shrink();
@@ -246,10 +270,12 @@ class _ChaseAppPremiumChaseViewHeaderState
           ),
           child: Row(
             children: [
-              const Flexible(
+              Flexible(
                 child: Text(
-                  'Explore more with ChaseApp Premium',
-                  style: TextStyle(
+                  widget.label,
+                  textAlign:
+                      widget.axis == Axis.vertical ? TextAlign.center : null,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -265,9 +291,9 @@ class _ChaseAppPremiumChaseViewHeaderState
                 onPressed: () {
                   Navigator.of(context).pushNamed(RouteName.IN_APP_PURCHASES);
                 },
-                child: const Text(
-                  'Get it!',
-                  style: TextStyle(
+                child: Text(
+                  widget.action,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -278,9 +304,8 @@ class _ChaseAppPremiumChaseViewHeaderState
               ),
               OutlinedButton(
                 onPressed: () {
-                  ref
-                      .read(appReviewStateNotifier.notifier)
-                      .hideChaseViewPremiumHeader();
+                  widget.onHide();
+
                   setState(() {});
                 },
                 child: const Text(
@@ -289,7 +314,7 @@ class _ChaseAppPremiumChaseViewHeaderState
                     color: Colors.white,
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
