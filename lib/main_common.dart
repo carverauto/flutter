@@ -15,6 +15,7 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'src/const/colors.dart';
 import 'src/const/sizings.dart';
 import 'src/core/top_level_providers/services_providers.dart';
+import 'src/modules/app_review/app_review_notifier.dart';
 import 'src/modules/chats/view/providers/providers.dart';
 import 'src/modules/feedback_form/view/feedback_form.dart';
 import 'src/routes/routeNames.dart';
@@ -67,7 +68,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes.onGenerateRoute,
       navigatorObservers: [
-        RoutesObserver(),
+        RoutesObserver(ref),
       ],
       theme: getThemeData(context),
     );
@@ -147,6 +148,11 @@ class CaptureButton extends ConsumerWidget {
 }
 
 class RoutesObserver extends NavigatorObserver {
+  RoutesObserver(
+    this.ref,
+  );
+  final WidgetRef ref;
+
   final Logger routesObserverLogger = Logger('RoutesObserverLogger');
 
   @override
@@ -157,6 +163,14 @@ class RoutesObserver extends NavigatorObserver {
         try {
           if (previousRoute?.navigator?.context != null) {
             await checkRequestPermissions(previousRoute!.navigator!.context);
+            if (ref
+                .read(appReviewStateNotifier.notifier)
+                .shouldShowAskForReviewDialog) {
+              await showaskForReviewDialog(
+                ref,
+                previousRoute.navigator!.context,
+              );
+            }
           }
         } catch (e, stk) {
           routesObserverLogger.warning(
@@ -168,6 +182,15 @@ class RoutesObserver extends NavigatorObserver {
       });
     }
     super.didPop(route, previousRoute);
+  }
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    // TODO: implement didPush
+    super.didPush(route, previousRoute);
+    if (route.settings.name == RouteName.CHASE_VIEW) {
+      ref.read(appReviewStateNotifier.notifier).updatechasesSeenCount();
+    }
   }
 }
 

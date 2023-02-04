@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 
+import '../../../../const/app_bundle_info.dart';
 import '../../../../const/colors.dart';
 import '../../../../const/images.dart';
 import '../../../../const/links.dart';
@@ -20,8 +22,8 @@ import '../../../firehose/view/providers/providers.dart';
 
 class ChaseAppDrawer extends ConsumerWidget {
   const ChaseAppDrawer({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -211,6 +213,20 @@ class ChaseAppDrawer extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.star_rounded,
+                    color: Colors.amber,
+                  ),
+                  title: const Text('Rate Us'),
+                  onTap: () async {
+                    final InAppReview inAppReview = InAppReview.instance;
+
+                    await inAppReview.openStoreListing(
+                      appStoreId: AppBundleInfo.appstoreId,
+                    );
+                  },
                 ),
                 ListTile(
                   onTap: () {
