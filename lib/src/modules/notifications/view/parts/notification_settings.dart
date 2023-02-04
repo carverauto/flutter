@@ -43,7 +43,7 @@ class NotificationPermissionStatuses {
 }
 
 class NotificationsSettings extends ConsumerStatefulWidget {
-  const NotificationsSettings({Key? key}) : super(key: key);
+  const NotificationsSettings({super.key});
 
   @override
   ConsumerState<NotificationsSettings> createState() =>
@@ -233,11 +233,11 @@ class _NotificationsSettingsState extends ConsumerState<NotificationsSettings>
 
 class InterestsHeader extends StatelessWidget {
   const InterestsHeader({
-    Key? key,
+    super.key,
     required this.name,
     this.isPremium = false,
     required this.isPremiumMember,
-  }) : super(key: key);
+  });
 
   final String name;
   final bool isPremium;
@@ -295,10 +295,10 @@ class InterestsHeader extends StatelessWidget {
 
 class InterestsList extends StatelessWidget {
   const InterestsList({
-    Key? key,
+    super.key,
     required this.interests,
     required this.usersInterests,
-  }) : super(key: key);
+  });
 
   final List<Interest> interests;
   final List<String?> usersInterests;

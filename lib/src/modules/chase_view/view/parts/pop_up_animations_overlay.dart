@@ -11,9 +11,9 @@ import 'rive_emojies.dart';
 
 class PopupAnimationsView extends ConsumerStatefulWidget {
   const PopupAnimationsView({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final YoutubePlayerController controller;
 

@@ -1,8 +1,9 @@
 // import 'package:chaseapp/utils/routeNames.dart';
-import 'package:chaseapp/src/modules/notifications/view/parts/notification_settings.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../../notifications/view/parts/notification_settings.dart';
 // import 'package:chaseapp/utils/deviceSize.dart';
 // import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -13,9 +14,9 @@ class SettingsView extends StatefulWidget {
 
 class SettingsViewPage extends State<SettingsView> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  void signOutGoogle() async {
+  Future<void> signOutGoogle() async {
     await _googleSignIn.signOut();
-    print("User Sign Out");
+    print('User Sign Out');
   }
 
   bool _showSignIn = true;
@@ -32,7 +33,7 @@ class SettingsViewPage extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text('Settings'),
       ),
       body: Column(
         children: <Widget>[
@@ -41,7 +42,7 @@ class SettingsViewPage extends State<SettingsView> {
               Navigator.push<void>(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => NotificationsSettings()));
+                      builder: (BuildContext context) => const NotificationsSettings(),),);
             },
             leading: Icon(
               Icons.notifications,

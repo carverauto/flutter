@@ -6,12 +6,12 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 
 class TrajectoryShaderView extends StatefulWidget {
   const TrajectoryShaderView({
-    Key? key,
+    super.key,
     required this.builder,
     required this.startingPoint,
     required this.controlPoint,
     required this.endingPoint,
-  }) : super(key: key);
+  });
 
   final Widget Function(FragmentShader shader, double delta) builder;
   final Offset startingPoint;

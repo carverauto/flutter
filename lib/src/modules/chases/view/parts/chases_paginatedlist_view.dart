@@ -17,12 +17,12 @@ import '../providers/providers.dart';
 
 class ChasesPaginatedListView extends ConsumerWidget {
   const ChasesPaginatedListView({
-    Key? key,
+    super.key,
     required this.chasesPaginationProvider,
     required this.logger,
     required this.scrollController,
     this.axis = Axis.horizontal,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<Chase>,
       PaginationNotifierState<Chase>> chasesPaginationProvider;

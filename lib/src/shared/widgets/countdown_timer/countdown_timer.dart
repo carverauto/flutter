@@ -6,8 +6,8 @@ import '../../../const/sizings.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<CountDownTimer> createState() => _MyShaderState();

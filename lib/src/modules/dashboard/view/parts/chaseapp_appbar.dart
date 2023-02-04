@@ -11,9 +11,9 @@ import '../../../notifications/view/parts/notifications_appbar_button.dart';
 
 class ChaseAppBar extends ConsumerStatefulWidget {
   const ChaseAppBar({
-    Key? key,
+    super.key,
     required this.onMapExpansion,
-  }) : super(key: key);
+  });
 
   final Function(bool value) onMapExpansion;
 

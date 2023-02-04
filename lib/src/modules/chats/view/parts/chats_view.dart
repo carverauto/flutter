@@ -14,10 +14,10 @@ import '../providers/providers.dart';
 
 class ChatsView extends ConsumerWidget {
   ChatsView({
-    Key? key,
+    super.key,
     required this.chaseId,
     this.respectBottomPadding = true,
-  }) : super(key: key);
+  });
   final String chaseId;
   final Logger logger = Logger('ChatsView');
 
@@ -166,10 +166,10 @@ class ChatsView extends ConsumerWidget {
 
 class UsersPresentCount extends ConsumerStatefulWidget {
   const UsersPresentCount({
-    Key? key,
+    super.key,
     required this.chaseId,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final String chaseId;
   final Logger logger;

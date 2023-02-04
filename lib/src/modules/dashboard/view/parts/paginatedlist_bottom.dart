@@ -8,9 +8,9 @@ import '../../../../shared/widgets/loaders/loading.dart';
 
 class PaginatedListBottom<T> extends StatelessWidget {
   const PaginatedListBottom({
-    Key? key,
+    super.key,
     required this.chasesPaginationProvider,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
       PaginationNotifierState<T>> chasesPaginationProvider;

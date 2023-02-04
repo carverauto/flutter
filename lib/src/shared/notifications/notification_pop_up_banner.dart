@@ -14,7 +14,7 @@ import '../widgets/builders/image_builder.dart';
 import 'notification_handler.dart';
 import 'notification_tile.dart';
 
-void showNotificationBanner(
+Future<void> showNotificationBanner(
   BuildContext context,
   ChaseAppNotification notification,
 ) async {
@@ -35,8 +35,7 @@ void showNotificationBanner(
 }
 
 class NotificationPopUpBanner extends StatefulWidget {
-  const NotificationPopUpBanner({Key? key, required this.notification})
-      : super(key: key);
+  const NotificationPopUpBanner({super.key, required this.notification});
 
   final ChaseAppNotification notification;
 

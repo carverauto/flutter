@@ -6,11 +6,11 @@ import '../../../../shared/util/helpers/launchLink.dart';
 
 class LogInFooter extends StatelessWidget {
   const LogInFooter({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.isLoggingWithEmail,
     required this.isEmailSignInMethod,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final bool isLoggingWithEmail;

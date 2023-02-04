@@ -13,14 +13,14 @@ import 'chase_details_reactive_info.dart';
 
 class ChaseDetailsInternal extends ConsumerStatefulWidget {
   const ChaseDetailsInternal({
-    Key? key,
+    super.key,
     required this.chase,
     required this.appBarOffsetAnimation,
     required this.bottomListAnimation,
     required this.logger,
     required this.chatsRow,
     required this.chatsView,
-  }) : super(key: key);
+  });
   final Chase chase;
   final Animation<Offset> appBarOffsetAnimation;
   final Animation<Offset> bottomListAnimation;
@@ -125,11 +125,11 @@ class _ChaseDetailsInternalState extends ConsumerState<ChaseDetailsInternal> {
 
 class FullScreenChaseDetailsSideBar extends StatefulWidget {
   const FullScreenChaseDetailsSideBar({
-    Key? key,
+    super.key,
     required this.logger,
     required this.chaseDetails,
     required this.player,
-  }) : super(key: key);
+  });
 
   final Logger logger;
   final Widget chaseDetails;

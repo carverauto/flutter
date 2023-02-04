@@ -8,11 +8,11 @@ import '../../../../shared/enums/social_logins.dart';
 
 class GradientAnimationChildBuilder extends StatefulWidget {
   const GradientAnimationChildBuilder({
-    Key? key,
+    super.key,
     required this.child,
     required this.shouldAnimate,
     this.padding,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final bool shouldAnimate;
@@ -64,7 +64,7 @@ class _GradientAnimationChildBuilderState
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration t) {
       if (widget.shouldAnimate) {
         animationController.forward();
       } else {
@@ -107,10 +107,10 @@ class _GradientAnimationChildBuilderState
 
 class IconFloatingAnimation extends StatefulWidget {
   const IconFloatingAnimation({
-    Key? key,
+    super.key,
     required this.child,
     required this.shouldAnimate,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final bool shouldAnimate;
@@ -152,7 +152,7 @@ class _IconFloatingAnimationState extends State<IconFloatingAnimation>
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((Duration t) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration t) {
       if (widget.shouldAnimate) {
         animationController.forward();
       } else {

@@ -12,9 +12,9 @@ import 'notifications_list_builder.dart';
 
 class NotificationsViewAll extends ConsumerWidget {
   NotificationsViewAll({
-    Key? key,
+    super.key,
     required this.chasesPaginationProvider,
-  }) : super(key: key);
+  });
 
   final ScrollController scrollController = ScrollController();
   final Logger logger = Logger('RecentChasesListView');

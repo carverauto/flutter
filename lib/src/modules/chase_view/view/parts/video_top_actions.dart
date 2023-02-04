@@ -18,9 +18,9 @@ import 'mp4_player/mp4_player.dart';
 
 class VideoTopActions extends StatefulWidget {
   const VideoTopActions({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
   final YoutubePlayerController controller;
 
   @override
@@ -85,8 +85,8 @@ final AutoDisposeFutureProvider<bool?> localNetworkAccessStatusFutureProvider =
 
 class ChaseAppChromeCastButton extends ConsumerStatefulWidget {
   const ChaseAppChromeCastButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState<ChaseAppChromeCastButton> createState() =>

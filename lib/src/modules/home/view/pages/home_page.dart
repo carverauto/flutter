@@ -1,8 +1,9 @@
-import 'package:chaseapp/src/modules/dashboard/view/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import '../../../dashboard/view/pages/dashboard.dart';
+
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {

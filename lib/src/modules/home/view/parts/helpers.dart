@@ -33,7 +33,7 @@ Future<void> handlebgmessage(RemoteMessage message) async {
   }
 }
 
-void updateNotificationsPresentStatus(
+Future<void> updateNotificationsPresentStatus(
   WidgetRef ref,
   bool isPresent,
 ) async {

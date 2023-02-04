@@ -4,9 +4,9 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 
 class ConfettiShaderView extends StatefulWidget {
   const ConfettiShaderView({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

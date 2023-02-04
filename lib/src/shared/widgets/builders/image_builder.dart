@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 class AdaptiveImageBuilder extends StatelessWidget {
   const AdaptiveImageBuilder({
-    Key? key,
+    super.key,
     required this.url,
     this.showLoading = true,
-  }) : super(key: key);
+  });
 
   final String url;
   final bool showLoading;
@@ -18,10 +18,10 @@ class AdaptiveImageBuilder extends StatelessWidget {
     return Image(
       image: AdaptiveImageProvider(url),
       fit: BoxFit.cover,
-      errorBuilder: (context, child, s) {
-        return ImageLoadErrorWidget();
+      errorBuilder: (BuildContext context, Object child, StackTrace? s) {
+        return const ImageLoadErrorWidget();
       },
-      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+      frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
         if (wasSynchronouslyLoaded) {
           return child;
         }
@@ -32,7 +32,7 @@ class AdaptiveImageBuilder extends StatelessWidget {
           child: child,
         );
       },
-      loadingBuilder: (context, child, chunk) {
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? chunk) {
         if (chunk == null) {
           return child;
         }
@@ -45,7 +45,7 @@ class AdaptiveImageBuilder extends StatelessWidget {
                   ),
                 ),
               )
-            : SizedBox.shrink();
+            : const SizedBox.shrink();
       },
     );
   }
@@ -53,8 +53,8 @@ class AdaptiveImageBuilder extends StatelessWidget {
 
 class ImageLoadErrorWidget extends StatelessWidget {
   const ImageLoadErrorWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +66,9 @@ class ImageLoadErrorWidget extends StatelessWidget {
           Icons.info,
           color: Theme.of(context).colorScheme.onPrimary,
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
-          "Failed to load image",
+          'Failed to load image',
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -83,19 +83,19 @@ class AdaptiveImageProvider extends ImageProvider {
   final ImageProvider _delegate;
 
   static ImageProvider _resolve(String url) {
-    final isAssetImage = url.startsWith('assets/');
+    final bool isAssetImage = url.startsWith('assets/');
 
-    final uri = Uri.parse(url);
-    final scheme = !isAssetImage ? uri.scheme : "asset";
+    final Uri uri = Uri.parse(url);
+    final String scheme = !isAssetImage ? uri.scheme : 'asset';
     switch (scheme) {
       case 'asset':
-        final path = uri.toString().replaceFirst('asset://', '');
+        final String path = uri.toString().replaceFirst('asset://', '');
         return AssetImage(path);
       case 'file':
-        final file = File.fromUri(uri);
+        final File file = File.fromUri(uri);
         return FileImage(file);
       case '':
-        final file = File.fromUri(uri);
+        final File file = File.fromUri(uri);
         return FileImage(file);
       case 'http':
         return CachedNetworkImageProvider(url);

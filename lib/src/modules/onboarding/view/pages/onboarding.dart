@@ -8,7 +8,7 @@ import '../../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 import '../parts/onboarding_page.dart';
 
 class OnBoardingView extends StatefulWidget {
-  const OnBoardingView({Key? key}) : super(key: key);
+  const OnBoardingView({super.key});
 
   @override
   State<OnBoardingView> createState() => _OnBoardingViewState();

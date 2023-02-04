@@ -12,10 +12,10 @@ import '../../../chase_view/view/providers/providers.dart';
 
 class YoutubePreview extends ConsumerStatefulWidget {
   const YoutubePreview({
-    Key? key,
+    super.key,
     required this.videoId,
     required this.body,
-  }) : super(key: key);
+  });
 
   final String videoId;
   final String body;
@@ -182,10 +182,10 @@ class _YoutubePreviewState extends ConsumerState<YoutubePreview> {
 
 class VolumeOnOffButton extends StatelessWidget {
   const VolumeOnOffButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.isMuted,
-  }) : super(key: key);
+  });
 
   final VoidCallback onTap;
   final bool isMuted;

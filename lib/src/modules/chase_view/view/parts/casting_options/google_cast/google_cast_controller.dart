@@ -89,7 +89,7 @@ class GoogleCastVideoPlayerController extends StateNotifier<CastSessionState> {
     });
 
     session.messageStream.listen((Map<String, dynamic> message) {
-      String type = message['type'] as String;
+      final String type = message['type'] as String;
 
       if (type == 'MEDIA_STATUS') {
         mediaSessionId = message['status'][0]['mediaSessionId'] as int;

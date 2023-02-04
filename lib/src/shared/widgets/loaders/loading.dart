@@ -4,8 +4,8 @@ import '../../../const/sizings.dart';
 
 class CircularAdaptiveProgressIndicatorWithBg extends StatelessWidget {
   const CircularAdaptiveProgressIndicatorWithBg({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CircularAdaptiveProgressIndicatorWithBg extends StatelessWidget {
 }
 
 class CircularAdaptiveProgressIndicator extends StatelessWidget {
-  const CircularAdaptiveProgressIndicator({Key? key}) : super(key: key);
+  const CircularAdaptiveProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {

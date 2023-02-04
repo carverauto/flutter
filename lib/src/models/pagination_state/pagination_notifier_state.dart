@@ -11,5 +11,5 @@ abstract class PaginationNotifierState<T> with _$PaginationNotifierState<T> {
   const factory PaginationNotifierState.onGoingLoading(List<T> items) =
       _OnGoingLoading;
   const factory PaginationNotifierState.onGoingError(List<T> items, Object? e,
-      [StackTrace? stk]) = _OnGoingError;
+      [StackTrace? stk,]) = _OnGoingError;
 }

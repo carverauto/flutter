@@ -64,7 +64,7 @@ class AuthViewWrapper extends ConsumerWidget {
           logger: logger,
           errorMessage: 'Error while loading users data.',
           builder: (UserData userData, WidgetRef ref, Widget? child) {
-            return HomeWrapper();
+            return const HomeWrapper();
           },
           errorBuilder: (Object e, StackTrace? stk) {
             const String message =

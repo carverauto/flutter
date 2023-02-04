@@ -23,7 +23,7 @@ import '../parts/multi_auth_dialog.dart';
 import '../providers/providers.dart';
 
 class LogInView extends ConsumerStatefulWidget {
-  const LogInView({Key? key}) : super(key: key);
+  const LogInView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LogInViewState();

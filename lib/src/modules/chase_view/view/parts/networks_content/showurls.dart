@@ -17,11 +17,11 @@ import 'watch_here_links.dart';
 
 class URLView extends ConsumerWidget {
   const URLView({
-    Key? key,
+    super.key,
     required this.networkContentMap,
     required this.isStreams,
     required this.logger,
-  }) : super(key: key);
+  });
   final List<NetworkContentMapped> networkContentMap;
   final bool isStreams;
   final Logger logger;
@@ -150,11 +150,11 @@ class _NetworkLinks extends ConsumerWidget {
 
 class StreamButton extends ConsumerWidget {
   const StreamButton({
-    Key? key,
+    super.key,
     required this.currentlyPlayingUrl,
     required this.stream,
     required this.isYoutube,
-  }) : super(key: key);
+  });
 
   final String? currentlyPlayingUrl;
   final ChaseStream stream;

@@ -9,13 +9,13 @@ import '../loaders/loading.dart';
 
 class ProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
   const ProviderPaginatedStateNotifierBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.watchThisStateNotifierProvider,
     required this.scrollController,
     required this.logger,
     this.loadingBuilder,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
       PaginationNotifierState<T>> watchThisStateNotifierProvider;

@@ -1,14 +1,15 @@
-import 'package:chaseapp/src/models/chase/chase.dart';
 import 'package:intl/intl.dart';
+
+import '../../../models/chase/chase.dart';
 
 String dateAdded(Chase chase) {
   late final String dateMsg;
   if (chase.createdAt == null) {
-    return "NA";
+    return 'NA';
   }
-  final chaseDate = DateTime.parse(chase.createdAt!.toIso8601String());
-  final today = DateTime.now().toLocal();
-  final diff = chaseDate.difference(today);
+  final DateTime chaseDate = DateTime.parse(chase.createdAt!.toIso8601String());
+  final DateTime today = DateTime.now().toLocal();
+  final Duration diff = chaseDate.difference(today);
   if (chase.live ?? false) {
     dateMsg = 'LIVE!';
   } else if (diff.inDays.abs() == 0) {
@@ -17,17 +18,17 @@ String dateAdded(Chase chase) {
       // Chase in last hour?
       if (diff.inMinutes == 0) {
         // In the last minute? show seconds
-        dateMsg = diff.inSeconds.abs().toString() + ' seconds ago';
+        dateMsg = '${diff.inSeconds.abs()} seconds ago';
       } else {
         // Otherwise show how many minutes
-        dateMsg = diff.inMinutes.abs().toString() + ' minutes ago';
+        dateMsg = '${diff.inMinutes.abs()} minutes ago';
       }
     } else if (diff.inHours.abs() == 1) {
       // One hour ago
-      dateMsg = diff.inHours.abs().toString() + ' hour ago';
+      dateMsg = '${diff.inHours.abs()} hour ago';
     } else if (diff.inHours.abs() > 1) {
       // Hours ago
-      dateMsg = diff.inHours.abs().toString() + ' hours ago';
+      dateMsg = '${diff.inHours.abs()} hours ago';
     }
   } else {
     // More than a day ago, just print the date
@@ -40,26 +41,26 @@ String dateAdded(Chase chase) {
 String elapsedTimeForDate(DateTime date) {
   late final String dateMsg;
 
-  final chaseDate = date;
-  final today = DateTime.now().toLocal();
-  final diff = chaseDate.difference(today);
+  final DateTime chaseDate = date;
+  final DateTime today = DateTime.now().toLocal();
+  final Duration diff = chaseDate.difference(today);
   if (diff.inDays.abs() == 0) {
     // Was the chase today?
     if (diff.inHours.abs() == 0) {
       // Chase in last hour?
       if (diff.inMinutes == 0) {
         // In the last minute? show seconds
-        dateMsg = diff.inSeconds.abs().toString() + ' seconds ago';
+        dateMsg = '${diff.inSeconds.abs()} seconds ago';
       } else {
         // Otherwise show how many minutes
-        dateMsg = diff.inMinutes.abs().toString() + ' minutes ago';
+        dateMsg = '${diff.inMinutes.abs()} minutes ago';
       }
     } else if (diff.inHours.abs() == 1) {
       // One hour ago
-      dateMsg = diff.inHours.abs().toString() + ' hr ago';
+      dateMsg = '${diff.inHours.abs()} hr ago';
     } else if (diff.inHours.abs() > 1) {
       // Hours ago
-      dateMsg = diff.inHours.abs().toString() + ' hrs ago';
+      dateMsg = '${diff.inHours.abs()} hrs ago';
     }
   } else if (today.year != chaseDate.year) {
     dateMsg = DateFormat('MMM d, yyyy').format(chaseDate);

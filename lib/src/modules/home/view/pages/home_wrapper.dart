@@ -68,7 +68,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     //TODO: Update with new notification schema
 
     if (data['Interest'] != null && data['Type'] != null) {
-      updateNotificationsPresentStatus(ref, true);
+      await updateNotificationsPresentStatus(ref, true);
       final ChaseAppNotification notificationData =
           getNotificationDataFromMessage(message);
 
@@ -147,7 +147,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
         message['body'] as String? ?? 'NA',
         data,
       );
-      updateNotificationsPresentStatus(ref, true);
+      await updateNotificationsPresentStatus(ref, true);
       // final Interests? notificationType =
       //     getInterestEnumFromString(notification.interest);
 
@@ -160,7 +160,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       //   return;
       // }
 
-      showNotificationBanner(context, notification);
+      await showNotificationBanner(context, notification);
     } else {
       logger.warning(
         "ChaseAppNotification data didn't contained Interest or Type field--> $data",

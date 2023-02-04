@@ -10,12 +10,12 @@ class CustomVideoProgressIndicator extends StatefulWidget {
   /// to `top: 5.0`.
   const CustomVideoProgressIndicator(
     this.controller, {
-    Key? key,
+    super.key,
     this.colors = const VideoProgressColors(),
     required this.allowScrubbing,
     this.padding = const EdgeInsets.only(top: 5),
     required this.onScrubbed,
-  }) : super(key: key);
+  });
 
   /// The [VideoPlayerController] that actually associates a video with this
   /// widget.

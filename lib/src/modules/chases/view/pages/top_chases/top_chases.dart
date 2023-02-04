@@ -15,9 +15,9 @@ import 'top_chase_builder.dart';
 
 class TopChasesListView extends ConsumerWidget {
   const TopChasesListView({
-    Key? key,
+    super.key,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final Logger logger;
 

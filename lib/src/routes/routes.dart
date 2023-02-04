@@ -60,7 +60,7 @@ class Routes {
           builder: (BuildContext context) => const LogInView(),
         );
       case RouteName.HOME_WRAPPER:
-        return MaterialPageRoute<void>(builder: (_) => HomeWrapper());
+        return MaterialPageRoute<void>(builder: (_) => const HomeWrapper());
       case RouteName.CHASE_VIEW:
         final String chaseId = arguments['chaseId'] as String;
         final Chase? chase = arguments['chase'] as Chase?;

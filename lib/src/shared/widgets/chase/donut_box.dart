@@ -9,9 +9,9 @@ import '../buttons/glass_button.dart';
 
 class DonutBox extends StatelessWidget {
   const DonutBox({
-    Key? key,
+    super.key,
     required this.chase,
-  }) : super(key: key);
+  });
 
   final Chase chase;
 

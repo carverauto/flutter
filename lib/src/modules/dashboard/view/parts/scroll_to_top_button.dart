@@ -1,11 +1,12 @@
-import 'package:chaseapp/src/shared/util/helpers/sizescaleconfig.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../shared/util/helpers/sizescaleconfig.dart';
 
 class ScrollToTopButton extends StatelessWidget {
   const ScrollToTopButton({
-    Key? key,
+    super.key,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   final ScrollController scrollController;
 
@@ -13,28 +14,28 @@ class ScrollToTopButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: scrollController,
-      builder: (context, child) {
-        double scrollOffset = scrollController.offset;
+      builder: (BuildContext context, Widget? child) {
+        final double scrollOffset = scrollController.offset;
         return AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) {
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
             return ScaleTransition(scale: animation, child: child);
           },
           child: scrollOffset > Sizescaleconfig.screenheight! * 0.5
               ? FloatingActionButton(
-                  tooltip: "Scroll to top",
-                  child: Icon(
+                  tooltip: 'Scroll to top',
+                  child: const Icon(
                     Icons.arrow_upward,
                   ),
                   onPressed: () async {
-                    scrollController.animateTo(
+                    await scrollController.animateTo(
                       0,
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
                   },
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
         );
       },
     );

@@ -5,7 +5,7 @@ import '../../const/sizings.dart';
 import '../../models/chase/chase.dart';
 
 class SentimentSlider extends StatelessWidget {
-  const SentimentSlider({Key? key, required this.chase}) : super(key: key);
+  const SentimentSlider({super.key, required this.chase});
 
   final Chase chase;
 

@@ -8,9 +8,9 @@ import 'notification_type_chip.dart';
 
 class NotificationTypes extends ConsumerStatefulWidget {
   const NotificationTypes({
-    Key? key,
+    super.key,
     required this.userInterests,
-  }) : super(key: key);
+  });
 
   final List<String?> userInterests;
 

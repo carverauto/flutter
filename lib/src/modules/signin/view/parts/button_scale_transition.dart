@@ -4,9 +4,9 @@ import '../../../../const/other.dart';
 
 class ButtonScaleAnimationWidget extends StatelessWidget {
   const ButtonScaleAnimationWidget({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

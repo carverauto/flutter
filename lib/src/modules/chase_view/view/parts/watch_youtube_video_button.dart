@@ -6,9 +6,9 @@ import '../../../../const/sizings.dart';
 
 class WatchYoutubeVideo extends StatefulWidget {
   const WatchYoutubeVideo({
-    Key? key,
+    super.key,
     required this.isLive,
-  }) : super(key: key);
+  });
 
   final bool isLive;
 

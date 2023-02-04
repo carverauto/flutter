@@ -16,10 +16,10 @@ import '../../../../signin/view/parts/gradient_animation_container.dart';
 
 class TopChaseBuilder extends StatelessWidget {
   const TopChaseBuilder({
-    Key? key,
+    super.key,
     required this.chase,
     this.imageDimensions = ImageDimensions.MEDIUM,
-  }) : super(key: key);
+  });
 
   final Chase chase;
 

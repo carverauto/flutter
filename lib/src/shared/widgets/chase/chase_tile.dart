@@ -1,19 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chaseapp/src/const/colors.dart';
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/models/chase/chase.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/date_added.dart';
-import 'package:chaseapp/src/shared/util/helpers/image_url_parser.dart';
-import 'package:chaseapp/src/shared/widgets/chase/donut_box.dart';
 import 'package:flutter/material.dart';
+
+import '../../../const/colors.dart';
+import '../../../const/images.dart';
+import '../../../const/sizings.dart';
+import '../../../models/chase/chase.dart';
+import '../../../routes/routeNames.dart';
+import '../../util/helpers/date_added.dart';
+import '../../util/helpers/image_url_parser.dart';
+import 'donut_box.dart';
 
 class ChaseTile extends StatelessWidget {
   const ChaseTile({
-    Key? key,
+    super.key,
     required this.chase,
-  }) : super(key: key);
+  });
 
   final Chase chase;
 
@@ -26,7 +27,7 @@ class ChaseTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(kBorderRadiusStandard),
         ),
         leading: Hero(
-          tag: "Chase" + chase.createdAt.toString(),
+          tag: 'Chase${chase.createdAt}',
           child: AspectRatio(
             aspectRatio: 1,
             child: Container(
@@ -51,17 +52,17 @@ class ChaseTile extends StatelessWidget {
                         chase.imageURL!,
                         ImageDimensions.SMALL,
                       ),
-                      placeholder: (context, value) => Center(
+                      placeholder: (BuildContext context, String value) => const Center(
                         child: CircularProgressIndicator(),
                       ),
-                      errorWidget: (context, value, dynamic value2) {
+                      errorWidget: (BuildContext context, String value, dynamic value2) {
                         return Icon(
                           Icons.info,
                           color: Theme.of(context).colorScheme.primary,
                         );
                       },
                     )
-                  : Image(
+                  : const Image(
                       fit: BoxFit.cover,
                       image: AssetImage(defaultAssetChaseImage),
                     ),
@@ -69,7 +70,7 @@ class ChaseTile extends StatelessWidget {
           ),
         ),
         title: Text(
-          chase.name ?? "NA",
+          chase.name ?? 'NA',
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -91,9 +92,9 @@ class ChaseTile extends StatelessWidget {
             context,
             RouteName.CHASE_VIEW,
             arguments: {
-              "chaseId": chase.id,
+              'chaseId': chase.id,
             },
           );
-        });
+        },);
   }
 }

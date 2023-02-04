@@ -3,13 +3,59 @@ library medium_clap_flutter;
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chaseapp/src/const/images.dart';
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../const/images.dart';
+import '../../../const/sizings.dart';
+
 /// A Custom Floating Action Button (FAB) library like clapping effect on Medium.
 class ClapFAB extends StatefulWidget {
+  const ClapFAB.icon({
+    super.key,
+    this.countCircleColor = Colors.blue,
+    this.countTextColor = Colors.white,
+    this.hasShadow = false,
+    this.shadowColor = Colors.blue,
+    this.floatingOutlineColor = Colors.white,
+    this.floatingBgColor = Colors.white,
+    this.defaultIcon = Icons.favorite_border,
+    this.defaultIconColor = Colors.blue,
+    this.sparkleColor = Colors.blue,
+    this.filledIcon = Icons.favorite,
+    this.filledIconColor = Colors.blue,
+    this.initCounter = 0,
+    this.maxCounter = NOT_LIMIT_INCREMENT,
+    required this.clapFabCallback,
+    this.clapUpCallback,
+    required this.trailing,
+  })  : defaultImage = null,
+        defaultImageColor = null,
+        filledImage = null,
+        filledImageColor = null;
+
+  const ClapFAB.image({
+    super.key,
+    this.countCircleColor = Colors.blue,
+    this.countTextColor = Colors.white,
+    this.hasShadow = false,
+    this.shadowColor = Colors.blue,
+    this.floatingOutlineColor = Colors.white,
+    this.floatingBgColor = Colors.white,
+    this.sparkleColor = Colors.blue,
+    this.defaultImage = 'images/clap.png',
+    this.defaultImageColor = Colors.blue,
+    this.filledImageColor = Colors.blue,
+    this.filledImage = 'images/clap.png',
+    this.initCounter = 0,
+    this.maxCounter = NOT_LIMIT_INCREMENT,
+    required this.clapFabCallback,
+    this.clapUpCallback,
+    required this.trailing,
+  })  : defaultIcon = null,
+        defaultIconColor = null,
+        filledIcon = null,
+        filledIconColor = null;
   static const int NOT_LIMIT_INCREMENT = -1;
 
   /// The color of count's circle background
@@ -71,50 +117,6 @@ class ClapFAB extends StatefulWidget {
 
   final Widget Function(int votes) trailing;
 
-  const ClapFAB.icon({
-    this.countCircleColor = Colors.blue,
-    this.countTextColor = Colors.white,
-    this.hasShadow = false,
-    this.shadowColor = Colors.blue,
-    this.floatingOutlineColor = Colors.white,
-    this.floatingBgColor = Colors.white,
-    this.defaultIcon = Icons.favorite_border,
-    this.defaultIconColor = Colors.blue,
-    this.sparkleColor = Colors.blue,
-    this.filledIcon = Icons.favorite,
-    this.filledIconColor = Colors.blue,
-    this.initCounter = 0,
-    this.maxCounter = NOT_LIMIT_INCREMENT,
-    required this.clapFabCallback,
-    this.clapUpCallback,
-    required this.trailing,
-  })  : defaultImage = null,
-        defaultImageColor = null,
-        filledImage = null,
-        filledImageColor = null;
-
-  const ClapFAB.image({
-    this.countCircleColor = Colors.blue,
-    this.countTextColor = Colors.white,
-    this.hasShadow = false,
-    this.shadowColor = Colors.blue,
-    this.floatingOutlineColor = Colors.white,
-    this.floatingBgColor = Colors.white,
-    this.sparkleColor = Colors.blue,
-    this.defaultImage = "images/clap.png",
-    this.defaultImageColor = Colors.blue,
-    this.filledImageColor = Colors.blue,
-    this.filledImage = "images/clap.png",
-    this.initCounter = 0,
-    this.maxCounter = NOT_LIMIT_INCREMENT,
-    required this.clapFabCallback,
-    this.clapUpCallback,
-    required this.trailing,
-  })  : defaultIcon = null,
-        defaultIconColor = null,
-        filledIcon = null,
-        filledIconColor = null;
-
   @override
   _ClapFABState createState() => _ClapFABState();
 }
@@ -124,13 +126,13 @@ enum ScoreWidgetStatus { HIDDEN, BECOMING_VISIBLE, VISIBLE, BECOMING_INVISIBLE }
 class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
   int counter = 0;
   int upCount = 0;
-  double _sparklesAngle = 0.0;
+  double _sparklesAngle = 0;
   ScoreWidgetStatus _scoreWidgetStatus = ScoreWidgetStatus.HIDDEN;
-  final duration = Duration(milliseconds: 400);
-  final oneSecond = Duration(seconds: 1);
+  final Duration duration = const Duration(milliseconds: 400);
+  final Duration oneSecond = const Duration(seconds: 1);
   late Random random;
   // Timer ?holdTimer, scoreOutETA;
-  Timer holdTimer = Timer(Duration(seconds: 0), () {});
+  Timer holdTimer = Timer(const Duration(), () {});
   late Timer scoreOutETA;
   bool isScoreOutTimerInitialized = false;
   late AnimationController scoreInAnimationController,
@@ -139,33 +141,37 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
       sparklesAnimationController;
   late Animation<double> scoreOutPositionAnimation, sparklesAnimation;
 
+  @override
   initState() {
     super.initState();
     random = Random();
     counter = widget.initCounter;
-    scoreInAnimationController =
-        AnimationController(duration: Duration(milliseconds: 150), vsync: this);
+    scoreInAnimationController = AnimationController(
+        duration: const Duration(milliseconds: 150), vsync: this);
     scoreInAnimationController.addListener(() {
       setState(() {}); // Calls render function
     });
 
     scoreOutAnimationController =
         AnimationController(vsync: this, duration: duration);
-    scoreOutPositionAnimation = Tween(begin: 100.0, end: 150.0).animate(
-        CurvedAnimation(
-            parent: scoreOutAnimationController, curve: Curves.easeOut));
+    scoreOutPositionAnimation = Tween<double>(begin: 100, end: 150).animate(
+      CurvedAnimation(
+        parent: scoreOutAnimationController,
+        curve: Curves.easeOut,
+      ),
+    );
     scoreOutPositionAnimation.addListener(() {
       setState(() {});
     });
-    scoreOutAnimationController.addStatusListener((status) {
+    scoreOutAnimationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _scoreWidgetStatus = ScoreWidgetStatus.HIDDEN;
       }
     });
 
-    scoreSizeAnimationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
-    scoreSizeAnimationController.addStatusListener((status) {
+    scoreSizeAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 150));
+    scoreSizeAnimationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         scoreSizeAnimationController.reverse();
       }
@@ -177,12 +183,15 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     sparklesAnimationController =
         AnimationController(vsync: this, duration: duration);
     sparklesAnimation = CurvedAnimation(
-        parent: sparklesAnimationController, curve: Curves.easeIn);
+      parent: sparklesAnimationController,
+      curve: Curves.easeIn,
+    );
     sparklesAnimation.addListener(() {
       setState(() {});
     });
   }
 
+  @override
   dispose() {
     scoreInAnimationController.dispose();
     scoreOutAnimationController.dispose();
@@ -190,8 +199,8 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
   }
 
   void increment() {
-    scoreSizeAnimationController.forward(from: 0.0);
-    sparklesAnimationController.forward(from: 0.0);
+    scoreSizeAnimationController.forward(from: 0);
+    sparklesAnimationController.forward(from: 0);
 
     if (_shouldIncrement()) {
       setState(() {
@@ -215,15 +224,15 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     }
     if (_scoreWidgetStatus == ScoreWidgetStatus.BECOMING_INVISIBLE) {
       // We tapped down while the widget was flying up. Need to cancel that animation.
-      scoreOutAnimationController.stop(canceled: true);
+      scoreOutAnimationController.stop();
       _scoreWidgetStatus = ScoreWidgetStatus.VISIBLE;
     } else if (_scoreWidgetStatus == ScoreWidgetStatus.HIDDEN) {
       _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_VISIBLE;
-      scoreInAnimationController.forward(from: 0.0);
+      scoreInAnimationController.forward(from: 0);
     }
 
-    holdTimer = Timer(Duration(milliseconds: 500), () {
-      print("message");
+    holdTimer = Timer(const Duration(milliseconds: 500), () {
+      print('message');
       setState(() {
         widget.clapFabCallback(upCount);
         upCount = 0;
@@ -235,7 +244,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     // User removed his finger from button.
 
     scoreOutETA = Timer(oneSecond, () {
-      scoreOutAnimationController.forward(from: 0.0);
+      scoreOutAnimationController.forward(from: 0);
       _scoreWidgetStatus = ScoreWidgetStatus.BECOMING_INVISIBLE;
     });
     isScoreOutTimerInitialized = true;
@@ -249,40 +258,42 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
     // when user holds the button.
 
     return GestureDetector(
-        onTapUp: onTapUp,
-        onTapDown: onTapDown,
-        child: Container(
-          height: 50,
-          width: 50,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              border:
-                  Border.all(color: widget.floatingOutlineColor, width: 1.0),
-              shape: BoxShape.circle,
-              color: widget.floatingBgColor,
-              boxShadow: [
-                widget.hasShadow
-                    ? BoxShadow(
-                        color: widget.shadowColor.withOpacity(0.5),
-                        blurRadius: 8,
-                        offset: Offset(
-                          0,
-                          4,
-                        ),
-                      )
-                    : BoxShadow()
-              ]),
-          child: SvgPicture.asset(
-            donutSVG,
-            height: kIconSizeMediumConstant,
-          ),
-        ));
+      onTapUp: onTapUp,
+      onTapDown: onTapDown,
+      child: Container(
+        height: 50,
+        width: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          border: Border.all(color: widget.floatingOutlineColor),
+          shape: BoxShape.circle,
+          color: widget.floatingBgColor,
+          boxShadow: [
+            if (widget.hasShadow)
+              BoxShadow(
+                color: widget.shadowColor.withOpacity(0.5),
+                blurRadius: 8,
+                offset: const Offset(
+                  0,
+                  4,
+                ),
+              )
+            else
+              const BoxShadow()
+          ],
+        ),
+        child: SvgPicture.asset(
+          donutSVG,
+          height: kIconSizeMediumConstant,
+        ),
+      ),
+    );
   }
 
   Widget getScoreButton() {
-    var scorePosition = 0.0;
-    var scoreOpacity = 0.0;
-    var extraSize = 0.0;
+    double scorePosition = 0;
+    double scoreOpacity = 0;
+    double extraSize = 0;
     switch (_scoreWidgetStatus) {
       case ScoreWidgetStatus.HIDDEN:
         break;
@@ -297,59 +308,67 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
         scoreOpacity = 1.0 - scoreOutAnimationController.value;
     }
 
-    var stackChildren = <Widget>[];
+    final List<Widget> stackChildren = <Widget>[];
 
-    var firstAngle = _sparklesAngle;
-    var sparkleRadius = (sparklesAnimationController.value * 50);
-    var sparklesOpacity = (1 - sparklesAnimation.value);
+    final double firstAngle = _sparklesAngle;
+    final double sparkleRadius = sparklesAnimationController.value * 50;
+    final double sparklesOpacity = 1 - sparklesAnimation.value;
 
     for (int i = 0; i < 5; ++i) {
-      var currentAngle = (firstAngle + ((2 * pi) / 5) * (i));
-      var sparklesWidget = Positioned(
-        child: Transform.rotate(
-            angle: currentAngle - pi / 2,
-            child: Opacity(
-                opacity: sparklesOpacity,
-                child: Image.asset(
-                  "images/sparkles.png",
-                  color: widget.sparkleColor,
-                  cacheHeight: 28,
-                  cacheWidth: 28,
-                  width: 14.0,
-                  height: 14.0,
-                ))),
+      final double currentAngle = firstAngle + ((2 * pi) / 5) * i;
+      final Positioned sparklesWidget = Positioned(
         left: (sparkleRadius * cos(currentAngle)) + 20,
         top: (sparkleRadius * sin(currentAngle)) + 20,
+        child: Transform.rotate(
+          angle: currentAngle - pi / 2,
+          child: Opacity(
+            opacity: sparklesOpacity,
+            child: Image.asset(
+              'images/sparkles.png',
+              color: widget.sparkleColor,
+              cacheHeight: 28,
+              cacheWidth: 28,
+              width: 14,
+              height: 14,
+            ),
+          ),
+        ),
       );
       stackChildren.add(sparklesWidget);
     }
 
-    stackChildren.add(Opacity(
+    stackChildren.add(
+      Opacity(
         opacity: scoreOpacity,
         child: Container(
-            height: 50.0 + extraSize,
-            width: 50.0 + extraSize,
-            decoration: ShapeDecoration(
-              shape: CircleBorder(side: BorderSide.none),
-              color: widget.countCircleColor,
+          height: 50.0 + extraSize,
+          width: 50.0 + extraSize,
+          decoration: ShapeDecoration(
+            shape: const CircleBorder(),
+            color: widget.countCircleColor,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            '+$counter',
+            style: TextStyle(
+              color: widget.countTextColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
             ),
-            alignment: Alignment.center,
-            child: Text(
-              "+" + counter.toString(),
-              style: TextStyle(
-                  color: widget.countTextColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0),
-            ))));
-
-    var _currentWidget = Positioned(
-        child: Stack(
-          alignment: FractionalOffset.center,
-          clipBehavior: Clip.none,
-          children: stackChildren,
+          ),
         ),
-        bottom: scorePosition);
-    return _currentWidget;
+      ),
+    );
+
+    final Positioned currentWidget = Positioned(
+      bottom: scorePosition,
+      child: Stack(
+        alignment: FractionalOffset.center,
+        clipBehavior: Clip.none,
+        children: stackChildren,
+      ),
+    );
+    return currentWidget;
   }
 
   @override
@@ -362,7 +381,7 @@ class _ClapFABState extends State<ClapFAB> with TickerProviderStateMixin {
           Flexible(
             child: widget.trailing(counter),
           ),
-        SizedBox(
+        const SizedBox(
           width: kItemsSpacingSmallConstant,
         ),
         Stack(

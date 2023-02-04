@@ -5,9 +5,9 @@ import '../../../../models/chase_animation_event.dart/chase_animation_event.dart
 
 class RiveEmojies extends StatefulWidget {
   const RiveEmojies({
-    Key? key,
+    super.key,
     required this.animationEvent,
-  }) : super(key: key);
+  });
 
   final ChaseAnimationEvent animationEvent;
 

@@ -9,12 +9,12 @@ import '../../../../shared/util/helpers/sizescaleconfig.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({
-    Key? key,
+    super.key,
     required this.title,
     required this.message,
     required this.onTap,
     required this.pageIndex,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final String message;

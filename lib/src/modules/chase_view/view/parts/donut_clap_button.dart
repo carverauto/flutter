@@ -12,10 +12,10 @@ import '../providers/providers.dart';
 
 class DonutClapButton extends ConsumerWidget {
   const DonutClapButton({
-    Key? key,
+    super.key,
     required this.chaseId,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final String chaseId;
   final Logger logger;

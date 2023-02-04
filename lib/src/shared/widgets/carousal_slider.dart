@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class CarousalSlider extends StatefulWidget {
   const CarousalSlider({
-    Key? key,
+    super.key,
     required this.childrens,
     required this.builder,
     required this.carouselOptions,
-  }) : super(key: key);
+  });
 
   final List<Widget> childrens;
   final CarouselOptions carouselOptions;
@@ -70,7 +70,7 @@ class _CarousalSliderState extends State<CarousalSlider> {
                 final BuildContext storageContext =
                     pageController.position.context.storageContext;
                 final double? previousSavedPosition =
-                    PageStorage.of(storageContext)?.readState(storageContext)
+                    PageStorage.of(storageContext).readState(storageContext)
                         as double?;
                 if (previousSavedPosition != null) {
                   value = previousSavedPosition - index.toDouble();

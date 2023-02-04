@@ -19,10 +19,10 @@ import 'donut_clap_button.dart';
 
 class ChaseDetailsReactiveInformation extends StatelessWidget {
   const ChaseDetailsReactiveInformation({
-    Key? key,
+    super.key,
     required this.chaseId,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final String chaseId;
   final Logger logger;
@@ -195,10 +195,10 @@ class ChaseDetailsReactiveInformation extends StatelessWidget {
 
 class ChaseHeroSectionBuilder extends ConsumerWidget {
   const ChaseHeroSectionBuilder({
-    Key? key,
+    super.key,
     required this.chase,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   final Chase chase;
   final String? imageUrl;

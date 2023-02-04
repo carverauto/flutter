@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../const/images.dart';
 
 class ChaseAppNameLogoImage extends StatelessWidget {
-  const ChaseAppNameLogoImage({Key? key}) : super(key: key);
+  const ChaseAppNameLogoImage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ChaseAppNameLogoImage extends StatelessWidget {
 }
 
 class ChaseAppLogoImage extends StatelessWidget {
-  const ChaseAppLogoImage({Key? key}) : super(key: key);
+  const ChaseAppLogoImage({super.key});
 
   @override
   Widget build(BuildContext context) {

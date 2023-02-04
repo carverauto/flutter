@@ -67,7 +67,7 @@ class TrajectoryPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
+    final Paint paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
@@ -83,7 +83,7 @@ class TrajectoryPainter extends CustomPainter {
       ).createShader(Offset.zero & size)
       ..strokeWidth = 4;
 
-    Path path = Path();
+    final Path path = Path();
     path.moveTo(start.x.toDouble(), start.y.toDouble());
 
     path.quadraticBezierTo(

@@ -8,7 +8,7 @@ import '../loaders/loading.dart';
 
 class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
   const ChaseDetailsProviderStateBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.watchThisProvider,
     required this.logger,
@@ -18,7 +18,7 @@ class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
     this.loadingBuilder,
     required this.chatsRow,
     required this.chatsView,
-  }) : super(key: key);
+  });
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
@@ -92,7 +92,7 @@ class ChaseDetailsProviderStateBuilder<T> extends ConsumerWidget {
 
 class ProviderStateBuilder<T> extends ConsumerWidget {
   const ProviderStateBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.watchThisProvider,
     required this.logger,
@@ -101,7 +101,7 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
     this.showBackButton = false,
     this.loadingBuilder,
     this.child,
-  }) : super(key: key);
+  });
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 
@@ -173,14 +173,14 @@ class ProviderStateBuilder<T> extends ConsumerWidget {
 
 class SliverProviderStateBuilder<T> extends ConsumerWidget {
   const SliverProviderStateBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.watchThisProvider,
     required this.logger,
     this.errorMessage,
     this.errorBuilder,
     this.loadingBuilder,
-  }) : super(key: key);
+  });
 
   final ProviderBase<AsyncValue<T>> watchThisProvider;
 

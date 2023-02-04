@@ -6,8 +6,8 @@ import '../../../../core/top_level_providers/services_providers.dart';
 
 class ConnectivityStatus extends StatelessWidget {
   const ConnectivityStatus({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -99,9 +99,9 @@ class BofView extends ConsumerWidget {
 
 class ClusterIconsList extends ConsumerStatefulWidget {
   const ClusterIconsList({
-    Key? key,
+    super.key,
     required this.bofGroups,
-  }) : super(key: key);
+  });
 
   final Map<int, List<BirdsOfFire>> bofGroups;
 

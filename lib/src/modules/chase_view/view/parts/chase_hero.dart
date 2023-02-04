@@ -23,10 +23,10 @@ import 'youtube_player/youtube_player_view.dart';
 
 class ChaseHeroSection extends ConsumerStatefulWidget {
   const ChaseHeroSection({
-    Key? key,
+    super.key,
     required this.chaseId,
     required this.imageURL,
-  }) : super(key: key);
+  });
 
   final String chaseId;
   final String? imageURL;
@@ -288,7 +288,7 @@ class _ChaseHeroSectionState extends ConsumerState<ChaseHeroSection> {
 }
 
 class ClosePlayingVideo extends ConsumerWidget {
-  const ClosePlayingVideo({Key? key}) : super(key: key);
+  const ClosePlayingVideo({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

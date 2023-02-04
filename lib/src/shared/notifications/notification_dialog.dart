@@ -8,9 +8,9 @@ import '../widgets/builders/image_builder.dart';
 
 class NotificationDialog extends StatelessWidget {
   const NotificationDialog({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   final ChaseAppNotification notification;
 

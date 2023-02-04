@@ -1,14 +1,15 @@
-import 'package:chaseapp/src/const/sizings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../const/sizings.dart';
+
 class NotificationTypeChip extends StatelessWidget {
   const NotificationTypeChip({
-    Key? key,
+    super.key,
     required this.value,
     required this.selectedValue,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final String? selectedValue;
   final String? value;
@@ -16,7 +17,7 @@ class NotificationTypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayName = toBeginningOfSentenceCase(value?.split("-")[0]);
+    final String? displayName = toBeginningOfSentenceCase(value?.split('-')[0]);
 
     return GestureDetector(
       onTap: () {
@@ -25,15 +26,15 @@ class NotificationTypeChip extends StatelessWidget {
       child: Opacity(
         opacity: 1, //selectedValue == null || selectedValue == value ? 1 : 0,
         child: Tooltip(
-          message: value ?? "All notifications you are subscribed to.",
+          message: value ?? 'All notifications you are subscribed to.',
           child: AnimatedContainer(
             duration:
                 Duration(milliseconds: selectedValue == value ? 300 : 150),
-            margin: EdgeInsets.only(right: kItemsSpacingExtraSmallConstant),
+            margin: const EdgeInsets.only(right: kItemsSpacingExtraSmallConstant),
             width:
                 100, //selectedValue == null || selectedValue == value ? 100 : 0,
             height: 34,
-            padding: EdgeInsets.symmetric(horizontal: kButtonPaddingMedium),
+            padding: const EdgeInsets.symmetric(horizontal: kButtonPaddingMedium),
             decoration: BoxDecoration(
               color: selectedValue == value
                   ? Theme.of(context).primaryColorLight
@@ -46,8 +47,8 @@ class NotificationTypeChip extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               // following the naming convention of interests names,
-              displayName ?? "All",
-              style: TextStyle(
+              displayName ?? 'All',
+              style: const TextStyle(
                 color: Colors.white,
                 //  selectedValue == null || selectedValue == value
                 //     ? Colors.white

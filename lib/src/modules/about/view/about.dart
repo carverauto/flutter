@@ -9,7 +9,7 @@ import '../../../shared/util/helpers/launchLink.dart';
 import '../../../shared/widgets/brand/chaseapp_brand_widgets.dart';
 
 class AboutUsView extends ConsumerStatefulWidget {
-  const AboutUsView({Key? key}) : super(key: key);
+  const AboutUsView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AboutUsViewState();

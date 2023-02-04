@@ -16,10 +16,10 @@ import 'theater_rive.dart';
 
 class VideoAnimationsOverlay extends ConsumerStatefulWidget {
   const VideoAnimationsOverlay({
-    Key? key,
+    super.key,
     required this.controller,
     required this.chase,
-  }) : super(key: key);
+  });
 
   final YoutubePlayerController controller;
   final Chase chase;

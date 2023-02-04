@@ -246,10 +246,10 @@ class ChangelogslinesPainter extends CustomPainter {
     path.moveTo(size.width / 2, 0);
     path.lineTo(size.width / 2, size.height);
 
-    double dashWidth = 20;
-    double dashSpace = 5;
+    const double dashWidth = 20;
+    const double dashSpace = 5;
     double distance = 0;
-    Path dashPath = Path();
+    final Path dashPath = Path();
 
     for (final PathMetric pathMetric in path.computeMetrics()) {
       while (distance < pathMetric.length) {

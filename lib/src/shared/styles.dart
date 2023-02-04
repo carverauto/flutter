@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 /// Used for all animations in the  app
 class Times {
   static const Duration fastest = Duration(milliseconds: 150);
-  static const fast = Duration(milliseconds: 250);
-  static const medium = Duration(milliseconds: 350);
-  static const slow = Duration(milliseconds: 700);
-  static const slower = Duration(milliseconds: 1000);
+  static const Duration fast = Duration(milliseconds: 250);
+  static const Duration medium = Duration(milliseconds: 350);
+  static const Duration slow = Duration(milliseconds: 700);
+  static const Duration slower = Duration(milliseconds: 1000);
 }
 
 class Sizes {
@@ -159,5 +159,5 @@ class TextStyles {
 }
 
 class BrandColors {
-  static const kGreyColor = Colors.white12;
+  static const Color kGreyColor = Colors.white12;
 }

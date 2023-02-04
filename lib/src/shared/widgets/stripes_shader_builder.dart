@@ -7,13 +7,13 @@ import '../util/helpers/colot_to_vector.dart';
 
 class StripesShaderBuilder extends StatefulWidget {
   const StripesShaderBuilder({
-    Key? key,
+    super.key,
     required this.child,
     required this.direction,
     // this.builder,
     required this.isActive,
     this.speedFactor = 1.0,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double direction;

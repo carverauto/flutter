@@ -9,12 +9,11 @@ import '../../../../shared/widgets/loaders/loading.dart';
 
 class EmailSignInBottom extends StatefulWidget {
   const EmailSignInBottom({
-    Key? key,
+    super.key,
     required TextEditingController textEditingController,
     required this.onTap,
     required this.isLoggingInWithEmail,
-  })  : _textEditingController = textEditingController,
-        super(key: key);
+  })  : _textEditingController = textEditingController;
 
   final TextEditingController _textEditingController;
   final Future<void> Function() onTap;

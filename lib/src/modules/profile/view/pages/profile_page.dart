@@ -24,7 +24,7 @@ import '../../../firehose/view/providers/providers.dart';
 import '../../../onboarding/view/pages/onboarding.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   @override
   State<ProfileView> createState() => _ProfileViewState();

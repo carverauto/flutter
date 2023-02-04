@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:chaseapp/src/models/pagination_state/pagination_notifier_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
+
+import '../../models/pagination_state/pagination_notifier_state.dart';
 
 class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
   PaginationNotifier({
@@ -20,7 +21,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
 
   final List<T> _items = [];
 
-  Timer _timer = Timer(const Duration(milliseconds: 0), () {});
+  Timer _timer = Timer(const Duration(), () {});
 
   bool noMoreItems = false;
 
@@ -48,7 +49,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
 
   Future<void> fetchFirstPage(bool clearCurrentList) async {
     if (!mounted) {
-      log("FetchNextPage called on unmounted PaginationNotifier");
+      log('FetchNextPage called on unmounted PaginationNotifier');
       return;
     }
     try {
@@ -64,7 +65,7 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
       }
       updateData(result);
     } catch (e, stk) {
-      logger.warning("Error fetching First page", e, stk);
+      logger.warning('Error fetching First page', e, stk);
       state = PaginationNotifierState.error(e, stk);
     }
   }
@@ -78,26 +79,26 @@ class PaginationNotifier<T> extends StateNotifier<PaginationNotifierState<T>> {
     _timer = Timer(const Duration(milliseconds: 1000), () {});
 
     if (!mounted) {
-      log("FetchNextPage called on unmounted PaginationNotifier");
+      log('FetchNextPage called on unmounted PaginationNotifier');
       return;
     }
 
     if (noMoreItems ||
         state == PaginationNotifierState<T>.onGoingLoading(_items)) {
-      log("Rejected");
+      log('Rejected');
       return;
     }
 
-    log("Passed");
+    log('Passed');
 
     state = PaginationNotifierState.onGoingLoading(_items);
 
     try {
       await Future<void>.delayed(const Duration(seconds: 1));
-      final result = await fetchNextItems(_items.last, _items.length);
+      final List<T> result = await fetchNextItems(_items.last, _items.length);
       updateData(result);
     } catch (e, stk) {
-      logger.warning("Error fetching next page", e, stk);
+      logger.warning('Error fetching next page', e, stk);
       state = PaginationNotifierState.onGoingError(_items, e, stk);
     }
   }

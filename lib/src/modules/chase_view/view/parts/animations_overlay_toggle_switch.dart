@@ -6,8 +6,8 @@ import '../providers/providers.dart';
 
 class AnimationsOverlayToggleSwitch extends StatelessWidget {
   const AnimationsOverlayToggleSwitch({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

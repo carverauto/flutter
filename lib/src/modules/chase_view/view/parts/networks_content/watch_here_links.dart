@@ -9,14 +9,13 @@ import '../../../../../models/chase/network/chase_network.dart';
 import '../../../../../models/chase/network/chase_stream/chase_stream.dart';
 import '../../../../../shared/util/helpers/is_valid_youtube_url.dart';
 import '../../providers/providers.dart';
-import '../ismp4orm3u8url.dart';
 import 'showurls.dart';
 
 class WatchHereLinksWrapper extends ConsumerWidget {
   const WatchHereLinksWrapper({
-    Key? key,
+    super.key,
     required this.chaseId,
-  }) : super(key: key);
+  });
 
   final String chaseId;
 
@@ -149,11 +148,11 @@ class WatchHereLinksWrapper extends ConsumerWidget {
 
 class _NetworksList extends StatelessWidget {
   const _NetworksList({
-    Key? key,
+    super.key,
     required this.networkContentMap,
     required this.iStreams,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final List<NetworkContentMapped> networkContentMap;
   final bool iStreams;

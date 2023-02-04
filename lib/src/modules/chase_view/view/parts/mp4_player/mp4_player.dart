@@ -85,9 +85,9 @@ class _Mp4VideoPlayerViewWrapperState extends State<Mp4VideoPlayerViewWrapper> {
 
 class _Mp4VideoPlayerView extends ConsumerStatefulWidget {
   const _Mp4VideoPlayerView({
-    Key? key,
+    super.key,
     required this.mp4Url,
-  }) : super(key: key);
+  });
 
   final String mp4Url;
 
@@ -197,10 +197,9 @@ class _Mp4VideoPlayerViewState extends ConsumerState<_Mp4VideoPlayerView> {
 
 class VideoOverlayControlls extends StatefulWidget {
   const VideoOverlayControlls({
-    Key? key,
+    super.key,
     required VideoPlayerController controller,
-  })  : _controller = controller,
-        super(key: key);
+  })  : _controller = controller;
 
   final VideoPlayerController _controller;
 
@@ -581,11 +580,10 @@ class _PlayPauseButtonState extends ConsumerState<Mp4VideoPlayerControlls>
 
 class VideoDurationProgrssBar extends StatelessWidget {
   const VideoDurationProgrssBar({
-    Key? key,
+    super.key,
     required VideoPlayerController controller,
     required this.onVideoTapped,
-  })  : _controller = controller,
-        super(key: key);
+  })  : _controller = controller;
 
   final VideoPlayerController _controller;
   final Function(Duration duration) onVideoTapped;

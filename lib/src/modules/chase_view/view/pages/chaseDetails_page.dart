@@ -17,12 +17,12 @@ import '../providers/providers.dart';
 // import 'package:chaseapp/pages/chat_page.dart';
 class ChaseDetailsView extends ConsumerStatefulWidget {
   const ChaseDetailsView({
-    Key? key,
+    super.key,
     required this.chaseId,
     required this.appBarOffsetAnimation,
     required this.bottomListAnimation,
     required this.chase,
-  }) : super(key: key);
+  });
   final String chaseId;
   final Chase? chase;
   final Animation<Offset> appBarOffsetAnimation;

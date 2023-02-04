@@ -12,12 +12,12 @@ import '../../../../shared/widgets/loaders/shimmer_tile.dart';
 
 class FireHoseView extends ConsumerWidget {
   const FireHoseView({
-    Key? key,
+    super.key,
     required this.itemsPaginationProvider,
     required this.scrollController,
     required this.showLimited,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<
       PaginationNotifier<ChaseAppNotification>,
@@ -80,12 +80,12 @@ class FireHoseView extends ConsumerWidget {
 
 class FireHoseListView extends ConsumerWidget {
   const FireHoseListView({
-    Key? key,
+    super.key,
     required this.itemsPaginationProvider,
     required this.scrollController,
     required this.showLimited,
     required this.logger,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<
       PaginationNotifier<ChaseAppNotification>,

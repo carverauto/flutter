@@ -15,9 +15,9 @@ import '../providers/providers.dart';
 
 class ChatsViewRow extends ConsumerWidget {
   ChatsViewRow({
-    Key? key,
+    super.key,
     required this.chaseId,
-  }) : super(key: key);
+  });
 
   final String chaseId;
   final Logger logger = Logger('Chats Section');

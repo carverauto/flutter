@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import '../../../../core/modules/auth/view/pages/auth_view_wrapper.dart';
 
 class CheckPermissionsViewWrapper extends StatelessWidget {
-  CheckPermissionsViewWrapper({Key? key}) : super(key: key);
+  CheckPermissionsViewWrapper({super.key});
 
   final Logger logger = Logger('CheckPermissionsView');
 

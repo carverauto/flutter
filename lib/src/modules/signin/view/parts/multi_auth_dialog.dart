@@ -8,9 +8,9 @@ import '../../../../shared/enums/social_logins.dart';
 
 class MultiAuthDialog extends StatelessWidget {
   const MultiAuthDialog({
-    Key? key,
+    super.key,
     required this.existingProviders,
-  }) : super(key: key);
+  });
 
   final List<String> existingProviders;
 
@@ -72,9 +72,9 @@ class MultiAuthDialog extends StatelessWidget {
 
 class NotSupportedSignInProviderDialog extends StatelessWidget {
   const NotSupportedSignInProviderDialog({
-    Key? key,
+    super.key,
     required this.authProviders,
-  }) : super(key: key);
+  });
 
   final List<String> authProviders;
 

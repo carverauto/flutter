@@ -14,10 +14,10 @@ import '../util/helpers/request_permissions.dart';
 
 class NotificationsPermissionsDialogView extends ConsumerStatefulWidget {
   const NotificationsPermissionsDialogView({
-    Key? key,
+    super.key,
     required this.isShownAsBottomSheet,
     this.showActions = true,
-  }) : super(key: key);
+  });
 
   final bool isShownAsBottomSheet;
   final bool showActions;

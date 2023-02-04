@@ -1,16 +1,17 @@
-import 'package:chaseapp/src/modules/notifications/view/providers/providers.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../routes/routeNames.dart';
+import '../providers/providers.dart';
+
 class NotificationsAppbarButton extends ConsumerWidget {
   const NotificationsAppbarButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationsPresent = ref.watch(newNotificationsPresentProvider);
+    final bool notificationsPresent = ref.watch(newNotificationsPresentProvider);
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, RouteName.NOTIFICATIONS);
@@ -22,7 +23,7 @@ class NotificationsAppbarButton extends ConsumerWidget {
         icon: Stack(
           alignment: Alignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.notifications_outlined,
             ),
             if (notificationsPresent)
@@ -32,7 +33,7 @@ class NotificationsAppbarButton extends ConsumerWidget {
                 child: Container(
                   height: 10,
                   width: 10,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.blue,
                   ),

@@ -4,9 +4,9 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 
 class AnimatingGradientShaderBuilder extends StatefulWidget {
   const AnimatingGradientShaderBuilder({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

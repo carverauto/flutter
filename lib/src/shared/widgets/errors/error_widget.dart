@@ -5,10 +5,10 @@ import '../../../routes/routeNames.dart';
 
 class ChaseAppErrorWidget extends StatelessWidget {
   const ChaseAppErrorWidget({
-    Key? key,
+    super.key,
     this.message,
     required this.onRefresh,
-  }) : super(key: key);
+  });
 
   final String? message;
 

@@ -10,8 +10,8 @@ import '../providers/providers.dart';
 
 class TheaterRive extends ConsumerStatefulWidget {
   const TheaterRive({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState<TheaterRive> createState() => _TheaterRiveState();
@@ -83,7 +83,7 @@ class _TheaterRiveState extends ConsumerState<TheaterRive> {
     }
   }
 
-  void playThiState(String state) async {
+  Future<void> playThiState(String state) async {
     timer.cancel();
     artboard.addController(theaterController);
     await Future<void>.delayed(const Duration(milliseconds: 300));

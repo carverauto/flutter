@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../shared/util/convertors/datetimeconvertor.dart';
@@ -9,7 +8,6 @@ part 'notification.g.dart';
 
 @freezed
 abstract class ChaseAppNotification implements _$ChaseAppNotification {
-  const ChaseAppNotification._();
   @JsonSerializable(explicitToJson: true)
   const factory ChaseAppNotification({
     @JsonKey(name: 'Interest') required String interest,
@@ -23,6 +21,7 @@ abstract class ChaseAppNotification implements _$ChaseAppNotification {
         required DateTime createdAt,
     @JsonKey(name: 'Data') NotificationData? data,
   }) = _ChaseAppNotification;
+  const ChaseAppNotification._();
   factory ChaseAppNotification.fromJson(Map<String, dynamic> json) =>
       _$ChaseAppNotificationFromJson(json);
 }

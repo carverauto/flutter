@@ -9,14 +9,14 @@ import '../loaders/loading.dart';
 
 class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
   const SliverProviderPaginatedStateNotifierBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.watchThisStateNotifierProvider,
     required this.scrollController,
     required this.logger,
     required this.axis,
     this.loadingBuilder,
-  }) : super(key: key);
+  });
 
   final AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
       PaginationNotifierState<T>> watchThisStateNotifierProvider;
@@ -66,7 +66,7 @@ class SliverProviderPaginatedStateNotifierBuilder<T> extends ConsumerWidget {
           child: RepaintBoundary(
               child: loadingBuilder != null
                   ? loadingBuilder!()
-                  : const CircularAdaptiveProgressIndicatorWithBg()),
+                  : const CircularAdaptiveProgressIndicatorWithBg(),),
         );
       },
       onGoingLoading: (List<T> data) {

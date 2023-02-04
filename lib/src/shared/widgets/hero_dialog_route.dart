@@ -24,7 +24,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+      Animation<double> secondaryAnimation, Widget child,) {
     return FadeTransition(
       opacity: CurvedAnimation(
         parent: animation,
@@ -36,7 +36,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+      Animation<double> secondaryAnimation,) {
     return builder(context);
   }
 

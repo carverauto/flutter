@@ -12,12 +12,12 @@ import '../buttons/glass_button.dart';
 
 class SliversPaginatedListViewAll<T> extends ConsumerWidget {
   SliversPaginatedListViewAll({
-    Key? key,
+    super.key,
     required this.itemsPaginationProvider,
     required this.title,
     required this.logger,
     required this.builder,
-  }) : super(key: key);
+  });
 
   final ScrollController scrollController = ScrollController();
   final Logger logger;
@@ -29,7 +29,7 @@ class SliversPaginatedListViewAll<T> extends ConsumerWidget {
       ScrollController scrollController,
       AutoDisposeStateNotifierProvider<PaginationNotifier<T>,
               PaginationNotifierState<T>>
-          itemsPaginationProvider) builder;
+          itemsPaginationProvider,) builder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

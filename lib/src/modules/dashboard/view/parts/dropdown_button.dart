@@ -1,34 +1,34 @@
-import 'package:chaseapp/src/const/links.dart';
-import 'package:chaseapp/src/const/sizings.dart';
-import 'package:chaseapp/src/core/modules/auth/view/providers/providers.dart';
-import 'package:chaseapp/src/routes/routeNames.dart';
-import 'package:chaseapp/src/shared/util/helpers/launchLink.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../const/links.dart';
+import '../../../../const/sizings.dart';
+import '../../../../core/modules/auth/view/providers/providers.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/util/helpers/launchLink.dart';
+
 class ChaseAppDropDownButton extends ConsumerWidget {
   const ChaseAppDropDownButton({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton<int>(
-      child: child,
       offset: Offset(0, kImageSizeMedium * 2),
       onSelected: (int actionIndex) async {
         switch (actionIndex) {
           case 0:
-            Navigator.pushNamed(context, RouteName.PROFILE);
+            await Navigator.pushNamed(context, RouteName.PROFILE);
             break;
           case 1:
-            Navigator.pushNamed(context, RouteName.CREDITS);
+            await Navigator.pushNamed(context, RouteName.CREDITS);
             break;
           case 2:
-            Navigator.pushNamed(context, RouteName.ABOUT_US);
+            await Navigator.pushNamed(context, RouteName.ABOUT_US);
             break;
           case 3:
             await launchUrl(privacyPolicy);
@@ -37,7 +37,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
             await launchUrl(tosPolicy);
             break;
           case 5:
-            ref.read(authRepoProvider).signOut();
+            await ref.read(authRepoProvider).signOut();
 
             break;
           default:
@@ -47,17 +47,17 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         PopupMenuItem<int>(
           value: 0,
           child: Text(
-            "Profile",
+            'Profile',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
-        PopupMenuDivider(),
+        const PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 1,
           child: Text(
-            "Credits",
+            'Credits',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -66,7 +66,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         PopupMenuItem<int>(
           value: 2,
           child: Text(
-            "About",
+            'About',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -75,7 +75,7 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         PopupMenuItem<int>(
           value: 3,
           child: Text(
-            "Privacy Policy",
+            'Privacy Policy',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -84,23 +84,24 @@ class ChaseAppDropDownButton extends ConsumerWidget {
         PopupMenuItem<int>(
           value: 4,
           child: Text(
-            "Terms of Service",
+            'Terms of Service',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
-        PopupMenuDivider(),
+        const PopupMenuDivider(),
         PopupMenuItem<int>(
           value: 5,
           child: Text(
-            "Log out",
+            'Log out',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
       ],
+      child: child,
     );
   }
 }

@@ -5,7 +5,6 @@ part 'tweet_data.g.dart';
 
 @freezed
 abstract class TweetData implements _$TweetData {
-  const TweetData._();
   @JsonSerializable(explicitToJson: true)
   const factory TweetData({
     required String tweetId,
@@ -15,6 +14,7 @@ abstract class TweetData implements _$TweetData {
     required String name,
     required String profileImageUrl,
   }) = _TweetData;
+  const TweetData._();
   factory TweetData.fromJson(Map<String, dynamic> json) =>
       _$TweetDataFromJson(json);
 }

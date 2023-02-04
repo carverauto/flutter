@@ -12,10 +12,10 @@ import '../providers/providers.dart';
 
 class NotificationSettingTile extends StatelessWidget {
   const NotificationSettingTile({
-    Key? key,
+    super.key,
     required this.interest,
     required this.isUsersInterest,
-  }) : super(key: key);
+  });
 
   final Interest interest;
   final bool isUsersInterest;
@@ -44,11 +44,11 @@ class NotificationSettingTile extends StatelessWidget {
 
 class NotificationSettingTileSwitch extends ConsumerStatefulWidget {
   const NotificationSettingTileSwitch({
-    Key? key,
+    super.key,
     required this.interest,
     required this.isUsersInterest,
     required this.displayName,
-  }) : super(key: key);
+  });
 
   final Interest interest;
   final bool isUsersInterest;

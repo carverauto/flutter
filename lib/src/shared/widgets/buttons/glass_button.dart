@@ -7,11 +7,11 @@ import '../../../const/sizings.dart';
 
 class GlassButton extends StatelessWidget {
   const GlassButton({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final EdgeInsets? padding;
@@ -37,11 +37,11 @@ class GlassButton extends StatelessWidget {
 
 class GlassBg extends StatelessWidget {
   const GlassBg({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.color,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final EdgeInsets? padding;

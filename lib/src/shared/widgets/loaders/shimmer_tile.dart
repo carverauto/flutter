@@ -4,9 +4,9 @@ import '../../../const/sizings.dart';
 
 class ShimmerTile extends StatefulWidget {
   const ShimmerTile({
-    Key? key,
+    super.key,
     required this.height,
-  }) : super(key: key);
+  });
 
   final double height;
 
