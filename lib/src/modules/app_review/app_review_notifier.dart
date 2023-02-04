@@ -204,9 +204,10 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
       return false;
     }
 
-    return true;
     final bool isPremiumMember =
         ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+
+    return !isPremiumMember;
     log(getFirehoseViewCount.toString());
 
     return getFirehoseViewCount > 2 && !isPremiumMember;
