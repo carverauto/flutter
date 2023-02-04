@@ -219,7 +219,12 @@ class ChaseAppDrawer extends ConsumerWidget {
                     Icons.star_rounded,
                     color: Colors.amber,
                   ),
-                  title: const Text('Rate Us'),
+                  title: const Text(
+                    'Rate Us',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                   onTap: () async {
                     final InAppReview inAppReview = InAppReview.instance;
 
