@@ -10,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:pusher_beams/pusher_beams.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
+import '../../../../const/app_bundle_info.dart';
 import '../../../../core/modules/auth/view/providers/providers.dart';
 import '../../../../core/top_level_providers/firebase_providers.dart';
 import '../../../../models/notification/notification.dart';
@@ -23,6 +24,8 @@ import '../../../dashboard/view/pages/dashboard.dart';
 import '../parts/helpers.dart';
 
 class HomeWrapper extends ConsumerStatefulWidget {
+  const HomeWrapper({super.key});
+
   @override
   _HomeWrapperState createState() => _HomeWrapperState();
 }
@@ -69,7 +72,7 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
       final ChaseAppNotification notificationData =
           getNotificationDataFromMessage(message);
 
-      await notificationHandler(context, notificationData, read: ref.read);
+      await notificationHandler(context, notificationData, ref: ref);
     } else {
       logger.warning(
         "ChaseAppNotification data didn't contained Interest or Type field--> $data",
@@ -80,9 +83,16 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
   Future<void> handleMessagesFromTerminatedState() async {
     final RemoteMessage? message =
         await FirebaseMessaging.instance.getInitialMessage();
+    final Map<String, dynamic>? pusherMessage =
+        await PusherBeams.instance.getInitialMessage();
 
     if (message != null) {
       await handlenotifications(message);
+      return;
+    }
+    if (pusherMessage != null) {
+      await handlePusherNotification(pusherMessage);
+      return;
     }
   }
 
@@ -122,25 +132,40 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     await PusherBeams.instance
         .onMessageReceivedInTheForeground((Map<Object?, Object?> message) {
       log('Pusher Message Recieved in the foreground--->$message');
-      final Map<String, dynamic> data =
-          Map<String, dynamic>.from(message['data'] as Map<dynamic, dynamic>);
-      //TODO: Update with new notification schema
-      if (data['Interest'] != null && data['Type'] != null) {
-        final ChaseAppNotification notification = constructNotification(
-          math.Random().nextInt(10000).toString(),
-          message['title'] as String? ?? 'NA',
-          message['body'] as String? ?? 'NA',
-          data,
-        );
-        updateNotificationsPresentStatus(ref, true);
-
-        showNotificationBanner(context, notification);
-      } else {
-        logger.warning(
-          "ChaseAppNotification data didn't contained Interest or Type field--> $data",
-        );
-      }
+      handlePusherNotification(message);
     });
+  }
+
+  Future<void> handlePusherNotification(Map<dynamic, dynamic> message) async {
+    final Map<String, dynamic> data =
+        Map<String, dynamic>.from(message['data'] as Map<dynamic, dynamic>);
+    //TODO: Update with new notification schema
+    if (data['Interest'] != null && data['Type'] != null) {
+      final ChaseAppNotification notification = constructNotification(
+        math.Random().nextInt(10000).toString(),
+        message['title'] as String? ?? 'NA',
+        message['body'] as String? ?? 'NA',
+        data,
+      );
+      updateNotificationsPresentStatus(ref, true);
+      // final Interests? notificationType =
+      //     getInterestEnumFromString(notification.interest);
+
+      // if (notificationType == Interests.firehose) {
+      //   await notificationHandler(
+      //     context,
+      //     notification,
+      //     ref: ref,
+      //   );
+      //   return;
+      // }
+
+      showNotificationBanner(context, notification);
+    } else {
+      logger.warning(
+        "ChaseAppNotification data didn't contained Interest or Type field--> $data",
+      );
+    }
   }
 
   @override
@@ -148,23 +173,29 @@ class _HomeWrapperState extends ConsumerState<HomeWrapper>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) async {
+      final bool isNotificationsPermissionGranted =
+          await checkForPermissionsStatuses();
+
+      if (isNotificationsPermissionGranted) {
+        await PusherBeams.instance.start(EnvVaribales.instanceId);
+      }
       initPostLoginActions();
       //Dynamic Links Handling
       //Background
       handleDynamicLinkOpenedFromBackgroundState();
       //Terminated
-      handleDynamicLinkFromTerminatedState();
+      await handleDynamicLinkFromTerminatedState();
 
       //Notifications Handling
       //Called in Background or Terminated State
       FirebaseMessaging.onBackgroundMessage(handlebgmessage);
       //Foreground
-      handleNotificationInForegroundState();
+      await handleNotificationInForegroundState();
       //Terminated
-      handleMessagesFromTerminatedState();
+      await handleMessagesFromTerminatedState();
       //Background
-      handlemessagesthatopenedtheappFromBackgroundState();
+      await handlemessagesthatopenedtheappFromBackgroundState();
     });
   }
 
