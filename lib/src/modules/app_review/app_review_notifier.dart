@@ -74,7 +74,7 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
       return false;
     }
 
-    return chasesSeenCount >= 2;
+    return chasesSeenCount >= 3;
   }
 
   Future<void> updatechasesSeenCount() async {
@@ -102,7 +102,7 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
     final bool isPremiumMember =
         ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
 
-    return getchasesSeenInLifeTimeCount == 5 && !isPremiumMember;
+    return getchasesSeenInLifeTimeCount == 6 && !isPremiumMember;
   }
 
   bool get shouldShowPremiumHeader {
