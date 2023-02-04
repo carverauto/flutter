@@ -102,7 +102,7 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
     final bool isPremiumMember =
         ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
 
-    return getchasesSeenInLifeTimeCount == 3 && !isPremiumMember;
+    return getchasesSeenInLifeTimeCount == 5 && !isPremiumMember;
   }
 
   bool get shouldShowPremiumHeader {
