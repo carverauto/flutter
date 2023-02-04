@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../../../const/sizings.dart';
+import '../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../shared/widgets/buttons/glass_button.dart';
 import 'in_app_purchases_view.dart';
+
+Future<void> showInAppPurchasesDialog(BuildContext context) async {
+  await showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return const _PremiumContentView();
+    },
+  );
+}
 
 Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
   showBottomSheet<void>(
@@ -16,9 +26,37 @@ Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
     ),
     clipBehavior: Clip.hardEdge,
     builder: (BuildContext context) {
-      return Stack(
+      return const _PremiumContentView();
+    },
+  );
+}
+
+class _PremiumContentView extends StatelessWidget {
+  const _PremiumContentView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black,
+      child: Stack(
         children: [
-          const InAppPurchasesMainView(),
+          Column(
+            children: [
+              const SizedBox(height: kPaddingMediumConstant),
+              AnimatingGradientShaderBuilder(
+                child: Text(
+                  'Get ChaseApp Premium',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize:
+                        Theme.of(context).textTheme.headlineSmall!.fontSize,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Expanded(child: InAppPurchasesMainView()),
+            ],
+          ),
           Positioned(
             top: 5,
             left: 0,
@@ -47,7 +85,7 @@ Future<void> showInAppPurchasesBottomSheet(BuildContext context) async {
             ),
           ),
         ],
-      );
-    },
-  );
+      ),
+    );
+  }
 }

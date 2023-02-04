@@ -18,6 +18,7 @@ import 'src/core/top_level_providers/services_providers.dart';
 import 'src/modules/app_review/app_review_notifier.dart';
 import 'src/modules/chats/view/providers/providers.dart';
 import 'src/modules/feedback_form/view/feedback_form.dart';
+import 'src/modules/in_app_purchases/views/view_helpers.dart';
 import 'src/routes/routeNames.dart';
 import 'src/routes/routes.dart';
 import 'src/shared/util/helpers/request_permissions.dart';
@@ -163,6 +164,7 @@ class RoutesObserver extends NavigatorObserver {
         try {
           if (previousRoute?.navigator?.context != null) {
             await checkRequestPermissions(previousRoute!.navigator!.context);
+
             if (ref
                 .read(appReviewStateNotifier.notifier)
                 .shouldShowAskForReviewDialog) {
@@ -170,7 +172,13 @@ class RoutesObserver extends NavigatorObserver {
                 ref,
                 previousRoute.navigator!.context,
               );
-            }
+            } else if (ref
+                .read(appReviewStateNotifier.notifier)
+                .shouldShowPremiumDialog) {
+              await showInAppPurchasesDialog(
+                previousRoute.navigator!.context,
+              );
+            } else {}
           }
         } catch (e, stk) {
           routesObserverLogger.warning(

@@ -5,23 +5,26 @@ import 'package:logging/logging.dart';
 import '../../../../const/colors.dart';
 import '../../../../const/sizings.dart';
 import '../../../../models/chase/chase.dart';
+import '../../../../routes/routeNames.dart';
+import '../../../../shared/shaders/animating_gradient/animating_gradient_shader_view.dart';
 import '../../../../shared/util/helpers/date_added.dart';
 import '../../../../shared/widgets/buttons/glass_button.dart';
+import '../../../app_review/app_review_notifier.dart';
 import '../../../signin/view/parts/gradient_animation_container.dart';
 import '../providers/providers.dart';
 import 'chase_description_dialog.dart';
 import 'chase_details_reactive_info.dart';
 import 'networks_content/watch_here_links.dart';
 
-class ChaseDetails extends StatelessWidget {
+class ChaseDetails extends ConsumerWidget {
   const ChaseDetails({
-    Key? key,
+    super.key,
     required this.imageURL,
     required this.logger,
     required this.chase,
     required this.chatsRow,
     required this.chatsView,
-  }) : super(key: key);
+  });
 
   final String? imageURL;
   final Logger logger;
@@ -30,7 +33,7 @@ class ChaseDetails extends StatelessWidget {
   final Widget chatsView;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         final bool showChatsWindow = ref.watch(isShowingChatsWindowProvide);
@@ -58,59 +61,64 @@ class ChaseDetails extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: kPaddingSmallConstant,
-                ),
                 Material(
-                  child: InkWell(
-                    onTap: () {
-                      showDescriptionDialog(context, chase.id);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kPaddingMediumConstant,
+                  child: Column(
+                    children: [
+                      const ChaseAppPremiumChaseViewHeader(),
+                      const SizedBox(
+                        height: kPaddingSmallConstant,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Consumer(
-                              builder: (
-                                BuildContext context,
-                                WidgetRef ref,
-                                _,
-                              ) {
-                                final String? title = ref.watch(
-                                  streamChaseProvider(chase.id).select(
-                                    (AsyncValue<Chase> value) =>
-                                        value.value?.name,
-                                  ),
-                                );
-
-                                return Text(
-                                  title ?? 'NA',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
+                      InkWell(
+                        onTap: () {
+                          showDescriptionDialog(context, chase.id);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: kPaddingMediumConstant,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Consumer(
+                                  builder: (
+                                    BuildContext context,
+                                    WidgetRef ref,
+                                    _,
+                                  ) {
+                                    final String? title = ref.watch(
+                                      streamChaseProvider(chase.id).select(
+                                        (AsyncValue<Chase> value) =>
+                                            value.value?.name,
                                       ),
-                                );
-                              },
-                            ),
+                                    );
+
+                                    return Text(
+                                      title ?? 'NA',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                          ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const Icon(
+                                Icons.expand_more,
+                              ),
+                            ],
                           ),
-                          const Icon(
-                            Icons.expand_more,
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 const SizedBox(
@@ -200,6 +208,92 @@ class ChaseDetails extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ChaseAppPremiumChaseViewHeader extends ConsumerStatefulWidget {
+  const ChaseAppPremiumChaseViewHeader({super.key});
+
+  @override
+  ConsumerState<ChaseAppPremiumChaseViewHeader> createState() =>
+      _ChaseAppPremiumChaseViewHeaderState();
+}
+
+class _ChaseAppPremiumChaseViewHeaderState
+    extends ConsumerState<ChaseAppPremiumChaseViewHeader> {
+  @override
+  Widget build(BuildContext context) {
+    final bool showHeader =
+        ref.read(appReviewStateNotifier.notifier).shouldShowPremiumHeader;
+
+    if (!showHeader) {
+      return const SizedBox.shrink();
+    }
+
+    return Stack(
+      children: [
+        const Positioned.fill(
+          child: AnimatingGradientShaderBuilder(
+            child: ColoredBox(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: kPaddingMediumConstant,
+          ),
+          child: Row(
+            children: [
+              const Flexible(
+                child: Text(
+                  'Explore more with ChaseApp Premium',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: kPaddingSmallConstant,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(RouteName.IN_APP_PURCHASES);
+                },
+                child: const Text(
+                  'Get it!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: kPaddingSmallConstant,
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  ref
+                      .read(appReviewStateNotifier.notifier)
+                      .hideChaseViewPremiumHeader();
+                  setState(() {});
+                },
+                child: const Text(
+                  'Hide',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

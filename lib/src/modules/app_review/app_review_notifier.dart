@@ -72,7 +72,7 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
       return false;
     }
 
-    return chasesSeenCount >= 5;
+    return chasesSeenCount >= 3;
   }
 
   Future<void> updatechasesSeenCount() async {
@@ -96,7 +96,39 @@ class AppReviewStateNotifier extends StateNotifier<AsyncValue<void>> {
     return chasesSeenCount;
   }
 
-  Future<int> get getchasesSeenInLifeTimeCount async {
+  bool get shouldShowPremiumDialog {
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+
+    return getchasesSeenInLifeTimeCount == 2 && !isPremiumMember;
+  }
+
+  bool get shouldShowPremiumHeader {
+    if (isChaseViewPremiumHeaderHidden) {
+      return false;
+    }
+    final bool isPremiumMember =
+        ref.read(inAppPurchasesStateNotifier.notifier).isPremiumMember;
+
+    return getchasesSeenInLifeTimeCount >= 2 && !isPremiumMember;
+  }
+
+  bool get isChaseViewPremiumHeaderHidden {
+    final bool? isHidden = ref.read(sharedPreferancesProvider).getBool(
+          'hide_premium_chaseview_header',
+        );
+
+    return isHidden ?? false;
+  }
+
+  Future<void> hideChaseViewPremiumHeader() async {
+    await ref.read(sharedPreferancesProvider).setBool(
+          'hide_premium_chaseview_header',
+          true,
+        );
+  }
+
+  int get getchasesSeenInLifeTimeCount {
     final SharedPreferences sharedPreferance =
         ref.read(sharedPreferancesProvider);
     final int chasesSeenCount =
