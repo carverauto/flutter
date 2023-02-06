@@ -67,7 +67,11 @@ class ChaseDetails extends ConsumerWidget {
                       ChaseAppPremiumChaseViewHeader(
                         action: 'Go Premium',
                         label: 'Explore more with ChaseApp Premium',
-                        onHide: () {},
+                        onHide: () {
+                          ref
+                              .read(appReviewStateNotifier.notifier)
+                              .hideChaseViewPremiumHeader();
+                        },
                         showHeader: () {
                           return ref
                               .read(appReviewStateNotifier.notifier)
@@ -80,9 +84,6 @@ class ChaseDetails extends ConsumerWidget {
                       InkWell(
                         onTap: () {
                           showDescriptionDialog(context, chase.id);
-                          ref
-                              .read(appReviewStateNotifier.notifier)
-                              .hideChaseViewPremiumHeader();
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
